@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seasonax — Sign in</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#080F1E;--navy2:#0D1829;--slate:#1A2640;--slate2:#243352;
+  --amber:#F5A623;--green:#2ECC71;--red:#E84040;
+  --white:#E8EDF4;--muted:#7A8FA6;--border:#1E3050;
+  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--amber);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* NAV */
+nav{padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--amber);text-decoration:none}
+.logo span{color:var(--muted);font-weight:300}
+.nav-back{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:var(--white)}
+
+/* MAIN */
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.auth-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:40px;width:100%;max-width:420px}
+
+/* TABS */
+.tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.tab.active{color:var(--amber);border-bottom-color:var(--amber)}
+
+/* FORM */
+.form-group{margin-bottom:18px}
+label{display:block;font-size:12px;font-family:var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+input{width:100%;background:var(--slate);border:1px solid var(--border);color:var(--white);padding:11px 14px;font-family:var(--sans);font-size:14px;border-radius:6px;outline:none;transition:border-color .2s}
+input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.1)}
+input::placeholder{color:var(--muted)}
+
+.btn-submit{width:100%;background:var(--amber);color:var(--navy);border:none;padding:13px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:opacity .2s;margin-top:4px}
+.btn-submit:hover{opacity:.88}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+
+.form-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* OAUTH BUTTONS */
+.btn-oauth{width:100%;background:var(--slate);border:1px solid var(--border);color:var(--white);padding:11px;border-radius:6px;font-size:14px;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;transition:border-color .2s}
+.btn-oauth:hover{border-color:var(--amber)}
+
+/* MESSAGES */
+.msg{padding:11px 14px;border-radius:6px;font-size:13px;margin-bottom:18px;display:none}
+.msg.error{background:rgba(232,64,64,.1);border:1px solid rgba(232,64,64,.3);color:#ff8080}
+.msg.success{background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--green)}
+.msg.show{display:block}
+
+/* PASSWORD STRENGTH */
+.pw-strength{margin-top:6px;height:3px;border-radius:2px;background:var(--slate);overflow:hidden}
+.pw-bar{height:100%;border-radius:2px;transition:width .3s,background .3s}
+
+/* FORGOT */
+.forgot-link{float:right;font-size:12px;color:var(--muted);margin-top:-2px}
+.forgot-link:hover{color:var(--amber)}
+
+/* VERIFY STATE */
+.verify-state{text-align:center;padding:20px 0}
+.verify-icon{font-size:48px;margin-bottom:16px}
+.verify-state h2{font-size:22px;font-weight:700;margin-bottom:10px}
+.verify-state p{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px}
+
+/* FOOTER */
+footer{padding:20px 40px;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="seasonax-landing.html" class="logo">Seasonax<span>.io</span></a>
+  <a href="seasonax-landing.html" class="nav-back">← Back to home</a>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <!-- Normal auth form -->
+    <div id="authForm">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')" id="tab-login">Sign in</div>
+        <div class="tab" onclick="switchTab('signup')" id="tab-signup">Create account</div>
+      </div>
+
+      <div id="msgBox" class="msg"></div>
+
+      <!-- LOGIN FORM -->
+      <div id="formLogin">
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password <a href="#" class="forgot-link" onclick="showForgot();return false">Forgot password?</a></label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="btn-submit" id="loginBtn" onclick="doLogin()">Sign in</button>
+        <div class="form-footer">Don't have an account? <a href="#" onclick="switchTab('signup');return false">Sign up free</a></div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="formSignup" style="display:none">
+        <div class="form-group">
+          <label>Full name</label>
+          <input type="text" id="signupName" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkStrength(this.value)" onkeydown="if(event.key==='Enter')doSignup()">
+          <div class="pw-strength"><div class="pw-bar" id="pwBar" style="width:0%"></div></div>
+        </div>
+        <button class="btn-submit" id="signupBtn" onclick="doSignup()">Create free account</button>
+        <div class="form-footer" style="font-size:12px;margin-top:16px">By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></div>
+        <div class="form-footer">Already have an account? <a href="#" onclick="switchTab('login');return false">Sign in</a></div>
+      </div>
+    </div>
+
+    <!-- Verify email state -->
+    <div id="verifyState" style="display:none">
+      <div class="verify-state">
+        <div class="verify-icon">📬</div>
+        <h2>Check your email</h2>
+        <p>We sent a confirmation link to <strong id="verifyEmail"></strong>.<br>Click the link to activate your account and start your free trial.</p>
+        <button class="btn-submit" style="max-width:200px;margin:0 auto" onclick="switchTab('login');document.getElementById('verifyState').style.display='none';document.getElementById('authForm').style.display='block'">Back to sign in</button>
+        <div class="form-footer" style="margin-top:16px">Didn't receive it? Check your spam folder or <a href="#" onclick="resendEmail();return false">resend</a>.</div>
+      </div>
+    </div>
+
+    <!-- Forgot password state -->
+    <div id="forgotState" style="display:none">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Reset password</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px">Enter your email and we'll send you a reset link.</p>
+      <div id="forgotMsg" class="msg"></div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" id="forgotEmail" placeholder="you@example.com">
+      </div>
+      <button class="btn-submit" onclick="doReset()">Send reset link</button>
+      <div class="form-footer" style="margin-top:16px"><a href="#" onclick="hideForgot();return false">← Back to sign in</a></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>Seasonax.io &nbsp;·&nbsp; Your data is encrypted and never sold &nbsp;·&nbsp; <a href="#">Privacy</a></footer>
+
+<script>
+const SUPABASE_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Nucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Check if already logged in
+sb.auth.getSession().then(({data:{session}})=>{
+  if(session) window.location.href = 'market-seasonality.html';
+});
+
+// Auth state change
+sb.auth.onAuthStateChange((event, session)=>{
+  if(event === 'SIGNED_IN' && session){
+    window.location.href = 'market-seasonality.html';
+  }
+});
+
+function switchTab(tab){
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+  document.getElementById('formLogin').style.display = tab==='login' ? 'block' : 'none';
+  document.getElementById('formSignup').style.display = tab==='signup' ? 'block' : 'none';
+  hideMsg();
+}
+
+function showMsg(text, type='error'){
+  const el = document.getElementById('msgBox');
+  el.textContent = text;
+  el.className = 'msg show ' + type;
+}
+function hideMsg(){
+  document.getElementById('msgBox').className = 'msg';
+}
+
+function setLoading(btnId, loading, label){
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Please wait…' : label;
+}
+
+async function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if(!email || !password){ showMsg('Please enter your email and password.'); return; }
+  setLoading('loginBtn', true, 'Sign in');
+  const {error} = await sb.auth.signInWithPassword({email, password});
+  setLoading('loginBtn', false, 'Sign in');
+  if(error){ showMsg(friendlyError(error.message)); return; }
+  // onAuthStateChange handles redirect
+}
+
+async function doSignup(){
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  if(!name){ showMsg('Please enter your name.'); return; }
+  if(!email){ showMsg('Please enter your email address.'); return; }
+  if(password.length < 8){ showMsg('Password must be at least 8 characters.'); return; }
+  setLoading('signupBtn', true, 'Create free account');
+  const {data, error} = await sb.auth.signUp({
+    email, password,
+    options:{ data:{ full_name: name } }
+  });
+  setLoading('signupBtn', false, 'Create free account');
+  if(error){ showMsg(friendlyError(error.message)); return; }
+  // If session exists immediately → email confirm is off, redirect happens via onAuthStateChange
+  // If no session → email confirm is on, show verify screen
+  if(!data.session){
+    document.getElementById('verifyEmail').textContent = email;
+    document.getElementById('authForm').style.display = 'none';
+    document.getElementById('verifyState').style.display = 'block';
+  }
+}
+
+async function doReset(){
+  const email = document.getElementById('forgotEmail').value.trim();
+  if(!email){ showForgotMsg('Please enter your email.','error'); return; }
+  const {error} = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/seasonax-auth.html'
+  });
+  if(error){ showForgotMsg(friendlyError(error.message),'error'); return; }
+  showForgotMsg('Reset link sent! Check your inbox.','success');
+}
+
+function showForgotMsg(text, type){
+  const el = document.getElementById('forgotMsg');
+  el.textContent = text; el.className = 'msg show ' + type;
+}
+
+function showForgot(){
+  document.getElementById('authForm').style.display = 'none';
+  document.getElementById('forgotState').style.display = 'block';
+}
+function hideForgot(){
+  document.getElementById('forgotState').style.display = 'none';
+  document.getElementById('authForm').style.display = 'block';
+}
+
+async function resendEmail(){
+  const email = document.getElementById('verifyEmail').textContent;
+  await sb.auth.resend({type:'signup', email});
+  alert('Resent! Check your inbox.');
+}
+
+function checkStrength(pw){
+  let score = 0;
+  if(pw.length >= 8) score++;
+  if(/[A-Z]/.test(pw)) score++;
+  if(/[0-9]/.test(pw)) score++;
+  if(/[^A-Za-z0-9]/.test(pw)) score++;
+  const bar = document.getElementById('pwBar');
+  const cols = ['','#E84040','#F5A623','#4A9EFF','#2ECC71'];
+  const widths = ['0%','25%','50%','75%','100%'];
+  bar.style.width = widths[score];
+  bar.style.background = cols[score];
+}
+
+function friendlyError(msg){
+  if(msg.includes('Invalid login')) return 'Incorrect email or password. Please try again.';
+  if(msg.includes('Email not confirmed')) return 'Please confirm your email first — check your inbox.';
+  if(msg.includes('already registered')) return 'This email is already registered. Try signing in instead.';
+  if(msg.includes('Password should')) return 'Password must be at least 8 characters.';
+  if(msg.includes('rate limit')) return 'Too many attempts. Please wait a moment and try again.';
+  return msg;
+}
+</script>
+</body>
+</html>
