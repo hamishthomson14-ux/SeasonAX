@@ -3,157 +3,251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Seasonality Analyzer</title>
+<title>SeasonAX — Seasonal Pattern Analyzer</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0B1426;--slate:#1E2D45;--slate2:#263750;--slate3:#1a2840;
-  --amber:#F5A623;--green:#2ECC71;--red:#E84040;
-  --white:#E8EDF4;--muted:#7A8FA6;--border:#2A3F5C;
-  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;
+  --disp:"Syne",sans-serif;
+  --sans:"Inter",sans-serif;
 }
-body{background:var(--navy);color:var(--white);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--sans)}
 
-/* ── Header ── */
-header{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--amber);text-transform:uppercase}
-.tagline{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+/* ── NAV ── */
+.nav{height:56px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-mark{width:26px;height:26px;flex-shrink:0}
+.nav-word{font:800 16px/1 var(--disp);letter-spacing:-.02em;color:var(--w)}
+.nav-word b{color:var(--amber2);font-weight:800}
+.nav-div{width:1px;height:18px;background:var(--b2);margin:0 4px}
+.nav-sub{font:500 11px/1 var(--mono);color:var(--w4);letter-spacing:.08em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:10px}
+.user-badge{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:5px 12px;font:400 11px/1 var(--mono);color:var(--w3);display:flex;align-items:center;gap:6px}
+.user-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.btn-so{background:none;border:1px solid var(--b2);color:var(--w4);padding:5px 12px;border-radius:6px;font:400 11px/1 var(--mono);transition:all .18s}
+.btn-so:hover{border-color:var(--amber2);color:var(--amber2)}
+.btn-si{background:var(--amber);color:var(--bg);border:none;padding:6px 14px;border-radius:6px;font:600 12px/1 var(--sans);transition:all .18s}
+.btn-si:hover{background:var(--amber2)}
 
-/* ── Layout ── */
-.app{display:flex;min-height:calc(100vh - 60px)}
+/* ── PAGE ── */
+.page{max-width:1100px;margin:0 auto;padding:0 32px 80px}
 
-/* ── Left sidebar: ticker browser ── */
-.sidebar{width:280px;min-width:280px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--slate3);overflow:hidden}
-.sb-search{padding:14px 16px;border-bottom:1px solid var(--border)}
-.sb-search input{width:100%;background:var(--slate);border:1px solid var(--border);color:var(--white);padding:8px 12px;font-family:var(--mono);font-size:12px;border-radius:4px;outline:none}
-.sb-search input:focus{border-color:var(--amber)}
-.sb-search input::placeholder{color:var(--muted)}
-.sb-list{flex:1;overflow-y:auto;padding:8px 0}
-.sb-list::-webkit-scrollbar{width:4px}
-.sb-list::-webkit-scrollbar-track{background:transparent}
-.sb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+/* ── HERO STRIP ── */
+.hero-strip{padding:44px 0 32px;text-align:center;border-bottom:1px solid var(--b1);margin-bottom:36px}
+.hs-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.hs-eyebrow::before,.hs-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
+.hs-title{font:800 36px/1.05 var(--disp);letter-spacing:-.03em;margin-bottom:12px}
+.hs-title em{font-style:normal;color:var(--amber2)}
+.hs-sub{font-size:15px;color:var(--w3);max-width:480px;margin:0 auto}
 
-.sb-section{margin-bottom:4px}
-.sb-heading{padding:10px 16px 6px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.sb-heading:hover{color:#ffc04d}
-.sb-heading::after{content:'';flex:1;height:1px;background:rgba(245,166,35,.2)}
-.sb-chevron{font-size:10px;transition:transform .2s;display:inline-block;flex-shrink:0}
-.sb-heading.collapsed .sb-chevron{transform:rotate(-90deg)}
-.sb-body{overflow:hidden;transition:max-height .25s ease}
-.sb-body.collapsed{max-height:0!important}
-.sb-item{padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;border-left:2px solid transparent}
-.sb-item:hover{background:var(--slate2)}
-.sb-item.active{background:rgba(245,166,35,.08);border-left-color:var(--amber)}
-.sb-ticker{font-family:var(--mono);font-size:11px;color:var(--amber);width:52px;flex-shrink:0}
-.sb-name{font-size:12px;color:var(--white);line-height:1.3}
-.sb-sector{font-size:10px;color:var(--muted);margin-top:1px}
+/* ── SEARCH + FILTER BAR ── */
+.filter-bar{display:flex;gap:10px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap}
+.filter-search{flex:1;min-width:200px;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:10px 14px;font:400 13px/1 var(--mono);border-radius:8px;outline:none;transition:border-color .18s}
+.filter-search:focus{border-color:var(--amber2);box-shadow:0 0 0 3px rgba(232,147,24,.08)}
+.filter-search::placeholder{color:var(--w4)}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.filter-tab{background:var(--s1);border:1px solid var(--b2);color:var(--w4);padding:7px 14px;border-radius:20px;font:500 12px/1 var(--sans);transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.filter-tab:hover{border-color:var(--amber2);color:var(--w)}
+.filter-tab.active{background:rgba(232,147,24,.1);border-color:var(--amber2);color:var(--amber2)}
+.ft-icon{font-size:12px;line-height:1}
 
-/* ── Right: analysis area ── */
-.content{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+/* ── ASSET BROWSER ── */
+.browser{margin-bottom:8px}
+.section-block{margin-bottom:6px}
+.sec-header{display:flex;align-items:center;gap:10px;padding:10px 0 8px;cursor:pointer;user-select:none;border-bottom:1px solid var(--b1);margin-bottom:0}
+.sec-header:hover .sec-title{color:var(--amber2)}
+.sec-title{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;flex:1;transition:color .15s}
+.sec-count{font:400 10px/1 var(--mono);color:var(--w5)}
+.sec-chevron{font-size:11px;color:var(--w5);transition:transform .2s}
+.sec-header.collapsed .sec-chevron{transform:rotate(-90deg)}
+.sec-body{overflow:hidden;transition:max-height .3s ease}
+.sec-body.collapsed{max-height:0!important}
 
-.top-bar{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
-.selected-info{display:flex;align-items:center;gap:14px}
-.sel-ticker{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--amber)}
-.sel-name{font-size:14px;color:var(--muted)}
-.top-right{display:flex;align-items:center;gap:10px}
+/* Asset grid */
+.asset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;padding:10px 0}
+.asset-card{background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.asset-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .2s}
+.asset-card:hover{background:var(--s1);border-color:var(--b3);transform:translateY(-1px)}
+.asset-card:hover::before{background:var(--amber2)}
+.asset-card.selected{background:rgba(232,147,24,.06);border-color:var(--amber2)}
+.asset-card.selected::before{background:var(--amber2)}
+.ac-ticker{font:600 11px/1 var(--mono);color:var(--amber2);margin-bottom:5px}
+.ac-name{font-size:12px;color:var(--w2);line-height:1.3;margin-bottom:3px}
+.ac-sector{font:400 10px/1 var(--mono);color:var(--w4)}
 
-.yr-sel{background:var(--slate);border:1px solid var(--border);color:var(--white);padding:7px 10px;font-family:var(--mono);font-size:12px;border-radius:4px;outline:none;cursor:pointer}
-.yr-sel:focus{border-color:var(--amber)}
-.btn{background:var(--amber);color:var(--navy);border:none;padding:8px 22px;font-family:var(--mono);font-size:13px;font-weight:600;border-radius:4px;cursor:pointer;transition:opacity .2s}
-.btn:hover{opacity:.85}.btn:disabled{opacity:.4;cursor:not-allowed}
-.pill{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:20px;background:var(--slate2);color:var(--muted);border:1px solid var(--border);white-space:nowrap}
-.pill.loading{color:var(--amber);border-color:var(--amber);animation:pulse 1.2s infinite}
-.pill.done{color:var(--green);border-color:var(--green)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+/* ── ANALYSIS SECTION ── */
+#analysis{margin-top:48px;scroll-margin-top:72px}
 
-/* ── Charts area ── */
-.charts{display:grid;grid-template-columns:1fr 1fr;flex:1}
-.panel{padding:24px 28px;border-right:1px solid var(--border)}
-.panel:last-of-type{border-right:none}
-.ptitle{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+/* Selected header */
+.sel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--bg2);border:1px solid var(--b2);border-radius:12px 12px 0 0;border-bottom:none;flex-wrap:wrap;gap:12px}
+.sel-left{display:flex;align-items:center;gap:16px}
+.sel-ticker{font:600 28px/1 var(--mono);color:var(--amber2);letter-spacing:-.02em}
+.sel-name{font-size:15px;color:var(--w2);font-weight:500}
+.sel-sector{font:400 11px/1 var(--mono);color:var(--w4);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
+.sel-right{display:flex;align-items:center;gap:10px}
+.yr-sel{background:var(--s1);border:1px solid var(--b2);color:var(--w2);padding:8px 12px;font:400 12px/1 var(--mono);border-radius:6px;outline:none;cursor:pointer;transition:border-color .18s}
+.yr-sel:focus{border-color:var(--amber2)}
+.btn-analyze{background:var(--amber);color:var(--bg);border:none;padding:9px 22px;font:700 13px/1 var(--mono);border-radius:6px;transition:all .18s;display:flex;align-items:center;gap:7px}
+.btn-analyze:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(232,147,24,.25)}
+.btn-analyze:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.status-pill{font:400 11px/1 var(--mono);padding:5px 12px;border-radius:20px;background:var(--s1);color:var(--w4);border:1px solid var(--b2);white-space:nowrap}
+.status-pill.loading{color:var(--amber2);border-color:var(--amber2);animation:pulse 1.2s infinite}
+.status-pill.done{color:var(--green);border-color:rgba(0,201,126,.3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:20px}
-.sc{background:var(--slate);padding:11px;text-align:center}
-.sv{font-family:var(--mono);font-size:17px;font-weight:600;line-height:1;margin-bottom:3px}
-.sl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+/* Analysis body */
+.analysis-body{background:var(--bg2);border:1px solid var(--b2);border-radius:0 0 12px 12px;border-top:1px solid var(--b1);overflow:hidden}
 
-.bars{display:flex;flex-direction:column;gap:6px}
-.brow{display:grid;grid-template-columns:34px 1fr 66px;align-items:center;gap:7px}
-.bm{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
-.bt{height:19px;background:var(--slate);border-radius:2px;overflow:hidden}
-.bf{height:100%;border-radius:2px;transition:width .7s cubic-bezier(.4,0,.2,1)}
-.bv{font-family:var(--mono);font-size:11px;font-weight:500;text-align:right}
-.bv.p{color:var(--green)}.bv.n{color:var(--red)}
-.bsub{padding:1px 0 4px 41px;font-family:var(--mono);font-size:9px;color:var(--muted)}
+/* Stats strip */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border-bottom:1px solid var(--b1)}
+.ss{background:var(--bg3);padding:14px;text-align:center}
+.ss-v{font:600 18px/1 var(--mono);margin-bottom:4px;letter-spacing:-.01em}
+.ss-l{font:400 9px/1 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase}
 
-.cards{margin-top:16px}
-.ctitle{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
-.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.card{background:var(--slate2);border:1px solid var(--border);border-radius:6px;padding:10px}
-.cn{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:4px}
-.cv{font-family:var(--mono);font-size:15px;font-weight:600}
-.cr{font-size:10px;color:var(--muted);margin-top:2px}
-
+/* Charts row */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--b1)}
+.chart-panel{padding:24px}
+.chart-panel:first-child{border-right:1px solid var(--b1)}
+.cp-title{font:500 9px/1 var(--mono);letter-spacing:.16em;color:var(--w4);text-transform:uppercase;margin-bottom:16px}
 #cwrap{display:flex;flex-direction:column;align-items:center}
-.legend{display:flex;gap:14px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:12px}
+.legend{display:flex;gap:14px;justify-content:center;font:400 10px/1 var(--mono);color:var(--w4);margin-top:12px}
 .ld{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle}
 
-.aipanel{grid-column:1/-1;padding:22px 28px;border-top:1px solid var(--border);background:var(--slate)}
-.aihdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.aibadge{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;background:rgba(245,166,35,.15);color:var(--amber);border:1px solid rgba(245,166,35,.3);padding:3px 8px;border-radius:3px}
-.aititle{font-size:13px;font-weight:500}
-.aitxt{font-size:14px;line-height:1.75;color:#B0BEC5;white-space:pre-wrap;max-width:960px}
+/* Bars */
+.bars{display:flex;flex-direction:column;gap:6px}
+.brow{display:grid;grid-template-columns:32px 1fr 62px;align-items:center;gap:7px}
+.bm{font:400 10px/1 var(--mono);color:var(--w4);text-align:right}
+.bt{height:18px;background:var(--s1);border-radius:2px;overflow:hidden}
+.bf{height:100%;border-radius:2px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.bv{font:600 10px/1 var(--mono);text-align:right}
+.bv.p{color:var(--green)}.bv.n{color:var(--red)}
+.bsub{padding:1px 0 5px 39px;font:400 9px/1 var(--mono);color:var(--w5)}
 
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;gap:14px}
-.empty svg{opacity:.3}
-.empty-hint{font-size:11px;opacity:.6;margin-top:4px}
+/* Cards */
+.cards{padding:0 24px 20px}
+.ctitle{font:500 9px/1 var(--mono);color:var(--w5);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.cgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.card{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:10px;transition:border-color .18s}
+.card:hover{border-color:var(--b3)}
+.cn{font:400 10px/1 var(--mono);color:var(--w4);margin-bottom:4px}
+.cv{font:600 14px/1 var(--mono);margin-bottom:3px}
+.cr{font-size:10px;color:var(--w4)}
+
+/* AI panel */
+.ai-panel{padding:22px 24px;border-top:1px solid var(--b1);background:rgba(232,147,24,.02)}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ai-badge{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2);padding:3px 9px;border-radius:3px}
+.ai-title{font-size:13px;font-weight:500;color:var(--w2)}
+.aitxt{font-size:14px;line-height:1.78;color:var(--w3);white-space:pre-wrap;max-width:900px}
+.aitxt.loading{color:var(--w4);font:400 12px/1.6 var(--mono);animation:pulse 1.5s infinite}
+
+/* Empty analysis state */
+.analysis-empty{padding:60px 24px;text-align:center;color:var(--w4);font-family:var(--mono);font-size:12px}
+
+/* Paywall overlay */
+#paywallOverlay{display:none;position:fixed;inset:0;background:rgba(4,7,15,.92);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.pw-card{background:var(--bg2);border:1px solid var(--b3);border-radius:14px;padding:40px;max-width:440px;width:100%;text-align:center;position:relative}
+.pw-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);border-radius:14px 14px 0 0}
+.pw-icon{font-size:40px;margin-bottom:16px}
+.pw-title{font:800 22px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.pw-sub{font-size:14px;color:var(--w3);line-height:1.7;margin-bottom:28px}
+.pw-btns{display:flex;flex-direction:column;gap:10px}
+.pw-primary{background:var(--amber);color:var(--bg);border:none;padding:13px;border-radius:7px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:block;transition:all .18s}
+.pw-primary:hover{background:var(--amber2)}
+.pw-ghost{background:none;border:1px solid var(--b3);color:var(--w4);padding:11px;border-radius:7px;font-size:14px;cursor:pointer;text-decoration:none;display:block;transition:all .18s}
+.pw-ghost:hover{border-color:var(--amber2);color:var(--w)}
+.pw-skip{background:none;border:none;color:var(--w5);font-size:13px;cursor:pointer;margin-top:4px}
+.pw-usage{font:400 11px/1 var(--mono);color:var(--w5);margin-top:18px}
 
 /* Mobile */
-@media(max-width:900px){
-  .app{flex-direction:column}
-  .sidebar{width:100%;min-width:0;max-height:260px;border-right:none;border-bottom:1px solid var(--border)}
-  .charts{grid-template-columns:1fr}
-  .panel{border-right:none;border-bottom:1px solid var(--border)}
+@media(max-width:768px){
+  .page{padding:0 16px 60px}
+  .hero-strip{padding:28px 0 20px}
+  .hs-title{font-size:26px}
+  .filter-bar{gap:8px}
+  .asset-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+  .sel-header{padding:14px 16px}
+  .charts-row{grid-template-columns:1fr}
+  .chart-panel:first-child{border-right:none;border-bottom:1px solid var(--b1)}
+  .cgrid{grid-template-columns:repeat(3,1fr)}
+  .nav{padding:0 16px}
+  .nav-sub,.nav-div{display:none}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div>
-    <a href="https://season-ax.vercel.app" style="font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--amber);text-transform:uppercase;text-decoration:none">Seasonax<span style="color:var(--muted);font-weight:300">.io</span></a>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px">Seasonality Engine</div>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <svg class="nav-mark" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <div class="nav-word">Season<b>AX</b></div>
+    <div class="nav-div"></div>
+    <div class="nav-sub">Seasonal Analyzer</div>
   </div>
-  <div style="display:flex;align-items:center;gap:16px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right">Historical Seasonal Data<br><span id="dataDate" style="color:var(--amber)">—</span></div>
-    <div id="userMenu" style="display:none;align-items:center;gap:10px">
-      <div id="userBadge" style="background:var(--slate2);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-family:var(--mono);font-size:11px;color:var(--muted)"></div>
-      <button onclick="signOut()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--amber)';this.style.color='var(--amber)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Sign out</button>
+  <div class="nav-right">
+    <a href="/index.html" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">← Home</a>
+    <div id="userMenu" style="display:none;align-items:center;gap:8px">
+      <div class="user-badge" id="userBadge"></div>
+      <button class="btn-so" onclick="signOut()">Sign out</button>
     </div>
     <div id="loginPrompt" style="display:none">
-      <a href="/seasonax-auth.html" style="background:var(--amber);color:var(--navy);border:none;padding:7px 16px;border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none">Sign in</a>
+      <a href="/seasonax-auth.html"><button class="btn-si">Sign in</button></a>
     </div>
   </div>
-</header>
+</nav>
 
-<div class="app">
+<div class="page">
 
-  <!-- ── Sidebar ── -->
-  <div class="sidebar">
-    <div class="sb-search"><input type="text" id="searchBox" placeholder="Search ticker or name…" oninput="filterList()"></div>
-    <div class="sb-list" id="sbList"></div>
+  <!-- HERO STRIP -->
+  <div class="hero-strip">
+    <div class="hs-eyebrow">Market Seasonality Intelligence</div>
+    <h1 class="hs-title">Pick an asset. <em>See its calendar.</em></h1>
+    <p class="hs-sub">15 years of seasonal patterns across 100+ stocks, ETFs, indices and crypto. Click any asset below to reveal its monthly data.</p>
   </div>
 
-  <!-- ── Content ── -->
-  <div class="content">
-    <div class="top-bar">
-      <div class="selected-info">
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <input type="text" class="filter-search" id="searchBox" placeholder="🔍  Search ticker or name…" oninput="handleSearch()">
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" onclick="filterBySection(null, this)">All</button>
+    </div>
+  </div>
+
+  <!-- ASSET BROWSER -->
+  <div class="browser" id="browser"></div>
+
+  <!-- ANALYSIS SECTION -->
+  <div id="analysis" style="display:none">
+    <div class="sel-header">
+      <div class="sel-left">
         <div class="sel-ticker" id="selTicker">—</div>
-        <div class="sel-name" id="selName">Select an asset from the list</div>
+        <div>
+          <div class="sel-name" id="selName">—</div>
+          <div class="sel-sector" id="selSector"></div>
+        </div>
       </div>
-      <div class="top-right">
+      <div class="sel-right">
         <select class="yr-sel" id="yrsSel">
           <option value="1">1 year</option>
           <option value="2">2 years</option>
@@ -164,26 +258,39 @@ header{padding:18px 28px;display:flex;align-items:center;justify-content:space-b
           <option value="15" selected>15 years</option>
           <option value="20">20 years</option>
         </select>
-        <button class="btn" id="goBtn" onclick="run()" disabled>&#9654; Analyze</button>
-        <div class="pill" id="pill">SELECT ASSET</div>
+        <button class="btn-analyze" id="goBtn" onclick="run()">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5l8 4.5-8 4.5V1.5z"/></svg>
+          Analyze
+        </button>
+        <div class="status-pill" id="pill">READY</div>
       </div>
     </div>
+    <div class="analysis-body" id="analysisBody">
+      <div class="analysis-empty">Hit Analyze to load the seasonal data</div>
+    </div>
+  </div>
 
-    <div class="charts" id="charts">
-      <div style="grid-column:1/-1">
-        <div class="empty">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-            <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-6"/>
-          </svg>
-          <div>Pick any asset from the sidebar to begin</div>
-          <div class="empty-hint">Indices · ETFs · 100 most-traded stocks</div>
-        </div>
-      </div>
+</div>
+
+<!-- PAYWALL -->
+<div id="paywallOverlay">
+  <div class="pw-card">
+    <div class="pw-line"></div>
+    <div class="pw-icon">🔒</div>
+    <div class="pw-title">You've used your 3 free analyses</div>
+    <div class="pw-sub">Create a free account to get 3 more analyses per month, or upgrade to Pro for unlimited access to all 100+ assets.</div>
+    <div class="pw-btns">
+      <a href="/seasonax-auth.html" class="pw-primary">Create free account</a>
+      <a href="/index.html#pricing" class="pw-ghost">View pricing plans</a>
+      <button class="pw-skip" onclick="document.getElementById('paywallOverlay').style.display='none'">Maybe later</button>
     </div>
+    <div class="pw-usage">Used: 3/3 free analyses this month</div>
   </div>
 </div>
 
 <script>
+
+
 // ═══════════════════════════════════════════════════════
 // TICKER CATALOGUE  — grouped by category
 // ═══════════════════════════════════════════════════════
@@ -620,208 +727,373 @@ const MF = ['January','February','March','April','May','June','July','August','S
 let selectedId = null;
 let filteredItems = [];
 
-// Track collapsed sections
-const collapsedSections = new Set();
+// ── SECTION FILTER STATE ─────────────────────────────
+let activeSectionFilter = null;
+let selectedId = null;
 
-function toggleSection(title) {
-  if(collapsedSections.has(title)) collapsedSections.delete(title);
-  else collapsedSections.add(title);
-  buildSidebar(document.getElementById('searchBox').value);
+// ── BROAD CATEGORY GROUPS ────────────────────────────
+const BROAD_CATS = [
+  {
+    label: 'All',
+    icon: '◈',
+    sections: null  // null = show everything
+  },
+  {
+    label: 'Indices',
+    icon: '📈',
+    sections: ['Index Funds & Broad Market ETFs']
+  },
+  {
+    label: 'ETFs',
+    icon: '🗂',
+    sections: ['Sector ETFs']
+  },
+  {
+    label: 'Equities',
+    icon: '🏢',
+    sections: ['Technology','Finance & Crypto-Adjacent','Healthcare & Biotech','Consumer & Retail','Energy & Materials','Industrials & Defense','Communications & Media','AI & Emerging Tech']
+  },
+  {
+    label: 'Technology',
+    icon: '💻',
+    sections: ['Technology','AI & Emerging Tech']
+  },
+  {
+    label: 'Crypto',
+    icon: '₿',
+    sections: ['Finance & Crypto-Adjacent'],
+    ids: ['coin','mstr','mara','riot','btc','eth']
+  },
+  {
+    label: 'Finance',
+    icon: '🏦',
+    sections: ['Finance & Crypto-Adjacent'],
+    excludeIds: ['coin','mstr','mara','riot','btc','eth']
+  },
+  {
+    label: 'Healthcare',
+    icon: '⚕️',
+    sections: ['Healthcare & Biotech']
+  },
+  {
+    label: 'Energy',
+    icon: '⚡',
+    sections: ['Energy & Materials']
+  },
+  {
+    label: 'Consumer',
+    icon: '🛍',
+    sections: ['Consumer & Retail']
+  },
+  {
+    label: 'Defense',
+    icon: '🛡',
+    sections: ['Industrials & Defense']
+  },
+];
+
+// ── BUILD FILTER TABS ────────────────────────────────
+function buildFilterTabs() {
+  const tabs = document.getElementById('filterTabs');
+  // Clear existing (keep "All" button already in HTML)
+  tabs.innerHTML = '';
+  BROAD_CATS.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab' + (i === 0 ? ' active' : '');
+    btn.innerHTML = `<span class="ft-icon">${cat.icon}</span>${cat.label}`;
+    btn.onclick = () => filterByCat(cat, btn);
+    tabs.appendChild(btn);
+  });
 }
 
-function buildSidebar(filter='') {
-  const q = filter.toLowerCase();
-  const sb = document.getElementById('sbList');
-  let html = '';
-  let currentSection = null;
-  let sectionItems = '';
+function filterByCat(cat, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchBox').value = '';
+  activeSectionFilter = cat;
+  buildBrowser('', cat);
+}
 
-  const flush = () => {
-    if(!currentSection || !sectionItems) return;
-    const collapsed = !q && collapsedSections.has(currentSection);
-    const cnt = (sectionItems.match(/class="sb-item/g)||[]).length;
-    const badge = `<span style="color:var(--muted);font-size:9px;margin-left:2px">(${cnt})</span>`;
-    const safeTitle = currentSection.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    html += `<div class="sb-section">
-      <div class="sb-heading${collapsed?' collapsed':''}" onclick="toggleSection('${safeTitle}')">
-        ${currentSection}${badge}
-        <span class="sb-chevron">▾</span>
-      </div>
-      <div class="sb-body${collapsed?' collapsed':''}" style="max-height:${collapsed?'0':'2000px'}">
-        ${sectionItems}
-      </div>
-    </div>`;
-    sectionItems = '';
-  };
+function filterBySection(section, btn) {
+  const cat = { label: section, sections: [section], ids: null, excludeIds: null };
+  filterByCat(cat, btn);
+}
+
+// ── BUILD BROWSER ────────────────────────────────────
+function buildBrowser(searchQ = '', catFilter = null) {
+  const q = searchQ.toLowerCase();
+  const browser = document.getElementById('browser');
+  
+  // Group items by section
+  const groups = [];
+  let currentGroup = null;
 
   CATALOGUE.forEach(item => {
     if(item.section) {
-      flush();
-      currentSection = item.section;
-    } else {
-      if(q && !item.ticker.toLowerCase().includes(q) && !item.name.toLowerCase().includes(q) && !item.sector.toLowerCase().includes(q)) return;
-      sectionItems += `<div class="sb-item${item.id===selectedId?' active':''}" onclick="selectAsset('${item.id}')">
-        <div class="sb-ticker">${item.ticker}</div>
-        <div><div class="sb-name">${item.name}</div><div class="sb-sector">${item.sector}</div></div>
-      </div>`;
+      currentGroup = { section: item.section, items: [] };
+      groups.push(currentGroup);
+    } else if(currentGroup) {
+      // Apply broad category filter
+      if(catFilter && catFilter.sections) {
+        if(!catFilter.sections.includes(currentGroup.section)) return;
+        // If cat has specific ids whitelist
+        if(catFilter.ids && !catFilter.ids.includes(item.id)) return;
+        // If cat has excludeIds
+        if(catFilter.excludeIds && catFilter.excludeIds.includes(item.id)) return;
+      }
+      // Apply search filter
+      if(q && !item.ticker.toLowerCase().includes(q) && 
+         !item.name.toLowerCase().includes(q) && 
+         !item.sector.toLowerCase().includes(q)) return;
+      currentGroup.items.push(item);
     }
   });
-  flush();
-  // close last open section div (approximate)
-  sb.innerHTML = html;
+
+  // Remove empty groups
+  const visible = groups.filter(g => g.items.length > 0);
+  
+  if(visible.length === 0) {
+    browser.innerHTML = `<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found for "${searchQ}"</div>`;
+    return;
+  }
+
+  browser.innerHTML = visible.map(group => {
+    const sectionKey = group.section.replace(/[^a-z0-9]/gi, '_');
+    const itemsHtml = group.items.map(item => `
+      <div class="asset-card${item.id === selectedId ? ' selected' : ''}" 
+           onclick="selectAsset('${item.id}')" 
+           id="ac_${item.id}">
+        <div class="ac-ticker">${item.ticker}</div>
+        <div class="ac-name">${item.name}</div>
+        <div class="ac-sector">${item.sector}</div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="section-block">
+        <div class="sec-header" onclick="toggleSection('${sectionKey}')">
+          <div class="sec-title">${group.section}</div>
+          <div class="sec-count">${group.items.length}</div>
+          <div class="sec-chevron">▾</div>
+        </div>
+        <div class="sec-body" id="sb_${sectionKey}" style="max-height:2000px">
+          <div class="asset-grid">${itemsHtml}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function filterList() {
-  buildSidebar(document.getElementById('searchBox').value);
+function toggleSection(key) {
+  const body = document.getElementById('sb_' + key);
+  const header = body?.previousElementSibling;
+  if(!body) return;
+  const isCollapsed = body.classList.contains('collapsed');
+  if(isCollapsed) {
+    body.classList.remove('collapsed');
+    body.style.maxHeight = '2000px';
+    header?.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    body.style.maxHeight = '0';
+    header?.classList.add('collapsed');
+  }
 }
 
+function handleSearch() {
+  const q = document.getElementById('searchBox').value;
+  if(q) {
+    activeSectionFilter = null;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.filter-tab')?.classList.add('active');
+  }
+  buildBrowser(q, q ? null : activeSectionFilter);
+}
+
+// ── SELECT ASSET ─────────────────────────────────────
 function selectAsset(id) {
+  // Deselect old
+  if(selectedId) {
+    const old = document.getElementById('ac_' + selectedId);
+    if(old) old.classList.remove('selected');
+  }
   selectedId = id;
-  buildSidebar(document.getElementById('searchBox').value);
-  const item = CATALOGUE.find(c=>c.id===id);
+  // Select new
+  const card = document.getElementById('ac_' + id);
+  if(card) card.classList.add('selected');
+
+  const item = CATALOGUE.find(c => c.id === id);
   document.getElementById('selTicker').textContent = item.ticker;
-  document.getElementById('selName').textContent = item.name + ' · ' + item.sector;
-  document.getElementById('goBtn').disabled = false;
+  document.getElementById('selName').textContent = item.name;
+  document.getElementById('selSector').textContent = item.sector;
+
+  // Show analysis section and scroll to it
+  const analysisEl = document.getElementById('analysis');
+  analysisEl.style.display = 'block';
+  analysisEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
   document.getElementById('pill').textContent = 'READY';
-  document.getElementById('pill').className = 'pill';
+  document.getElementById('pill').className = 'status-pill';
+  document.getElementById('analysisBody').innerHTML = `<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ${item.name}'s seasonal data</div>`;
 }
 
-function pill(t,cls=''){const e=document.getElementById('pill');e.textContent=t;e.className='pill'+(cls?' '+cls:'')}
-
-function getMonths(id) {
-  const patKey = TICKER_PATTERN[id] || 'broadIndex';
-  return JSON.parse(JSON.stringify(PATTERNS[patKey])); // deep copy
+// ── PILL ─────────────────────────────────────────────
+function pill(t, cls='') {
+  const e = document.getElementById('pill');
+  e.textContent = t;
+  e.className = 'status-pill' + (cls ? ' ' + cls : '');
 }
 
-function wheel(months, label) {
-  const S=400,cx=200,cy=200,ir=56,mr=155;
-  const mx=Math.max(...months.map(m=>Math.abs(m.avg)),0.5);
-  let p='';
-  const sl=(2*Math.PI)/12;
-  months.forEach((m,i)=>{
-    const a0=i*sl-Math.PI/2,a1=a0+sl*0.88;
-    const norm=Math.abs(m.avg)/mx;
-    const or=ir+(mr-ir)*(0.15+norm*0.85);
-    const pt=(a,r)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];
+// ── WHEEL ────────────────────────────────────────────
+function wheel(months, name) {
+  const S=400, cx=200, cy=200, ir=56, mr=155;
+  const mx = Math.max(...months.map(m => Math.abs(m.avg)), 0.5);
+  let p = '';
+  const sl = (2*Math.PI)/12;
+  months.forEach((m, i) => {
+    const a0 = i*sl - Math.PI/2, a1 = a0 + sl*0.88;
+    const norm = Math.abs(m.avg)/mx;
+    const or = ir + (mr-ir)*(0.15 + norm*0.85);
+    const pt = (a,r) => [cx + r*Math.cos(a), cy + r*Math.sin(a)];
     const [x1,y1]=pt(a0,ir),[x2,y2]=pt(a0,or),[x3,y3]=pt(a1,or),[x4,y4]=pt(a1,ir);
-    const col=m.avg>=0?'#2ECC71':'#E84040';
-    const op=0.22+norm*0.78;
-    const mid=(a0+a1)/2;
-    const [lx,ly]=pt(mid,or+18);
-    const [vx,vy]=pt(mid,ir+(or-ir)*0.54);
-    p+=`<path d="M${x1} ${y1}L${x2} ${y2}A${or} ${or} 0 0 1 ${x3} ${y3}L${x4} ${y4}A${ir} ${ir} 0 0 0 ${x1} ${y1}Z" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width="0.5" stroke-opacity="0.4"/>`;
-    p+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="${m.avg>=0?'#7EE8A2':'#F08080'}" font-weight="500">${m.m}</text>`;
-    if(norm>0.2){
-      p+=`<text x="${vx}" y="${vy}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate(${i*30+14},${vx},${vy})">${m.avg>0?'+':''}${Number(m.avg).toFixed(1)}%</text>`;
+    const col = m.avg>=0 ? '#00C97E' : '#F04050';
+    const op = 0.2 + norm*0.78;
+    const mid = (a0+a1)/2;
+    const [lx,ly] = pt(mid, or+18);
+    const [vx,vy] = pt(mid, ir+(or-ir)*0.54);
+    p += `<path d="M${x1} ${y1}L${x2} ${y2}A${or} ${or} 0 0 1 ${x3} ${y3}L${x4} ${y4}A${ir} ${ir} 0 0 0 ${x1} ${y1}Z" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width="0.5" stroke-opacity="0.4"/>`;
+    p += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="${m.avg>=0?'#7EE8A2':'#F08080'}" font-weight="500">${m.m}</text>`;
+    if(norm > 0.2) {
+      p += `<text x="${vx}" y="${vy}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate(${i*30+14},${vx},${vy})">${m.avg>0?'+':''}${Number(m.avg).toFixed(1)}%</text>`;
     }
   });
-  const lbl=label.length>12?label.slice(0,11)+'…':label;
-  p+=`<circle cx="${cx}" cy="${cy}" r="${ir-3}" fill="#1E2D45"/>`;
-  p+=`<text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#7A8FA6">SEASONAL</text>`;
-  p+=`<text x="${cx}" y="${cy+8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#E8EDF4" font-weight="600">${lbl}</text>`;
+  const lbl = name.length>12 ? name.slice(0,11)+'…' : name;
+  p += `<circle cx="${cx}" cy="${cy}" r="${ir-3}" fill="#070C18"/>`;
+  p += `<text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">SEASONAL</text>`;
+  p += `<text x="${cx}" y="${cy+8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#EDF2FA" font-weight="600">${lbl}</text>`;
   return `<svg viewBox="0 0 ${S} ${S}" style="width:100%;max-width:400px">${p}</svg>`;
 }
 
-function bars(months){
-  const mx=Math.max(...months.map(m=>Math.abs(m.avg)),0.5);
-  return '<div class="bars">'+months.map(m=>{
-    const w=(Math.abs(m.avg)/mx*100).toFixed(1);
-    const col=m.avg>=0?'var(--green)':'var(--red)';
-    const sign=m.avg>=0?'+':'';
+// ── BARS ─────────────────────────────────────────────
+function bars(months) {
+  const mx = Math.max(...months.map(m => Math.abs(m.avg)), 0.5);
+  return '<div class="bars">' + months.map(m => {
+    const w = (Math.abs(m.avg)/mx*100).toFixed(0);
+    const col = m.avg>=0 ? 'var(--green)' : 'var(--red)';
+    const sign = m.avg>=0 ? '+' : '';
     return `<div>
       <div class="brow">
         <div class="bm">${m.m}</div>
-        <div class="bt"><div class="bf" style="width:0%;background:${col};opacity:0.72" data-w="${w}"></div></div>
+        <div class="bt"><div class="bf" style="width:0%;background:${col};opacity:.72" data-w="${w}"></div></div>
         <div class="bv ${m.avg>=0?'p':'n'}">${sign}${Number(m.avg).toFixed(2)}%</div>
       </div>
       <div class="bsub">WIN RATE ${m.win}% · ${m.note}</div>
     </div>`;
-  }).join('')+'</div>';
+  }).join('') + '</div>';
 }
 
-function cards(months){
-  const s=[...months].sort((a,b)=>b.avg-a.avg);
-  const t3=s.slice(0,3),b3=s.slice(-3).reverse();
-  const card=(m,col,sign)=>`<div class="card">
+// ── CARDS ────────────────────────────────────────────
+function cards(months) {
+  const s = [...months].sort((a,b) => b.avg-a.avg);
+  const t3 = s.slice(0,3), b3 = s.slice(-3).reverse();
+  const MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const card = (m, col, sign) => `<div class="card">
     <div class="cn">${MF[MO.indexOf(m.m)]}</div>
     <div class="cv" style="color:${col}">${sign}${Number(m.avg).toFixed(2)}%</div>
     <div class="cr">${m.win}% win rate</div>
   </div>`;
-  return `<div class="cards"><div class="ctitle">Best &amp; Worst Months</div><div class="cgrid">
-    ${t3.map(m=>card(m,'var(--green)','+')). join('')}
-    ${b3.map(m=>card(m,'var(--red)','')).join('')}
-  </div></div>`;
+  return `<div class="cards">
+    <div class="ctitle">Best &amp; Worst Months</div>
+    <div class="cgrid">
+      ${t3.map(m => card(m,'var(--green)','+')). join('')}
+      ${b3.map(m => card(m,'var(--red)','')).join('')}
+    </div>
+  </div>`;
 }
 
-function animateBars(){
-  setTimeout(()=>document.querySelectorAll('.bf').forEach(el=>{el.style.width=el.dataset.w+'%'}),80);
+function animateBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.bf').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  }, 80);
 }
 
-function run(){
+function getMonths(id) {
+  const patKey = TICKER_PATTERN[id] || 'broadIndex';
+  return JSON.parse(JSON.stringify(PATTERNS[patKey]));
+}
+
+// ── RUN ──────────────────────────────────────────────
+function run() {
   if(!selectedId) return;
   if(!checkUsageLimit()) return;
-  const item = CATALOGUE.find(c=>c.id===selectedId);
-  pill('ANALYZING…','loading');
-  document.getElementById('goBtn').disabled=true;
 
-  setTimeout(()=>{
-    try{
+  const item = CATALOGUE.find(c => c.id === selectedId);
+  const years = document.getElementById('yrsSel').value;
+  const btn = document.getElementById('goBtn');
+  btn.disabled = true;
+  pill('ANALYZING…', 'loading');
+
+  setTimeout(() => {
+    try {
       const months = getMonths(selectedId);
-      const patKey = TICKER_PATTERN[selectedId]||'broadIndex';
-      const years = document.getElementById('yrsSel').value;
+      const patKey = TICKER_PATTERN[selectedId] || 'broadIndex';
 
-      document.getElementById('charts').innerHTML = `
-        <div class="panel">
-          <div class="ptitle">Monthly Return Calendar</div>
-          <div id="cwrap" style="display:flex;flex-direction:column;align-items:center">
-            ${wheel(months, item.ticker)}
-            <div class="legend">
-              <span><span class="ld" style="background:var(--green)"></span>Positive avg</span>
-              <span><span class="ld" style="background:var(--red)"></span>Negative avg</span>
-              <span style="font-size:10px">Arc size = magnitude</span>
+      const sorted = [...months].sort((a,b) => b.avg-a.avg);
+      const bestM = `${sorted[0].m} +${Number(sorted[0].avg).toFixed(1)}%`;
+      const worstM = `${sorted[11].m} ${Number(sorted[11].avg).toFixed(1)}%`;
+      const posM = `${months.filter(m=>m.avg>0).length}/12`;
+
+      document.getElementById('analysisBody').innerHTML = `
+        <div class="stats-strip">
+          <div class="ss"><div class="ss-v" style="color:var(--green)">${bestM}</div><div class="ss-l">Best Month</div></div>
+          <div class="ss"><div class="ss-v" style="color:var(--red)">${worstM}</div><div class="ss-l">Worst Month</div></div>
+          <div class="ss"><div class="ss-v" style="color:var(--amber2)">${posM}</div><div class="ss-l">Positive Months</div></div>
+        </div>
+        <div class="charts-row">
+          <div class="chart-panel">
+            <div class="cp-title">Monthly Return Calendar</div>
+            <div id="cwrap" style="display:flex;flex-direction:column;align-items:center">
+              ${wheel(months, item.ticker)}
+              <div class="legend">
+                <span><span class="ld" style="background:var(--green)"></span>Positive avg</span>
+                <span><span class="ld" style="background:var(--red)"></span>Negative avg</span>
+                <span style="font-size:10px">Arc = magnitude</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="panel">
-          <div class="ptitle">Average Monthly Return</div>
-          <div id="statsRow">
-            <div class="stats-row">
-              <div class="sc"><div class="sv" id="sBest" style="color:var(--green)">—</div><div class="sl">Best Month</div></div>
-              <div class="sc"><div class="sv" id="sWorst" style="color:var(--red)">—</div><div class="sl">Worst Month</div></div>
-              <div class="sc"><div class="sv" id="sPos" style="color:var(--amber)">—</div><div class="sl">Positive Months</div></div>
-            </div>
+          <div class="chart-panel">
+            <div class="cp-title">Average Monthly Return</div>
+            ${bars(months)}
           </div>
-          <div id="barChart">${bars(months)}</div>
-          <div id="cards">${cards(months)}</div>
         </div>
-        <div class="aipanel">
-          <div class="aihdr">
-            <span class="aibadge">AI Analysis</span>
-            <span class="aititle">${item.name} (${item.ticker}) — ${years}-Year Seasonal Intelligence</span>
+        ${cards(months)}
+        <div class="ai-panel">
+          <div class="ai-header">
+            <span class="ai-badge">AI Analysis</span>
+            <span class="ai-title">${item.name} · ${years}-Year Seasonal Intelligence</span>
           </div>
-          <div class="aitxt" id="aiTxt"></div>
-        </div>`;
-
-      const sorted=[...months].sort((a,b)=>b.avg-a.avg);
-      document.getElementById('sBest').textContent=`${sorted[0].m} +${Number(sorted[0].avg).toFixed(1)}%`;
-      document.getElementById('sWorst').textContent=`${sorted[11].m} ${Number(sorted[11].avg).toFixed(1)}%`;
-      document.getElementById('sPos').textContent=`${months.filter(m=>m.avg>0).length}/12`;
-      document.getElementById('aiTxt').textContent = ANALYSIS_BY_PATTERN[patKey];
+          <div class="aitxt" id="aiTxt">${ANALYSIS_BY_PATTERN[patKey] || ''}</div>
+        </div>
+      `;
 
       animateBars();
-      document.getElementById('dataDate').textContent=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-      pill('COMPLETE','done');
-    } catch(e){
-      pill('ERROR','err');
+      trackAnalysis();
+      document.getElementById('dataDate') && (document.getElementById('dataDate').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}));
+      pill('COMPLETE', 'done');
+
+    } catch(e) {
+      pill('ERROR', 'err');
       console.error(e);
     } finally {
-      document.getElementById('goBtn').disabled=false;
+      btn.disabled = false;
     }
   }, 400);
 }
 
-// Init
-buildSidebar();
+// ── INIT ─────────────────────────────────────────────
+buildFilterTabs();
+buildBrowser();
 
 // ═══════════════════════════════════════════════════════
 // SUPABASE AUTH + USAGE TRACKING
@@ -889,22 +1161,8 @@ function showPaywall(){
 // Init on load
 initAuth();
 
+
+
 </script>
-
-<!-- PAYWALL OVERLAY -->
-<div id="paywallOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,15,30,.92);z-index:1000;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#0D1829;border:1px solid #1E3050;border-radius:14px;padding:40px;max-width:440px;width:100%;text-align:center">
-    <div style="font-size:36px;margin-bottom:16px">🔒</div>
-    <h2 style="font-size:22px;font-weight:700;margin-bottom:10px">You've used your 3 free analyses</h2>
-    <p style="color:#7A8FA6;font-size:14px;line-height:1.7;margin-bottom:28px">Create a free account to get 3 more analyses per month, or upgrade to Pro for unlimited access to all 100+ assets.</p>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <a href="/seasonax-auth.html" style="background:#F5A623;color:#080F1E;border:none;padding:13px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block">Create free account</a>
-      <a href="index.html#pricing" style="background:transparent;border:1px solid #1E3050;color:#7A8FA6;padding:11px;border-radius:6px;font-size:14px;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block;transition:all .2s">View pricing plans</a>
-      <button onclick="document.getElementById('paywallOverlay').style.display='none'" style="background:transparent;border:none;color:#7A8FA6;font-size:13px;cursor:pointer;margin-top:4px;font-family:Inter,sans-serif">Maybe later</button>
-    </div>
-    <div style="margin-top:20px;font-size:11px;color:#4A5568;font-family:'IBM Plex Mono',monospace">Used: 3/3 free analyses this month</div>
-  </div>
-</div>
-
 </body>
 </html>
