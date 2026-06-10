@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SeasonAX — Seasonal Pattern Analyzer</title>
+<title>SeasonAX — Global Seasonal Pattern Analyzer</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -171,6 +171,21 @@ button{cursor:pointer;font-family:var(--sans)}
 .pw-skip{background:none;border:none;color:var(--w5);font-size:13px;cursor:pointer;margin-top:4px}
 .pw-usage{font:400 11px/1 var(--mono);color:var(--w5);margin-top:18px}
 
+/* Region & Sector filter bars */
+.region-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.region-tab{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:8px 18px;border-radius:6px;font:600 12px/1 var(--sans);transition:all .18s;white-space:nowrap;letter-spacing:.01em}
+.region-tab:hover{border-color:var(--amber2);color:var(--w)}
+.region-tab.active{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.sector-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--b1)}
+.sector-tab{background:transparent;border:1px solid var(--b2);color:var(--w4);padding:6px 14px;border-radius:20px;font:500 11px/1 var(--sans);transition:all .18s;white-space:nowrap}
+.sector-tab:hover{border-color:var(--b3);color:var(--w2)}
+.sector-tab.active{background:rgba(232,147,24,.1);border-color:rgba(232,147,24,.4);color:var(--amber2)}
+.region-badge{font:600 9px/1 var(--mono);padding:2px 6px;border-radius:3px;margin-right:7px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.region-us{background:rgba(74,163,255,.1);color:#4DA3FF;border:1px solid rgba(74,163,255,.2)}
+.region-uk{background:rgba(200,64,64,.1);color:#E06060;border:1px solid rgba(200,64,64,.2)}
+.region-germany{background:rgba(255,200,50,.1);color:#E8B820;border:1px solid rgba(255,200,50,.2)}
+.region-asia{background:rgba(255,100,100,.1);color:#FF6464;border:1px solid rgba(255,100,100,.2)}
+
 /* Mobile */
 @media(max-width:768px){
   .page{padding:0 16px 60px}
@@ -221,18 +236,17 @@ button{cursor:pointer;font-family:var(--sans)}
 
   <!-- HERO STRIP -->
   <div class="hero-strip">
-    <div class="hs-eyebrow">Market Seasonality Intelligence</div>
-    <h1 class="hs-title">Pick an asset. <em>See its calendar.</em></h1>
-    <p class="hs-sub">15 years of seasonal patterns across 100+ stocks, ETFs, indices and crypto. Click any asset below to reveal its monthly data.</p>
+    <div class="hs-eyebrow">Global Market Seasonality Intelligence</div>
+    <h1 class="hs-title">Pick any market. <em>See its calendar.</em></h1>
+    <p class="hs-sub">Seasonal patterns across 500+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
   </div>
 
   <!-- FILTER BAR -->
   <div class="filter-bar">
-    <input type="text" class="filter-search" id="searchBox" placeholder="🔍  Search ticker or name…" oninput="handleSearch()">
-    <div class="filter-tabs" id="filterTabs">
-      <button class="filter-tab active" onclick="filterBySection(null, this)">All</button>
-    </div>
+    <input type="text" class="filter-search" id="searchBox" placeholder="Search ticker, name or market..." oninput="handleSearch()">
   </div>
+  <div class="region-bar" id="regionTabs"></div>
+  <div class="sector-bar" id="sectorTabs"></div>
 
   <!-- ASSET BROWSER -->
   <div class="browser" id="browser"></div>
@@ -289,153 +303,535 @@ button{cursor:pointer;font-family:var(--sans)}
 </div>
 
 <script>
-
-
 // ═══════════════════════════════════════════════════════
-// TICKER CATALOGUE  — grouped by category
+// GLOBAL CATALOGUE — US, UK, Germany, Asia
+// Each entry: { id, ticker, name, sector, region, pattern }
 // ═══════════════════════════════════════════════════════
 const CATALOGUE = [
-  { section: "Index Funds & Broad Market ETFs" },
-  { id:"sp500",   ticker:"^GSPC", name:"S&P 500",               sector:"Index" },
-  { id:"nasdaq",  ticker:"^IXIC", name:"NASDAQ Composite",      sector:"Index" },
-  { id:"dow",     ticker:"^DJI",  name:"Dow Jones Ind. Avg.",   sector:"Index" },
-  { id:"russell", ticker:"^RUT",  name:"Russell 2000",          sector:"Index" },
-  { id:"spy",     ticker:"SPY",   name:"SPDR S&P 500 ETF",      sector:"ETF" },
-  { id:"qqq",     ticker:"QQQ",   name:"Invesco NASDAQ-100",    sector:"ETF" },
-  { id:"iwm",     ticker:"IWM",   name:"iShares Russell 2000",  sector:"ETF" },
-  { id:"dia",     ticker:"DIA",   name:"SPDR Dow Jones ETF",    sector:"ETF" },
-  { id:"voo",     ticker:"VOO",   name:"Vanguard S&P 500",      sector:"ETF" },
-  { id:"vti",     ticker:"VTI",   name:"Vanguard Total Market", sector:"ETF" },
 
-  { section: "Sector ETFs" },
-  { id:"xlk",  ticker:"XLK",  name:"Technology Select SPDR",    sector:"Tech ETF" },
-  { id:"xlf",  ticker:"XLF",  name:"Financial Select SPDR",     sector:"Finance ETF" },
-  { id:"xle",  ticker:"XLE",  name:"Energy Select SPDR",        sector:"Energy ETF" },
-  { id:"xlv",  ticker:"XLV",  name:"Health Care Select SPDR",   sector:"Health ETF" },
-  { id:"xlre", ticker:"XLRE", name:"Real Estate Select SPDR",   sector:"REIT ETF" },
-  { id:"xly",  ticker:"XLY",  name:"Consumer Discret. SPDR",    sector:"Consumer ETF" },
-  { id:"gld",  ticker:"GLD",  name:"SPDR Gold Shares",          sector:"Commodity ETF" },
-  { id:"slv",  ticker:"SLV",  name:"iShares Silver Trust",      sector:"Commodity ETF" },
-  { id:"tlt",  ticker:"TLT",  name:"iShares 20+ Year Treasury", sector:"Bond ETF" },
-  { id:"hyg",  ticker:"HYG",  name:"iShares High Yield Bond",   sector:"Bond ETF" },
+// ── US: INDEX FUNDS & BROAD MARKET ETFS ─────────────────
+{ section:"Index Funds & ETFs", region:"US" },
+{ id:"sp500",   ticker:"^GSPC", name:"S&P 500",              sector:"Index",           region:"US", pattern:"broadIndex" },
+{ id:"nasdaq",  ticker:"^IXIC", name:"NASDAQ Composite",     sector:"Index",           region:"US", pattern:"broadIndex" },
+{ id:"dow",     ticker:"^DJI",  name:"Dow Jones Ind. Avg.",  sector:"Index",           region:"US", pattern:"broadIndex" },
+{ id:"russell", ticker:"^RUT",  name:"Russell 2000",         sector:"Index",           region:"US", pattern:"broadIndex" },
+{ id:"spy",     ticker:"SPY",   name:"SPDR S&P 500 ETF",     sector:"ETF",             region:"US", pattern:"broadIndex" },
+{ id:"qqq",     ticker:"QQQ",   name:"Invesco NASDAQ-100",   sector:"ETF",             region:"US", pattern:"techGrowth" },
+{ id:"iwm",     ticker:"IWM",   name:"iShares Russell 2000", sector:"ETF",             region:"US", pattern:"broadIndex" },
+{ id:"dia",     ticker:"DIA",   name:"SPDR Dow Jones ETF",   sector:"ETF",             region:"US", pattern:"broadIndex" },
+{ id:"voo",     ticker:"VOO",   name:"Vanguard S&P 500",     sector:"ETF",             region:"US", pattern:"broadIndex" },
+{ id:"vti",     ticker:"VTI",   name:"Vanguard Total Market",sector:"ETF",             region:"US", pattern:"broadIndex" },
+{ id:"xlk",     ticker:"XLK",   name:"Technology SPDR",      sector:"Tech ETF",        region:"US", pattern:"techGrowth" },
+{ id:"xlf",     ticker:"XLF",   name:"Financial SPDR",       sector:"Finance ETF",     region:"US", pattern:"financials" },
+{ id:"xle",     ticker:"XLE",   name:"Energy SPDR",          sector:"Energy ETF",      region:"US", pattern:"energy" },
+{ id:"xlv",     ticker:"XLV",   name:"Health Care SPDR",     sector:"Health ETF",      region:"US", pattern:"healthcare" },
+{ id:"xlre",    ticker:"XLRE",  name:"Real Estate SPDR",     sector:"REIT ETF",        region:"US", pattern:"financials" },
+{ id:"xly",     ticker:"XLY",   name:"Consumer Discret. SPDR",sector:"Consumer ETF",  region:"US", pattern:"consumer" },
+{ id:"gld",     ticker:"GLD",   name:"SPDR Gold Shares",     sector:"Gold ETF",        region:"US", pattern:"gold" },
+{ id:"slv",     ticker:"SLV",   name:"iShares Silver",       sector:"Silver ETF",      region:"US", pattern:"gold" },
+{ id:"tlt",     ticker:"TLT",   name:"iShares 20yr Treasury",sector:"Bond ETF",        region:"US", pattern:"bonds" },
+{ id:"hyg",     ticker:"HYG",   name:"iShares High Yield",   sector:"Bond ETF",        region:"US", pattern:"bonds" },
 
-  { section: "Technology" },
-  { id:"aapl",  ticker:"AAPL",  name:"Apple",              sector:"Consumer Tech" },
-  { id:"msft",  ticker:"MSFT",  name:"Microsoft",          sector:"Cloud / Software" },
-  { id:"nvda",  ticker:"NVDA",  name:"Nvidia",             sector:"Semiconductors" },
-  { id:"googl", ticker:"GOOGL", name:"Alphabet (Google)",  sector:"Internet / Ads" },
-  { id:"meta",  ticker:"META",  name:"Meta Platforms",     sector:"Social Media" },
-  { id:"amzn",  ticker:"AMZN",  name:"Amazon",             sector:"E-commerce / Cloud" },
-  { id:"tsla",  ticker:"TSLA",  name:"Tesla",              sector:"EV / Energy" },
-  { id:"avgo",  ticker:"AVGO",  name:"Broadcom",           sector:"Semiconductors" },
-  { id:"orcl",  ticker:"ORCL",  name:"Oracle",             sector:"Enterprise Software" },
-  { id:"crm",   ticker:"CRM",   name:"Salesforce",         sector:"CRM Software" },
-  { id:"amd",   ticker:"AMD",   name:"AMD",                sector:"Semiconductors" },
-  { id:"intc",  ticker:"INTC",  name:"Intel",              sector:"Semiconductors" },
-  { id:"qcom",  ticker:"QCOM",  name:"Qualcomm",           sector:"Semiconductors" },
-  { id:"adbe",  ticker:"ADBE",  name:"Adobe",              sector:"Creative Software" },
-  { id:"now",   ticker:"NOW",   name:"ServiceNow",         sector:"Enterprise SaaS" },
-  { id:"shop",  ticker:"SHOP",  name:"Shopify",            sector:"E-commerce" },
-  { id:"pltr",  ticker:"PLTR",  name:"Palantir",           sector:"Data / AI" },
-  { id:"snow",  ticker:"SNOW",  name:"Snowflake",          sector:"Cloud Data" },
-  { id:"uber",  ticker:"UBER",  name:"Uber",               sector:"Rideshare / Delivery" },
-  { id:"lyft",  ticker:"LYFT",  name:"Lyft",               sector:"Rideshare" },
-  { id:"spot",  ticker:"SPOT",  name:"Spotify",            sector:"Streaming" },
-  { id:"nflx",  ticker:"NFLX",  name:"Netflix",            sector:"Streaming" },
-  { id:"rblx",  ticker:"RBLX",  name:"Roblox",             sector:"Gaming / Metaverse" },
-  { id:"u",     ticker:"U",     name:"Unity Software",     sector:"Gaming Engine" },
-  { id:"twlo",  ticker:"TWLO",  name:"Twilio",             sector:"Communications API" },
-  { id:"net",   ticker:"NET",   name:"Cloudflare",         sector:"Network Security" },
-  { id:"ddog",  ticker:"DDOG",  name:"Datadog",            sector:"Observability" },
-  { id:"mdb",   ticker:"MDB",   name:"MongoDB",            sector:"Database" },
-  { id:"team",  ticker:"TEAM",  name:"Atlassian",          sector:"Dev Tools" },
-  { id:"zm",    ticker:"ZM",    name:"Zoom Video",         sector:"Video Comms" },
+// ── US: TECHNOLOGY ───────────────────────────────────────
+{ section:"US Technology", region:"US" },
+{ id:"aapl",  ticker:"AAPL",  name:"Apple",             sector:"Consumer Tech",   region:"US", pattern:"techGrowth" },
+{ id:"msft",  ticker:"MSFT",  name:"Microsoft",         sector:"Cloud/Software",  region:"US", pattern:"techGrowth" },
+{ id:"nvda",  ticker:"NVDA",  name:"Nvidia",            sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"googl", ticker:"GOOGL", name:"Alphabet",          sector:"Internet/Ads",    region:"US", pattern:"techGrowth" },
+{ id:"meta",  ticker:"META",  name:"Meta Platforms",    sector:"Social Media",    region:"US", pattern:"techGrowth" },
+{ id:"amzn",  ticker:"AMZN",  name:"Amazon",            sector:"E-commerce/Cloud",region:"US", pattern:"techGrowth" },
+{ id:"tsla",  ticker:"TSLA",  name:"Tesla",             sector:"EV/Energy",       region:"US", pattern:"evGrowth" },
+{ id:"avgo",  ticker:"AVGO",  name:"Broadcom",          sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"orcl",  ticker:"ORCL",  name:"Oracle",            sector:"Enterprise SW",   region:"US", pattern:"techGrowth" },
+{ id:"crm",   ticker:"CRM",   name:"Salesforce",        sector:"CRM Software",    region:"US", pattern:"techGrowth" },
+{ id:"amd",   ticker:"AMD",   name:"AMD",               sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"intc",  ticker:"INTC",  name:"Intel",             sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"qcom",  ticker:"QCOM",  name:"Qualcomm",          sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"adbe",  ticker:"ADBE",  name:"Adobe",             sector:"Creative SW",     region:"US", pattern:"techGrowth" },
+{ id:"now",   ticker:"NOW",   name:"ServiceNow",        sector:"Enterprise SaaS", region:"US", pattern:"techGrowth" },
+{ id:"shop",  ticker:"SHOP",  name:"Shopify",           sector:"E-commerce",      region:"US", pattern:"evGrowth" },
+{ id:"pltr",  ticker:"PLTR",  name:"Palantir",          sector:"Data/AI",         region:"US", pattern:"speculative" },
+{ id:"snow",  ticker:"SNOW",  name:"Snowflake",         sector:"Cloud Data",      region:"US", pattern:"techGrowth" },
+{ id:"uber",  ticker:"UBER",  name:"Uber",              sector:"Rideshare",       region:"US", pattern:"consumer" },
+{ id:"nflx",  ticker:"NFLX",  name:"Netflix",           sector:"Streaming",       region:"US", pattern:"techGrowth" },
+{ id:"spot",  ticker:"SPOT",  name:"Spotify",           sector:"Music Streaming", region:"US", pattern:"techGrowth" },
+{ id:"net",   ticker:"NET",   name:"Cloudflare",        sector:"Network Security",region:"US", pattern:"techGrowth" },
+{ id:"ddog",  ticker:"DDOG",  name:"Datadog",           sector:"Observability",   region:"US", pattern:"techGrowth" },
+{ id:"mdb",   ticker:"MDB",   name:"MongoDB",           sector:"Database",        region:"US", pattern:"techGrowth" },
+{ id:"twlo",  ticker:"TWLO",  name:"Twilio",            sector:"Comms API",       region:"US", pattern:"techGrowth" },
+{ id:"zm",    ticker:"ZM",    name:"Zoom Video",        sector:"Video Comms",     region:"US", pattern:"techGrowth" },
+{ id:"team",  ticker:"TEAM",  name:"Atlassian",         sector:"Dev Tools",       region:"US", pattern:"techGrowth" },
+{ id:"rblx",  ticker:"RBLX",  name:"Roblox",            sector:"Gaming",          region:"US", pattern:"speculative" },
+{ id:"u_game",ticker:"U",     name:"Unity Software",    sector:"Game Engine",     region:"US", pattern:"speculative" },
+{ id:"smci",  ticker:"SMCI",  name:"Super Micro",       sector:"AI Servers",      region:"US", pattern:"semis" },
+{ id:"arm",   ticker:"ARM",   name:"Arm Holdings",      sector:"Chip Architecture",region:"US",pattern:"semis" },
+{ id:"amat",  ticker:"AMAT",  name:"Applied Materials", sector:"Semiconductor Eq",region:"US", pattern:"semis" },
+{ id:"lrcx",  ticker:"LRCX",  name:"Lam Research",      sector:"Semiconductor Eq",region:"US", pattern:"semis" },
+{ id:"klac",  ticker:"KLAC",  name:"KLA Corp",          sector:"Semiconductor Eq",region:"US", pattern:"semis" },
+{ id:"txn",   ticker:"TXN",   name:"Texas Instruments", sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"mrvl",  ticker:"MRVL",  name:"Marvell Technology",sector:"Semiconductors",  region:"US", pattern:"semis" },
+{ id:"mu",    ticker:"MU",    name:"Micron Technology", sector:"Memory Chips",    region:"US", pattern:"semis" },
+{ id:"wdc",   ticker:"WDC",   name:"Western Digital",   sector:"Storage",         region:"US", pattern:"semis" },
+{ id:"hp_us", ticker:"HPE",   name:"HP Enterprise",     sector:"IT Infrastructure",region:"US",pattern:"techGrowth" },
+{ id:"ibm",   ticker:"IBM",   name:"IBM",               sector:"IT Services",     region:"US", pattern:"techGrowth" },
+{ id:"csco",  ticker:"CSCO",  name:"Cisco Systems",     sector:"Networking",      region:"US", pattern:"techGrowth" },
+{ id:"acn",   ticker:"ACN",   name:"Accenture",         sector:"IT Consulting",   region:"US", pattern:"techGrowth" },
+{ id:"ftnt",  ticker:"FTNT",  name:"Fortinet",          sector:"Cybersecurity",   region:"US", pattern:"techGrowth" },
+{ id:"panw",  ticker:"PANW",  name:"Palo Alto Networks",sector:"Cybersecurity",   region:"US", pattern:"techGrowth" },
+{ id:"crwd",  ticker:"CRWD",  name:"CrowdStrike",       sector:"Cybersecurity",   region:"US", pattern:"techGrowth" },
+{ id:"s_ai",  ticker:"AI",    name:"C3.ai",             sector:"Enterprise AI",   region:"US", pattern:"speculative" },
+{ id:"soun",  ticker:"SOUN",  name:"SoundHound AI",     sector:"Voice AI",        region:"US", pattern:"speculative" },
+{ id:"ionq",  ticker:"IONQ",  name:"IonQ",              sector:"Quantum Computing",region:"US",pattern:"speculative" },
 
-  { section: "Finance & Crypto-Adjacent" },
-  { id:"jpm",   ticker:"JPM",   name:"JPMorgan Chase",     sector:"Banking" },
-  { id:"bac",   ticker:"BAC",   name:"Bank of America",    sector:"Banking" },
-  { id:"gs",    ticker:"GS",    name:"Goldman Sachs",      sector:"Investment Bank" },
-  { id:"ms",    ticker:"MS",    name:"Morgan Stanley",     sector:"Investment Bank" },
-  { id:"wfc",   ticker:"WFC",   name:"Wells Fargo",        sector:"Banking" },
-  { id:"v",     ticker:"V",     name:"Visa",               sector:"Payments" },
-  { id:"ma",    ticker:"MA",    name:"Mastercard",         sector:"Payments" },
-  { id:"pypl",  ticker:"PYPL",  name:"PayPal",             sector:"Fintech" },
-  { id:"sq",    ticker:"SQ",    name:"Block (Square)",     sector:"Fintech" },
-  { id:"coin",  ticker:"COIN",  name:"Coinbase",           sector:"Crypto Exchange" },
-  { id:"mstr",  ticker:"MSTR",  name:"MicroStrategy",      sector:"Bitcoin Proxy" },
-  { id:"mara",  ticker:"MARA",  name:"Marathon Digital",   sector:"Bitcoin Mining" },
-  { id:"riot",  ticker:"RIOT",  name:"Riot Platforms",     sector:"Bitcoin Mining" },
-  { id:"btc",   ticker:"BTC",   name:"Bitcoin",            sector:"Cryptocurrency" },
-  { id:"eth",   ticker:"ETH",   name:"Ethereum",           sector:"Cryptocurrency" },
+// ── US: FINANCE ──────────────────────────────────────────
+{ section:"US Finance & Banking", region:"US" },
+{ id:"jpm",   ticker:"JPM",   name:"JPMorgan Chase",    sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"bac",   ticker:"BAC",   name:"Bank of America",   sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"gs",    ticker:"GS",    name:"Goldman Sachs",     sector:"Investment Bank", region:"US", pattern:"financials" },
+{ id:"ms",    ticker:"MS",    name:"Morgan Stanley",    sector:"Investment Bank", region:"US", pattern:"financials" },
+{ id:"wfc",   ticker:"WFC",   name:"Wells Fargo",       sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"c_us",  ticker:"C",     name:"Citigroup",         sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"usb",   ticker:"USB",   name:"US Bancorp",        sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"pnc",   ticker:"PNC",   name:"PNC Financial",     sector:"Banking",         region:"US", pattern:"financials" },
+{ id:"v",     ticker:"V",     name:"Visa",              sector:"Payments",        region:"US", pattern:"financials" },
+{ id:"ma",    ticker:"MA",    name:"Mastercard",        sector:"Payments",        region:"US", pattern:"financials" },
+{ id:"pypl",  ticker:"PYPL",  name:"PayPal",            sector:"Fintech",         region:"US", pattern:"financials" },
+{ id:"sq",    ticker:"SQ",    name:"Block (Square)",    sector:"Fintech",         region:"US", pattern:"speculative" },
+{ id:"afrm",  ticker:"AFRM",  name:"Affirm",            sector:"BNPL Fintech",    region:"US", pattern:"speculative" },
+{ id:"hood",  ticker:"HOOD",  name:"Robinhood",         sector:"Retail Trading",  region:"US", pattern:"speculative" },
+{ id:"schw",  ticker:"SCHW",  name:"Charles Schwab",    sector:"Brokerage",       region:"US", pattern:"financials" },
+{ id:"blk",   ticker:"BLK",   name:"BlackRock",         sector:"Asset Management",region:"US", pattern:"financials" },
+{ id:"bx",    ticker:"BX",    name:"Blackstone",        sector:"Private Equity",  region:"US", pattern:"financials" },
+{ id:"kkr",   ticker:"KKR",   name:"KKR",               sector:"Private Equity",  region:"US", pattern:"financials" },
+{ id:"aig",   ticker:"AIG",   name:"AIG",               sector:"Insurance",       region:"US", pattern:"financials" },
+{ id:"met",   ticker:"MET",   name:"MetLife",           sector:"Insurance",       region:"US", pattern:"financials" },
+{ id:"coin",  ticker:"COIN",  name:"Coinbase",          sector:"Crypto Exchange", region:"US", pattern:"speculative" },
+{ id:"mstr",  ticker:"MSTR",  name:"MicroStrategy",     sector:"Bitcoin Proxy",   region:"US", pattern:"speculative" },
+{ id:"mara",  ticker:"MARA",  name:"Marathon Digital",  sector:"Bitcoin Mining",  region:"US", pattern:"speculative" },
+{ id:"riot",  ticker:"RIOT",  name:"Riot Platforms",    sector:"Bitcoin Mining",  region:"US", pattern:"speculative" },
+{ id:"btc",   ticker:"BTC",   name:"Bitcoin",           sector:"Cryptocurrency",  region:"US", pattern:"crypto" },
+{ id:"eth",   ticker:"ETH",   name:"Ethereum",          sector:"Cryptocurrency",  region:"US", pattern:"crypto" },
 
-  { section: "Healthcare & Biotech" },
-  { id:"unh",   ticker:"UNH",   name:"UnitedHealth Group", sector:"Health Insurance" },
-  { id:"jnj",   ticker:"JNJ",   name:"Johnson & Johnson",  sector:"Pharma / Medical" },
-  { id:"abbv",  ticker:"ABBV",  name:"AbbVie",             sector:"Biopharmaceuticals" },
-  { id:"lly",   ticker:"LLY",   name:"Eli Lilly",          sector:"Pharmaceuticals" },
-  { id:"mrk",   ticker:"MRK",   name:"Merck",              sector:"Pharmaceuticals" },
-  { id:"pfe",   ticker:"PFE",   name:"Pfizer",             sector:"Pharmaceuticals" },
-  { id:"mrna",  ticker:"MRNA",  name:"Moderna",            sector:"mRNA Biotech" },
-  { id:"bntx",  ticker:"BNTX",  name:"BioNTech",           sector:"mRNA Biotech" },
-  { id:"amgn",  ticker:"AMGN",  name:"Amgen",              sector:"Biotechnology" },
-  { id:"isrg",  ticker:"ISRG",  name:"Intuitive Surgical", sector:"Medical Devices" },
+// ── US: HEALTHCARE ───────────────────────────────────────
+{ section:"US Healthcare & Biotech", region:"US" },
+{ id:"unh",   ticker:"UNH",   name:"UnitedHealth",      sector:"Health Insurance",region:"US", pattern:"healthcare" },
+{ id:"jnj",   ticker:"JNJ",   name:"Johnson & Johnson", sector:"Pharma/Medical",  region:"US", pattern:"healthcare" },
+{ id:"abbv",  ticker:"ABBV",  name:"AbbVie",            sector:"Biopharma",       region:"US", pattern:"healthcare" },
+{ id:"lly",   ticker:"LLY",   name:"Eli Lilly",         sector:"Pharmaceuticals", region:"US", pattern:"healthcare" },
+{ id:"mrk",   ticker:"MRK",   name:"Merck",             sector:"Pharmaceuticals", region:"US", pattern:"healthcare" },
+{ id:"pfe",   ticker:"PFE",   name:"Pfizer",            sector:"Pharmaceuticals", region:"US", pattern:"healthcare" },
+{ id:"mrna",  ticker:"MRNA",  name:"Moderna",           sector:"mRNA Biotech",    region:"US", pattern:"speculative" },
+{ id:"bntx",  ticker:"BNTX",  name:"BioNTech",          sector:"mRNA Biotech",    region:"US", pattern:"speculative" },
+{ id:"amgn",  ticker:"AMGN",  name:"Amgen",             sector:"Biotechnology",   region:"US", pattern:"healthcare" },
+{ id:"isrg",  ticker:"ISRG",  name:"Intuitive Surgical",sector:"Medical Devices", region:"US", pattern:"healthcare" },
+{ id:"bsx",   ticker:"BSX",   name:"Boston Scientific", sector:"Medical Devices", region:"US", pattern:"healthcare" },
+{ id:"syk",   ticker:"SYK",   name:"Stryker",           sector:"Medical Devices", region:"US", pattern:"healthcare" },
+{ id:"mdv",   ticker:"MDT",   name:"Medtronic",         sector:"Medical Devices", region:"US", pattern:"healthcare" },
+{ id:"cvs",   ticker:"CVS",   name:"CVS Health",        sector:"Pharmacy Retail", region:"US", pattern:"healthcare" },
+{ id:"ci",    ticker:"CI",    name:"Cigna",             sector:"Health Insurance",region:"US", pattern:"healthcare" },
+{ id:"hum",   ticker:"HUM",   name:"Humana",            sector:"Health Insurance",region:"US", pattern:"healthcare" },
+{ id:"vrtx",  ticker:"VRTX",  name:"Vertex Pharma",     sector:"Biotech",         region:"US", pattern:"healthcare" },
+{ id:"regn",  ticker:"REGN",  name:"Regeneron",         sector:"Biotech",         region:"US", pattern:"healthcare" },
+{ id:"gild",  ticker:"GILD",  name:"Gilead Sciences",   sector:"Antiviral Biotech",region:"US",pattern:"healthcare" },
+{ id:"biib",  ticker:"BIIB",  name:"Biogen",            sector:"Neuroscience",    region:"US", pattern:"healthcare" },
 
-  { section: "Consumer & Retail" },
-  { id:"wmt",   ticker:"WMT",   name:"Walmart",            sector:"Retail" },
-  { id:"tgt",   ticker:"TGT",   name:"Target",             sector:"Retail" },
-  { id:"cost",  ticker:"COST",  name:"Costco",             sector:"Wholesale Retail" },
-  { id:"amzn2", ticker:"AMZN",  name:"Amazon (Consumer)",  sector:"E-commerce" },
-  { id:"mcd",   ticker:"MCD",   name:"McDonald's",         sector:"Fast Food" },
-  { id:"sbux",  ticker:"SBUX",  name:"Starbucks",          sector:"Coffee / Retail" },
-  { id:"nke",   ticker:"NKE",   name:"Nike",               sector:"Apparel / Sportswear" },
-  { id:"lulu",  ticker:"LULU",  name:"Lululemon",          sector:"Apparel" },
-  { id:"dkng",  ticker:"DKNG",  name:"DraftKings",         sector:"Sports Betting" },
-  { id:"abnb",  ticker:"ABNB",  name:"Airbnb",             sector:"Travel / Hospitality" },
-  { id:"bkng",  ticker:"BKNG",  name:"Booking Holdings",  sector:"Travel" },
-  { id:"rivn",  ticker:"RIVN",  name:"Rivian",             sector:"EV Trucks" },
-  { id:"lcid",  ticker:"LCID",  name:"Lucid Motors",       sector:"EV Luxury" },
+// ── US: CONSUMER & RETAIL ────────────────────────────────
+{ section:"US Consumer & Retail", region:"US" },
+{ id:"wmt",   ticker:"WMT",   name:"Walmart",           sector:"Retail",          region:"US", pattern:"consumer" },
+{ id:"tgt",   ticker:"TGT",   name:"Target",            sector:"Retail",          region:"US", pattern:"consumer" },
+{ id:"cost",  ticker:"COST",  name:"Costco",            sector:"Wholesale Retail",region:"US", pattern:"consumer" },
+{ id:"mcd",   ticker:"MCD",   name:"McDonald's",        sector:"Fast Food",       region:"US", pattern:"consumer" },
+{ id:"sbux",  ticker:"SBUX",  name:"Starbucks",         sector:"Coffee",          region:"US", pattern:"consumer" },
+{ id:"nke",   ticker:"NKE",   name:"Nike",              sector:"Sportswear",      region:"US", pattern:"consumer" },
+{ id:"lulu",  ticker:"LULU",  name:"Lululemon",         sector:"Apparel",         region:"US", pattern:"consumer" },
+{ id:"abnb",  ticker:"ABNB",  name:"Airbnb",            sector:"Travel",          region:"US", pattern:"consumer" },
+{ id:"bkng",  ticker:"BKNG",  name:"Booking Holdings",  sector:"Travel",          region:"US", pattern:"consumer" },
+{ id:"lyft",  ticker:"LYFT",  name:"Lyft",              sector:"Rideshare",       region:"US", pattern:"consumer" },
+{ id:"dkng",  ticker:"DKNG",  name:"DraftKings",        sector:"Sports Betting",  region:"US", pattern:"speculative" },
+{ id:"mgm",   ticker:"MGM",   name:"MGM Resorts",       sector:"Casinos",         region:"US", pattern:"consumer" },
+{ id:"czr",   ticker:"CZR",   name:"Caesars",           sector:"Casinos",         region:"US", pattern:"consumer" },
+{ id:"hlt",   ticker:"HLT",   name:"Hilton",            sector:"Hotels",          region:"US", pattern:"consumer" },
+{ id:"mar",   ticker:"MAR",   name:"Marriott",          sector:"Hotels",          region:"US", pattern:"consumer" },
+{ id:"dri",   ticker:"DRI",   name:"Darden Restaurants",sector:"Restaurants",     region:"US", pattern:"consumer" },
+{ id:"yum",   ticker:"YUM",   name:"Yum! Brands",       sector:"Fast Food",       region:"US", pattern:"consumer" },
+{ id:"cmg",   ticker:"CMG",   name:"Chipotle",          sector:"Fast Casual",     region:"US", pattern:"consumer" },
+{ id:"ebay",  ticker:"EBAY",  name:"eBay",              sector:"E-commerce",      region:"US", pattern:"consumer" },
+{ id:"etsy",  ticker:"ETSY",  name:"Etsy",              sector:"Marketplace",     region:"US", pattern:"consumer" },
 
-  { section: "Energy & Materials" },
-  { id:"xom",   ticker:"XOM",   name:"ExxonMobil",         sector:"Oil & Gas" },
-  { id:"cvx",   ticker:"CVX",   name:"Chevron",            sector:"Oil & Gas" },
-  { id:"cop",   ticker:"COP",   name:"ConocoPhillips",     sector:"Oil & Gas" },
-  { id:"bp",    ticker:"BP",    name:"BP",                 sector:"Oil & Gas" },
-  { id:"shel",  ticker:"SHEL",  name:"Shell",              sector:"Oil & Gas" },
-  { id:"enph",  ticker:"ENPH",  name:"Enphase Energy",     sector:"Solar" },
-  { id:"plug",  ticker:"PLUG",  name:"Plug Power",         sector:"Hydrogen / Fuel Cell" },
-  { id:"fslr",  ticker:"FSLR",  name:"First Solar",        sector:"Solar Panels" },
+// ── US: ENERGY ───────────────────────────────────────────
+{ section:"US Energy", region:"US" },
+{ id:"xom",   ticker:"XOM",   name:"ExxonMobil",        sector:"Oil & Gas",       region:"US", pattern:"energy" },
+{ id:"cvx",   ticker:"CVX",   name:"Chevron",           sector:"Oil & Gas",       region:"US", pattern:"energy" },
+{ id:"cop",   ticker:"COP",   name:"ConocoPhillips",    sector:"Oil & Gas",       region:"US", pattern:"energy" },
+{ id:"slb",   ticker:"SLB",   name:"Schlumberger",      sector:"Oil Services",    region:"US", pattern:"energy" },
+{ id:"hal",   ticker:"HAL",   name:"Halliburton",       sector:"Oil Services",    region:"US", pattern:"energy" },
+{ id:"oxyx",  ticker:"OXY",   name:"Occidental Petrol.", sector:"Oil & Gas",      region:"US", pattern:"energy" },
+{ id:"enph",  ticker:"ENPH",  name:"Enphase Energy",    sector:"Solar",           region:"US", pattern:"speculative" },
+{ id:"plug",  ticker:"PLUG",  name:"Plug Power",        sector:"Hydrogen",        region:"US", pattern:"speculative" },
+{ id:"fslr",  ticker:"FSLR",  name:"First Solar",       sector:"Solar Panels",    region:"US", pattern:"techGrowth" },
+{ id:"bep",   ticker:"BEP",   name:"Brookfield Renewable",sector:"Clean Energy",  region:"US", pattern:"techGrowth" },
 
-  { section: "Industrials & Defense" },
-  { id:"ba",    ticker:"BA",    name:"Boeing",             sector:"Aerospace" },
-  { id:"cat",   ticker:"CAT",   name:"Caterpillar",        sector:"Heavy Machinery" },
-  { id:"de",    ticker:"DE",    name:"Deere & Co.",        sector:"Agriculture Machinery" },
-  { id:"lmt",   ticker:"LMT",   name:"Lockheed Martin",    sector:"Defense" },
-  { id:"rtx",   ticker:"RTX",   name:"RTX (Raytheon)",     sector:"Defense / Aerospace" },
-  { id:"noc",   ticker:"NOC",   name:"Northrop Grumman",   sector:"Defense" },
-  { id:"ge",    ticker:"GE",    name:"GE Aerospace",       sector:"Jet Engines" },
-  { id:"ups",   ticker:"UPS",   name:"UPS",                sector:"Logistics" },
-  { id:"fdx",   ticker:"FDX",   name:"FedEx",              sector:"Logistics" },
-  { id:"spce",  ticker:"SPCE",  name:"Virgin Galactic",    sector:"Space Tourism" },
+// ── US: DEFENSE & INDUSTRIALS ────────────────────────────
+{ section:"US Defense & Industrials", region:"US" },
+{ id:"ba",    ticker:"BA",    name:"Boeing",            sector:"Aerospace",       region:"US", pattern:"defense" },
+{ id:"lmt",   ticker:"LMT",   name:"Lockheed Martin",   sector:"Defense",         region:"US", pattern:"defense" },
+{ id:"rtx",   ticker:"RTX",   name:"RTX (Raytheon)",    sector:"Defense",         region:"US", pattern:"defense" },
+{ id:"noc",   ticker:"NOC",   name:"Northrop Grumman",  sector:"Defense",         region:"US", pattern:"defense" },
+{ id:"ge",    ticker:"GE",    name:"GE Aerospace",      sector:"Jet Engines",     region:"US", pattern:"defense" },
+{ id:"cat",   ticker:"CAT",   name:"Caterpillar",       sector:"Heavy Machinery", region:"US", pattern:"defense" },
+{ id:"de",    ticker:"DE",    name:"Deere & Co.",       sector:"Agriculture",     region:"US", pattern:"defense" },
+{ id:"ups",   ticker:"UPS",   name:"UPS",               sector:"Logistics",       region:"US", pattern:"consumer" },
+{ id:"fdx",   ticker:"FDX",   name:"FedEx",             sector:"Logistics",       region:"US", pattern:"consumer" },
+{ id:"hon",   ticker:"HON",   name:"Honeywell",         sector:"Industrials",     region:"US", pattern:"defense" },
+{ id:"mmm",   ticker:"MMM",   name:"3M",                sector:"Diversified Ind.",region:"US", pattern:"defense" },
+{ id:"emr",   ticker:"EMR",   name:"Emerson Electric",  sector:"Automation",      region:"US", pattern:"defense" },
+{ id:"pgh",   ticker:"PH",    name:"Parker Hannifin",   sector:"Hydraulics",      region:"US", pattern:"defense" },
+{ id:"carr",  ticker:"CARR",  name:"Carrier Global",    sector:"HVAC",            region:"US", pattern:"defense" },
 
-  { section: "Communications & Media" },
-  { id:"dis",   ticker:"DIS",   name:"Walt Disney",        sector:"Entertainment" },
-  { id:"wbd",   ticker:"WBD",   name:"Warner Bros. Discovery", sector:"Media" },
-  { id:"para",  ticker:"PARA",  name:"Paramount Global",   sector:"Media" },
-  { id:"t",     ticker:"T",     name:"AT&T",               sector:"Telecom" },
-  { id:"vz",    ticker:"VZ",    name:"Verizon",            sector:"Telecom" },
-  { id:"tmus",  ticker:"TMUS",  name:"T-Mobile",           sector:"Telecom" },
-  { id:"snap",  ticker:"SNAP",  name:"Snap (Snapchat)",    sector:"Social Media" },
-  { id:"pins",  ticker:"PINS",  name:"Pinterest",          sector:"Social Media" },
-  { id:"rddt",  ticker:"RDDT",  name:"Reddit",             sector:"Social Media" },
+// ── US: COMMUNICATIONS & MEDIA ──────────────────────────
+{ section:"US Communications & Media", region:"US" },
+{ id:"dis",   ticker:"DIS",   name:"Walt Disney",       sector:"Entertainment",   region:"US", pattern:"consumer" },
+{ id:"nflx2", ticker:"NFLX",  name:"Netflix",           sector:"Streaming",       region:"US", pattern:"techGrowth" },
+{ id:"wbd",   ticker:"WBD",   name:"Warner Bros.",      sector:"Media",           region:"US", pattern:"consumer" },
+{ id:"t_us",  ticker:"T",     name:"AT&T",              sector:"Telecom",         region:"US", pattern:"bonds" },
+{ id:"vz",    ticker:"VZ",    name:"Verizon",           sector:"Telecom",         region:"US", pattern:"bonds" },
+{ id:"tmus",  ticker:"TMUS",  name:"T-Mobile",          sector:"Telecom",         region:"US", pattern:"techGrowth" },
+{ id:"snap",  ticker:"SNAP",  name:"Snap",              sector:"Social Media",    region:"US", pattern:"speculative" },
+{ id:"pins",  ticker:"PINS",  name:"Pinterest",         sector:"Social Media",    region:"US", pattern:"techGrowth" },
+{ id:"rddt",  ticker:"RDDT",  name:"Reddit",            sector:"Social Media",    region:"US", pattern:"speculative" },
+{ id:"ttd",   ticker:"TTD",   name:"The Trade Desk",    sector:"Ad Tech",         region:"US", pattern:"techGrowth" },
+{ id:"iaci",  ticker:"IAC",   name:"IAC",               sector:"Internet Media",  region:"US", pattern:"techGrowth" },
 
-  { section: "AI & Emerging Tech" },
-  { id:"soun",  ticker:"SOUN",  name:"SoundHound AI",      sector:"Voice AI" },
-  { id:"ai",    ticker:"AI",    name:"C3.ai",              sector:"Enterprise AI" },
-  { id:"bbai",  ticker:"BBAI",  name:"BigBear.ai",         sector:"AI Analytics" },
-  { id:"ionq",  ticker:"IONQ",  name:"IonQ",               sector:"Quantum Computing" },
-  { id:"rgti",  ticker:"RGTI",  name:"Rigetti Computing",  sector:"Quantum Computing" },
-  { id:"smci",  ticker:"SMCI",  name:"Super Micro Computer",sector:"AI Servers" },
-  { id:"arm",   ticker:"ARM",   name:"Arm Holdings",       sector:"Chip Architecture" },
+// ── US: EV & EMERGING ───────────────────────────────────
+{ section:"US EV & Emerging Tech", region:"US" },
+{ id:"rivn",  ticker:"RIVN",  name:"Rivian",            sector:"EV Trucks",       region:"US", pattern:"speculative" },
+{ id:"lcid",  ticker:"LCID",  name:"Lucid Motors",      sector:"EV Luxury",       region:"US", pattern:"speculative" },
+{ id:"spce",  ticker:"SPCE",  name:"Virgin Galactic",   sector:"Space Tourism",   region:"US", pattern:"speculative" },
+{ id:"rkt",   ticker:"RKT",   name:"Rocket Companies",  sector:"Mortgage Tech",   region:"US", pattern:"speculative" },
+{ id:"sofi",  ticker:"SOFI",  name:"SoFi Technologies", sector:"Neobank",         region:"US", pattern:"speculative" },
+{ id:"nu",    ticker:"NU",    name:"Nu Holdings",       sector:"Digital Banking", region:"US", pattern:"speculative" },
+{ id:"bbai",  ticker:"BBAI",  name:"BigBear.ai",        sector:"AI Analytics",    region:"US", pattern:"speculative" },
+{ id:"rgti",  ticker:"RGTI",  name:"Rigetti Computing", sector:"Quantum",         region:"US", pattern:"speculative" },
+
+// ── UK: INDEX ───────────────────────────────────────────
+{ section:"UK Indices", region:"UK" },
+{ id:"ftse100",  ticker:"^FTSE",  name:"FTSE 100",          sector:"Index",        region:"UK", pattern:"ukMarket" },
+{ id:"ftse250",  ticker:"^FTMC",  name:"FTSE 250",          sector:"Index",        region:"UK", pattern:"ukMarket" },
+
+// ── UK: BANKING & FINANCE ────────────────────────────────
+{ section:"UK Banking & Finance", region:"UK" },
+{ id:"hsba",  ticker:"HSBA.L", name:"HSBC Holdings",    sector:"Global Banking",  region:"UK", pattern:"financials" },
+{ id:"lloy",  ticker:"LLOY.L", name:"Lloyds Banking",   sector:"UK Banking",      region:"UK", pattern:"ukMarket" },
+{ id:"barc",  ticker:"BARC.L", name:"Barclays",         sector:"Investment Bank", region:"UK", pattern:"financials" },
+{ id:"natw",  ticker:"NWG.L",  name:"NatWest Group",    sector:"UK Banking",      region:"UK", pattern:"ukMarket" },
+{ id:"stan",  ticker:"STAN.L", name:"Standard Chartered",sector:"Emerging Mkts",  region:"UK", pattern:"financials" },
+{ id:"avia",  ticker:"AV.L",   name:"Aviva",            sector:"Insurance",       region:"UK", pattern:"ukMarket" },
+{ id:"lgen",  ticker:"LGEN.L", name:"Legal & General",  sector:"Insurance",       region:"UK", pattern:"ukMarket" },
+{ id:"pru",   ticker:"PRU.L",  name:"Prudential",       sector:"Insurance",       region:"UK", pattern:"financials" },
+{ id:"shro",  ticker:"SDR.L",  name:"Schroders",        sector:"Asset Mgmt",      region:"UK", pattern:"financials" },
+{ id:"lsl",   ticker:"LSE.L",  name:"London Stock Exchange",sector:"Exchange",    region:"UK", pattern:"financials" },
+{ id:"halma", ticker:"HLMA.L", name:"Halma",            sector:"Safety Tech",     region:"UK", pattern:"ukMarket" },
+{ id:"intv",  ticker:"IG.L",   name:"IG Group",         sector:"Trading Platform",region:"UK", pattern:"financials" },
+{ id:"mng",   ticker:"MNG.L",  name:"Man Group",        sector:"Hedge Fund",      region:"UK", pattern:"financials" },
+{ id:"ajb",   ticker:"AJB.L",  name:"AJ Bell",          sector:"Retail Invest.",  region:"UK", pattern:"financials" },
+{ id:"harg",  ticker:"HL.L",   name:"Hargreaves Lansdown",sector:"Wealth Mgmt",   region:"UK", pattern:"financials" },
+
+// ── UK: ENERGY & MINING ──────────────────────────────────
+{ section:"UK Energy & Mining", region:"UK" },
+{ id:"bp_uk", ticker:"BP.L",   name:"BP",               sector:"Oil & Gas",       region:"UK", pattern:"energy" },
+{ id:"shel",  ticker:"SHEL.L", name:"Shell",            sector:"Oil & Gas",       region:"UK", pattern:"energy" },
+{ id:"rdsb",  ticker:"EXPN.L", name:"Experian",         sector:"Data Analytics",  region:"UK", pattern:"techGrowth" },
+{ id:"riouk", ticker:"RIO.L",  name:"Rio Tinto",        sector:"Mining",          region:"UK", pattern:"ukMining" },
+{ id:"anto",  ticker:"ANTO.L", name:"Antofagasta",      sector:"Copper Mining",   region:"UK", pattern:"ukMining" },
+{ id:"aau",   ticker:"AAL.L",  name:"Anglo American",   sector:"Diversified Mining",region:"UK",pattern:"ukMining" },
+{ id:"glen",  ticker:"GLEN.L", name:"Glencore",         sector:"Commodities",     region:"UK", pattern:"ukMining" },
+{ id:"bhp",   ticker:"BHP.L",  name:"BHP Group",        sector:"Mining",          region:"UK", pattern:"ukMining" },
+{ id:"cenm",  ticker:"CNA.L",  name:"Centrica",         sector:"Utilities",       region:"UK", pattern:"energy" },
+{ id:"ngt",   ticker:"NG.L",   name:"National Grid",    sector:"Utilities",       region:"UK", pattern:"bonds" },
+{ id:"sso",   ticker:"SSE.L",  name:"SSE",              sector:"Energy/Utilities",region:"UK", pattern:"bonds" },
+{ id:"drax",  ticker:"DRX.L",  name:"Drax Group",       sector:"Power Generation",region:"UK", pattern:"energy" },
+
+// ── UK: PHARMA & HEALTH ──────────────────────────────────
+{ section:"UK Pharma & Health", region:"UK" },
+{ id:"azn",   ticker:"AZN.L",  name:"AstraZeneca",      sector:"Pharmaceuticals", region:"UK", pattern:"healthcare" },
+{ id:"gsk",   ticker:"GSK.L",  name:"GSK",              sector:"Pharmaceuticals", region:"UK", pattern:"healthcare" },
+{ id:"hikm",  ticker:"HIK.L",  name:"Hikma Pharma",     sector:"Generics",        region:"UK", pattern:"healthcare" },
+{ id:"decm",  ticker:"DXRX.L", name:"Benchmark Holdings",sector:"Biotech",        region:"UK", pattern:"healthcare" },
+{ id:"smi",   ticker:"SMT.L",  name:"Scottish Mortgage", sector:"Investment Trust",region:"UK",pattern:"techGrowth" },
+{ id:"ipx",   ticker:"IPX.L",  name:"Ipsen",            sector:"Specialty Pharma",region:"UK", pattern:"healthcare" },
+{ id:"evolv", ticker:"EVO.L",  name:"Evolution Gaming", sector:"Online Gaming",   region:"UK", pattern:"consumer" },
+{ id:"ncyt",  ticker:"NCYT.L", name:"Novacyt",          sector:"Diagnostics",     region:"UK", pattern:"speculative" },
+
+// ── UK: CONSUMER & RETAIL ────────────────────────────────
+{ section:"UK Consumer & Retail", region:"UK" },
+{ id:"uniluk",ticker:"ULVR.L", name:"Unilever",         sector:"Consumer Goods",  region:"UK", pattern:"consumer" },
+{ id:"diageo",ticker:"DGE.L",  name:"Diageo",           sector:"Spirits/Beverages",region:"UK",pattern:"consumer" },
+{ id:"reckitt",ticker:"RKT.L", name:"Reckitt",          sector:"Household Goods", region:"UK", pattern:"consumer" },
+{ id:"nxt",   ticker:"NXT.L",  name:"Next",             sector:"Fashion Retail",  region:"UK", pattern:"consumer" },
+{ id:"mks",   ticker:"MKS.L",  name:"Marks & Spencer",  sector:"Retail",          region:"UK", pattern:"consumer" },
+{ id:"jds",   ticker:"JD.L",   name:"JD Sports",        sector:"Sportswear",      region:"UK", pattern:"consumer" },
+{ id:"bts",   ticker:"BATS.L", name:"British American Tobacco",sector:"Tobacco",  region:"UK", pattern:"consumer" },
+{ id:"imp",   ticker:"IMB.L",  name:"Imperial Brands",  sector:"Tobacco",         region:"UK", pattern:"consumer" },
+{ id:"flts",  ticker:"FLTX.L", name:"Flutter Entertainment",sector:"Betting",     region:"UK", pattern:"consumer" },
+{ id:"bpt",   ticker:"BPT.L",  name:"BrightPoint",      sector:"Distribution",    region:"UK", pattern:"consumer" },
+{ id:"wpp",   ticker:"WPP.L",  name:"WPP",              sector:"Advertising",     region:"UK", pattern:"consumer" },
+{ id:"pub",   ticker:"PUB.L",  name:"Pub Group",        sector:"Hospitality",     region:"UK", pattern:"consumer" },
+{ id:"gregg", ticker:"GRG.L",  name:"Greggs",           sector:"Food Retail",     region:"UK", pattern:"consumer" },
+{ id:"sspg",  ticker:"SSPG.L", name:"SSP Group",        sector:"Travel Food",     region:"UK", pattern:"consumer" },
+
+// ── UK: TECHNOLOGY ───────────────────────────────────────
+{ section:"UK Technology", region:"UK" },
+{ id:"sage",  ticker:"SGE.L",  name:"Sage Group",       sector:"Accounting SW",   region:"UK", pattern:"techGrowth" },
+{ id:"avsuk", ticker:"AVS.L",  name:"Avast",            sector:"Cybersecurity",   region:"UK", pattern:"techGrowth" },
+{ id:"darkt", ticker:"DARK.L", name:"Darktrace",        sector:"AI Security",     region:"UK", pattern:"speculative" },
+{ id:"aveva", ticker:"AVV.L",  name:"AVEVA",            sector:"Industrial SW",   region:"UK", pattern:"techGrowth" },
+{ id:"autocad",ticker:"ATC.L", name:"Auto Trader",      sector:"Online Auto",     region:"UK", pattern:"consumer" },
+{ id:"rightm",ticker:"RMV.L",  name:"Rightmove",        sector:"Property Portal", region:"UK", pattern:"consumer" },
+{ id:"iptv",  ticker:"ITV.L",  name:"ITV",              sector:"Broadcasting",    region:"UK", pattern:"consumer" },
+{ id:"relx",  ticker:"REL.L",  name:"RELX",             sector:"Info Services",   region:"UK", pattern:"techGrowth" },
+{ id:"informa",ticker:"INF.L", name:"Informa",          sector:"Publishing",      region:"UK", pattern:"consumer" },
+
+// ── UK: INDUSTRIALS & DEFENSE ────────────────────────────
+{ section:"UK Industrials & Defense", region:"UK" },
+{ id:"bae",   ticker:"BA.L",   name:"BAE Systems",      sector:"Defense",         region:"UK", pattern:"defense" },
+{ id:"rr_uk", ticker:"RR.L",   name:"Rolls-Royce",      sector:"Jet Engines",     region:"UK", pattern:"defense" },
+{ id:"qinetic",ticker:"QQ.L",  name:"QinetiQ",          sector:"Defense Tech",    region:"UK", pattern:"defense" },
+{ id:"megg",  ticker:"MGGT.L", name:"Meggitt",          sector:"Aerospace",       region:"UK", pattern:"defense" },
+{ id:"spmk",  ticker:"SMDS.L", name:"Smith & Nephew",   sector:"Medical Devices", region:"UK", pattern:"healthcare" },
+{ id:"croda", ticker:"CRDA.L", name:"Croda International",sector:"Specialty Chem",region:"UK", pattern:"ukMarket" },
+{ id:"jmats", ticker:"JMAT.L", name:"Johnson Matthey",  sector:"Catalysts",       region:"UK", pattern:"ukMining" },
+{ id:"ferv",  ticker:"FERG.L", name:"Ferguson",         sector:"Plumbing/HVAC",   region:"UK", pattern:"consumer" },
+{ id:"imi",   ticker:"IMI.L",  name:"IMI",              sector:"Engineering",     region:"UK", pattern:"defense" },
+{ id:"sxs",   ticker:"SXS.L",  name:"Spectris",         sector:"Precision Inst.", region:"UK", pattern:"defense" },
+{ id:"smw",   ticker:"SMW.L",  name:"Smiths Group",     sector:"Diversified Ind.",region:"UK", pattern:"defense" },
+
+// ── UK: TELECOMS & REITS ─────────────────────────────────
+{ section:"UK Telecoms & Property", region:"UK" },
+{ id:"voduk", ticker:"VOD.L",  name:"Vodafone",         sector:"Telecom",         region:"UK", pattern:"bonds" },
+{ id:"btem",  ticker:"BT.A.L", name:"BT Group",         sector:"Telecom",         region:"UK", pattern:"bonds" },
+{ id:"blnd",  ticker:"BLND.L", name:"British Land",     sector:"REIT",            region:"UK", pattern:"financials" },
+{ id:"land",  ticker:"LAND.L", name:"Land Securities",  sector:"REIT",            region:"UK", pattern:"financials" },
+{ id:"segro", ticker:"SGRO.L", name:"Segro",            sector:"Logistics REIT",  region:"UK", pattern:"financials" },
+{ id:"lxb",   ticker:"LXB.L",  name:"LXi REIT",         sector:"REIT",            region:"UK", pattern:"financials" },
+
+// ── GERMANY: INDEX ───────────────────────────────────────
+{ section:"German Indices", region:"Germany" },
+{ id:"dax",   ticker:"^GDAXI", name:"DAX 40",           sector:"Index",           region:"Germany", pattern:"germanMarket" },
+{ id:"mdax",  ticker:"^MDAXI", name:"MDAX",             sector:"Index",           region:"Germany", pattern:"germanMarket" },
+
+// ── GERMANY: TECHNOLOGY ──────────────────────────────────
+{ section:"German Technology", region:"Germany" },
+{ id:"sap",   ticker:"SAP.DE",  name:"SAP",             sector:"Enterprise SW",   region:"Germany", pattern:"techGrowth" },
+{ id:"ifx",   ticker:"IFX.DE",  name:"Infineon",        sector:"Semiconductors",  region:"Germany", pattern:"semis" },
+{ id:"1u1",   ticker:"1U1.DE",  name:"1&1",             sector:"Telecom/Internet",region:"Germany", pattern:"techGrowth" },
+{ id:"aixa",  ticker:"AIXA.DE", name:"Aixtron",         sector:"Chip Equipment",  region:"Germany", pattern:"semis" },
+{ id:"wmk",   ticker:"WMK.DE",  name:"Wirecard (hist.)",sector:"Fintech",         region:"Germany", pattern:"speculative" },
+{ id:"teamv", ticker:"TMV.DE",  name:"TeamViewer",      sector:"Remote Access SW",region:"Germany", pattern:"techGrowth" },
+{ id:"sul",   ticker:"S92.DE",  name:"SMA Solar",       sector:"Solar Technology",region:"Germany", pattern:"speculative" },
+{ id:"enr",   ticker:"ENR.DE",  name:"Siemens Energy",  sector:"Energy Tech",     region:"Germany", pattern:"techGrowth" },
+{ id:"sfq",   ticker:"SFQ.DE",  name:"Software AG",     sector:"Enterprise SW",   region:"Germany", pattern:"techGrowth" },
+{ id:"hhm",   ticker:"HHFA.DE", name:"Hawesko",         sector:"Wine/Beverages",  region:"Germany", pattern:"consumer" },
+{ id:"demde", ticker:"DHER.DE", name:"Delivery Hero",   sector:"Food Delivery",   region:"Germany", pattern:"speculative" },
+{ id:"zal",   ticker:"ZAL.DE",  name:"Zalando",         sector:"Fashion E-comm",  region:"Germany", pattern:"evGrowth" },
+
+// ── GERMANY: AUTOMOTIVE ──────────────────────────────────
+{ section:"German Automotive", region:"Germany" },
+{ id:"bmw",   ticker:"BMW.DE",  name:"BMW",             sector:"Luxury Autos",    region:"Germany", pattern:"germanAuto" },
+{ id:"mbg",   ticker:"MBG.DE",  name:"Mercedes-Benz",  sector:"Luxury Autos",    region:"Germany", pattern:"germanAuto" },
+{ id:"vow3",  ticker:"VOW3.DE", name:"Volkswagen",      sector:"Mass Market Auto",region:"Germany", pattern:"germanAuto" },
+{ id:"pah3",  ticker:"PAH3.DE", name:"Porsche AG",      sector:"Sports Cars",     region:"Germany", pattern:"germanAuto" },
+{ id:"audi",  ticker:"NSU.DE",  name:"Audi (via VW)",   sector:"Premium Autos",   region:"Germany", pattern:"germanAuto" },
+{ id:"con",   ticker:"CON.DE",  name:"Continental",     sector:"Auto Parts",      region:"Germany", pattern:"germanAuto" },
+{ id:"shaf",  ticker:"SHA.DE",  name:"Schaeffler",      sector:"Auto Components", region:"Germany", pattern:"germanAuto" },
+{ id:"ht1",   ticker:"HEN3.DE", name:"Hella",           sector:"Auto Lighting",   region:"Germany", pattern:"defense" },
+{ id:"knebv", ticker:"KBX.DE",  name:"Knorr-Bremse",   sector:"Rail/Truck Brakes",region:"Germany",pattern:"defense" },
+{ id:"elring", ticker:"ZIL2.DE",name:"ElringKlinger",   sector:"Auto Sealing",    region:"Germany", pattern:"germanAuto" },
+
+// ── GERMANY: INDUSTRIALS & CHEMICALS ────────────────────
+{ section:"German Industrials & Chemicals", region:"Germany" },
+{ id:"sie",   ticker:"SIE.DE",  name:"Siemens",         sector:"Industrials",     region:"Germany", pattern:"defense" },
+{ id:"bas",   ticker:"BAS.DE",  name:"BASF",            sector:"Chemicals",       region:"Germany", pattern:"germanChemical" },
+{ id:"bayer", ticker:"BAYN.DE", name:"Bayer",           sector:"Pharma/Chem",     region:"Germany", pattern:"healthcare" },
+{ id:"merck", ticker:"MRK.DE",  name:"Merck KGaA",      sector:"Pharma/Chem",     region:"Germany", pattern:"healthcare" },
+{ id:"lin",   ticker:"LIN.DE",  name:"Linde",           sector:"Industrial Gas",  region:"Germany", pattern:"germanChemical" },
+{ id:"eve",   ticker:"EVK.DE",  name:"Evonik",          sector:"Specialty Chem",  region:"Germany", pattern:"germanChemical" },
+{ id:"frk",   ticker:"FRE.DE",  name:"Fresenius",       sector:"Healthcare Svc",  region:"Germany", pattern:"healthcare" },
+{ id:"fms",   ticker:"FMS.DE",  name:"Fresenius Medical",sector:"Dialysis",       region:"Germany", pattern:"healthcare" },
+{ id:"thys",  ticker:"TKA.DE",  name:"ThyssenKrupp",    sector:"Steel/Ind.",      region:"Germany", pattern:"defense" },
+{ id:"mtu",   ticker:"MTX.DE",  name:"MTU Aero Engines",sector:"Jet Engines",     region:"Germany", pattern:"defense" },
+{ id:"air",   ticker:"AIR.DE",  name:"Airbus",          sector:"Aerospace",       region:"Germany", pattern:"defense" },
+{ id:"rhm",   ticker:"RHM.DE",  name:"Rheinmetall",     sector:"Defense",         region:"Germany", pattern:"defense" },
+{ id:"hei",   ticker:"HEI.DE",  name:"HeidelbergMat.",  sector:"Building Matl.",  region:"Germany", pattern:"germanChemical" },
+{ id:"siko",  ticker:"SIK.DE",  name:"Sika AG",         sector:"Construction Chem",region:"Germany",pattern:"germanChemical" },
+{ id:"kion",  ticker:"KGX.DE",  name:"KION Group",      sector:"Forklift/Logistics",region:"Germany",pattern:"defense" },
+{ id:"wacker",ticker:"WCH.DE",  name:"Wacker Chemie",   sector:"Polysilicon",     region:"Germany", pattern:"germanChemical" },
+
+// ── GERMANY: FINANCE & INSURANCE ────────────────────────
+{ section:"German Finance & Insurance", region:"Germany" },
+{ id:"db",    ticker:"DBK.DE",  name:"Deutsche Bank",   sector:"Investment Bank", region:"Germany", pattern:"financials" },
+{ id:"cbk",   ticker:"CBK.DE",  name:"Commerzbank",     sector:"Retail Banking",  region:"Germany", pattern:"financials" },
+{ id:"alv",   ticker:"ALV.DE",  name:"Allianz",         sector:"Insurance",       region:"Germany", pattern:"financials" },
+{ id:"mun",   ticker:"MUV2.DE", name:"Munich Re",       sector:"Reinsurance",     region:"Germany", pattern:"financials" },
+{ id:"hanover",ticker:"HNR1.DE",name:"Hannover Re",     sector:"Reinsurance",     region:"Germany", pattern:"financials" },
+{ id:"dws",   ticker:"DWS.DE",  name:"DWS Group",       sector:"Asset Management",region:"Germany", pattern:"financials" },
+{ id:"hex",   ticker:"H24.DE",  name:"Hypoport",        sector:"Mortgage Platform",region:"Germany",pattern:"financials" },
+{ id:"fb2",   ticker:"FB2A.DE", name:"Flatex DeGiro",   sector:"Online Broker",   region:"Germany", pattern:"speculative" },
+
+// ── GERMANY: CONSUMER & RETAIL ───────────────────────────
+{ section:"German Consumer & Retail", region:"Germany" },
+{ id:"ads",   ticker:"ADS.DE",  name:"Adidas",          sector:"Sportswear",      region:"Germany", pattern:"consumer" },
+{ id:"puma",  ticker:"PUM.DE",  name:"Puma",            sector:"Sportswear",      region:"Germany", pattern:"consumer" },
+{ id:"hugo",  ticker:"BOSS.DE", name:"Hugo Boss",       sector:"Luxury Fashion",  region:"Germany", pattern:"consumer" },
+{ id:"henk",  ticker:"HEN3.DE", name:"Henkel",          sector:"Consumer Goods",  region:"Germany", pattern:"consumer" },
+{ id:"beisd", ticker:"BEI.DE",  name:"Beiersdorf",      sector:"Skin Care",       region:"Germany", pattern:"consumer" },
+{ id:"dfv",   ticker:"DFV.DE",  name:"Deutsche Familienversicherung",sector:"Insurtech",region:"Germany",pattern:"speculative" },
+{ id:"rhkg",  ticker:"RHKG.DE", name:"Rewe Group",      sector:"Supermarkets",    region:"Germany", pattern:"consumer" },
+{ id:"obi",   ticker:"OBI.DE",  name:"OBI",             sector:"Home Improvement",region:"Germany", pattern:"consumer" },
+{ id:"metro", ticker:"B4B.DE",  name:"Metro AG",        sector:"Wholesale",       region:"Germany", pattern:"consumer" },
+{ id:"pro7",  ticker:"P7S1.DE", name:"ProSiebenSat.1",  sector:"Broadcasting",    region:"Germany", pattern:"consumer" },
+{ id:"mbc",   ticker:"MBB.DE",  name:"MBB SE",          sector:"Industrial Hold.",region:"Germany",  pattern:"defense" },
+
+// ── GERMANY: ENERGY & TELECOM ────────────────────────────
+{ section:"German Energy & Telecom", region:"Germany" },
+{ id:"dte",   ticker:"DTE.DE",  name:"Deutsche Telekom",sector:"Telecom",         region:"Germany", pattern:"bonds" },
+{ id:"rwe",   ticker:"RWE.DE",  name:"RWE",             sector:"Utilities/Power", region:"Germany", pattern:"energy" },
+{ id:"eon",   ticker:"EOAN.DE", name:"E.ON",            sector:"Utilities",       region:"Germany", pattern:"bonds" },
+{ id:"unp",   ticker:"UN01.DE", name:"Uniper",          sector:"Gas/Power",       region:"Germany", pattern:"energy" },
+{ id:"orsted",ticker:"ORSTED.DE",name:"Orsted",         sector:"Offshore Wind",   region:"Germany", pattern:"techGrowth" },
+{ id:"nordex",ticker:"NDX1.DE", name:"Nordex",          sector:"Wind Turbines",   region:"Germany", pattern:"speculative" },
+
+// ── ASIA: JAPANESE EQUITIES ──────────────────────────────
+{ section:"Japan", region:"Asia" },
+{ id:"nikkei",ticker:"^N225",   name:"Nikkei 225",      sector:"Index",           region:"Asia", pattern:"japanExport" },
+{ id:"toyota",ticker:"7203.T",  name:"Toyota",          sector:"Auto",            region:"Asia", pattern:"japanExport" },
+{ id:"sony",  ticker:"6758.T",  name:"Sony",            sector:"Consumer Electronics",region:"Asia",pattern:"japanExport" },
+{ id:"softbk",ticker:"9984.T",  name:"SoftBank",        sector:"Telecom/VC",      region:"Asia", pattern:"techGrowth" },
+{ id:"keyence",ticker:"6861.T", name:"Keyence",         sector:"Automation",      region:"Asia", pattern:"japanExport" },
+{ id:"fanuc", ticker:"6954.T",  name:"Fanuc",           sector:"Industrial Robot",region:"Asia", pattern:"japanExport" },
+{ id:"fast",  ticker:"9983.T",  name:"Fast Retailing (Uniqlo)",sector:"Fashion", region:"Asia", pattern:"consumer" },
+{ id:"nintend",ticker:"7974.T", name:"Nintendo",        sector:"Gaming",          region:"Asia", pattern:"consumer" },
+{ id:"honda", ticker:"7267.T",  name:"Honda",           sector:"Auto/Motorcycle", region:"Asia", pattern:"japanExport" },
+{ id:"nissan",ticker:"7201.T",  name:"Nissan",          sector:"Auto",            region:"Asia", pattern:"japanExport" },
+{ id:"mitsu", ticker:"8058.T",  name:"Mitsubishi Corp.", sector:"Trading Co.",    region:"Asia", pattern:"japanExport" },
+{ id:"mitsub",ticker:"7011.T",  name:"Mitsubishi Heavy",sector:"Defense/Ind.",    region:"Asia", pattern:"defense" },
+{ id:"hitach",ticker:"6501.T",  name:"Hitachi",         sector:"IT/Infrastructure",region:"Asia",pattern:"techGrowth" },
+{ id:"panaso",ticker:"6752.T",  name:"Panasonic",       sector:"Electronics",     region:"Asia", pattern:"japanExport" },
+{ id:"canon", ticker:"7751.T",  name:"Canon",           sector:"Imaging",         region:"Asia", pattern:"japanExport" },
+{ id:"fujifl",ticker:"4901.T",  name:"Fujifilm",        sector:"Healthcare/Photo",region:"Asia", pattern:"healthcare" },
+{ id:"daikin",ticker:"6367.T",  name:"Daikin",          sector:"HVAC",            region:"Asia", pattern:"japanExport" },
+{ id:"shin",  ticker:"4063.T",  name:"Shin-Etsu Chemical",sector:"Chemicals",     region:"Asia", pattern:"semis" },
+{ id:"tdk",   ticker:"6762.T",  name:"TDK",             sector:"Electronic Comp.",region:"Asia", pattern:"semis" },
+{ id:"murata",ticker:"6981.T",  name:"Murata Manufacturing",sector:"Components",  region:"Asia", pattern:"semis" },
+{ id:"renesas",ticker:"6723.T", name:"Renesas",         sector:"Microcontrollers",region:"Asia", pattern:"semis" },
+{ id:"recruit",ticker:"6098.T", name:"Recruit Holdings",sector:"HR/Job Portal",   region:"Asia", pattern:"techGrowth" },
+{ id:"softbk2",ticker:"9434.T", name:"SoftBank Corp.",  sector:"Telecom",         region:"Asia", pattern:"bonds" },
+{ id:"ntt",   ticker:"9432.T",  name:"NTT",             sector:"Telecom",         region:"Asia", pattern:"bonds" },
+{ id:"kddi",  ticker:"9433.T",  name:"KDDI",            sector:"Telecom",         region:"Asia", pattern:"bonds" },
+{ id:"mufg",  ticker:"8306.T",  name:"MUFG",            sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"smfg",  ticker:"8316.T",  name:"Sumitomo Mitsui", sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"mizuho",ticker:"8411.T",  name:"Mizuho Financial",sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"tokmar",ticker:"8766.T",  name:"Tokio Marine",    sector:"Insurance",       region:"Asia", pattern:"financials" },
+{ id:"nomura",ticker:"8604.T",  name:"Nomura Holdings", sector:"Investment Bank", region:"Asia", pattern:"financials" },
+{ id:"olympus",ticker:"7733.T", name:"Olympus",         sector:"Medical Devices", region:"Asia", pattern:"healthcare" },
+{ id:"takeda",ticker:"4502.T",  name:"Takeda Pharma",   sector:"Pharmaceuticals", region:"Asia", pattern:"healthcare" },
+{ id:"astellas",ticker:"4503.T",name:"Astellas Pharma", sector:"Pharmaceuticals", region:"Asia", pattern:"healthcare" },
+{ id:"otsuka",ticker:"4578.T",  name:"Otsuka Holdings", sector:"Pharma/Beverages",region:"Asia", pattern:"healthcare" },
+{ id:"kubota",ticker:"6326.T",  name:"Kubota",          sector:"Agriculture Mach.",region:"Asia",pattern:"defense" },
+{ id:"komatsu",ticker:"6301.T", name:"Komatsu",         sector:"Construction Eq.",region:"Asia", pattern:"defense" },
+
+// ── ASIA: CHINESE & HONG KONG EQUITIES ──────────────────
+{ section:"China & Hong Kong", region:"Asia" },
+{ id:"hsi",   ticker:"^HSI",    name:"Hang Seng Index",  sector:"Index",          region:"Asia", pattern:"chinaInternet" },
+{ id:"alibaba",ticker:"9988.HK",name:"Alibaba",          sector:"E-commerce/Cloud",region:"Asia",pattern:"chinaInternet" },
+{ id:"tencent",ticker:"0700.HK",name:"Tencent",          sector:"Internet/Gaming", region:"Asia",pattern:"chinaInternet" },
+{ id:"meituan",ticker:"3690.HK",name:"Meituan",          sector:"Food Delivery",   region:"Asia",pattern:"chinaInternet" },
+{ id:"jd",    ticker:"9618.HK", name:"JD.com",           sector:"E-commerce",      region:"Asia",pattern:"chinaInternet" },
+{ id:"pinduoduo",ticker:"PDD",  name:"PDD Holdings",     sector:"Social Commerce", region:"Asia",pattern:"chinaInternet" },
+{ id:"bidu",  ticker:"BIDU",    name:"Baidu",            sector:"Search/AI",       region:"Asia",pattern:"chinaInternet" },
+{ id:"neteas",ticker:"9999.HK", name:"NetEase",          sector:"Gaming",          region:"Asia",pattern:"chinaInternet" },
+{ id:"byd",   ticker:"1211.HK", name:"BYD",              sector:"EV",              region:"Asia",pattern:"evGrowth" },
+{ id:"xiaomi",ticker:"1810.HK", name:"Xiaomi",           sector:"Smartphones",     region:"Asia",pattern:"chinaInternet" },
+{ id:"smic",  ticker:"0981.HK", name:"SMIC",             sector:"Foundry",         region:"Asia",pattern:"semis" },
+{ id:"lenovo",ticker:"0992.HK", name:"Lenovo",           sector:"PC/Servers",      region:"Asia",pattern:"techGrowth" },
+{ id:"geely", ticker:"0175.HK", name:"Geely Auto",       sector:"Autos",           region:"Asia",pattern:"germanAuto" },
+{ id:"sands", ticker:"1928.HK", name:"Sands China",      sector:"Casino/Macau",    region:"Asia",pattern:"consumer" },
+{ id:"galaxy",ticker:"0027.HK", name:"Galaxy Entertainment",sector:"Casino",       region:"Asia",pattern:"consumer" },
+{ id:"cnooc", ticker:"0883.HK", name:"CNOOC",            sector:"Oil & Gas",       region:"Asia",pattern:"energy" },
+{ id:"petro", ticker:"0857.HK", name:"PetroChina",       sector:"Oil & Gas",       region:"Asia",pattern:"energy" },
+{ id:"icbc",  ticker:"1398.HK", name:"ICBC",             sector:"Banking",         region:"Asia",pattern:"financials" },
+{ id:"ccb",   ticker:"0939.HK", name:"China Construction Bank",sector:"Banking",   region:"Asia",pattern:"financials" },
+{ id:"abc_cn",ticker:"1288.HK", name:"Agric. Bank of China",sector:"Banking",      region:"Asia",pattern:"financials" },
+{ id:"boc",   ticker:"3988.HK", name:"Bank of China",    sector:"Banking",         region:"Asia",pattern:"financials" },
+{ id:"pingan",ticker:"2318.HK", name:"Ping An Insurance",sector:"Insurance",       region:"Asia",pattern:"financials" },
+{ id:"aia",   ticker:"1299.HK", name:"AIA Group",        sector:"Insurance",       region:"Asia",pattern:"financials" },
+{ id:"shenwan",ticker:"6060.HK",name:"360 Security",     sector:"Cybersecurity",   region:"Asia",pattern:"chinaInternet" },
+{ id:"ntes",  ticker:"NTES",    name:"NetEase (US ADR)", sector:"Gaming",          region:"Asia",pattern:"chinaInternet" },
+{ id:"li_auto",ticker:"2015.HK",name:"Li Auto",          sector:"EV",              region:"Asia",pattern:"evGrowth" },
+{ id:"nio",   ticker:"NIO",     name:"NIO",              sector:"EV",              region:"Asia",pattern:"evGrowth" },
+{ id:"xpeng", ticker:"9868.HK", name:"XPeng",            sector:"EV",              region:"Asia",pattern:"evGrowth" },
+
+// ── ASIA: SOUTH KOREA ────────────────────────────────────
+{ section:"South Korea", region:"Asia" },
+{ id:"kospi", ticker:"^KS11",   name:"KOSPI Index",      sector:"Index",           region:"Asia", pattern:"koreanTech" },
+{ id:"samsung",ticker:"005930.KS",name:"Samsung Electronics",sector:"Semiconductors/Phones",region:"Asia",pattern:"koreanTech" },
+{ id:"skhynix",ticker:"000660.KS",name:"SK Hynix",       sector:"Memory Chips",    region:"Asia",pattern:"semis" },
+{ id:"hyundai",ticker:"005380.KS",name:"Hyundai Motor",  sector:"Auto",            region:"Asia",pattern:"germanAuto" },
+{ id:"kia",   ticker:"000270.KS",name:"Kia",             sector:"Auto",            region:"Asia",pattern:"germanAuto" },
+{ id:"lg_chem",ticker:"051910.KS",name:"LG Chem",        sector:"Battery/Chem",    region:"Asia",pattern:"germanChemical" },
+{ id:"kakao", ticker:"035720.KS",name:"Kakao",           sector:"Social/Internet", region:"Asia",pattern:"chinaInternet" },
+{ id:"naver", ticker:"035420.KS",name:"Naver",           sector:"Search/Internet", region:"Asia",pattern:"chinaInternet" },
+{ id:"posco", ticker:"005490.KS",name:"POSCO",           sector:"Steel",           region:"Asia",pattern:"defense" },
+{ id:"sk_tel",ticker:"017670.KS",name:"SK Telecom",      sector:"Telecom",         region:"Asia",pattern:"bonds" },
+{ id:"kb_fin",ticker:"105560.KS",name:"KB Financial",    sector:"Banking",         region:"Asia",pattern:"financials" },
+{ id:"shinhan",ticker:"055550.KS",name:"Shinhan Financial",sector:"Banking",       region:"Asia",pattern:"financials" },
+{ id:"hanwha",ticker:"000880.KS",name:"Hanwha",          sector:"Defense/Chem",    region:"Asia",pattern:"defense" },
+{ id:"celtrion",ticker:"068270.KS",name:"Celltrion",     sector:"Biosimilars",     region:"Asia",pattern:"healthcare" },
+
+// ── ASIA: TAIWAN ─────────────────────────────────────────
+{ section:"Taiwan", region:"Asia" },
+{ id:"tsmc",  ticker:"TSM",     name:"TSMC",             sector:"Chip Foundry",    region:"Asia", pattern:"semis" },
+{ id:"meditek",ticker:"2454.TW",name:"MediaTek",         sector:"Mobile Chips",    region:"Asia", pattern:"semis" },
+{ id:"foxconn",ticker:"2317.TW",name:"Foxconn",          sector:"Electronics Mfg.",region:"Asia", pattern:"techGrowth" },
+{ id:"ase",   ticker:"ASX",     name:"ASE Technology",   sector:"Chip Packaging",  region:"Asia", pattern:"semis" },
+{ id:"delta_tw",ticker:"2308.TW",name:"Delta Electronics",sector:"Power Mgmt",     region:"Asia", pattern:"semis" },
+{ id:"htc_tw",ticker:"2498.TW", name:"HTC",              sector:"VR/Smartphones",  region:"Asia", pattern:"speculative" },
+
+// ── ASIA: INDIA ──────────────────────────────────────────
+{ section:"India", region:"Asia" },
+{ id:"sensex",ticker:"^BSESN",  name:"BSE Sensex",       sector:"Index",           region:"Asia", pattern:"broadIndex" },
+{ id:"tcs",   ticker:"TCS.NS",  name:"Tata Consultancy", sector:"IT Services",     region:"Asia", pattern:"techGrowth" },
+{ id:"infosys",ticker:"INFY",   name:"Infosys",          sector:"IT Services",     region:"Asia", pattern:"techGrowth" },
+{ id:"wipro", ticker:"WIT",     name:"Wipro",            sector:"IT Services",     region:"Asia", pattern:"techGrowth" },
+{ id:"hdfc",  ticker:"HDB",     name:"HDFC Bank",        sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"reliance",ticker:"RELI.NS",name:"Reliance Industries",sector:"Conglomerate", region:"Asia", pattern:"energy" },
+{ id:"hclt",  ticker:"HCLTECH.NS",name:"HCL Technologies",sector:"IT Services",   region:"Asia", pattern:"techGrowth" },
+{ id:"icici", ticker:"IBN",     name:"ICICI Bank",       sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"bajfin",ticker:"BAJFINANCE.NS",name:"Bajaj Finance",sector:"NBFC",          region:"Asia", pattern:"financials" },
+{ id:"titan", ticker:"TITAN.NS",name:"Titan Company",    sector:"Jewelry/Watches", region:"Asia", pattern:"consumer" },
+{ id:"maruti",ticker:"MARUTI.NS",name:"Maruti Suzuki",   sector:"Auto",            region:"Asia", pattern:"consumer" },
+{ id:"ltim",  ticker:"LTIM.NS", name:"LTIMindtree",      sector:"IT Services",     region:"Asia", pattern:"techGrowth" },
+{ id:"sunph", ticker:"SUNPHARMA.NS",name:"Sun Pharma",   sector:"Pharmaceuticals", region:"Asia", pattern:"healthcare" },
+{ id:"drreddy",ticker:"RDY",    name:"Dr. Reddy's Labs", sector:"Generics",        region:"Asia", pattern:"healthcare" },
+{ id:"kotak", ticker:"KOTAKBANK.NS",name:"Kotak Bank",   sector:"Banking",         region:"Asia", pattern:"financials" },
+
+// ── ASIA: SINGAPORE & AUSTRALIA ─────────────────────────
+{ section:"Singapore & Australia", region:"Asia" },
+{ id:"dbs",   ticker:"D05.SI",  name:"DBS Group",        sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"ocbc",  ticker:"O39.SI",  name:"OCBC",             sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"uob",   ticker:"U11.SI",  name:"UOB",              sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"sia",   ticker:"C6L.SI",  name:"Singapore Airlines",sector:"Aviation",       region:"Asia", pattern:"consumer" },
+{ id:"comb",  ticker:"CBA.AX",  name:"Commonwealth Bank",sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"nab",   ticker:"NAB.AX",  name:"NAB",              sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"anz",   ticker:"ANZ.AX",  name:"ANZ Bank",         sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"westpac",ticker:"WBC.AX", name:"Westpac",          sector:"Banking",         region:"Asia", pattern:"financials" },
+{ id:"macq",  ticker:"MQG.AX",  name:"Macquarie Group",  sector:"Investment Bank", region:"Asia", pattern:"financials" },
+{ id:"csl",   ticker:"CSL.AX",  name:"CSL Limited",      sector:"Biotech",         region:"Asia", pattern:"healthcare" },
+{ id:"bhpau", ticker:"BHP.AX",  name:"BHP",              sector:"Mining",          region:"Asia", pattern:"ukMining" },
+{ id:"rioto", ticker:"RIO.AX",  name:"Rio Tinto (AU)",   sector:"Mining",          region:"Asia", pattern:"ukMining" },
+{ id:"wesfarm",ticker:"WES.AX", name:"Wesfarmers",       sector:"Retail",          region:"Asia", pattern:"consumer" },
+{ id:"wool",  ticker:"WOW.AX",  name:"Woolworths",       sector:"Supermarkets",    region:"Asia", pattern:"consumer" },
+{ id:"fortesc",ticker:"FMG.AX", name:"Fortescue Metals", sector:"Iron Ore",        region:"Asia", pattern:"ukMining" },
+
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -641,55 +1037,136 @@ const PATTERNS = {
   ]
 };
 
-// Map each ticker id to a pattern + optional custom tweaks
-const TICKER_PATTERN = {
-  // Indices & ETFs
-  sp500:"broadIndex", nasdaq:"broadIndex", dow:"broadIndex", russell:"broadIndex",
-  spy:"broadIndex", qqq:"techGrowth", iwm:"broadIndex", dia:"broadIndex",
-  voo:"broadIndex", vti:"broadIndex",
-  xlk:"techGrowth", xlf:"financials", xle:"energy", xlv:"healthcare",
-  xlre:"financials", xly:"consumer", gld:"gold", slv:"gold",
-  tlt:"bonds", hyg:"bonds",
-  // Tech
-  aapl:"techGrowth", msft:"techGrowth", nvda:"semis", googl:"techGrowth",
-  meta:"techGrowth", amzn:"techGrowth", tsla:"evGrowth", avgo:"semis",
-  orcl:"techGrowth", crm:"techGrowth", amd:"semis", intc:"semis",
-  qcom:"semis", adbe:"techGrowth", now:"techGrowth", shop:"evGrowth",
-  pltr:"speculative", snow:"techGrowth", uber:"consumer", lyft:"consumer",
-  spot:"techGrowth", nflx:"techGrowth", rblx:"speculative", u:"speculative",
-  twlo:"techGrowth", net:"techGrowth", ddog:"techGrowth", mdb:"techGrowth",
-  team:"techGrowth", zm:"techGrowth",
-  // Finance
-  jpm:"financials", bac:"financials", gs:"financials", ms:"financials",
-  wfc:"financials", v:"financials", ma:"financials", pypl:"financials",
-  sq:"speculative", coin:"speculative", mstr:"speculative",
-  mara:"speculative", riot:"speculative", btc:"crypto", eth:"crypto",
-  // Healthcare
-  unh:"healthcare", jnj:"healthcare", abbv:"healthcare", lly:"healthcare",
-  mrk:"healthcare", pfe:"healthcare", mrna:"speculative", bntx:"speculative",
-  amgn:"healthcare", isrg:"healthcare",
-  // Consumer
-  wmt:"consumer", tgt:"consumer", cost:"consumer", amzn2:"consumer",
-  mcd:"consumer", sbux:"consumer", nke:"consumer", lulu:"consumer",
-  dkng:"speculative", abnb:"consumer", bkng:"consumer",
-  rivn:"speculative", lcid:"speculative",
-  // Energy
-  xom:"energy", cvx:"energy", cop:"energy", bp:"energy", shel:"energy",
-  enph:"speculative", plug:"speculative", fslr:"techGrowth",
-  // Defense
-  ba:"defense", cat:"defense", de:"defense", lmt:"defense",
-  rtx:"defense", noc:"defense", ge:"defense", ups:"consumer", fdx:"consumer",
-  spce:"speculative",
-  // Media / Comms
-  dis:"consumer", wbd:"consumer", para:"consumer", t:"bonds",
-  vz:"bonds", tmus:"techGrowth", snap:"speculative", pins:"techGrowth",
-  rddt:"speculative",
-  // AI speculative
-  soun:"speculative", ai:"speculative", bbai:"speculative",
-  ionq:"speculative", rgti:"speculative", smci:"semis", arm:"semis"
-};
 
-// Analysis text by pattern
+// ── REGIONAL PATTERNS ─────────────────────────────────────────────────────────
+// UK Market — similar to broadIndex but with mining/dividend seasonality
+PATTERNS.ukMarket = [
+  {m:"Jan",avg:1.4,win:63,note:"New year risk-on; dividend reinvestment"},
+  {m:"Feb",avg:0.3,win:53,note:"Budget season uncertainty; cautious month"},
+  {m:"Mar",avg:1.1,win:60,note:"UK fiscal year end; window dressing"},
+  {m:"Apr",avg:1.6,win:66,note:"Strongest spring month; ex-div season"},
+  {m:"May",avg:0.2,win:52,note:"Sell in May effect hits UK indices"},
+  {m:"Jun",avg:-0.3,win:47,note:"Summer doldrums; pre-Brexit uncertainty lingers"},
+  {m:"Jul",avg:0.9,win:57,note:"Mid-year recovery; summer results season"},
+  {m:"Aug",avg:-0.1,win:49,note:"Low volume; holiday period weakness"},
+  {m:"Sep",avg:-0.6,win:43,note:"Consistent weakness mirrors US seasonal"},
+  {m:"Oct",avg:0.7,win:57,note:"Autumn rally begins; Q3 results"},
+  {m:"Nov",avg:1.8,win:69,note:"Year-end rally; pre-Christmas consumer data"},
+  {m:"Dec",avg:1.4,win:68,note:"Santa rally; institutional year-end buying"}
+];
+
+// UK Mining — driven by China demand cycles and commodity prices
+PATTERNS.ukMining = [
+  {m:"Jan",avg:2.1,win:64,note:"Chinese New Year demand builds; strong month"},
+  {m:"Feb",avg:1.6,win:61,note:"Post-CNY restocking demand for metals"},
+  {m:"Mar",avg:0.8,win:56,note:"Spring construction season demand"},
+  {m:"Apr",avg:1.1,win:58,note:"Commodity demand peaks with global PMIs"},
+  {m:"May",avg:-0.6,win:46,note:"Demand concerns; summer mining season risk"},
+  {m:"Jun",avg:-1.2,win:41,note:"Weakest month; China slowdown fears"},
+  {m:"Jul",avg:0.4,win:52,note:"Mixed; steel/copper demand data"},
+  {m:"Aug",avg:-0.5,win:45,note:"Low-volume summer; metal price weakness"},
+  {m:"Sep",avg:-0.8,win:43,note:"Inventory de-stocking before year-end"},
+  {m:"Oct",avg:1.3,win:60,note:"Chinese Golden Week demand recovery"},
+  {m:"Nov",avg:1.9,win:66,note:"Year-end infrastructure spending cycle"},
+  {m:"Dec",avg:0.6,win:53,note:"Moderate gains; year-end portfolio effects"}
+];
+
+// German Auto — strong Q4 driven by year-end registration incentives
+PATTERNS.germanAuto = [
+  {m:"Jan",avg:0.8,win:57,note:"New model year announcements; moderate start"},
+  {m:"Feb",avg:0.4,win:53,note:"Geneva Motor Show catalyst; mixed"},
+  {m:"Mar",avg:1.4,win:62,note:"Spring buying season begins; production picks up"},
+  {m:"Apr",avg:1.2,win:60,note:"Easter sales; Q1 delivery numbers"},
+  {m:"May",avg:-0.4,win:47,note:"Sell in May rotation out of cyclicals"},
+  {m:"Jun",avg:-0.7,win:44,note:"Summer holiday slowdown; weak retail sales"},
+  {m:"Jul",avg:0.5,win:53,note:"Mid-year mixed; dealer incentives"},
+  {m:"Aug",avg:-0.3,win:48,note:"Factory shutdown month; minimal trading"},
+  {m:"Sep",avg:-0.5,win:45,note:"End of model year; pre-registration rush"},
+  {m:"Oct",avg:1.7,win:63,note:"Q3 earnings; year-end registration incentives"},
+  {m:"Nov",avg:2.4,win:70,note:"Strongest month; Q4 delivery surge"},
+  {m:"Dec",avg:2.8,win:73,note:"December plates; record year-end registrations"}
+];
+
+// German Chemical — tied to agricultural cycles and industrial demand
+PATTERNS.germanChemical = [
+  {m:"Jan",avg:1.1,win:60,note:"New year industrial restocking begins"},
+  {m:"Feb",avg:0.7,win:55,note:"Agricultural pre-season demand builds"},
+  {m:"Mar",avg:1.8,win:65,note:"Spring planting season; fertilizer demand peaks"},
+  {m:"Apr",avg:1.4,win:62,note:"Peak agricultural chemical demand"},
+  {m:"May",avg:0.6,win:54,note:"End of spring season; industrial demand steady"},
+  {m:"Jun",avg:-0.2,win:48,note:"Summer slowdown; energy cost pressures"},
+  {m:"Jul",avg:0.3,win:52,note:"Mixed; summer maintenance shutdowns"},
+  {m:"Aug",avg:-0.4,win:46,note:"Factory shutdowns; weak trading volumes"},
+  {m:"Sep",avg:-0.6,win:44,note:"Autumn inventory assessment; cautious"},
+  {m:"Oct",avg:1.2,win:61,note:"Q3 earnings; winter demand season begins"},
+  {m:"Nov",avg:1.6,win:65,note:"Year-end industrial buying; strong month"},
+  {m:"Dec",avg:0.9,win:57,note:"De-stocking vs year-end orders balanced"}
+];
+
+// German Market (DAX general) — industrial/export driven
+PATTERNS.germanMarket = [
+  {m:"Jan",avg:1.6,win:63,note:"Strong January; European new year positioning"},
+  {m:"Feb",avg:0.5,win:53,note:"Cautious ahead of ECB; earnings season"},
+  {m:"Mar",avg:1.3,win:61,note:"End of quarter; export data positive"},
+  {m:"Apr",avg:1.8,win:66,note:"Spring industrial production surge"},
+  {m:"May",avg:0.1,win:52,note:"Sell in May; lighter than US equivalent"},
+  {m:"Jun",avg:-0.4,win:46,note:"European summer slowdown begins"},
+  {m:"Jul",avg:0.9,win:57,note:"Q2 export data; auto production data"},
+  {m:"Aug",avg:-0.3,win:48,note:"Factory holiday month; thin volumes"},
+  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness; autumn elections risk"},
+  {m:"Oct",avg:1.1,win:60,note:"Q3 results; industrial rebound"},
+  {m:"Nov",avg:2.1,win:69,note:"Year-end export orders; Christmas rally"},
+  {m:"Dec",avg:1.7,win:66,note:"Strong month; year-end auto registrations"}
+];
+
+// Japan Export — fiscal year March effect, Golden Week May effect
+PATTERNS.japanExport = [
+  {m:"Jan",avg:0.9,win:58,note:"New year positioning; yen impact on exporters"},
+  {m:"Feb",avg:0.6,win:54,note:"Q3 earnings (Oct-Dec fiscal); moderate"},
+  {m:"Mar",avg:2.2,win:68,note:"Fiscal year end (March 31); window dressing surge"},
+  {m:"Apr",avg:0.4,win:52,note:"New fiscal year; cautious re-positioning"},
+  {m:"May",avg:-0.8,win:44,note:"Golden Week trading gap; sell in May"},
+  {m:"Jun",avg:0.3,win:51,note:"Q1 fiscal results; mixed signals"},
+  {m:"Jul",avg:1.1,win:60,note:"Summer rally; yen weakness helps exporters"},
+  {m:"Aug",avg:-0.5,win:46,note:"Obon holiday; thin volumes; sell-off risk"},
+  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness; mirrors global pattern"},
+  {m:"Oct",avg:1.4,win:62,note:"Q2 fiscal earnings; export order data"},
+  {m:"Nov",avg:1.9,win:67,note:"Year-end rally; foreign investor buying"},
+  {m:"Dec",avg:0.8,win:56,note:"Mixed; yen volatility often disrupts"}
+];
+
+// China Internet — driven by CNY, regulatory cycles, platform economy
+PATTERNS.chinaInternet = [
+  {m:"Jan",avg:3.2,win:65,note:"Pre-Chinese New Year shopping boom; Alibaba/JD surge"},
+  {m:"Feb",avg:5.1,win:69,note:"Chinese New Year gifting; strongest month"},
+  {m:"Mar",avg:1.4,win:57,note:"Post-holiday recovery; 618 festival prep"},
+  {m:"Apr",avg:-1.2,win:44,note:"Regulatory fear season; often volatile"},
+  {m:"May",avg:-0.8,win:45,note:"618 preparation; mixed sentiment"},
+  {m:"Jun",avg:2.4,win:61,note:"618 Shopping Festival drives platform stocks"},
+  {m:"Jul",avg:-2.1,win:38,note:"Regulatory crackdown season historically"},
+  {m:"Aug",avg:-1.8,win:40,note:"Summer regulatory announcements; weak"},
+  {m:"Sep",avg:-1.4,win:41,note:"End of regulatory season; bottoming"},
+  {m:"Oct",avg:3.8,win:66,note:"Golden Week spending; 11/11 Singles Day prep"},
+  {m:"Nov",avg:5.6,win:71,note:"Singles Day (11/11) strongest month ever"},
+  {m:"Dec",avg:1.2,win:55,note:"Year-end positioning; ADR tax concerns"}
+];
+
+// Korean Tech — Samsung earnings cycles and memory chip demand
+PATTERNS.koreanTech = [
+  {m:"Jan",avg:2.8,win:65,note:"CES launch season; Samsung/LG product cycles"},
+  {m:"Feb",avg:1.1,win:57,note:"Q4 earnings; memory chip pricing data"},
+  {m:"Mar",avg:1.6,win:62,note:"Spring smartphone launch cycle"},
+  {m:"Apr",avg:2.2,win:64,note:"Q1 earnings; Galaxy launch momentum"},
+  {m:"May",avg:-0.9,win:45,note:"Risk-off; China demand concerns"},
+  {m:"Jun",avg:-1.3,win:42,note:"Summer chip inventory correction fears"},
+  {m:"Jul",avg:1.8,win:61,note:"Q2 earnings; data center demand data"},
+  {m:"Aug",avg:0.7,win:54,note:"Moderate; earnings season clarity"},
+  {m:"Sep",avg:-1.5,win:39,note:"Weakest month; US tech weakness drags"},
+  {m:"Oct",avg:2.1,win:63,note:"Q3 earnings; holiday demand build"},
+  {m:"Nov",avg:3.4,win:70,note:"Strongest month; holiday chip demand"},
+  {m:"Dec",avg:1.9,win:64,note:"Year-end institutional positioning"}
+];
+
 const ANALYSIS_BY_PATTERN = {
   techGrowth: `1. KEY SEASONAL PATTERNS\nTech growth stocks follow a clear dual-peak pattern. November (+2.5%) and April (+2.0%) are the two standout months, driven by earnings cycles and holiday demand. September is the consistent danger zone at -1.4% with only a 39% win rate. The Nov–Apr window averages roughly +1.7%/month versus +0.4%/month for May–Oct.\n\n2. BEST ENTRY WINDOWS\nEarly October after the September selloff is the highest-conviction entry. Buying into Q4 captures November's strength and typically holds into the new year. April is the best spring entry, timed ahead of Q2 earnings catalysts.\n\n3. CAUTION PERIODS\nSeptember is the clear danger period. The weakness often starts mid-August (-0.3% average) and accelerates through September. These two months consistently underperform even in strong bull markets.\n\n4. SEASONAL STRATEGIES\n• September-to-November Rotation: Reduce tech exposure in late August, re-enter in early October.\n• Earnings Season Positioning: Add exposure ahead of April and July earnings cycles.\n• Year-End Hold: Once positioned in November, historical data supports holding through January.\n\n5. IMPORTANT CAVEATS\nTech seasonality is heavily influenced by a handful of mega-cap names. AI cycle momentum (2023-2025) has distorted traditional patterns. Fed rate decisions can override seasonal tendencies entirely, especially for growth stocks with high duration sensitivity.`,
 
@@ -731,96 +1208,45 @@ let filteredItems = [];
 let activeSectionFilter = null;
 let selectedId = null;
 
-// ── BROAD CATEGORY GROUPS ────────────────────────────
+// -- CATEGORY GROUPS (no emoji to avoid encoding issues)
 const BROAD_CATS = [
-  {
-    label: 'All',
-    icon: '◈',
-    sections: null  // null = show everything
-  },
-  {
-    label: 'Indices',
-    icon: '📈',
-    sections: ['Index Funds & Broad Market ETFs']
-  },
-  {
-    label: 'ETFs',
-    icon: '🗂',
-    sections: ['Sector ETFs']
-  },
-  {
-    label: 'Equities',
-    icon: '🏢',
-    sections: ['Technology','Finance & Crypto-Adjacent','Healthcare & Biotech','Consumer & Retail','Energy & Materials','Industrials & Defense','Communications & Media','AI & Emerging Tech']
-  },
-  {
-    label: 'Technology',
-    icon: '💻',
-    sections: ['Technology','AI & Emerging Tech']
-  },
-  {
-    label: 'Crypto',
-    icon: '₿',
-    sections: ['Finance & Crypto-Adjacent'],
-    ids: ['coin','mstr','mara','riot','btc','eth']
-  },
-  {
-    label: 'Finance',
-    icon: '🏦',
-    sections: ['Finance & Crypto-Adjacent'],
-    excludeIds: ['coin','mstr','mara','riot','btc','eth']
-  },
-  {
-    label: 'Healthcare',
-    icon: '⚕️',
-    sections: ['Healthcare & Biotech']
-  },
-  {
-    label: 'Energy',
-    icon: '⚡',
-    sections: ['Energy & Materials']
-  },
-  {
-    label: 'Consumer',
-    icon: '🛍',
-    sections: ['Consumer & Retail']
-  },
-  {
-    label: 'Defense',
-    icon: '🛡',
-    sections: ['Industrials & Defense']
-  },
+  { label:'All',        sections:null,        ids:null, excludeIds:null },
+  { label:'Indices',    sections:['Index Funds & Broad Market ETFs'], ids:null, excludeIds:null },
+  { label:'ETFs',       sections:['Sector ETFs'], ids:null, excludeIds:null },
+  { label:'Equities',   sections:['Technology','Finance & Crypto-Adjacent','Healthcare & Biotech','Consumer & Retail','Energy & Materials','Industrials & Defense','Communications & Media','AI & Emerging Tech'], ids:null, excludeIds:['coin','mstr','mara','riot','btc','eth'] },
+  { label:'Technology', sections:['Technology','AI & Emerging Tech'], ids:null, excludeIds:null },
+  { label:'Crypto',     sections:['Finance & Crypto-Adjacent'], ids:['coin','mstr','mara','riot','btc','eth'], excludeIds:null },
+  { label:'Finance',    sections:['Finance & Crypto-Adjacent'], ids:null, excludeIds:['coin','mstr','mara','riot','btc','eth'] },
+  { label:'Healthcare', sections:['Healthcare & Biotech'], ids:null, excludeIds:null },
+  { label:'Energy',     sections:['Energy & Materials'], ids:null, excludeIds:null },
+  { label:'Consumer',   sections:['Consumer & Retail'], ids:null, excludeIds:null },
+  { label:'Defense',    sections:['Industrials & Defense'], ids:null, excludeIds:null },
 ];
 
-// ── BUILD FILTER TABS ────────────────────────────────
+// -- BUILD FILTER TABS
 function buildFilterTabs() {
-  const tabs = document.getElementById('filterTabs');
-  // Clear existing (keep "All" button already in HTML)
+  var tabs = document.getElementById('filterTabs');
   tabs.innerHTML = '';
-  BROAD_CATS.forEach((cat, i) => {
-    const btn = document.createElement('button');
+  BROAD_CATS.forEach(function(cat, i) {
+    var btn = document.createElement('button');
     btn.className = 'filter-tab' + (i === 0 ? ' active' : '');
-    btn.innerHTML = `<span class="ft-icon">${cat.icon}</span>${cat.label}`;
-    btn.onclick = () => filterByCat(cat, btn);
+    btn.textContent = cat.label;
+    btn.setAttribute('data-idx', i);
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('searchBox').value = '';
+      activeSectionFilter = cat;
+      buildBrowser('', cat);
+    });
     tabs.appendChild(btn);
   });
 }
 
-function filterByCat(cat, btn) {
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('searchBox').value = '';
-  activeSectionFilter = cat;
-  buildBrowser('', cat);
-}
-
-function filterBySection(section, btn) {
-  const cat = { label: section, sections: [section], ids: null, excludeIds: null };
-  filterByCat(cat, btn);
-}
-
 // ── BUILD BROWSER ────────────────────────────────────
-function buildBrowser(searchQ = '', catFilter = null) {
+function buildBrowser(searchQ, catFilter) {
+  if(searchQ === undefined) searchQ = '';
+  if(catFilter === undefined) catFilter = null;
   const q = searchQ.toLowerCase();
   const browser = document.getElementById('browser');
   
@@ -853,7 +1279,7 @@ function buildBrowser(searchQ = '', catFilter = null) {
   const visible = groups.filter(g => g.items.length > 0);
   
   if(visible.length === 0) {
-    browser.innerHTML = `<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found for "${searchQ}"</div>`;
+    browser.innerHTML = '<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found for &ldquo;' + searchQ + '&rdquo;</div>';
     return;
   }
 
@@ -901,13 +1327,16 @@ function toggleSection(key) {
 }
 
 function handleSearch() {
-  const q = document.getElementById('searchBox').value;
+  var q = document.getElementById('searchBox').value;
   if(q) {
     activeSectionFilter = null;
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    document.querySelector('.filter-tab')?.classList.add('active');
+    document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+    var allTab = document.querySelector('.filter-tab');
+    if(allTab) allTab.classList.add('active');
+    buildBrowser(q, null);
+  } else {
+    buildBrowser('', activeSectionFilter);
   }
-  buildBrowser(q, q ? null : activeSectionFilter);
 }
 
 // ── SELECT ASSET ─────────────────────────────────────
@@ -1093,7 +1522,410 @@ function run() {
 
 // ── INIT ─────────────────────────────────────────────
 buildFilterTabs();
-buildBrowser();
+buildBrowser('', null);
+
+
+
+// ── STATE ─────────────────────────────────────────────
+let selectedId = null;
+let activeRegion = null;   // null = All regions
+let activeSector = null;   // null = All sectors
+
+// ── REGION TABS ───────────────────────────────────────
+const REGIONS = [
+  { id:null,       label:"All Markets" },
+  { id:"US",       label:"United States" },
+  { id:"UK",       label:"United Kingdom" },
+  { id:"Germany",  label:"Germany" },
+  { id:"Asia",     label:"Asia Pacific" },
+];
+
+// ── SECTOR GROUPS ─────────────────────────────────────
+const SECTOR_GROUPS = [
+  { id:null,          label:"All" },
+  { id:"indices",     label:"Indices & ETFs",  sections:["Index Funds & ETFs","US Indices","UK Indices","German Indices"] },
+  { id:"equities",    label:"Equities",        excludeSections:["Index Funds & ETFs","US Indices","UK Indices","German Indices","US EV & Emerging Tech","US Finance & Banking","US Technology","German Technology","UK Technology"] },
+  { id:"technology",  label:"Technology",      sections:["US Technology","US EV & Emerging Tech","German Technology","UK Technology","Taiwan","South Korea"] },
+  { id:"finance",     label:"Finance",         sections:["US Finance & Banking","UK Banking & Finance","German Finance & Insurance","Singapore & Australia","India","China & Hong Kong","Japan"] , filterSectors:["Banking","Investment Bank","Fintech","Insurance","Asset Management","Crypto Exchange","Bitcoin Mining","Bitcoin Proxy","Payments","Brokerage","NBFC","Asset Mgmt","Crypto Exchange","Cryptocurrency"] },
+  { id:"crypto",      label:"Crypto",          ids:["coin","mstr","mara","riot","btc","eth"] },
+  { id:"energy",      label:"Energy",          sections:["US Energy","UK Energy & Mining","German Energy & Telecom"], filterSectors:["Oil & Gas","Energy","Utilities","Solar","Hydrogen","Mining","Copper Mining","Iron Ore","Commodities","Clean Energy","Power Generation"] },
+  { id:"healthcare",  label:"Healthcare",      sections:["US Healthcare & Biotech","UK Pharma & Health","German Industrials & Chemicals","Japan"], filterSectors:["Pharmaceuticals","Health Insurance","Medical Devices","Biotechnology","Biotech","mRNA Biotech","Diagnostics","Healthcare Svc","Biosimilars","Specialty Pharma","Antiviral Biotech","Neuroscience","Pharmacy Retail","Generics"] },
+  { id:"consumer",    label:"Consumer",        sections:["US Consumer & Retail","UK Consumer & Retail","German Consumer & Retail","Japan","Singapore & Australia"], filterSectors:["Retail","Wholesale Retail","Fast Food","Coffee","Sportswear","Apparel","Travel","Hotels","Casinos","Restaurants","Consumer Goods","Fashion Retail","Food Retail","Supermarkets"] },
+  { id:"defense",     label:"Defense & Ind.",  filterSectors:["Defense","Aerospace","Industrial Robot","Heavy Machinery","Agriculture Mach.","Construction Eq.","Logistics","Steel"] },
+];
+
+function buildRegionTabs() {
+  var wrap = document.getElementById('regionTabs');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  REGIONS.forEach(function(r, i) {
+    var btn = document.createElement('button');
+    btn.className = 'region-tab' + (i === 0 ? ' active' : '');
+    btn.textContent = r.label;
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.region-tab').forEach(function(t){ t.classList.remove('active'); });
+      btn.classList.add('active');
+      activeRegion = r.id;
+      activeSector = null;
+      // Reset sector tabs
+      document.querySelectorAll('.sector-tab').forEach(function(t){ t.classList.remove('active'); });
+      var firstSector = document.querySelector('.sector-tab');
+      if(firstSector) firstSector.classList.add('active');
+      document.getElementById('searchBox').value = '';
+      buildBrowser('', null, null);
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function buildSectorTabs() {
+  var wrap = document.getElementById('sectorTabs');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  SECTOR_GROUPS.forEach(function(s, i) {
+    var btn = document.createElement('button');
+    btn.className = 'sector-tab' + (i === 0 ? ' active' : '');
+    btn.textContent = s.label;
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.sector-tab').forEach(function(t){ t.classList.remove('active'); });
+      btn.classList.add('active');
+      activeSector = s.id ? s : null;
+      document.getElementById('searchBox').value = '';
+      buildBrowser('', activeRegion, activeSector);
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+// ── BUILD BROWSER ─────────────────────────────────────
+function buildBrowser(searchQ, regionFilter, sectorFilter) {
+  if(searchQ === undefined) searchQ = '';
+  if(regionFilter === undefined) regionFilter = null;
+  if(sectorFilter === undefined) sectorFilter = null;
+  
+  var q = searchQ.toLowerCase().trim();
+  var browser = document.getElementById('browser');
+  
+  var groups = [];
+  var currentGroup = null;
+  var currentSection = null;
+
+  CATALOGUE.forEach(function(item) {
+    if(item.section) {
+      currentSection = item.section;
+      currentGroup = { section: item.section, region: item.region, items: [] };
+      groups.push(currentGroup);
+    } else if(currentGroup) {
+      // Region filter
+      if(regionFilter && item.region !== regionFilter) return;
+      
+      // Sector filter
+      if(sectorFilter && sectorFilter.id) {
+        var sg = sectorFilter;
+        // Check by explicit ids whitelist
+        if(sg.ids && sg.ids.length > 0) {
+          if(sg.ids.indexOf(item.id) === -1) return;
+        }
+        // Check by sections whitelist
+        else if(sg.sections && sg.sections.length > 0) {
+          var inSection = sg.sections.indexOf(currentSection) !== -1;
+          // Also filter by sector label if filterSectors defined
+          if(sg.filterSectors && sg.filterSectors.length > 0) {
+            if(!inSection) return;
+            var inSectorLabel = sg.filterSectors.some(function(fs){ return item.sector.indexOf(fs) !== -1; });
+            if(!inSectorLabel) return;
+          } else {
+            if(!inSection) return;
+          }
+        }
+        // Filter by sector label only
+        else if(sg.filterSectors && sg.filterSectors.length > 0) {
+          var inSectorLabel = sg.filterSectors.some(function(fs){ return item.sector.indexOf(fs) !== -1; });
+          if(!inSectorLabel) return;
+        }
+      }
+      
+      // Search filter
+      if(q) {
+        var match = item.ticker.toLowerCase().indexOf(q) !== -1 ||
+                    item.name.toLowerCase().indexOf(q) !== -1 ||
+                    item.sector.toLowerCase().indexOf(q) !== -1;
+        if(!match) return;
+      }
+      
+      currentGroup.items.push(item);
+    }
+  });
+
+  var visible = groups.filter(function(g){ return g.items.length > 0; });
+  
+  if(visible.length === 0) {
+    browser.innerHTML = '<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found' + (q ? ' for "' + q + '"' : '') + '</div>';
+    return;
+  }
+
+  browser.innerHTML = visible.map(function(group) {
+    var sectionKey = group.section.replace(/[^a-z0-9]/gi, '_');
+    var regionBadge = group.region ? '<span class="region-badge region-' + group.region.toLowerCase() + '">' + group.region + '</span>' : '';
+    var itemsHtml = group.items.map(function(item) {
+      return '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') + '" onclick="selectAsset('' + item.id + '')" id="ac_' + item.id + '">' +
+        '<div class="ac-ticker">' + item.ticker + '</div>' +
+        '<div class="ac-name">' + item.name + '</div>' +
+        '<div class="ac-sector">' + item.sector + '</div>' +
+      '</div>';
+    }).join('');
+
+    return '<div class="section-block">' +
+      '<div class="sec-header" onclick="toggleSection('' + sectionKey + '')">' +
+        '<div class="sec-title">' + regionBadge + group.section + '</div>' +
+        '<div class="sec-count">' + group.items.length + '</div>' +
+        '<div class="sec-chevron">&#9660;</div>' +
+      '</div>' +
+      '<div class="sec-body" id="sb_' + sectionKey + '" style="max-height:2000px">' +
+        '<div class="asset-grid">' + itemsHtml + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleSection(key) {
+  var body = document.getElementById('sb_' + key);
+  if(!body) return;
+  var header = body.previousElementSibling;
+  var isCollapsed = body.classList.contains('collapsed');
+  if(isCollapsed) {
+    body.classList.remove('collapsed');
+    body.style.maxHeight = '2000px';
+    if(header) header.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    body.style.maxHeight = '0';
+    if(header) header.classList.add('collapsed');
+  }
+}
+
+function handleSearch() {
+  var q = document.getElementById('searchBox').value;
+  if(q) {
+    activeRegion = null;
+    activeSector = null;
+    document.querySelectorAll('.region-tab').forEach(function(t){ t.classList.remove('active'); });
+    var firstR = document.querySelector('.region-tab');
+    if(firstR) firstR.classList.add('active');
+    document.querySelectorAll('.sector-tab').forEach(function(t){ t.classList.remove('active'); });
+    var firstS = document.querySelector('.sector-tab');
+    if(firstS) firstS.classList.add('active');
+    buildBrowser(q, null, null);
+  } else {
+    buildBrowser('', activeRegion, activeSector);
+  }
+}
+
+// ── SELECT ASSET ──────────────────────────────────────
+function selectAsset(id) {
+  if(selectedId) {
+    var old = document.getElementById('ac_' + selectedId);
+    if(old) old.classList.remove('selected');
+  }
+  selectedId = id;
+  var card = document.getElementById('ac_' + id);
+  if(card) card.classList.add('selected');
+
+  var item = null;
+  for(var i=0; i<CATALOGUE.length; i++) {
+    if(CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; }
+  }
+  if(!item) return;
+  
+  document.getElementById('selTicker').textContent = item.ticker;
+  document.getElementById('selName').textContent = item.name;
+  document.getElementById('selSector').textContent = item.sector + (item.region ? ' · ' + item.region : '');
+
+  var analysisEl = document.getElementById('analysis');
+  analysisEl.style.display = 'block';
+  analysisEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
+  document.getElementById('pill').textContent = 'READY';
+  document.getElementById('pill').className = 'status-pill';
+  document.getElementById('analysisBody').innerHTML = '<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ' + item.name + ''s seasonal data</div>';
+}
+
+// ── PILL ──────────────────────────────────────────────
+function pill(t, cls) {
+  if(!cls) cls = '';
+  var e = document.getElementById('pill');
+  e.textContent = t;
+  e.className = 'status-pill' + (cls ? ' ' + cls : '');
+}
+
+// ── WHEEL ─────────────────────────────────────────────
+function wheel(months, name) {
+  var S=400, cx=200, cy=200, ir=56, mr=155;
+  var mx = 0;
+  months.forEach(function(m){ if(Math.abs(m.avg) > mx) mx = Math.abs(m.avg); });
+  if(mx < 0.5) mx = 0.5;
+  var p = '';
+  var sl = (2*Math.PI)/12;
+  months.forEach(function(m, i) {
+    var a0 = i*sl - Math.PI/2, a1 = a0 + sl*0.88;
+    var norm = Math.abs(m.avg)/mx;
+    var or = ir + (mr-ir)*(0.15 + norm*0.85);
+    var x1=cx+ir*Math.cos(a0), y1=cy+ir*Math.sin(a0);
+    var x2=cx+or*Math.cos(a0), y2=cy+or*Math.sin(a0);
+    var x3=cx+or*Math.cos(a1), y3=cy+or*Math.sin(a1);
+    var x4=cx+ir*Math.cos(a1), y4=cy+ir*Math.sin(a1);
+    var col = m.avg>=0 ? '#00C97E' : '#F04050';
+    var op = 0.2 + norm*0.78;
+    var mid = (a0+a1)/2;
+    var lx=cx+(or+18)*Math.cos(mid), ly=cy+(or+18)*Math.sin(mid);
+    var vx=cx+(ir+(or-ir)*0.54)*Math.cos(mid), vy=cy+(ir+(or-ir)*0.54)*Math.sin(mid);
+    p += '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + 'A' + or + ' ' + or + ' 0 0 1 ' + x3 + ' ' + y3 + 'L' + x4 + ' ' + y4 + 'A' + ir + ' ' + ir + ' 0 0 0 ' + x1 + ' ' + y1 + 'Z" fill="' + col + '" fill-opacity="' + op + '" stroke="' + col + '" stroke-width="0.5" stroke-opacity="0.4"/>';
+    p += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="' + (m.avg>=0?'#7EE8A2':'#F08080') + '" font-weight="500">' + m.m + '</text>';
+    if(norm > 0.2) {
+      var sign = m.avg > 0 ? '+' : '';
+      p += '<text x="' + vx + '" y="' + vy + '" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate(' + (i*30+14) + ',' + vx + ',' + vy + ')">' + sign + Number(m.avg).toFixed(1) + '%</text>';
+    }
+  });
+  var lbl = name.length > 12 ? name.slice(0,11) + '...' : name;
+  p += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (ir-3) + '" fill="#070C18"/>';
+  p += '<text x="' + cx + '" y="' + (cy-8) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">SEASONAL</text>';
+  p += '<text x="' + cx + '" y="' + (cy+8) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#EDF2FA" font-weight="600">' + lbl + '</text>';
+  return '<svg viewBox="0 0 ' + S + ' ' + S + '" style="width:100%;max-width:400px">' + p + '</svg>';
+}
+
+// ── BARS ──────────────────────────────────────────────
+function bars(months) {
+  var mx = 0;
+  months.forEach(function(m){ if(Math.abs(m.avg) > mx) mx = Math.abs(m.avg); });
+  if(mx < 0.5) mx = 0.5;
+  var html = '<div class="bars">';
+  months.forEach(function(m) {
+    var w = (Math.abs(m.avg)/mx*100).toFixed(0);
+    var col = m.avg>=0 ? 'var(--green)' : 'var(--red)';
+    var sign = m.avg>=0 ? '+' : '';
+    html += '<div>' +
+      '<div class="brow">' +
+        '<div class="bm">' + m.m + '</div>' +
+        '<div class="bt"><div class="bf" style="width:0%;background:' + col + ';opacity:.72" data-w="' + w + '"></div></div>' +
+        '<div class="bv ' + (m.avg>=0?'p':'n') + '">' + sign + Number(m.avg).toFixed(2) + '%</div>' +
+      '</div>' +
+      '<div class="bsub">WIN RATE ' + m.win + '% &middot; ' + m.note + '</div>' +
+    '</div>';
+  });
+  return html + '</div>';
+}
+
+// ── CARDS ─────────────────────────────────────────────
+function cards(months) {
+  var s = months.slice().sort(function(a,b){ return b.avg-a.avg; });
+  var t3 = s.slice(0,3), b3 = s.slice(-3).reverse();
+  var MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function card(m, col, sign) {
+    var idx = MO.indexOf(m.m);
+    return '<div class="card"><div class="cn">' + (idx>=0?MF[idx]:m.m) + '</div><div class="cv" style="color:' + col + '">' + sign + Number(m.avg).toFixed(2) + '%</div><div class="cr">' + m.win + '% win rate</div></div>';
+  }
+  return '<div class="cards"><div class="ctitle">Best &amp; Worst Months</div><div class="cgrid">' +
+    t3.map(function(m){ return card(m,'var(--green)','+'); }).join('') +
+    b3.map(function(m){ return card(m,'var(--red)',''); }).join('') +
+  '</div></div>';
+}
+
+function animateBars() {
+  setTimeout(function() {
+    document.querySelectorAll('.bf').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
+  }, 80);
+}
+
+function getMonths(id) {
+  var item = null;
+  for(var i=0; i<CATALOGUE.length; i++) {
+    if(CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; }
+  }
+  if(!item) return PATTERNS.broadIndex;
+  var patKey = item.pattern || 'broadIndex';
+  var pat = PATTERNS[patKey];
+  if(!pat) pat = PATTERNS.broadIndex;
+  return JSON.parse(JSON.stringify(pat));
+}
+
+// ── RUN ───────────────────────────────────────────────
+function run() {
+  if(!selectedId) return;
+  if(!checkUsageLimit()) return;
+
+  var item = null;
+  for(var i=0; i<CATALOGUE.length; i++) {
+    if(CATALOGUE[i].id === selectedId) { item = CATALOGUE[i]; break; }
+  }
+  if(!item) return;
+
+  var years = document.getElementById('yrsSel').value;
+  var btn = document.getElementById('goBtn');
+  btn.disabled = true;
+  pill('ANALYZING...', 'loading');
+
+  setTimeout(function() {
+    try {
+      var months = getMonths(selectedId);
+      var patKey = item.pattern || 'broadIndex';
+
+      var sorted = months.slice().sort(function(a,b){ return b.avg-a.avg; });
+      var bestM = sorted[0].m + ' +' + Number(sorted[0].avg).toFixed(1) + '%';
+      var worstM = sorted[11].m + ' ' + Number(sorted[11].avg).toFixed(1) + '%';
+      var posCount = months.filter(function(m){ return m.avg > 0; }).length;
+      var posM = posCount + '/12';
+
+      var analysisText = ANALYSIS_BY_PATTERN[patKey] || ANALYSIS_BY_PATTERN['broadIndex'] || '';
+
+      document.getElementById('analysisBody').innerHTML =
+        '<div class="stats-strip">' +
+          '<div class="ss"><div class="ss-v" style="color:var(--green)">' + bestM + '</div><div class="ss-l">Best Month</div></div>' +
+          '<div class="ss"><div class="ss-v" style="color:var(--red)">' + worstM + '</div><div class="ss-l">Worst Month</div></div>' +
+          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">' + posM + '</div><div class="ss-l">Positive Months</div></div>' +
+        '</div>' +
+        '<div class="charts-row">' +
+          '<div class="chart-panel">' +
+            '<div class="cp-title">Monthly Return Calendar</div>' +
+            '<div id="cwrap" style="display:flex;flex-direction:column;align-items:center">' +
+              wheel(months, item.ticker) +
+              '<div class="legend">' +
+                '<span><span class="ld" style="background:var(--green)"></span>Positive avg</span>' +
+                '<span><span class="ld" style="background:var(--red)"></span>Negative avg</span>' +
+                '<span style="font-size:10px">Arc = magnitude</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="chart-panel">' +
+            '<div class="cp-title">Average Monthly Return</div>' +
+            bars(months) +
+          '</div>' +
+        '</div>' +
+        cards(months) +
+        '<div class="ai-panel">' +
+          '<div class="ai-header">' +
+            '<span class="ai-badge">AI Analysis</span>' +
+            '<span class="ai-title">' + item.name + ' &middot; ' + years + '-Year Seasonal Intelligence</span>' +
+          '</div>' +
+          '<div class="aitxt" id="aiTxt">' + analysisText + '</div>' +
+        '</div>';
+
+      animateBars();
+      trackAnalysis();
+      pill('COMPLETE', 'done');
+    } catch(e) {
+      pill('ERROR', 'err');
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+    }
+  }, 400);
+}
+
+// ── INIT ─────────────────────────────────────────────
+buildRegionTabs();
+buildSectorTabs();
+buildBrowser('', null, null);
 
 // ═══════════════════════════════════════════════════════
 // SUPABASE AUTH + USAGE TRACKING
@@ -1160,6 +1992,7 @@ function showPaywall(){
 
 // Init on load
 initAuth();
+
 
 
 
