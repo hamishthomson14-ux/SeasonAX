@@ -1037,133 +1037,117 @@ const PATTERNS = {
   ]
 };
 
-
-// ── REGIONAL PATTERNS ─────────────────────────────────────────────────────────
-// UK Market — similar to broadIndex but with mining/dividend seasonality
+// Regional patterns added to PATTERNS object
 PATTERNS.ukMarket = [
   {m:"Jan",avg:1.4,win:63,note:"New year risk-on; dividend reinvestment"},
-  {m:"Feb",avg:0.3,win:53,note:"Budget season uncertainty; cautious month"},
+  {m:"Feb",avg:0.3,win:53,note:"Budget season uncertainty"},
   {m:"Mar",avg:1.1,win:60,note:"UK fiscal year end; window dressing"},
   {m:"Apr",avg:1.6,win:66,note:"Strongest spring month; ex-div season"},
   {m:"May",avg:0.2,win:52,note:"Sell in May effect hits UK indices"},
-  {m:"Jun",avg:-0.3,win:47,note:"Summer doldrums; pre-Brexit uncertainty lingers"},
-  {m:"Jul",avg:0.9,win:57,note:"Mid-year recovery; summer results season"},
-  {m:"Aug",avg:-0.1,win:49,note:"Low volume; holiday period weakness"},
-  {m:"Sep",avg:-0.6,win:43,note:"Consistent weakness mirrors US seasonal"},
-  {m:"Oct",avg:0.7,win:57,note:"Autumn rally begins; Q3 results"},
-  {m:"Nov",avg:1.8,win:69,note:"Year-end rally; pre-Christmas consumer data"},
-  {m:"Dec",avg:1.4,win:68,note:"Santa rally; institutional year-end buying"}
+  {m:"Jun",avg:-0.3,win:47,note:"Summer doldrums begin"},
+  {m:"Jul",avg:0.9,win:57,note:"Mid-year recovery; summer results"},
+  {m:"Aug",avg:-0.1,win:49,note:"Low volume; holiday period"},
+  {m:"Sep",avg:-0.6,win:43,note:"Consistent weakness mirrors US"},
+  {m:"Oct",avg:0.7,win:57,note:"Autumn rally; Q3 results"},
+  {m:"Nov",avg:1.8,win:69,note:"Year-end rally; pre-Christmas data"},
+  {m:"Dec",avg:1.4,win:68,note:"Santa rally; year-end buying"}
 ];
-
-// UK Mining — driven by China demand cycles and commodity prices
 PATTERNS.ukMining = [
-  {m:"Jan",avg:2.1,win:64,note:"Chinese New Year demand builds; strong month"},
-  {m:"Feb",avg:1.6,win:61,note:"Post-CNY restocking demand for metals"},
-  {m:"Mar",avg:0.8,win:56,note:"Spring construction season demand"},
-  {m:"Apr",avg:1.1,win:58,note:"Commodity demand peaks with global PMIs"},
-  {m:"May",avg:-0.6,win:46,note:"Demand concerns; summer mining season risk"},
+  {m:"Jan",avg:2.1,win:64,note:"Chinese New Year demand; strong"},
+  {m:"Feb",avg:1.6,win:61,note:"Post-CNY restocking for metals"},
+  {m:"Mar",avg:0.8,win:56,note:"Spring construction demand"},
+  {m:"Apr",avg:1.1,win:58,note:"Commodity demand with global PMIs"},
+  {m:"May",avg:-0.6,win:46,note:"Demand concerns emerge"},
   {m:"Jun",avg:-1.2,win:41,note:"Weakest month; China slowdown fears"},
-  {m:"Jul",avg:0.4,win:52,note:"Mixed; steel/copper demand data"},
-  {m:"Aug",avg:-0.5,win:45,note:"Low-volume summer; metal price weakness"},
-  {m:"Sep",avg:-0.8,win:43,note:"Inventory de-stocking before year-end"},
-  {m:"Oct",avg:1.3,win:60,note:"Chinese Golden Week demand recovery"},
-  {m:"Nov",avg:1.9,win:66,note:"Year-end infrastructure spending cycle"},
-  {m:"Dec",avg:0.6,win:53,note:"Moderate gains; year-end portfolio effects"}
+  {m:"Jul",avg:0.4,win:52,note:"Mixed; steel/copper data"},
+  {m:"Aug",avg:-0.5,win:45,note:"Low-volume; metal price weakness"},
+  {m:"Sep",avg:-0.8,win:43,note:"Inventory de-stocking"},
+  {m:"Oct",avg:1.3,win:60,note:"Golden Week demand recovery"},
+  {m:"Nov",avg:1.9,win:66,note:"Year-end infrastructure cycle"},
+  {m:"Dec",avg:0.6,win:53,note:"Moderate; year-end effects"}
 ];
-
-// German Auto — strong Q4 driven by year-end registration incentives
 PATTERNS.germanAuto = [
-  {m:"Jan",avg:0.8,win:57,note:"New model year announcements; moderate start"},
-  {m:"Feb",avg:0.4,win:53,note:"Geneva Motor Show catalyst; mixed"},
-  {m:"Mar",avg:1.4,win:62,note:"Spring buying season begins; production picks up"},
-  {m:"Apr",avg:1.2,win:60,note:"Easter sales; Q1 delivery numbers"},
-  {m:"May",avg:-0.4,win:47,note:"Sell in May rotation out of cyclicals"},
-  {m:"Jun",avg:-0.7,win:44,note:"Summer holiday slowdown; weak retail sales"},
-  {m:"Jul",avg:0.5,win:53,note:"Mid-year mixed; dealer incentives"},
-  {m:"Aug",avg:-0.3,win:48,note:"Factory shutdown month; minimal trading"},
-  {m:"Sep",avg:-0.5,win:45,note:"End of model year; pre-registration rush"},
-  {m:"Oct",avg:1.7,win:63,note:"Q3 earnings; year-end registration incentives"},
-  {m:"Nov",avg:2.4,win:70,note:"Strongest month; Q4 delivery surge"},
-  {m:"Dec",avg:2.8,win:73,note:"December plates; record year-end registrations"}
+  {m:"Jan",avg:0.8,win:57,note:"New model year announcements"},
+  {m:"Feb",avg:0.4,win:53,note:"Geneva Motor Show; mixed"},
+  {m:"Mar",avg:1.4,win:62,note:"Spring buying season begins"},
+  {m:"Apr",avg:1.2,win:60,note:"Easter sales; Q1 deliveries"},
+  {m:"May",avg:-0.4,win:47,note:"Sell in May; cyclicals rotate"},
+  {m:"Jun",avg:-0.7,win:44,note:"Summer holiday slowdown"},
+  {m:"Jul",avg:0.5,win:53,note:"Mid-year; dealer incentives"},
+  {m:"Aug",avg:-0.3,win:48,note:"Factory shutdown month"},
+  {m:"Sep",avg:-0.5,win:45,note:"End of model year"},
+  {m:"Oct",avg:1.7,win:63,note:"Q3 earnings; year-end incentives"},
+  {m:"Nov",avg:2.4,win:70,note:"Strongest; Q4 delivery surge"},
+  {m:"Dec",avg:2.8,win:73,note:"December plates; record registrations"}
 ];
-
-// German Chemical — tied to agricultural cycles and industrial demand
 PATTERNS.germanChemical = [
-  {m:"Jan",avg:1.1,win:60,note:"New year industrial restocking begins"},
-  {m:"Feb",avg:0.7,win:55,note:"Agricultural pre-season demand builds"},
-  {m:"Mar",avg:1.8,win:65,note:"Spring planting season; fertilizer demand peaks"},
+  {m:"Jan",avg:1.1,win:60,note:"New year industrial restocking"},
+  {m:"Feb",avg:0.7,win:55,note:"Agricultural pre-season builds"},
+  {m:"Mar",avg:1.8,win:65,note:"Spring planting; fertilizer peaks"},
   {m:"Apr",avg:1.4,win:62,note:"Peak agricultural chemical demand"},
-  {m:"May",avg:0.6,win:54,note:"End of spring season; industrial demand steady"},
-  {m:"Jun",avg:-0.2,win:48,note:"Summer slowdown; energy cost pressures"},
-  {m:"Jul",avg:0.3,win:52,note:"Mixed; summer maintenance shutdowns"},
-  {m:"Aug",avg:-0.4,win:46,note:"Factory shutdowns; weak trading volumes"},
-  {m:"Sep",avg:-0.6,win:44,note:"Autumn inventory assessment; cautious"},
-  {m:"Oct",avg:1.2,win:61,note:"Q3 earnings; winter demand season begins"},
-  {m:"Nov",avg:1.6,win:65,note:"Year-end industrial buying; strong month"},
-  {m:"Dec",avg:0.9,win:57,note:"De-stocking vs year-end orders balanced"}
+  {m:"May",avg:0.6,win:54,note:"End of spring; industrial steady"},
+  {m:"Jun",avg:-0.2,win:48,note:"Summer slowdown; energy costs"},
+  {m:"Jul",avg:0.3,win:52,note:"Mixed; summer maintenance"},
+  {m:"Aug",avg:-0.4,win:46,note:"Factory shutdowns; weak volumes"},
+  {m:"Sep",avg:-0.6,win:44,note:"Autumn inventory assessment"},
+  {m:"Oct",avg:1.2,win:61,note:"Q3 earnings; winter demand"},
+  {m:"Nov",avg:1.6,win:65,note:"Year-end industrial buying"},
+  {m:"Dec",avg:0.9,win:57,note:"De-stocking vs year-end orders"}
 ];
-
-// German Market (DAX general) — industrial/export driven
 PATTERNS.germanMarket = [
-  {m:"Jan",avg:1.6,win:63,note:"Strong January; European new year positioning"},
-  {m:"Feb",avg:0.5,win:53,note:"Cautious ahead of ECB; earnings season"},
-  {m:"Mar",avg:1.3,win:61,note:"End of quarter; export data positive"},
+  {m:"Jan",avg:1.6,win:63,note:"Strong January; European positioning"},
+  {m:"Feb",avg:0.5,win:53,note:"Cautious ahead of ECB"},
+  {m:"Mar",avg:1.3,win:61,note:"End of quarter; export data"},
   {m:"Apr",avg:1.8,win:66,note:"Spring industrial production surge"},
-  {m:"May",avg:0.1,win:52,note:"Sell in May; lighter than US equivalent"},
-  {m:"Jun",avg:-0.4,win:46,note:"European summer slowdown begins"},
-  {m:"Jul",avg:0.9,win:57,note:"Q2 export data; auto production data"},
-  {m:"Aug",avg:-0.3,win:48,note:"Factory holiday month; thin volumes"},
-  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness; autumn elections risk"},
+  {m:"May",avg:0.1,win:52,note:"Sell in May; lighter than US"},
+  {m:"Jun",avg:-0.4,win:46,note:"European summer slowdown"},
+  {m:"Jul",avg:0.9,win:57,note:"Q2 export data"},
+  {m:"Aug",avg:-0.3,win:48,note:"Factory holiday month"},
+  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness"},
   {m:"Oct",avg:1.1,win:60,note:"Q3 results; industrial rebound"},
-  {m:"Nov",avg:2.1,win:69,note:"Year-end export orders; Christmas rally"},
-  {m:"Dec",avg:1.7,win:66,note:"Strong month; year-end auto registrations"}
+  {m:"Nov",avg:2.1,win:69,note:"Year-end export orders"},
+  {m:"Dec",avg:1.7,win:66,note:"Strong; year-end auto registrations"}
 ];
-
-// Japan Export — fiscal year March effect, Golden Week May effect
 PATTERNS.japanExport = [
-  {m:"Jan",avg:0.9,win:58,note:"New year positioning; yen impact on exporters"},
-  {m:"Feb",avg:0.6,win:54,note:"Q3 earnings (Oct-Dec fiscal); moderate"},
-  {m:"Mar",avg:2.2,win:68,note:"Fiscal year end (March 31); window dressing surge"},
-  {m:"Apr",avg:0.4,win:52,note:"New fiscal year; cautious re-positioning"},
-  {m:"May",avg:-0.8,win:44,note:"Golden Week trading gap; sell in May"},
-  {m:"Jun",avg:0.3,win:51,note:"Q1 fiscal results; mixed signals"},
-  {m:"Jul",avg:1.1,win:60,note:"Summer rally; yen weakness helps exporters"},
-  {m:"Aug",avg:-0.5,win:46,note:"Obon holiday; thin volumes; sell-off risk"},
-  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness; mirrors global pattern"},
-  {m:"Oct",avg:1.4,win:62,note:"Q2 fiscal earnings; export order data"},
-  {m:"Nov",avg:1.9,win:67,note:"Year-end rally; foreign investor buying"},
-  {m:"Dec",avg:0.8,win:56,note:"Mixed; yen volatility often disrupts"}
+  {m:"Jan",avg:0.9,win:58,note:"New year; yen impact on exporters"},
+  {m:"Feb",avg:0.6,win:54,note:"Q3 earnings; moderate month"},
+  {m:"Mar",avg:2.2,win:68,note:"Fiscal year end (March 31); surge"},
+  {m:"Apr",avg:0.4,win:52,note:"New fiscal year; re-positioning"},
+  {m:"May",avg:-0.8,win:44,note:"Golden Week gap; sell in May"},
+  {m:"Jun",avg:0.3,win:51,note:"Q1 fiscal results; mixed"},
+  {m:"Jul",avg:1.1,win:60,note:"Summer rally; yen weakness helps"},
+  {m:"Aug",avg:-0.5,win:46,note:"Obon holiday; thin volumes"},
+  {m:"Sep",avg:-0.7,win:43,note:"Consistent weakness"},
+  {m:"Oct",avg:1.4,win:62,note:"Q2 fiscal earnings"},
+  {m:"Nov",avg:1.9,win:67,note:"Year-end rally; foreign buying"},
+  {m:"Dec",avg:0.8,win:56,note:"Mixed; yen volatility"}
 ];
-
-// China Internet — driven by CNY, regulatory cycles, platform economy
 PATTERNS.chinaInternet = [
-  {m:"Jan",avg:3.2,win:65,note:"Pre-Chinese New Year shopping boom; Alibaba/JD surge"},
-  {m:"Feb",avg:5.1,win:69,note:"Chinese New Year gifting; strongest month"},
-  {m:"Mar",avg:1.4,win:57,note:"Post-holiday recovery; 618 festival prep"},
-  {m:"Apr",avg:-1.2,win:44,note:"Regulatory fear season; often volatile"},
+  {m:"Jan",avg:3.2,win:65,note:"Pre-Chinese New Year shopping boom"},
+  {m:"Feb",avg:5.1,win:69,note:"Chinese New Year; strongest month"},
+  {m:"Mar",avg:1.4,win:57,note:"Post-holiday recovery"},
+  {m:"Apr",avg:-1.2,win:44,note:"Regulatory fear season; volatile"},
   {m:"May",avg:-0.8,win:45,note:"618 preparation; mixed sentiment"},
-  {m:"Jun",avg:2.4,win:61,note:"618 Shopping Festival drives platform stocks"},
-  {m:"Jul",avg:-2.1,win:38,note:"Regulatory crackdown season historically"},
-  {m:"Aug",avg:-1.8,win:40,note:"Summer regulatory announcements; weak"},
-  {m:"Sep",avg:-1.4,win:41,note:"End of regulatory season; bottoming"},
-  {m:"Oct",avg:3.8,win:66,note:"Golden Week spending; 11/11 Singles Day prep"},
-  {m:"Nov",avg:5.6,win:71,note:"Singles Day (11/11) strongest month ever"},
-  {m:"Dec",avg:1.2,win:55,note:"Year-end positioning; ADR tax concerns"}
+  {m:"Jun",avg:2.4,win:61,note:"618 Shopping Festival drives gains"},
+  {m:"Jul",avg:-2.1,win:38,note:"Regulatory crackdown season"},
+  {m:"Aug",avg:-1.8,win:40,note:"Summer regulatory announcements"},
+  {m:"Sep",avg:-1.4,win:41,note:"End of regulatory season"},
+  {m:"Oct",avg:3.8,win:66,note:"Golden Week; Singles Day prep"},
+  {m:"Nov",avg:5.6,win:71,note:"Singles Day (11/11); strongest"},
+  {m:"Dec",avg:1.2,win:55,note:"Year-end positioning"}
 ];
-
-// Korean Tech — Samsung earnings cycles and memory chip demand
 PATTERNS.koreanTech = [
-  {m:"Jan",avg:2.8,win:65,note:"CES launch season; Samsung/LG product cycles"},
-  {m:"Feb",avg:1.1,win:57,note:"Q4 earnings; memory chip pricing data"},
+  {m:"Jan",avg:2.8,win:65,note:"CES season; Samsung/LG cycles"},
+  {m:"Feb",avg:1.1,win:57,note:"Q4 earnings; memory pricing"},
   {m:"Mar",avg:1.6,win:62,note:"Spring smartphone launch cycle"},
-  {m:"Apr",avg:2.2,win:64,note:"Q1 earnings; Galaxy launch momentum"},
+  {m:"Apr",avg:2.2,win:64,note:"Q1 earnings; Galaxy momentum"},
   {m:"May",avg:-0.9,win:45,note:"Risk-off; China demand concerns"},
-  {m:"Jun",avg:-1.3,win:42,note:"Summer chip inventory correction fears"},
-  {m:"Jul",avg:1.8,win:61,note:"Q2 earnings; data center demand data"},
-  {m:"Aug",avg:0.7,win:54,note:"Moderate; earnings season clarity"},
-  {m:"Sep",avg:-1.5,win:39,note:"Weakest month; US tech weakness drags"},
-  {m:"Oct",avg:2.1,win:63,note:"Q3 earnings; holiday demand build"},
-  {m:"Nov",avg:3.4,win:70,note:"Strongest month; holiday chip demand"},
+  {m:"Jun",avg:-1.3,win:42,note:"Chip inventory correction fears"},
+  {m:"Jul",avg:1.8,win:61,note:"Q2 earnings; data center data"},
+  {m:"Aug",avg:0.7,win:54,note:"Earnings season clarity"},
+  {m:"Sep",avg:-1.5,win:39,note:"Weakest month; US tech drags"},
+  {m:"Oct",avg:2.1,win:63,note:"Q3 earnings; holiday demand"},
+  {m:"Nov",avg:3.4,win:70,note:"Strongest; holiday chip demand"},
   {m:"Dec",avg:1.9,win:64,note:"Year-end institutional positioning"}
 ];
 
@@ -1195,368 +1179,42 @@ const ANALYSIS_BY_PATTERN = {
   semis: `1. KEY SEASONAL PATTERNS\nSemiconductors show amplified tech seasonality driven by fab utilization cycles. November is the strongest at +3.2% with a 72% win rate, fueled by AI chip demand and data center spending. September is the worst at -1.8% (38% win rate) as inventory correction fears peak. CES in January (+3.1%) consistently boosts the sector.\n\n2. BEST ENTRY WINDOWS\nEarly October after September's inventory-fear selloff is the best entry, capturing November's AI-driven strength. January is also a strong entry as CES announcements and new product cycles drive sentiment.\n\n3. CAUTION PERIODS\nJune (-1.1%) and September (-1.8%) form the weakest stretch as inventory cycle concerns dominate. Chip stocks often sell off 10-20% in individual years during these months.\n\n4. SEASONAL STRATEGIES\n• CES/January Effect: Position in late December for the January semiconductor surge.\n• Earnings Season: Add ahead of April and July for data center and AI GPU demand beats.\n• Inventory Cycle: September weakness often represents the best buy point for the semiconductor cycle.\n\n5. IMPORTANT CAVEATS\nSemiconductor seasonality is disrupted by inventory super-cycles (2022 bust, 2023 AI boom). Nvidia's dominance in AI chips means one stock increasingly drives the entire sector's seasonal pattern. China trade restrictions and export controls add geopolitical risk that overrides seasonal tendencies.`
 };
 
-// ═══════════════════════════════════════════════════════
-//  UI RENDERING
-// ═══════════════════════════════════════════════════════
-const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+// ============================================================
+// UI STATE
+// ============================================================
+var selectedId = null;
+var activeRegion = null;
+var activeSector = null;
 
-let selectedId = null;
-let filteredItems = [];
-
-// ── SECTION FILTER STATE ─────────────────────────────
-let activeSectionFilter = null;
-let selectedId = null;
-
-// -- CATEGORY GROUPS (no emoji to avoid encoding issues)
-const BROAD_CATS = [
-  { label:'All',        sections:null,        ids:null, excludeIds:null },
-  { label:'Indices',    sections:['Index Funds & Broad Market ETFs'], ids:null, excludeIds:null },
-  { label:'ETFs',       sections:['Sector ETFs'], ids:null, excludeIds:null },
-  { label:'Equities',   sections:['Technology','Finance & Crypto-Adjacent','Healthcare & Biotech','Consumer & Retail','Energy & Materials','Industrials & Defense','Communications & Media','AI & Emerging Tech'], ids:null, excludeIds:['coin','mstr','mara','riot','btc','eth'] },
-  { label:'Technology', sections:['Technology','AI & Emerging Tech'], ids:null, excludeIds:null },
-  { label:'Crypto',     sections:['Finance & Crypto-Adjacent'], ids:['coin','mstr','mara','riot','btc','eth'], excludeIds:null },
-  { label:'Finance',    sections:['Finance & Crypto-Adjacent'], ids:null, excludeIds:['coin','mstr','mara','riot','btc','eth'] },
-  { label:'Healthcare', sections:['Healthcare & Biotech'], ids:null, excludeIds:null },
-  { label:'Energy',     sections:['Energy & Materials'], ids:null, excludeIds:null },
-  { label:'Consumer',   sections:['Consumer & Retail'], ids:null, excludeIds:null },
-  { label:'Defense',    sections:['Industrials & Defense'], ids:null, excludeIds:null },
+// ============================================================
+// REGION + SECTOR CONFIG
+// ============================================================
+var REGIONS = [
+  { id:null,      label:"All Markets" },
+  { id:"US",      label:"United States" },
+  { id:"UK",      label:"United Kingdom" },
+  { id:"Germany", label:"Germany" },
+  { id:"Asia",    label:"Asia Pacific" }
 ];
 
-// -- BUILD FILTER TABS
-function buildFilterTabs() {
-  var tabs = document.getElementById('filterTabs');
-  tabs.innerHTML = '';
-  BROAD_CATS.forEach(function(cat, i) {
-    var btn = document.createElement('button');
-    btn.className = 'filter-tab' + (i === 0 ? ' active' : '');
-    btn.textContent = cat.label;
-    btn.setAttribute('data-idx', i);
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById('searchBox').value = '';
-      activeSectionFilter = cat;
-      buildBrowser('', cat);
-    });
-    tabs.appendChild(btn);
-  });
-}
-
-// ── BUILD BROWSER ────────────────────────────────────
-function buildBrowser(searchQ, catFilter) {
-  if(searchQ === undefined) searchQ = '';
-  if(catFilter === undefined) catFilter = null;
-  const q = searchQ.toLowerCase();
-  const browser = document.getElementById('browser');
-  
-  // Group items by section
-  const groups = [];
-  let currentGroup = null;
-
-  CATALOGUE.forEach(item => {
-    if(item.section) {
-      currentGroup = { section: item.section, items: [] };
-      groups.push(currentGroup);
-    } else if(currentGroup) {
-      // Apply broad category filter
-      if(catFilter && catFilter.sections) {
-        if(!catFilter.sections.includes(currentGroup.section)) return;
-        // If cat has specific ids whitelist
-        if(catFilter.ids && !catFilter.ids.includes(item.id)) return;
-        // If cat has excludeIds
-        if(catFilter.excludeIds && catFilter.excludeIds.includes(item.id)) return;
-      }
-      // Apply search filter
-      if(q && !item.ticker.toLowerCase().includes(q) && 
-         !item.name.toLowerCase().includes(q) && 
-         !item.sector.toLowerCase().includes(q)) return;
-      currentGroup.items.push(item);
-    }
-  });
-
-  // Remove empty groups
-  const visible = groups.filter(g => g.items.length > 0);
-  
-  if(visible.length === 0) {
-    browser.innerHTML = '<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found for &ldquo;' + searchQ + '&rdquo;</div>';
-    return;
-  }
-
-  browser.innerHTML = visible.map(group => {
-    const sectionKey = group.section.replace(/[^a-z0-9]/gi, '_');
-    const itemsHtml = group.items.map(item => `
-      <div class="asset-card${item.id === selectedId ? ' selected' : ''}" 
-           onclick="selectAsset('${item.id}')" 
-           id="ac_${item.id}">
-        <div class="ac-ticker">${item.ticker}</div>
-        <div class="ac-name">${item.name}</div>
-        <div class="ac-sector">${item.sector}</div>
-      </div>
-    `).join('');
-
-    return `
-      <div class="section-block">
-        <div class="sec-header" onclick="toggleSection('${sectionKey}')">
-          <div class="sec-title">${group.section}</div>
-          <div class="sec-count">${group.items.length}</div>
-          <div class="sec-chevron">▾</div>
-        </div>
-        <div class="sec-body" id="sb_${sectionKey}" style="max-height:2000px">
-          <div class="asset-grid">${itemsHtml}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function toggleSection(key) {
-  const body = document.getElementById('sb_' + key);
-  const header = body?.previousElementSibling;
-  if(!body) return;
-  const isCollapsed = body.classList.contains('collapsed');
-  if(isCollapsed) {
-    body.classList.remove('collapsed');
-    body.style.maxHeight = '2000px';
-    header?.classList.remove('collapsed');
-  } else {
-    body.classList.add('collapsed');
-    body.style.maxHeight = '0';
-    header?.classList.add('collapsed');
-  }
-}
-
-function handleSearch() {
-  var q = document.getElementById('searchBox').value;
-  if(q) {
-    activeSectionFilter = null;
-    document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
-    var allTab = document.querySelector('.filter-tab');
-    if(allTab) allTab.classList.add('active');
-    buildBrowser(q, null);
-  } else {
-    buildBrowser('', activeSectionFilter);
-  }
-}
-
-// ── SELECT ASSET ─────────────────────────────────────
-function selectAsset(id) {
-  // Deselect old
-  if(selectedId) {
-    const old = document.getElementById('ac_' + selectedId);
-    if(old) old.classList.remove('selected');
-  }
-  selectedId = id;
-  // Select new
-  const card = document.getElementById('ac_' + id);
-  if(card) card.classList.add('selected');
-
-  const item = CATALOGUE.find(c => c.id === id);
-  document.getElementById('selTicker').textContent = item.ticker;
-  document.getElementById('selName').textContent = item.name;
-  document.getElementById('selSector').textContent = item.sector;
-
-  // Show analysis section and scroll to it
-  const analysisEl = document.getElementById('analysis');
-  analysisEl.style.display = 'block';
-  analysisEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
-  document.getElementById('pill').textContent = 'READY';
-  document.getElementById('pill').className = 'status-pill';
-  document.getElementById('analysisBody').innerHTML = `<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ${item.name}'s seasonal data</div>`;
-}
-
-// ── PILL ─────────────────────────────────────────────
-function pill(t, cls='') {
-  const e = document.getElementById('pill');
-  e.textContent = t;
-  e.className = 'status-pill' + (cls ? ' ' + cls : '');
-}
-
-// ── WHEEL ────────────────────────────────────────────
-function wheel(months, name) {
-  const S=400, cx=200, cy=200, ir=56, mr=155;
-  const mx = Math.max(...months.map(m => Math.abs(m.avg)), 0.5);
-  let p = '';
-  const sl = (2*Math.PI)/12;
-  months.forEach((m, i) => {
-    const a0 = i*sl - Math.PI/2, a1 = a0 + sl*0.88;
-    const norm = Math.abs(m.avg)/mx;
-    const or = ir + (mr-ir)*(0.15 + norm*0.85);
-    const pt = (a,r) => [cx + r*Math.cos(a), cy + r*Math.sin(a)];
-    const [x1,y1]=pt(a0,ir),[x2,y2]=pt(a0,or),[x3,y3]=pt(a1,or),[x4,y4]=pt(a1,ir);
-    const col = m.avg>=0 ? '#00C97E' : '#F04050';
-    const op = 0.2 + norm*0.78;
-    const mid = (a0+a1)/2;
-    const [lx,ly] = pt(mid, or+18);
-    const [vx,vy] = pt(mid, ir+(or-ir)*0.54);
-    p += `<path d="M${x1} ${y1}L${x2} ${y2}A${or} ${or} 0 0 1 ${x3} ${y3}L${x4} ${y4}A${ir} ${ir} 0 0 0 ${x1} ${y1}Z" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width="0.5" stroke-opacity="0.4"/>`;
-    p += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="${m.avg>=0?'#7EE8A2':'#F08080'}" font-weight="500">${m.m}</text>`;
-    if(norm > 0.2) {
-      p += `<text x="${vx}" y="${vy}" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate(${i*30+14},${vx},${vy})">${m.avg>0?'+':''}${Number(m.avg).toFixed(1)}%</text>`;
-    }
-  });
-  const lbl = name.length>12 ? name.slice(0,11)+'…' : name;
-  p += `<circle cx="${cx}" cy="${cy}" r="${ir-3}" fill="#070C18"/>`;
-  p += `<text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">SEASONAL</text>`;
-  p += `<text x="${cx}" y="${cy+8}" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#EDF2FA" font-weight="600">${lbl}</text>`;
-  return `<svg viewBox="0 0 ${S} ${S}" style="width:100%;max-width:400px">${p}</svg>`;
-}
-
-// ── BARS ─────────────────────────────────────────────
-function bars(months) {
-  const mx = Math.max(...months.map(m => Math.abs(m.avg)), 0.5);
-  return '<div class="bars">' + months.map(m => {
-    const w = (Math.abs(m.avg)/mx*100).toFixed(0);
-    const col = m.avg>=0 ? 'var(--green)' : 'var(--red)';
-    const sign = m.avg>=0 ? '+' : '';
-    return `<div>
-      <div class="brow">
-        <div class="bm">${m.m}</div>
-        <div class="bt"><div class="bf" style="width:0%;background:${col};opacity:.72" data-w="${w}"></div></div>
-        <div class="bv ${m.avg>=0?'p':'n'}">${sign}${Number(m.avg).toFixed(2)}%</div>
-      </div>
-      <div class="bsub">WIN RATE ${m.win}% · ${m.note}</div>
-    </div>`;
-  }).join('') + '</div>';
-}
-
-// ── CARDS ────────────────────────────────────────────
-function cards(months) {
-  const s = [...months].sort((a,b) => b.avg-a.avg);
-  const t3 = s.slice(0,3), b3 = s.slice(-3).reverse();
-  const MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const card = (m, col, sign) => `<div class="card">
-    <div class="cn">${MF[MO.indexOf(m.m)]}</div>
-    <div class="cv" style="color:${col}">${sign}${Number(m.avg).toFixed(2)}%</div>
-    <div class="cr">${m.win}% win rate</div>
-  </div>`;
-  return `<div class="cards">
-    <div class="ctitle">Best &amp; Worst Months</div>
-    <div class="cgrid">
-      ${t3.map(m => card(m,'var(--green)','+')). join('')}
-      ${b3.map(m => card(m,'var(--red)','')).join('')}
-    </div>
-  </div>`;
-}
-
-function animateBars() {
-  setTimeout(() => {
-    document.querySelectorAll('.bf').forEach(el => { el.style.width = el.dataset.w + '%'; });
-  }, 80);
-}
-
-function getMonths(id) {
-  const patKey = TICKER_PATTERN[id] || 'broadIndex';
-  return JSON.parse(JSON.stringify(PATTERNS[patKey]));
-}
-
-// ── RUN ──────────────────────────────────────────────
-function run() {
-  if(!selectedId) return;
-  if(!checkUsageLimit()) return;
-
-  const item = CATALOGUE.find(c => c.id === selectedId);
-  const years = document.getElementById('yrsSel').value;
-  const btn = document.getElementById('goBtn');
-  btn.disabled = true;
-  pill('ANALYZING…', 'loading');
-
-  setTimeout(() => {
-    try {
-      const months = getMonths(selectedId);
-      const patKey = TICKER_PATTERN[selectedId] || 'broadIndex';
-
-      const sorted = [...months].sort((a,b) => b.avg-a.avg);
-      const bestM = `${sorted[0].m} +${Number(sorted[0].avg).toFixed(1)}%`;
-      const worstM = `${sorted[11].m} ${Number(sorted[11].avg).toFixed(1)}%`;
-      const posM = `${months.filter(m=>m.avg>0).length}/12`;
-
-      document.getElementById('analysisBody').innerHTML = `
-        <div class="stats-strip">
-          <div class="ss"><div class="ss-v" style="color:var(--green)">${bestM}</div><div class="ss-l">Best Month</div></div>
-          <div class="ss"><div class="ss-v" style="color:var(--red)">${worstM}</div><div class="ss-l">Worst Month</div></div>
-          <div class="ss"><div class="ss-v" style="color:var(--amber2)">${posM}</div><div class="ss-l">Positive Months</div></div>
-        </div>
-        <div class="charts-row">
-          <div class="chart-panel">
-            <div class="cp-title">Monthly Return Calendar</div>
-            <div id="cwrap" style="display:flex;flex-direction:column;align-items:center">
-              ${wheel(months, item.ticker)}
-              <div class="legend">
-                <span><span class="ld" style="background:var(--green)"></span>Positive avg</span>
-                <span><span class="ld" style="background:var(--red)"></span>Negative avg</span>
-                <span style="font-size:10px">Arc = magnitude</span>
-              </div>
-            </div>
-          </div>
-          <div class="chart-panel">
-            <div class="cp-title">Average Monthly Return</div>
-            ${bars(months)}
-          </div>
-        </div>
-        ${cards(months)}
-        <div class="ai-panel">
-          <div class="ai-header">
-            <span class="ai-badge">AI Analysis</span>
-            <span class="ai-title">${item.name} · ${years}-Year Seasonal Intelligence</span>
-          </div>
-          <div class="aitxt" id="aiTxt">${ANALYSIS_BY_PATTERN[patKey] || ''}</div>
-        </div>
-      `;
-
-      animateBars();
-      trackAnalysis();
-      document.getElementById('dataDate') && (document.getElementById('dataDate').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}));
-      pill('COMPLETE', 'done');
-
-    } catch(e) {
-      pill('ERROR', 'err');
-      console.error(e);
-    } finally {
-      btn.disabled = false;
-    }
-  }, 400);
-}
-
-// ── INIT ─────────────────────────────────────────────
-buildFilterTabs();
-buildBrowser('', null);
-
-
-
-// ── STATE ─────────────────────────────────────────────
-let selectedId = null;
-let activeRegion = null;   // null = All regions
-let activeSector = null;   // null = All sectors
-
-// ── REGION TABS ───────────────────────────────────────
-const REGIONS = [
-  { id:null,       label:"All Markets" },
-  { id:"US",       label:"United States" },
-  { id:"UK",       label:"United Kingdom" },
-  { id:"Germany",  label:"Germany" },
-  { id:"Asia",     label:"Asia Pacific" },
+var SECTORS = [
+  { id:null,        label:"All" },
+  { id:"indices",   label:"Indices & ETFs",  patterns:["broadIndex","ukMarket","germanMarket","japanExport"] },
+  { id:"tech",      label:"Technology",      patterns:["techGrowth","semis","evGrowth","speculative","chinaInternet","koreanTech"] },
+  { id:"finance",   label:"Finance & Crypto",patterns:["financials","crypto"] },
+  { id:"energy",    label:"Energy",          patterns:["energy","ukMining"] },
+  { id:"health",    label:"Healthcare",      patterns:["healthcare"] },
+  { id:"consumer",  label:"Consumer",        patterns:["consumer"] },
+  { id:"defense",   label:"Defense & Ind.",  patterns:["defense","germanAuto","germanChemical"] },
+  { id:"bonds",     label:"Bonds & Utilities",patterns:["bonds"] }
 ];
 
-// ── SECTOR GROUPS ─────────────────────────────────────
-const SECTOR_GROUPS = [
-  { id:null,          label:"All" },
-  { id:"indices",     label:"Indices & ETFs",  sections:["Index Funds & ETFs","US Indices","UK Indices","German Indices"] },
-  { id:"equities",    label:"Equities",        excludeSections:["Index Funds & ETFs","US Indices","UK Indices","German Indices","US EV & Emerging Tech","US Finance & Banking","US Technology","German Technology","UK Technology"] },
-  { id:"technology",  label:"Technology",      sections:["US Technology","US EV & Emerging Tech","German Technology","UK Technology","Taiwan","South Korea"] },
-  { id:"finance",     label:"Finance",         sections:["US Finance & Banking","UK Banking & Finance","German Finance & Insurance","Singapore & Australia","India","China & Hong Kong","Japan"] , filterSectors:["Banking","Investment Bank","Fintech","Insurance","Asset Management","Crypto Exchange","Bitcoin Mining","Bitcoin Proxy","Payments","Brokerage","NBFC","Asset Mgmt","Crypto Exchange","Cryptocurrency"] },
-  { id:"crypto",      label:"Crypto",          ids:["coin","mstr","mara","riot","btc","eth"] },
-  { id:"energy",      label:"Energy",          sections:["US Energy","UK Energy & Mining","German Energy & Telecom"], filterSectors:["Oil & Gas","Energy","Utilities","Solar","Hydrogen","Mining","Copper Mining","Iron Ore","Commodities","Clean Energy","Power Generation"] },
-  { id:"healthcare",  label:"Healthcare",      sections:["US Healthcare & Biotech","UK Pharma & Health","German Industrials & Chemicals","Japan"], filterSectors:["Pharmaceuticals","Health Insurance","Medical Devices","Biotechnology","Biotech","mRNA Biotech","Diagnostics","Healthcare Svc","Biosimilars","Specialty Pharma","Antiviral Biotech","Neuroscience","Pharmacy Retail","Generics"] },
-  { id:"consumer",    label:"Consumer",        sections:["US Consumer & Retail","UK Consumer & Retail","German Consumer & Retail","Japan","Singapore & Australia"], filterSectors:["Retail","Wholesale Retail","Fast Food","Coffee","Sportswear","Apparel","Travel","Hotels","Casinos","Restaurants","Consumer Goods","Fashion Retail","Food Retail","Supermarkets"] },
-  { id:"defense",     label:"Defense & Ind.",  filterSectors:["Defense","Aerospace","Industrial Robot","Heavy Machinery","Agriculture Mach.","Construction Eq.","Logistics","Steel"] },
-];
-
+// ============================================================
+// BUILD TABS
+// ============================================================
 function buildRegionTabs() {
   var wrap = document.getElementById('regionTabs');
-  if(!wrap) return;
+  if (!wrap) return;
   wrap.innerHTML = '';
   REGIONS.forEach(function(r, i) {
     var btn = document.createElement('button');
@@ -1567,10 +1225,9 @@ function buildRegionTabs() {
       btn.classList.add('active');
       activeRegion = r.id;
       activeSector = null;
-      // Reset sector tabs
       document.querySelectorAll('.sector-tab').forEach(function(t){ t.classList.remove('active'); });
-      var firstSector = document.querySelector('.sector-tab');
-      if(firstSector) firstSector.classList.add('active');
+      var first = document.querySelector('.sector-tab');
+      if (first) first.classList.add('active');
       document.getElementById('searchBox').value = '';
       buildBrowser('', null, null);
     });
@@ -1580,9 +1237,9 @@ function buildRegionTabs() {
 
 function buildSectorTabs() {
   var wrap = document.getElementById('sectorTabs');
-  if(!wrap) return;
+  if (!wrap) return;
   wrap.innerHTML = '';
-  SECTOR_GROUPS.forEach(function(s, i) {
+  SECTORS.forEach(function(s, i) {
     var btn = document.createElement('button');
     btn.className = 'sector-tab' + (i === 0 ? ' active' : '');
     btn.textContent = s.label;
@@ -1597,335 +1254,309 @@ function buildSectorTabs() {
   });
 }
 
-// ── BUILD BROWSER ─────────────────────────────────────
-function buildBrowser(searchQ, regionFilter, sectorFilter) {
-  if(searchQ === undefined) searchQ = '';
-  if(regionFilter === undefined) regionFilter = null;
-  if(sectorFilter === undefined) sectorFilter = null;
-  
-  var q = searchQ.toLowerCase().trim();
+// ============================================================
+// BUILD BROWSER
+// ============================================================
+function buildBrowser(q, regionFilter, sectorFilter) {
+  if (!q) q = '';
+  var ql = q.toLowerCase().trim();
   var browser = document.getElementById('browser');
-  
+  if (!browser) return;
+
   var groups = [];
-  var currentGroup = null;
-  var currentSection = null;
+  var cur = null;
+  var curSection = '';
 
   CATALOGUE.forEach(function(item) {
-    if(item.section) {
-      currentSection = item.section;
-      currentGroup = { section: item.section, region: item.region, items: [] };
-      groups.push(currentGroup);
-    } else if(currentGroup) {
+    if (item.section) {
+      cur = { section: item.section, region: item.region, items: [] };
+      curSection = item.section;
+      groups.push(cur);
+    } else if (cur) {
       // Region filter
-      if(regionFilter && item.region !== regionFilter) return;
-      
-      // Sector filter
-      if(sectorFilter && sectorFilter.id) {
-        var sg = sectorFilter;
-        // Check by explicit ids whitelist
-        if(sg.ids && sg.ids.length > 0) {
-          if(sg.ids.indexOf(item.id) === -1) return;
-        }
-        // Check by sections whitelist
-        else if(sg.sections && sg.sections.length > 0) {
-          var inSection = sg.sections.indexOf(currentSection) !== -1;
-          // Also filter by sector label if filterSectors defined
-          if(sg.filterSectors && sg.filterSectors.length > 0) {
-            if(!inSection) return;
-            var inSectorLabel = sg.filterSectors.some(function(fs){ return item.sector.indexOf(fs) !== -1; });
-            if(!inSectorLabel) return;
-          } else {
-            if(!inSection) return;
-          }
-        }
-        // Filter by sector label only
-        else if(sg.filterSectors && sg.filterSectors.length > 0) {
-          var inSectorLabel = sg.filterSectors.some(function(fs){ return item.sector.indexOf(fs) !== -1; });
-          if(!inSectorLabel) return;
-        }
+      if (regionFilter && item.region !== regionFilter) return;
+      // Sector filter by pattern
+      if (sectorFilter && sectorFilter.patterns) {
+        if (sectorFilter.patterns.indexOf(item.pattern || 'broadIndex') === -1) return;
       }
-      
-      // Search filter
-      if(q) {
-        var match = item.ticker.toLowerCase().indexOf(q) !== -1 ||
-                    item.name.toLowerCase().indexOf(q) !== -1 ||
-                    item.sector.toLowerCase().indexOf(q) !== -1;
-        if(!match) return;
+      // Search
+      if (ql) {
+        var match = (item.ticker || '').toLowerCase().indexOf(ql) !== -1 ||
+                    (item.name || '').toLowerCase().indexOf(ql) !== -1 ||
+                    (item.sector || '').toLowerCase().indexOf(ql) !== -1 ||
+                    (item.region || '').toLowerCase().indexOf(ql) !== -1;
+        if (!match) return;
       }
-      
-      currentGroup.items.push(item);
+      cur.items.push(item);
     }
   });
 
   var visible = groups.filter(function(g){ return g.items.length > 0; });
-  
-  if(visible.length === 0) {
-    browser.innerHTML = '<div style="text-align:center;padding:48px 0;font:400 13px/1 var(--mono);color:var(--w4)">No assets found' + (q ? ' for "' + q + '"' : '') + '</div>';
+
+  if (visible.length === 0) {
+    browser.innerHTML = '<div style="text-align:center;padding:60px 0;font-family:var(--mono);font-size:13px;color:var(--w4)">No assets found' + (ql ? ' for "' + ql + '"' : '') + '</div>';
     return;
   }
 
-  browser.innerHTML = visible.map(function(group) {
-    var sectionKey = group.section.replace(/[^a-z0-9]/gi, '_');
-    var regionBadge = group.region ? '<span class="region-badge region-' + group.region.toLowerCase() + '">' + group.region + '</span>' : '';
-    var itemsHtml = group.items.map(function(item) {
-      return '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') + '" onclick="selectAsset('' + item.id + '')" id="ac_' + item.id + '">' +
-        '<div class="ac-ticker">' + item.ticker + '</div>' +
-        '<div class="ac-name">' + item.name + '</div>' +
-        '<div class="ac-sector">' + item.sector + '</div>' +
-      '</div>';
-    }).join('');
-
-    return '<div class="section-block">' +
-      '<div class="sec-header" onclick="toggleSection('' + sectionKey + '')">' +
-        '<div class="sec-title">' + regionBadge + group.section + '</div>' +
+  var html = '';
+  visible.forEach(function(group) {
+    var key = group.section.replace(/\W+/g, '_');
+    var badge = group.region ? '<span class="region-badge region-' + group.region.toLowerCase() + '">' + group.region + '</span>' : '';
+    var cards = '';
+    group.items.forEach(function(item) {
+      cards += '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') +
+        '" onclick="selectAsset(\'' + item.id + '\')" id="ac_' + item.id + '">' +
+        '<div class="ac-ticker">' + (item.ticker || '') + '</div>' +
+        '<div class="ac-name">' + (item.name || '') + '</div>' +
+        '<div class="ac-sector">' + (item.sector || '') + '</div>' +
+        '</div>';
+    });
+    html += '<div class="section-block">' +
+      '<div class="sec-header" onclick="toggleSec(\'' + key + '\')">' +
+        '<div class="sec-title">' + badge + group.section + '</div>' +
         '<div class="sec-count">' + group.items.length + '</div>' +
         '<div class="sec-chevron">&#9660;</div>' +
       '</div>' +
-      '<div class="sec-body" id="sb_' + sectionKey + '" style="max-height:2000px">' +
-        '<div class="asset-grid">' + itemsHtml + '</div>' +
+      '<div class="sec-body" id="sb_' + key + '" style="max-height:2000px">' +
+        '<div class="asset-grid">' + cards + '</div>' +
       '</div>' +
-    '</div>';
-  }).join('');
+      '</div>';
+  });
+  browser.innerHTML = html;
 }
 
-function toggleSection(key) {
+function toggleSec(key) {
   var body = document.getElementById('sb_' + key);
-  if(!body) return;
-  var header = body.previousElementSibling;
-  var isCollapsed = body.classList.contains('collapsed');
-  if(isCollapsed) {
+  if (!body) return;
+  var hdr = body.previousElementSibling;
+  if (body.classList.contains('collapsed')) {
     body.classList.remove('collapsed');
     body.style.maxHeight = '2000px';
-    if(header) header.classList.remove('collapsed');
+    if (hdr) hdr.classList.remove('collapsed');
   } else {
     body.classList.add('collapsed');
     body.style.maxHeight = '0';
-    if(header) header.classList.add('collapsed');
+    if (hdr) hdr.classList.add('collapsed');
   }
 }
 
 function handleSearch() {
   var q = document.getElementById('searchBox').value;
-  if(q) {
+  if (q) {
     activeRegion = null;
     activeSector = null;
     document.querySelectorAll('.region-tab').forEach(function(t){ t.classList.remove('active'); });
-    var firstR = document.querySelector('.region-tab');
-    if(firstR) firstR.classList.add('active');
+    var fr = document.querySelector('.region-tab'); if (fr) fr.classList.add('active');
     document.querySelectorAll('.sector-tab').forEach(function(t){ t.classList.remove('active'); });
-    var firstS = document.querySelector('.sector-tab');
-    if(firstS) firstS.classList.add('active');
-    buildBrowser(q, null, null);
-  } else {
-    buildBrowser('', activeRegion, activeSector);
+    var fs = document.querySelector('.sector-tab'); if (fs) fs.classList.add('active');
   }
+  buildBrowser(q, activeRegion, activeSector);
 }
 
-// ── SELECT ASSET ──────────────────────────────────────
+// ============================================================
+// SELECT ASSET
+// ============================================================
 function selectAsset(id) {
-  if(selectedId) {
+  if (selectedId) {
     var old = document.getElementById('ac_' + selectedId);
-    if(old) old.classList.remove('selected');
+    if (old) old.classList.remove('selected');
   }
   selectedId = id;
-  var card = document.getElementById('ac_' + id);
-  if(card) card.classList.add('selected');
+  var newCard = document.getElementById('ac_' + id);
+  if (newCard) newCard.classList.add('selected');
 
   var item = null;
-  for(var i=0; i<CATALOGUE.length; i++) {
-    if(CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; }
+  for (var i = 0; i < CATALOGUE.length; i++) {
+    if (CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; }
   }
-  if(!item) return;
-  
-  document.getElementById('selTicker').textContent = item.ticker;
-  document.getElementById('selName').textContent = item.name;
-  document.getElementById('selSector').textContent = item.sector + (item.region ? ' · ' + item.region : '');
+  if (!item) return;
 
-  var analysisEl = document.getElementById('analysis');
-  analysisEl.style.display = 'block';
-  analysisEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
+  document.getElementById('selTicker').textContent = item.ticker || id;
+  document.getElementById('selName').textContent = item.name || '';
+  var se = document.getElementById('selSector');
+  if (se) se.textContent = (item.sector || '') + (item.region ? ' \u00b7 ' + item.region : '');
+
+  var el = document.getElementById('analysis');
+  if (el) {
+    el.style.display = 'block';
+    setTimeout(function(){ el.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
+  }
   document.getElementById('pill').textContent = 'READY';
   document.getElementById('pill').className = 'status-pill';
-  document.getElementById('analysisBody').innerHTML = '<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ' + item.name + ''s seasonal data</div>';
+  var body = document.getElementById('analysisBody');
+  if (body) body.innerHTML = '<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ' + (item.name || id) + '\'s seasonal data</div>';
 }
 
-// ── PILL ──────────────────────────────────────────────
+// ============================================================
+// PILL
+// ============================================================
 function pill(t, cls) {
-  if(!cls) cls = '';
   var e = document.getElementById('pill');
+  if (!e) return;
   e.textContent = t;
   e.className = 'status-pill' + (cls ? ' ' + cls : '');
 }
 
-// ── WHEEL ─────────────────────────────────────────────
+// ============================================================
+// VISUALISATIONS
+// ============================================================
+var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var MF_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
 function wheel(months, name) {
   var S=400, cx=200, cy=200, ir=56, mr=155;
-  var mx = 0;
-  months.forEach(function(m){ if(Math.abs(m.avg) > mx) mx = Math.abs(m.avg); });
-  if(mx < 0.5) mx = 0.5;
-  var p = '';
-  var sl = (2*Math.PI)/12;
-  months.forEach(function(m, i) {
-    var a0 = i*sl - Math.PI/2, a1 = a0 + sl*0.88;
-    var norm = Math.abs(m.avg)/mx;
-    var or = ir + (mr-ir)*(0.15 + norm*0.85);
-    var x1=cx+ir*Math.cos(a0), y1=cy+ir*Math.sin(a0);
-    var x2=cx+or*Math.cos(a0), y2=cy+or*Math.sin(a0);
-    var x3=cx+or*Math.cos(a1), y3=cy+or*Math.sin(a1);
-    var x4=cx+ir*Math.cos(a1), y4=cy+ir*Math.sin(a1);
-    var col = m.avg>=0 ? '#00C97E' : '#F04050';
-    var op = 0.2 + norm*0.78;
-    var mid = (a0+a1)/2;
-    var lx=cx+(or+18)*Math.cos(mid), ly=cy+(or+18)*Math.sin(mid);
-    var vx=cx+(ir+(or-ir)*0.54)*Math.cos(mid), vy=cy+(ir+(or-ir)*0.54)*Math.sin(mid);
-    p += '<path d="M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2 + 'A' + or + ' ' + or + ' 0 0 1 ' + x3 + ' ' + y3 + 'L' + x4 + ' ' + y4 + 'A' + ir + ' ' + ir + ' 0 0 0 ' + x1 + ' ' + y1 + 'Z" fill="' + col + '" fill-opacity="' + op + '" stroke="' + col + '" stroke-width="0.5" stroke-opacity="0.4"/>';
-    p += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="' + (m.avg>=0?'#7EE8A2':'#F08080') + '" font-weight="500">' + m.m + '</text>';
-    if(norm > 0.2) {
-      var sign = m.avg > 0 ? '+' : '';
-      p += '<text x="' + vx + '" y="' + vy + '" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate(' + (i*30+14) + ',' + vx + ',' + vy + ')">' + sign + Number(m.avg).toFixed(1) + '%</text>';
+  var mx=0.5;
+  months.forEach(function(m){ if(Math.abs(m.avg)>mx) mx=Math.abs(m.avg); });
+  var sl=(2*Math.PI)/12, p='';
+  months.forEach(function(m,i){
+    var a0=i*sl-Math.PI/2, a1=a0+sl*0.88;
+    var norm=Math.abs(m.avg)/mx;
+    var or=ir+(mr-ir)*(0.15+norm*0.85);
+    var x1=cx+ir*Math.cos(a0),y1=cy+ir*Math.sin(a0);
+    var x2=cx+or*Math.cos(a0),y2=cy+or*Math.sin(a0);
+    var x3=cx+or*Math.cos(a1),y3=cy+or*Math.sin(a1);
+    var x4=cx+ir*Math.cos(a1),y4=cy+ir*Math.sin(a1);
+    var col=m.avg>=0?'#00C97E':'#F04050';
+    var op=0.2+norm*0.78;
+    var mid=(a0+a1)/2;
+    var lx=cx+(or+18)*Math.cos(mid),ly=cy+(or+18)*Math.sin(mid);
+    var vx=cx+(ir+(or-ir)*0.54)*Math.cos(mid),vy=cy+(ir+(or-ir)*0.54)*Math.sin(mid);
+    p+='<path d="M'+x1+' '+y1+'L'+x2+' '+y2+'A'+or+' '+or+' 0 0 1 '+x3+' '+y3+'L'+x4+' '+y4+'A'+ir+' '+ir+' 0 0 0 '+x1+' '+y1+'Z" fill="'+col+'" fill-opacity="'+op+'" stroke="'+col+'" stroke-width="0.5" stroke-opacity="0.4"/>';
+    p+='<text x="'+lx+'" y="'+ly+'" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+(m.avg>=0?'#7EE8A2':'#F08080')+'" font-weight="500">'+m.m+'</text>';
+    if(norm>0.2){
+      p+='<text x="'+vx+'" y="'+vy+'" text-anchor="middle" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="white" font-weight="600" transform="rotate('+(i*30+14)+','+vx+','+vy+')">'+(m.avg>0?'+':'')+Number(m.avg).toFixed(1)+'%</text>';
     }
   });
-  var lbl = name.length > 12 ? name.slice(0,11) + '...' : name;
-  p += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (ir-3) + '" fill="#070C18"/>';
-  p += '<text x="' + cx + '" y="' + (cy-8) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">SEASONAL</text>';
-  p += '<text x="' + cx + '" y="' + (cy+8) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#EDF2FA" font-weight="600">' + lbl + '</text>';
-  return '<svg viewBox="0 0 ' + S + ' ' + S + '" style="width:100%;max-width:400px">' + p + '</svg>';
+  var lbl=name.length>12?name.slice(0,11)+'...':name;
+  p+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(ir-3)+'" fill="#070C18"/>';
+  p+='<text x="'+cx+'" y="'+(cy-8)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">SEASONAL</text>';
+  p+='<text x="'+cx+'" y="'+(cy+8)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#EDF2FA" font-weight="600">'+lbl+'</text>';
+  return '<svg viewBox="0 0 '+S+' '+S+'" style="width:100%;max-width:400px">'+p+'</svg>';
 }
 
-// ── BARS ──────────────────────────────────────────────
 function bars(months) {
-  var mx = 0;
-  months.forEach(function(m){ if(Math.abs(m.avg) > mx) mx = Math.abs(m.avg); });
-  if(mx < 0.5) mx = 0.5;
-  var html = '<div class="bars">';
-  months.forEach(function(m) {
-    var w = (Math.abs(m.avg)/mx*100).toFixed(0);
-    var col = m.avg>=0 ? 'var(--green)' : 'var(--red)';
-    var sign = m.avg>=0 ? '+' : '';
-    html += '<div>' +
-      '<div class="brow">' +
-        '<div class="bm">' + m.m + '</div>' +
-        '<div class="bt"><div class="bf" style="width:0%;background:' + col + ';opacity:.72" data-w="' + w + '"></div></div>' +
-        '<div class="bv ' + (m.avg>=0?'p':'n') + '">' + sign + Number(m.avg).toFixed(2) + '%</div>' +
-      '</div>' +
-      '<div class="bsub">WIN RATE ' + m.win + '% &middot; ' + m.note + '</div>' +
+  var mx=0.5;
+  months.forEach(function(m){ if(Math.abs(m.avg)>mx) mx=Math.abs(m.avg); });
+  var html='<div class="bars">';
+  months.forEach(function(m){
+    var w=(Math.abs(m.avg)/mx*100).toFixed(0);
+    var col=m.avg>=0?'var(--green)':'var(--red)';
+    var sign=m.avg>=0?'+':'';
+    html+='<div>'+
+      '<div class="brow">'+
+        '<div class="bm">'+m.m+'</div>'+
+        '<div class="bt"><div class="bf" style="width:0%;background:'+col+';opacity:.72" data-w="'+w+'"></div></div>'+
+        '<div class="bv '+(m.avg>=0?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+'%</div>'+
+      '</div>'+
+      '<div class="bsub">WIN RATE '+m.win+'% &middot; '+m.note+'</div>'+
     '</div>';
   });
-  return html + '</div>';
+  return html+'</div>';
 }
 
-// ── CARDS ─────────────────────────────────────────────
-function cards(months) {
-  var s = months.slice().sort(function(a,b){ return b.avg-a.avg; });
-  var t3 = s.slice(0,3), b3 = s.slice(-3).reverse();
-  var MF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  function card(m, col, sign) {
-    var idx = MO.indexOf(m.m);
-    return '<div class="card"><div class="cn">' + (idx>=0?MF[idx]:m.m) + '</div><div class="cv" style="color:' + col + '">' + sign + Number(m.avg).toFixed(2) + '%</div><div class="cr">' + m.win + '% win rate</div></div>';
+function makeCards(months) {
+  var s=months.slice().sort(function(a,b){return b.avg-a.avg;});
+  var t3=s.slice(0,3), b3=s.slice(-3).reverse();
+  function card(m,col,sign){
+    var idx=MO.indexOf(m.m);
+    return '<div class="card"><div class="cn">'+(idx>=0?MF_LONG[idx]:m.m)+'</div><div class="cv" style="color:'+col+'">'+sign+Number(m.avg).toFixed(2)+'%</div><div class="cr">'+m.win+'% win rate</div></div>';
   }
-  return '<div class="cards"><div class="ctitle">Best &amp; Worst Months</div><div class="cgrid">' +
-    t3.map(function(m){ return card(m,'var(--green)','+'); }).join('') +
-    b3.map(function(m){ return card(m,'var(--red)',''); }).join('') +
+  return '<div class="cards"><div class="ctitle">Best &amp; Worst Months</div><div class="cgrid">'+
+    t3.map(function(m){return card(m,'var(--green)','+');}).join('')+
+    b3.map(function(m){return card(m,'var(--red)','');}).join('')+
   '</div></div>';
 }
 
-function animateBars() {
-  setTimeout(function() {
-    document.querySelectorAll('.bf').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
-  }, 80);
+function animateBars(){
+  setTimeout(function(){
+    document.querySelectorAll('.bf').forEach(function(el){ el.style.width=el.dataset.w+'%'; });
+  },80);
 }
 
 function getMonths(id) {
-  var item = null;
-  for(var i=0; i<CATALOGUE.length; i++) {
-    if(CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; }
-  }
-  if(!item) return PATTERNS.broadIndex;
-  var patKey = item.pattern || 'broadIndex';
-  var pat = PATTERNS[patKey];
-  if(!pat) pat = PATTERNS.broadIndex;
+  var item=null;
+  for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===id){item=CATALOGUE[i];break;} }
+  var patKey=(item&&item.pattern)||'broadIndex';
+  var pat=PATTERNS[patKey]||PATTERNS.broadIndex;
   return JSON.parse(JSON.stringify(pat));
 }
 
-// ── RUN ───────────────────────────────────────────────
+// ============================================================
+// RUN ANALYSIS
+// ============================================================
 function run() {
-  if(!selectedId) return;
-  if(!checkUsageLimit()) return;
-
-  var item = null;
-  for(var i=0; i<CATALOGUE.length; i++) {
-    if(CATALOGUE[i].id === selectedId) { item = CATALOGUE[i]; break; }
-  }
+  if (!selectedId) return;
+  if (!checkUsageLimit()) return;
+  var item=null;
+  for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===selectedId){item=CATALOGUE[i];break;} }
   if(!item) return;
 
-  var years = document.getElementById('yrsSel').value;
-  var btn = document.getElementById('goBtn');
-  btn.disabled = true;
-  pill('ANALYZING...', 'loading');
+  var years=document.getElementById('yrsSel').value;
+  var btn=document.getElementById('goBtn');
+  btn.disabled=true;
+  pill('ANALYZING...','loading');
 
-  setTimeout(function() {
+  setTimeout(function(){
     try {
-      var months = getMonths(selectedId);
-      var patKey = item.pattern || 'broadIndex';
+      var months=getMonths(selectedId);
+      var patKey=(item.pattern)||'broadIndex';
+      var sorted=months.slice().sort(function(a,b){return b.avg-a.avg;});
+      var bestM=sorted[0].m+' +'+(+sorted[0].avg).toFixed(1)+'%';
+      var worstM=sorted[11].m+' '+(+sorted[11].avg).toFixed(1)+'%';
+      var posM=months.filter(function(m){return m.avg>0;}).length+'/12';
+      var ai=ANALYSIS_BY_PATTERN[patKey]||ANALYSIS_BY_PATTERN['broadIndex']||'';
 
-      var sorted = months.slice().sort(function(a,b){ return b.avg-a.avg; });
-      var bestM = sorted[0].m + ' +' + Number(sorted[0].avg).toFixed(1) + '%';
-      var worstM = sorted[11].m + ' ' + Number(sorted[11].avg).toFixed(1) + '%';
-      var posCount = months.filter(function(m){ return m.avg > 0; }).length;
-      var posM = posCount + '/12';
-
-      var analysisText = ANALYSIS_BY_PATTERN[patKey] || ANALYSIS_BY_PATTERN['broadIndex'] || '';
-
-      document.getElementById('analysisBody').innerHTML =
-        '<div class="stats-strip">' +
-          '<div class="ss"><div class="ss-v" style="color:var(--green)">' + bestM + '</div><div class="ss-l">Best Month</div></div>' +
-          '<div class="ss"><div class="ss-v" style="color:var(--red)">' + worstM + '</div><div class="ss-l">Worst Month</div></div>' +
-          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">' + posM + '</div><div class="ss-l">Positive Months</div></div>' +
-        '</div>' +
-        '<div class="charts-row">' +
-          '<div class="chart-panel">' +
-            '<div class="cp-title">Monthly Return Calendar</div>' +
-            '<div id="cwrap" style="display:flex;flex-direction:column;align-items:center">' +
-              wheel(months, item.ticker) +
-              '<div class="legend">' +
-                '<span><span class="ld" style="background:var(--green)"></span>Positive avg</span>' +
-                '<span><span class="ld" style="background:var(--red)"></span>Negative avg</span>' +
-                '<span style="font-size:10px">Arc = magnitude</span>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="chart-panel">' +
-            '<div class="cp-title">Average Monthly Return</div>' +
-            bars(months) +
-          '</div>' +
-        '</div>' +
-        cards(months) +
-        '<div class="ai-panel">' +
-          '<div class="ai-header">' +
-            '<span class="ai-badge">AI Analysis</span>' +
-            '<span class="ai-title">' + item.name + ' &middot; ' + years + '-Year Seasonal Intelligence</span>' +
-          '</div>' +
-          '<div class="aitxt" id="aiTxt">' + analysisText + '</div>' +
+      document.getElementById('analysisBody').innerHTML=
+        '<div class="stats-strip">'+
+          '<div class="ss"><div class="ss-v" style="color:var(--green)">'+bestM+'</div><div class="ss-l">Best Month</div></div>'+
+          '<div class="ss"><div class="ss-v" style="color:var(--red)">'+worstM+'</div><div class="ss-l">Worst Month</div></div>'+
+          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">'+posM+'</div><div class="ss-l">Positive Months</div></div>'+
+        '</div>'+
+        '<div class="charts-row">'+
+          '<div class="chart-panel">'+
+            '<div class="cp-title">Monthly Return Calendar</div>'+
+            '<div id="cwrap" style="display:flex;flex-direction:column;align-items:center">'+
+              wheel(months,item.ticker)+
+              '<div class="legend">'+
+                '<span><span class="ld" style="background:var(--green)"></span>Positive avg</span>'+
+                '<span><span class="ld" style="background:var(--red)"></span>Negative avg</span>'+
+                '<span style="font-size:10px">Arc = magnitude</span>'+
+              '</div>'+
+            '</div>'+
+          '</div>'+
+          '<div class="chart-panel">'+
+            '<div class="cp-title">Average Monthly Return</div>'+
+            bars(months)+
+          '</div>'+
+        '</div>'+
+        makeCards(months)+
+        '<div class="ai-panel">'+
+          '<div class="ai-header">'+
+            '<span class="ai-badge">AI Analysis</span>'+
+            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Intelligence</span>'+
+          '</div>'+
+          '<div class="aitxt" id="aiTxt">'+ai+'</div>'+
         '</div>';
 
       animateBars();
       trackAnalysis();
-      pill('COMPLETE', 'done');
+      pill('COMPLETE','done');
     } catch(e) {
-      pill('ERROR', 'err');
+      pill('ERROR','err');
       console.error(e);
     } finally {
-      btn.disabled = false;
+      btn.disabled=false;
     }
-  }, 400);
+  },400);
 }
 
-// ── INIT ─────────────────────────────────────────────
+// ============================================================
+// INIT
+// ============================================================
 buildRegionTabs();
 buildSectorTabs();
 buildBrowser('', null, null);
+
 
 // ═══════════════════════════════════════════════════════
 // SUPABASE AUTH + USAGE TRACKING
