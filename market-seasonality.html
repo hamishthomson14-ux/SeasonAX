@@ -123,7 +123,7 @@ header{padding:18px 28px;display:flex;align-items:center;justify-content:space-b
 
 <header>
   <div>
-    <a href="seasonax-landing.html" style="font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--amber);text-transform:uppercase;text-decoration:none">Seasonax<span style="color:var(--muted);font-weight:300">.io</span></a>
+    <a href="https://season-ax.vercel.app" style="font-family:var(--mono);font-size:13px;letter-spacing:.15em;color:var(--amber);text-transform:uppercase;text-decoration:none">Seasonax<span style="color:var(--muted);font-weight:300">.io</span></a>
     <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px">Seasonality Engine</div>
   </div>
   <div style="display:flex;align-items:center;gap:16px">
@@ -133,7 +133,7 @@ header{padding:18px 28px;display:flex;align-items:center;justify-content:space-b
       <button onclick="signOut()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:6px;font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--amber)';this.style.color='var(--amber)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Sign out</button>
     </div>
     <div id="loginPrompt" style="display:none">
-      <a href="seasonax-auth.html" style="background:var(--amber);color:var(--navy);border:none;padding:7px 16px;border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none">Sign in</a>
+      <a href="/seasonax-auth.html" style="background:var(--amber);color:var(--navy);border:none;padding:7px 16px;border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none">Sign in</a>
     </div>
   </div>
 </header>
@@ -863,7 +863,7 @@ async function loadUsageCount(){
 
 async function signOut(){
   await sb.auth.signOut();
-  window.location.href = 'seasonax-auth.html';
+  window.location.href = '/seasonax-auth.html';
 }
 
 function trackAnalysis(){
@@ -898,8 +898,8 @@ initAuth();
     <h2 style="font-size:22px;font-weight:700;margin-bottom:10px">You've used your 3 free analyses</h2>
     <p style="color:#7A8FA6;font-size:14px;line-height:1.7;margin-bottom:28px">Create a free account to get 3 more analyses per month, or upgrade to Pro for unlimited access to all 100+ assets.</p>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <a href="seasonax-auth.html" style="background:#F5A623;color:#080F1E;border:none;padding:13px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block">Create free account</a>
-      <a href="seasonax-landing.html#pricing" style="background:transparent;border:1px solid #1E3050;color:#7A8FA6;padding:11px;border-radius:6px;font-size:14px;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block;transition:all .2s">View pricing plans</a>
+      <a href="/seasonax-auth.html" style="background:#F5A623;color:#080F1E;border:none;padding:13px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block">Create free account</a>
+      <a href="index.html#pricing" style="background:transparent;border:1px solid #1E3050;color:#7A8FA6;padding:11px;border-radius:6px;font-size:14px;cursor:pointer;font-family:Inter,sans-serif;text-decoration:none;display:block;transition:all .2s">View pricing plans</a>
       <button onclick="document.getElementById('paywallOverlay').style.display='none'" style="background:transparent;border:none;color:#7A8FA6;font-size:13px;cursor:pointer;margin-top:4px;font-family:Inter,sans-serif">Maybe later</button>
     </div>
     <div style="margin-top:20px;font-size:11px;color:#4A5568;font-family:'IBM Plex Mono',monospace">Used: 3/3 free analyses this month</div>
