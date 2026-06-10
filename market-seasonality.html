@@ -200,6 +200,40 @@ button{cursor:pointer;font-family:var(--sans)}
   .nav{padding:0 16px}
   .nav-sub,.nav-div{display:none}
 }
+
+/* ── MODE SWITCHER ── */
+.mode-bar{display:flex;gap:6px;justify-content:center;margin:0 0 28px}
+.mode-tab{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:10px 26px;border-radius:8px;font:600 13px/1 var(--sans);transition:all .18s;letter-spacing:.01em;cursor:pointer}
+.mode-tab:hover{border-color:var(--amber2);color:var(--w)}
+.mode-tab.active{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+
+/* ── BACKTEST ── */
+.bt-config{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:24px;margin-bottom:24px}
+.bt-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px}
+.bt-row:last-child{margin-bottom:0}
+.bt-field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px}
+.bt-label{font:500 9px/1 var(--mono);letter-spacing:.16em;color:var(--w4);text-transform:uppercase}
+.bt-select{background:var(--s1);border:1px solid var(--b2);color:var(--w2);padding:9px 10px;font:400 12px/1 var(--mono);border-radius:6px;outline:none;cursor:pointer;transition:border-color .18s;width:100%}
+.bt-select:focus{border-color:var(--amber2)}
+.bt-pair{display:flex;gap:8px;align-items:center}
+.bt-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px 12px 0 0;overflow:hidden}
+.bts{background:var(--bg3);padding:16px 12px;text-align:center}
+.bts-v{font:600 17px/1 var(--mono);margin-bottom:5px;letter-spacing:-.01em}
+.bts-l{font:400 9px/1 var(--mono);color:var(--w4);letter-spacing:.08em;text-transform:uppercase}
+.bt-panel{background:var(--bg2);border:1px solid var(--b2);border-top:none;padding:22px 24px}
+.bt-panel.last{border-radius:0 0 12px 12px}
+.bt-ptitle{font:500 9px/1 var(--mono);letter-spacing:.16em;color:var(--w4);text-transform:uppercase;margin-bottom:16px}
+.bt-yrgrid{display:flex;flex-direction:column;gap:5px}
+.bt-yr{display:grid;grid-template-columns:44px 1fr 64px;align-items:center;gap:8px}
+.bt-yr-l{font:400 10px/1 var(--mono);color:var(--w4);text-align:right}
+.bt-yr-t{height:16px;background:var(--s1);border-radius:2px;overflow:hidden;position:relative}
+.bt-yr-f{height:100%;border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.bt-yr-v{font:600 10px/1 var(--mono);text-align:right}
+.bt-disclaimer{font:400 11px/1.6 var(--mono);color:var(--w5);margin-top:18px;padding:12px 14px;background:rgba(232,147,24,.04);border:1px solid rgba(232,147,24,.12);border-radius:8px}
+.bt-legend{display:flex;gap:16px;font:400 10px/1 var(--mono);color:var(--w4);margin-top:10px}
+.bt-legend span{display:flex;align-items:center;gap:5px}
+.bt-ld{width:14px;height:2px;display:inline-block;border-radius:1px}
+@media(max-width:768px){.bt-stats{grid-template-columns:repeat(3,1fr)}.bt-row{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -241,6 +275,13 @@ button{cursor:pointer;font-family:var(--sans)}
     <p class="hs-sub">Seasonal patterns across 500+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
   </div>
 
+  <!-- MODE SWITCHER -->
+  <div class="mode-bar">
+    <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Seasonal Analyzer</button>
+    <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Strategy Backtest</button>
+  </div>
+
+  <div id="modeAnalyzer">
   <!-- FILTER BAR -->
   <div class="filter-bar">
     <input type="text" class="filter-search" id="searchBox" placeholder="Search ticker, name or market..." oninput="handleSearch()">
@@ -282,6 +323,56 @@ button{cursor:pointer;font-family:var(--sans)}
     <div class="analysis-body" id="analysisBody">
       <div class="analysis-empty">Hit Analyze to load the seasonal data</div>
     </div>
+  </div><!-- /modeAnalyzer -->
+
+  <!-- BACKTEST MODE -->
+  <div id="modeBacktest" style="display:none">
+    <div class="bt-config">
+      <div class="bt-row">
+        <div class="bt-field" style="flex:2.2;min-width:280px">
+          <label class="bt-label">Asset</label>
+          <select class="bt-select" id="btAsset"></select>
+        </div>
+        <div class="bt-field">
+          <label class="bt-label">Backtest range</label>
+          <div class="bt-pair">
+            <select class="bt-select" id="btFromYear"></select>
+            <span style="color:var(--w4);font:400 11px/1 var(--mono)">to</span>
+            <select class="bt-select" id="btToYear"></select>
+          </div>
+        </div>
+      </div>
+      <div class="bt-row">
+        <div class="bt-field">
+          <label class="bt-label">Buy</label>
+          <div class="bt-pair">
+            <select class="bt-select" id="btBuyDay" style="flex:1.4">
+              <option value="first">First trading day of</option>
+              <option value="last">Last trading day of</option>
+            </select>
+            <select class="bt-select" id="btBuyMonth" style="flex:1"></select>
+          </div>
+        </div>
+        <div class="bt-field">
+          <label class="bt-label">Sell</label>
+          <div class="bt-pair">
+            <select class="bt-select" id="btSellDay" style="flex:1.4">
+              <option value="last">Last trading day of</option>
+              <option value="first">First trading day of</option>
+            </select>
+            <select class="bt-select" id="btSellMonth" style="flex:1"></select>
+          </div>
+        </div>
+        <div class="bt-field" style="flex:0 0 auto;min-width:170px;justify-content:flex-end">
+          <label class="bt-label">&nbsp;</label>
+          <button class="btn-analyze" id="btGoBtn" onclick="runBacktest()" style="justify-content:center">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5l8 4.5-8 4.5V1.5z"/></svg>
+            Run Backtest
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="btResults"></div>
   </div>
 
 </div>
@@ -1626,6 +1717,229 @@ initAuth();
 
 
 
+
+
+// ============================================================
+// MODE SWITCHER
+// ============================================================
+function switchMode(mode) {
+  document.getElementById('modeAnalyzer').style.display = mode === 'analyzer' ? 'block' : 'none';
+  document.getElementById('modeBacktest').style.display = mode === 'backtest' ? 'block' : 'none';
+  document.getElementById('mt_analyzer').classList.toggle('active', mode === 'analyzer');
+  document.getElementById('mt_backtest').classList.toggle('active', mode === 'backtest');
+}
+
+// ============================================================
+// BACKTEST — deterministic simulation from seasonal model
+// ============================================================
+function btInit() {
+  // Assets
+  var sel = document.getElementById('btAsset');
+  if (!sel) return;
+  var html = '', open = false;
+  CATALOGUE.forEach(function(item) {
+    if (item.section) {
+      if (open) html += '</optgroup>';
+      html += '<optgroup label="' + item.section + (item.region ? ' (' + item.region + ')' : '') + '">';
+      open = true;
+    } else {
+      html += '<option value="' + item.id + '">' + item.ticker + ' \u2014 ' + item.name + '</option>';
+    }
+  });
+  if (open) html += '</optgroup>';
+  sel.innerHTML = html;
+
+  // Months
+  var mNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var buyHtml = '', sellHtml = '';
+  mNames.forEach(function(n, i) {
+    buyHtml += '<option value="' + i + '"' + (i === 9 ? ' selected' : '') + '>' + n + '</option>';
+    sellHtml += '<option value="' + i + '"' + (i === 11 ? ' selected' : '') + '>' + n + '</option>';
+  });
+  document.getElementById('btBuyMonth').innerHTML = buyHtml;
+  document.getElementById('btSellMonth').innerHTML = sellHtml;
+
+  // Years 2000-2025
+  var fy = '', ty = '';
+  for (var y = 2000; y <= 2025; y++) {
+    fy += '<option value="' + y + '"' + (y === 2000 ? ' selected' : '') + '>' + y + '</option>';
+    ty += '<option value="' + y + '"' + (y === 2025 ? ' selected' : '') + '>' + y + '</option>';
+  }
+  document.getElementById('btFromYear').innerHTML = fy;
+  document.getElementById('btToYear').innerHTML = ty;
+}
+
+function btHash(str) {
+  var h = 2166136261;
+  for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function btRng(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function btGauss(rng) {
+  var u = 0, v = 0;
+  while (u === 0) u = rng();
+  while (v === 0) v = rng();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+function btSigma(pattern) {
+  var mean = 0; pattern.forEach(function(m){ mean += m.avg; }); mean /= 12;
+  var v = 0; pattern.forEach(function(m){ v += (m.avg - mean) * (m.avg - mean); }); v /= 12;
+  return Math.max(Math.sqrt(v) * 2.6, 2.0);
+}
+function btMonthlyReturn(assetId, year, mi, pattern, sigma) {
+  var rng = btRng(btHash(assetId + '|' + year + '|' + mi));
+  return pattern[mi].avg + btGauss(rng) * sigma;
+}
+function btWindowMonths(buyM, sellM, buyDay, sellDay) {
+  var out = [], i = buyM, guard = 0;
+  while (guard++ <= 12) { out.push(i); if (i === sellM) break; i = (i + 1) % 12; }
+  if (buyDay === 'last') out.shift();   // enter at end of buy month -> skip it
+  if (sellDay === 'first' && out.length) out.pop(); // exit at start of sell month -> skip it
+  return out;
+}
+
+function runBacktest() {
+  if (!checkUsageLimit()) return;
+  var assetId = document.getElementById('btAsset').value;
+  var buyM = parseInt(document.getElementById('btBuyMonth').value, 10);
+  var sellM = parseInt(document.getElementById('btSellMonth').value, 10);
+  var buyDay = document.getElementById('btBuyDay').value;
+  var sellDay = document.getElementById('btSellDay').value;
+  var y0 = parseInt(document.getElementById('btFromYear').value, 10);
+  var y1 = parseInt(document.getElementById('btToYear').value, 10);
+  if (y1 < y0) { var tmp = y0; y0 = y1; y1 = tmp; }
+
+  var item = null;
+  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === assetId) { item = CATALOGUE[i]; break; }
+  if (!item) return;
+  var pattern = PATTERNS[item.pattern || 'broadIndex'] || PATTERNS.broadIndex;
+  var sigma = btSigma(pattern);
+  var winMonths = btWindowMonths(buyM, sellM, buyDay, sellDay);
+
+  var res = document.getElementById('btResults');
+  if (winMonths.length === 0) {
+    res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Your buy/sell window is empty \u2014 widen the dates.</div>';
+    return;
+  }
+
+  var btn = document.getElementById('btGoBtn');
+  btn.disabled = true;
+
+  setTimeout(function() {
+    try {
+      var years = [], stratEq = [100], bhEq = [100];
+      var wins = 0, best = null, worst = null;
+      for (var y = y0; y <= y1; y++) {
+        var r = 0;
+        winMonths.forEach(function(mi){ r += btMonthlyReturn(assetId, y, mi, pattern, sigma); });
+        var bh = 0;
+        for (var mi2 = 0; mi2 < 12; mi2++) bh += btMonthlyReturn(assetId, y, mi2, pattern, sigma);
+        years.push({ year: y, ret: r, bh: bh });
+        if (r > 0) wins++;
+        if (!best || r > best.ret) best = { year: y, ret: r };
+        if (!worst || r < worst.ret) worst = { year: y, ret: r };
+        stratEq.push(stratEq[stratEq.length - 1] * (1 + r / 100));
+        bhEq.push(bhEq[bhEq.length - 1] * (1 + bh / 100));
+      }
+      var n = years.length;
+      var finalS = stratEq[stratEq.length - 1], finalB = bhEq[bhEq.length - 1];
+      var totalRet = (finalS / 100 - 1) * 100;
+      var bhTotal = (finalB / 100 - 1) * 100;
+      var cagr = (Math.pow(Math.max(finalS, 0.01) / 100, 1 / n) - 1) * 100;
+      var winRate = Math.round(wins / n * 100);
+      var edge = totalRet - bhTotal;
+
+      var mNamesS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var stratLabel = (buyDay === 'first' ? 'First' : 'Last') + ' trading day of ' + mNamesS[buyM] +
+        ' \u2192 ' + (sellDay === 'last' ? 'last' : 'first') + ' trading day of ' + mNamesS[sellM];
+
+      function col(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
+      function sgn(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+
+      // ── Equity curve SVG ──
+      var W = 860, H = 240, pad = 36;
+      var allVals = stratEq.concat(bhEq);
+      var lo = Math.min.apply(null, allVals), hi = Math.max.apply(null, allVals);
+      if (hi - lo < 1) hi = lo + 1;
+      function px(idx) { return pad + (W - pad * 2) * idx / (stratEq.length - 1); }
+      function py(v) { return H - pad - (H - pad * 2) * (v - lo) / (hi - lo); }
+      function line(arr) {
+        var d = '';
+        arr.forEach(function(v, idx) { d += (idx === 0 ? 'M' : 'L') + px(idx).toFixed(1) + ' ' + py(v).toFixed(1); });
+        return d;
+      }
+      var grid = '';
+      for (var g = 0; g <= 4; g++) {
+        var gv = lo + (hi - lo) * g / 4;
+        var gy = py(gv).toFixed(1);
+        grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>';
+        grid += '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
+      }
+      grid += '<text x="' + pad + '" y="' + (H - 8) + '" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y0 + '</text>';
+      grid += '<text x="' + (W - pad) + '" y="' + (H - 8) + '" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y1 + '</text>';
+      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
+        '<path d="' + line(bhEq) + '" fill="none" stroke="#4D6880" stroke-width="1.5" stroke-dasharray="4 3"/>' +
+        '<path d="' + line(stratEq) + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
+        '</svg>';
+
+      // ── Year bars ──
+      var maxAbs = 1;
+      years.forEach(function(yy){ if (Math.abs(yy.ret) > maxAbs) maxAbs = Math.abs(yy.ret); });
+      var yrHtml = '';
+      years.forEach(function(yy) {
+        var w = (Math.abs(yy.ret) / maxAbs * 100).toFixed(0);
+        yrHtml += '<div class="bt-yr">' +
+          '<div class="bt-yr-l">' + yy.year + '</div>' +
+          '<div class="bt-yr-t"><div class="bt-yr-f" style="width:0%;background:' + col(yy.ret) + ';opacity:.72" data-w="' + w + '"></div></div>' +
+          '<div class="bt-yr-v" style="color:' + col(yy.ret) + '">' + sgn(yy.ret) + '</div>' +
+        '</div>';
+      });
+
+      res.innerHTML =
+        '<div class="bt-stats">' +
+          '<div class="bts"><div class="bts-v" style="color:' + col(totalRet) + '">' + sgn(totalRet) + '</div><div class="bts-l">Total Return</div></div>' +
+          '<div class="bts"><div class="bts-v" style="color:' + col(cagr) + '">' + sgn(cagr) + '</div><div class="bts-l">CAGR</div></div>' +
+          '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + winRate + '%</div><div class="bts-l">Win Rate</div></div>' +
+          '<div class="bts"><div class="bts-v" style="color:var(--green)">' + best.year + ' ' + sgn(best.ret) + '</div><div class="bts-l">Best Year</div></div>' +
+          '<div class="bts"><div class="bts-v" style="color:var(--red)">' + worst.year + ' ' + sgn(worst.ret) + '</div><div class="bts-l">Worst Year</div></div>' +
+          '<div class="bts"><div class="bts-v" style="color:' + col(edge) + '">' + sgn(edge) + '</div><div class="bts-l">vs Buy &amp; Hold</div></div>' +
+        '</div>' +
+        '<div class="bt-panel">' +
+          '<div class="bt-ptitle">' + item.ticker + ' \u00b7 ' + stratLabel + ' \u00b7 Growth of 100</div>' +
+          svg +
+          '<div class="bt-legend">' +
+            '<span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span>' +
+            '<span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bt-panel last">' +
+          '<div class="bt-ptitle">Year-by-Year Strategy Returns</div>' +
+          '<div class="bt-yrgrid">' + yrHtml + '</div>' +
+          '<div class="bt-disclaimer">SIMULATED BACKTEST \u2014 results are generated from SeasonAX\u2019s seasonal pattern model, not actual historical prices. Deterministic per asset and window so results are reproducible. Past or simulated performance does not guarantee future results.</div>' +
+        '</div>';
+
+      setTimeout(function() {
+        document.querySelectorAll('.bt-yr-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
+      }, 80);
+
+      trackAnalysis();
+    } catch (e) {
+      console.error(e);
+      res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Backtest error \u2014 check console.</div>';
+    } finally {
+      btn.disabled = false;
+    }
+  }, 350);
+}
+
+btInit();
 
 </script>
 </body>
