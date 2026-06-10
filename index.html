@@ -3,579 +3,732 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seasonax — Market Seasonality Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>SeasonAX — Market Seasonality Intelligence</title>
+<meta name="description" content="Decode 15 years of market patterns. Know exactly which months favor gains for 100+ stocks, ETFs and indices. Professional seasonal intelligence for serious investors.">
+<meta property="og:title" content="SeasonAX — Market Seasonality Intelligence">
+<meta property="og:description" content="15 years of seasonal data. 100+ assets. Instant pattern intelligence.">
+<meta property="og:url" content="https://season-ax.vercel.app">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#080F1E;--navy2:#0D1829;--slate:#1A2640;--slate2:#243352;--slate3:#2E4068;
-  --amber:#F5A623;--amber2:#E8941A;--green:#2ECC71;--red:#E84040;--blue:#4A9EFF;
-  --white:#E8EDF4;--muted:#7A8FA6;--border:#1E3050;
+  --navy:#060D1A;--navy2:#0A1221;--navy3:#0F1C30;
+  --slate:#152236;--slate2:#1D2F47;--slate3:#26405E;
+  --amber:#E8961A;--amber2:#F5A623;--amber3:#FFB84D;
+  --green:#00C278;--red:#E8404A;--blue:#3D8EF0;
+  --white:#EDF1F7;--off:#C8D3E0;--muted:#6B8099;--dim:#3D5470;
+  --border:#1A2D45;--border2:#243D5A;
   --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+  --glow:0 0 40px rgba(232,150,26,.08);
 }
-html{scroll-behavior:smooth}
-body{background:var(--navy);color:var(--white);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--navy);color:var(--white);font-family:var(--sans);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block}
 
-/* ── TICKER TAPE ── */
-.ticker-wrap{background:var(--slate);border-bottom:1px solid var(--border);padding:8px 0;overflow:hidden;position:relative}
-.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2}
-.ticker-wrap::before{left:0;background:linear-gradient(to right,var(--slate),transparent)}
-.ticker-wrap::after{right:0;background:linear-gradient(to left,var(--slate),transparent)}
-.ticker-track{display:flex;gap:0;white-space:nowrap;animation:ticker 35s linear infinite}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ticker-item{display:inline-flex;align-items:center;gap:8px;padding:0 28px;font-family:var(--mono);font-size:12px}
-.ticker-sym{color:var(--amber);font-weight:600}
-.ticker-val.up{color:var(--green)}
-.ticker-val.dn{color:var(--red)}
+/* ══════════════════════════════════
+   TICKER TAPE
+══════════════════════════════════ */
+.ticker{background:var(--navy2);border-bottom:1px solid var(--border);padding:7px 0;overflow:hidden;position:relative;z-index:50}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--navy2),transparent)}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--navy2),transparent)}
+.ticker-inner{display:flex;white-space:nowrap;animation:slide 40s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.t-item{display:inline-flex;align-items:center;gap:7px;padding:0 24px;font-family:var(--mono);font-size:11px;border-right:1px solid var(--border)}
+.t-sym{color:var(--amber2);font-weight:500;letter-spacing:.04em}
+.t-price{color:var(--muted)}
+.t-chg.up{color:var(--green)}.t-chg.dn{color:var(--red)}
 
-/* ── NAV ── */
-nav{padding:18px 60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(8,15,30,0.95);backdrop-filter:blur(10px)}
-.nav-logo{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--amber);letter-spacing:.05em}
-.nav-logo span{color:var(--muted);font-weight:300}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s}
-.nav-links a:hover{color:var(--white)}
-.nav-cta{display:flex;gap:12px;align-items:center}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .2s}
-.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
-.btn-primary{background:var(--amber);color:var(--navy);border:none;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:opacity .2s}
-.btn-primary:hover{opacity:.88}
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,13,26,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 60px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+.logo-mark{width:34px;height:34px;flex-shrink:0}
+.logo-text{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--white)}
+.logo-text span{color:var(--amber2)}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:6px 14px;font-size:13px;color:var(--muted);border-radius:6px;transition:all .15s;letter-spacing:.01em}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-nav-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:7px 16px;border-radius:7px;font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .2s;letter-spacing:.01em}
+.btn-nav-ghost:hover{border-color:var(--amber2);color:var(--white)}
+.btn-nav-cta{background:var(--amber);color:var(--navy);border:none;padding:7px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .2s;letter-spacing:.01em}
+.btn-nav-cta:hover{background:var(--amber2);transform:translateY(-1px)}
 
-/* ── HERO ── */
-.hero{padding:80px 60px 60px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.hero-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--amber)}
-.hero h1{font-size:52px;font-weight:700;line-height:1.1;margin-bottom:24px;letter-spacing:-.02em}
-.hero h1 em{font-style:normal;color:var(--amber)}
-.hero-sub{font-size:18px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:480px}
-.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.btn-xl{background:var(--amber);color:var(--navy);border:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:opacity .2s}
-.btn-xl:hover{opacity:.88}
-.btn-xl-ghost{background:transparent;border:1px solid var(--slate3);color:var(--white);padding:14px 32px;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans);transition:all .2s}
-.btn-xl-ghost:hover{border-color:var(--amber);color:var(--amber)}
-.hero-note{font-size:12px;color:var(--muted);margin-top:12px;font-family:var(--mono)}
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+.hero{position:relative;padding:80px 60px 0;max-width:1280px;margin:0 auto;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding-bottom:80px}
+.hero-label{display:inline-flex;align-items:center;gap:8px;background:rgba(232,150,26,.08);border:1px solid rgba(232,150,26,.2);border-radius:20px;padding:5px 14px;font-family:var(--mono);font-size:11px;color:var(--amber2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px}
+.hero-label::before{content:'';width:6px;height:6px;background:var(--amber2);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:58px;font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:24px;color:var(--white)}
+.hero h1 .accent{color:var(--amber2)}
+.hero h1 .dim{color:var(--muted);font-weight:300}
+.hero-sub{font-size:18px;color:var(--off);line-height:1.7;margin-bottom:40px;font-weight:400;max-width:500px}
+.hero-sub strong{color:var(--white);font-weight:500}
+.hero-actions{display:flex;gap:12px;align-items:center;margin-bottom:40px}
+.btn-hero{background:var(--amber);color:var(--navy);border:none;padding:15px 32px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:.01em;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,150,26,.25)}
+.btn-hero-ghost{background:transparent;border:1px solid var(--border2);color:var(--off);padding:15px 28px;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans);transition:all .2s}
+.btn-hero-ghost:hover{border-color:var(--amber2);color:var(--white)}
+.hero-trust{display:flex;align-items:center;gap:20px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+.hero-trust-item{display:flex;align-items:center;gap:6px}
+.hero-trust-item::before{content:'✓';color:var(--green);font-weight:700}
 
-/* ── HERO CHART (right side) ── */
+/* ── Hero right: the big visual ── */
 .hero-visual{position:relative}
-.hero-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.hc-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.hc-title{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-.hc-badge{font-family:var(--mono);font-size:10px;background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.25);padding:3px 8px;border-radius:20px}
-.hc-body{padding:20px}
-.month-bars{display:flex;flex-direction:column;gap:6px}
-.mb-row{display:grid;grid-template-columns:30px 1fr 54px;align-items:center;gap:8px}
-.mb-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right}
-.mb-track{height:18px;background:var(--slate);border-radius:2px;overflow:hidden;position:relative}
-.mb-fill{height:100%;border-radius:2px;animation:growBar .8s ease forwards;transform-origin:left}
-@keyframes growBar{from{width:0}to{width:var(--w)}}
-.mb-val{font-family:var(--mono);font-size:11px;font-weight:500;text-align:right}
-.mb-val.p{color:var(--green)}.mb-val.n{color:var(--red)}
-.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border)}
-.hcs{background:var(--navy2);padding:12px;text-align:center}
-.hcs-val{font-family:var(--mono);font-size:16px;font-weight:600;line-height:1}
-.hcs-lbl{font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:.05em;text-transform:uppercase}
-.floating-tag{position:absolute;background:var(--slate2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:11px}
-.ft1{top:-16px;right:-20px;color:var(--green)}
-.ft2{bottom:60px;left:-24px;color:var(--amber)}
+.hero-terminal{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5),var(--glow)}
+.ht-bar{background:var(--navy3);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.ht-dot{width:10px;height:10px;border-radius:50%}
+.ht-title{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:6px;letter-spacing:.06em}
+.ht-badge{margin-left:auto;font-family:var(--mono);font-size:9px;background:rgba(0,194,120,.1);color:var(--green);border:1px solid rgba(0,194,120,.2);padding:2px 8px;border-radius:10px;letter-spacing:.08em}
+.ht-body{padding:20px}
 
-/* ── SOCIAL PROOF BAR ── */
-.proof-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 60px;background:var(--navy2)}
-.proof-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.proof-stat{text-align:center}
-.ps-val{font-family:var(--mono);font-size:24px;font-weight:600;color:var(--amber)}
-.ps-lbl{font-size:12px;color:var(--muted);margin-top:2px}
-.proof-div{width:1px;height:40px;background:var(--border)}
+/* Heatmap grid */
+.heatmap{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-bottom:16px}
+.hm-cell{border-radius:5px;padding:10px 4px 8px;text-align:center;position:relative;cursor:default;transition:transform .15s}
+.hm-cell:hover{transform:scale(1.08);z-index:2}
+.hm-mo{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.4);margin-bottom:5px;letter-spacing:.04em}
+.hm-val{font-family:var(--mono);font-size:11px;font-weight:600;line-height:1}
+.hm-wr{font-family:var(--mono);font-size:8px;margin-top:3px;opacity:.6}
 
-/* ── SECTION COMMONS ── */
-section{padding:80px 60px;max-width:1200px;margin:0 auto}
-.section-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-eyebrow::before{content:'';display:inline-block;width:16px;height:1px;background:var(--amber)}
-.section-title{font-size:36px;font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:16px}
-.section-sub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7}
+/* Rotating insight */
+.insight-strip{background:var(--navy3);border-top:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.is-icon{width:28px;height:28px;background:rgba(232,150,26,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.is-text{font-size:12px;color:var(--off);line-height:1.5;font-family:var(--mono)}
+.is-text strong{color:var(--amber2)}
 
-/* ── INSIGHTS SECTION ── */
-.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.insight-card{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:24px;transition:border-color .2s,transform .2s}
-.insight-card:hover{border-color:var(--amber);transform:translateY(-2px)}
-.ic-month{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
-.ic-stat{font-family:var(--mono);font-size:28px;font-weight:600;margin-bottom:4px}
+/* Floating cards */
+.float-card{position:absolute;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;font-family:var(--mono);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.fc1{top:-20px;right:-24px;font-size:12px}
+.fc2{bottom:80px;left:-28px;font-size:12px}
+.fc-label{font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.fc-val{font-size:20px;font-weight:600}
+
+/* ══════════════════════════════════
+   LOGOS BAR
+══════════════════════════════════ */
+.logos-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:22px 60px;background:var(--navy2)}
+.logos-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logos-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.logos-list{display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+.logo-item{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--dim);letter-spacing:.04em;transition:color .2s}
+.logo-item:hover{color:var(--muted)}
+
+/* ══════════════════════════════════
+   STATS STRIP
+══════════════════════════════════ */
+.stats-strip{padding:60px;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.stat-block{background:var(--navy);padding:36px 32px;position:relative}
+.stat-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .3s}
+.stat-block:hover::before{background:var(--amber)}
+.sb-num{font-family:var(--mono);font-size:44px;font-weight:600;color:var(--white);line-height:1;margin-bottom:6px;letter-spacing:-.02em}
+.sb-num span{font-size:22px;color:var(--amber2)}
+.sb-label{font-size:14px;color:var(--muted);line-height:1.5}
+
+/* ══════════════════════════════════
+   INSIGHTS
+══════════════════════════════════ */
+.section{padding:80px 60px;max-width:1280px;margin:0 auto}
+.section-header{margin-bottom:56px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--amber2)}
+.section h2{font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:16px}
+.section h2 em{font-style:normal;color:var(--amber2)}
+.section-sub{font-size:17px;color:var(--muted);max-width:520px;line-height:1.7}
+
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.ic{background:var(--navy);padding:32px;position:relative;overflow:hidden;transition:background .2s}
+.ic:hover{background:var(--navy2)}
+.ic::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:transparent;transition:background .3s}
+.ic:hover::after{background:var(--amber)}
+.ic-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.ic-month{font-family:var(--mono);font-size:10px;color:var(--amber2);letter-spacing:.15em;text-transform:uppercase}
+.ic-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:3px;letter-spacing:.06em}
+.ic-tag.bull{background:rgba(0,194,120,.1);color:var(--green);border:1px solid rgba(0,194,120,.2)}
+.ic-tag.bear{background:rgba(232,64,74,.1);color:var(--red);border:1px solid rgba(232,64,74,.2)}
+.ic-stat{font-family:var(--mono);font-size:40px;font-weight:600;line-height:1;margin-bottom:4px;letter-spacing:-.02em}
 .ic-stat.pos{color:var(--green)}.ic-stat.neg{color:var(--red)}
-.ic-asset{font-size:13px;color:var(--muted);margin-bottom:12px}
-.ic-bar{height:4px;background:var(--slate);border-radius:2px;margin-bottom:12px}
-.ic-bar-fill{height:100%;border-radius:2px}
-.ic-desc{font-size:13px;color:var(--muted);line-height:1.6}
-.ic-tag{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-top:10px}
-.ic-tag.bull{background:rgba(46,204,113,.1);color:var(--green);border:1px solid rgba(46,204,113,.2)}
-.ic-tag.bear{background:rgba(232,64,64,.1);color:var(--red);border:1px solid rgba(232,64,64,.2)}
-.ic-tag.note{background:rgba(74,158,255,.1);color:var(--blue);border:1px solid rgba(74,158,255,.2)}
+.ic-asset{font-size:12px;color:var(--dim);margin-bottom:16px;font-family:var(--mono)}
+.ic-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.ic-footer{margin-top:20px;display:flex;align-items:center;gap:8px}
+.ic-win{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ic-bar{flex:1;height:3px;background:var(--slate);border-radius:2px;overflow:hidden}
+.ic-fill{height:100%;border-radius:2px}
 
-/* ── FEATURES SECTION ── */
-.features-wrap{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 60px}
-.features-inner{max-width:1200px;margin:0 auto}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px}
-.feat{padding:28px;border:1px solid var(--border);border-radius:10px;background:var(--navy)}
-.feat-icon{width:44px;height:44px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-.feat h3{font-size:16px;font-weight:600;margin-bottom:8px}
-.feat p{font-size:14px;color:var(--muted);line-height:1.65}
+/* ══════════════════════════════════
+   FEATURES
+══════════════════════════════════ */
+.features-wrap{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.features-inner{max-width:1280px;margin:0 auto;padding:80px 60px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:56px}
+.feat{background:var(--navy2);padding:36px 32px;transition:background .2s}
+.feat:hover{background:var(--navy3)}
+.feat-num{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.1em;margin-bottom:20px}
+.feat-icon{width:48px;height:48px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;background:var(--slate);border-radius:10px;font-size:22px}
+.feat h3{font-size:17px;font-weight:600;margin-bottom:10px;letter-spacing:-.01em}
+.feat p{font-size:14px;color:var(--muted);line-height:1.7}
 
-/* ── HOW IT WORKS ── */
-.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative}
-.how-grid::before{content:'';position:absolute;top:28px;left:calc(12.5%);right:calc(12.5%);height:1px;background:var(--border);z-index:0}
-.how-step{text-align:center;padding:0 16px;position:relative;z-index:1}
-.how-num{width:56px;height:56px;border-radius:50%;background:var(--slate);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:600;color:var(--amber);margin:0 auto 16px}
-.how-step h4{font-size:15px;font-weight:600;margin-bottom:8px}
-.how-step p{font-size:13px;color:var(--muted);line-height:1.6}
+/* ══════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════ */
+.how-wrap{max-width:1280px;margin:0 auto;padding:80px 60px}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px}
+.how-steps{display:flex;flex-direction:column;gap:0}
+.how-step{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s}
+.how-step:last-child{border-bottom:none}
+.how-step.active .hs-num{background:var(--amber);color:var(--navy)}
+.how-step.active .hs-title{color:var(--white)}
+.how-step:hover .hs-title{color:var(--white)}
+.hs-num{width:36px;height:36px;border-radius:8px;background:var(--slate);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--muted);flex-shrink:0;transition:all .2s}
+.hs-content{padding-top:6px}
+.hs-title{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--muted);transition:color .2s;letter-spacing:-.01em}
+.hs-desc{font-size:14px;color:var(--muted);line-height:1.65}
+.how-preview{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.hp-bar{background:var(--navy3);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.hp-dot{width:9px;height:9px;border-radius:50%}
+.hp-title{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:4px}
+.hp-body{padding:20px}
+.mini-bars{display:flex;flex-direction:column;gap:6px}
+.mb{display:grid;grid-template-columns:28px 1fr 52px;align-items:center;gap:8px}
+.mb-l{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right}
+.mb-t{height:16px;background:var(--slate);border-radius:2px;overflow:hidden}
+.mb-f{height:100%;border-radius:2px}
+.mb-v{font-family:var(--mono);font-size:10px;text-align:right;font-weight:500}
 
-/* ── SEASONAL CALENDAR PREVIEW ── */
-.calendar-preview{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:28px;margin-top:48px}
-.cp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.cp-title{font-family:var(--mono);font-size:13px;color:var(--white);font-weight:500}
-.cp-tabs{display:flex;gap:4px}
-.cp-tab{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:4px;cursor:pointer;border:1px solid transparent;color:var(--muted);transition:all .2s}
-.cp-tab.active{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:var(--amber)}
-.months-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:4px}
-.mg-cell{border-radius:4px;padding:8px 4px;text-align:center;cursor:default;transition:transform .15s}
-.mg-cell:hover{transform:scale(1.05)}
-.mg-month{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:4px}
-.mg-val{font-family:var(--mono);font-size:11px;font-weight:600}
-.cp-legend{display:flex;gap:20px;margin-top:16px;font-family:var(--mono);font-size:10px;color:var(--muted);justify-content:flex-end}
-.cp-legend span{display:flex;align-items:center;gap:5px}
-.cp-dot{width:8px;height:8px;border-radius:2px;display:inline-block}
-.blurred-overlay{position:relative}
-.blur-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,15,30,.75);backdrop-filter:blur(3px);border-radius:8px;font-size:14px;color:var(--muted);gap:12px;z-index:2}
+/* ══════════════════════════════════
+   PRICING
+══════════════════════════════════ */
+.pricing-wrap{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pricing-inner{max-width:1280px;margin:0 auto;padding:80px 60px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.pc{background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:36px;position:relative;transition:border-color .2s,transform .2s}
+.pc:hover{transform:translateY(-3px)}
+.pc.featured{border-color:var(--amber);background:linear-gradient(160deg,rgba(232,150,26,.03) 0%,var(--navy) 60%)}
+.pc.featured:hover{border-color:var(--amber2)}
+.pc-popular{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--amber);color:var(--navy);font-family:var(--mono);font-size:9px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.pc-tier{font-family:var(--mono);font-size:10px;color:var(--amber2);letter-spacing:.18em;text-transform:uppercase;margin-bottom:20px}
+.pc-price{margin-bottom:6px}
+.pc-amount{font-family:var(--mono);font-size:48px;font-weight:600;line-height:1;letter-spacing:-.03em}
+.pc-amount sup{font-size:22px;font-weight:400;color:var(--muted);vertical-align:top;margin-top:8px;display:inline-block}
+.pc-amount sub{font-size:16px;font-weight:400;color:var(--muted)}
+.pc-period{font-size:13px;color:var(--muted);margin-bottom:28px}
+.pc-divider{height:1px;background:var(--border);margin-bottom:28px}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
+.pc-features li{font-size:14px;color:var(--muted);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.pc-features li .check{color:var(--green);flex-shrink:0;font-weight:600;margin-top:1px}
+.pc-features li .cross{color:var(--border2);flex-shrink:0;margin-top:1px}
+.pc-features li.off{opacity:.4}
+.btn-pc{width:100%;padding:13px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans);border:none;letter-spacing:.01em;transition:all .2s}
+.btn-pc.ghost{background:transparent;border:1px solid var(--border2);color:var(--muted)}
+.btn-pc.ghost:hover{border-color:var(--amber2);color:var(--white)}
+.btn-pc.primary{background:var(--amber);color:var(--navy)}
+.btn-pc.primary:hover{background:var(--amber2);transform:translateY(-1px)}
 
-/* ── PRICING ── */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.price-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;transition:border-color .2s}
-.price-card.featured{border-color:var(--amber);background:linear-gradient(135deg,rgba(245,166,35,.04),var(--navy2))}
-.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--amber);color:var(--navy);font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
-.price-tier{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
-.price-amount{font-size:40px;font-weight:700;font-family:var(--mono);line-height:1;margin-bottom:4px}
-.price-amount span{font-size:18px;font-weight:400;color:var(--muted)}
-.price-period{font-size:13px;color:var(--muted);margin-bottom:24px}
-.price-divider{height:1px;background:var(--border);margin-bottom:24px}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.price-features li{font-size:14px;color:var(--muted);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-.price-features li::before{content:'✓';color:var(--green);font-weight:600;flex-shrink:0;margin-top:1px}
-.price-features li.no::before{content:'—';color:var(--border)}
-.price-features li.no{opacity:.5}
-.btn-plan{width:100%;padding:12px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--sans);border:none;transition:opacity .2s}
-.btn-plan.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-plan.amber{background:var(--amber);color:var(--navy)}
-.btn-plan.ghost:hover{border-color:var(--amber);color:var(--amber)}
-.btn-plan.amber:hover{opacity:.88}
+/* ══════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════ */
+.testi-wrap{max-width:1280px;margin:0 auto;padding:80px 60px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.tc{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:32px;transition:border-color .2s}
+.tc:hover{border-color:var(--border2)}
+.tc-stars{color:var(--amber2);font-size:13px;letter-spacing:3px;margin-bottom:16px}
+.tc-quote{font-size:15px;color:var(--off);line-height:1.75;margin-bottom:24px;font-style:italic}
+.tc-author{display:flex;align-items:center;gap:12px;border-top:1px solid var(--border);padding-top:20px}
+.tc-avatar{width:40px;height:40px;border-radius:10px;background:var(--slate2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--amber2);flex-shrink:0}
+.tc-name{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.tc-role{font-size:12px;color:var(--muted);margin-top:2px}
 
-/* ── TESTIMONIALS ── */
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.testi{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:24px}
-.testi-stars{color:var(--amber);font-size:14px;margin-bottom:12px;letter-spacing:2px}
-.testi-text{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;font-style:italic}
-.testi-author{display:flex;align-items:center;gap:10px}
-.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--slate2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--amber);flex-shrink:0}
-.testi-name{font-size:13px;font-weight:600}
-.testi-role{font-size:12px;color:var(--muted)}
+/* ══════════════════════════════════
+   FAQ
+══════════════════════════════════ */
+.faq-wrap{background:var(--navy2);border-top:1px solid var(--border)}
+.faq-inner{max-width:800px;margin:0 auto;padding:80px 60px}
+.faq-list{margin-top:48px}
+details{border-bottom:1px solid var(--border)}
+details summary{padding:22px 0;font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;list-style:none;letter-spacing:-.01em;transition:color .2s}
+details summary::-webkit-details-marker{display:none}
+details summary:hover{color:var(--amber2)}
+details[open] summary{color:var(--amber2)}
+.faq-arrow{color:var(--muted);font-size:18px;transition:transform .25s;flex-shrink:0}
+details[open] .faq-arrow{transform:rotate(45deg)}
+.faq-body{padding:0 0 22px;font-size:15px;color:var(--muted);line-height:1.75;max-width:680px}
 
-/* ── FAQ ── */
-.faq-list{margin-top:48px;display:flex;flex-direction:column;gap:0}
-.faq-item{border-bottom:1px solid var(--border)}
-.faq-q{padding:20px 0;font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;list-style:none}
-.faq-q::-webkit-details-marker{display:none}
-details[open] .faq-arrow{transform:rotate(180deg)}
-.faq-arrow{transition:transform .2s;color:var(--muted);font-size:14px}
-.faq-a{padding:0 0 20px;font-size:14px;color:var(--muted);line-height:1.7;max-width:720px}
+/* ══════════════════════════════════
+   CTA
+══════════════════════════════════ */
+.cta-wrap{position:relative;overflow:hidden;padding:100px 60px;text-align:center;background:var(--navy)}
+.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(232,150,26,.06),transparent);pointer-events:none}
+.cta-inner{position:relative;max-width:700px;margin:0 auto}
+.cta-wrap h2{font-size:52px;font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px}
+.cta-wrap p{font-size:18px;color:var(--muted);margin-bottom:40px;line-height:1.7}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.cta-note{font-size:12px;color:var(--dim);font-family:var(--mono);letter-spacing:.04em}
 
-/* ── CTA SECTION ── */
-.cta-wrap{background:var(--navy2);border-top:1px solid var(--border);padding:80px 60px;text-align:center}
-.cta-inner{max-width:640px;margin:0 auto}
-.cta-wrap h2{font-size:40px;font-weight:700;line-height:1.15;margin-bottom:16px;letter-spacing:-.02em}
-.cta-wrap h2 em{font-style:normal;color:var(--amber)}
-.cta-wrap p{font-size:17px;color:var(--muted);margin-bottom:36px;line-height:1.7}
-.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.cta-note{font-size:12px;color:var(--muted);margin-top:16px;font-family:var(--mono)}
-
-/* ── FOOTER ── */
-footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 60px 32px}
-.footer-inner{max-width:1200px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
-.footer-brand .logo{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--amber);margin-bottom:12px}
-.footer-brand p{font-size:13px;color:var(--muted);line-height:1.65;max-width:260px}
-.footer-col h4{font-size:12px;font-family:var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer{background:var(--navy2);border-top:1px solid var(--border);padding:60px 60px 32px}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:280px;margin-bottom:20px}
+.footer-col h5{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-.footer-col a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
-.footer-col a:hover{color:var(--amber)}
-.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.footer-copy{font-size:12px;color:var(--muted);font-family:var(--mono)}
-.footer-disclaimer{font-size:11px;color:var(--muted);opacity:.6;max-width:500px;text-align:right;line-height:1.5}
+.footer-col a{font-size:13px;color:var(--muted);transition:color .2s}
+.footer-col a:hover{color:var(--amber2)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.footer-copy{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.footer-disc{font-size:11px;color:var(--dim);max-width:520px;line-height:1.6;text-align:right}
 
-/* ── MOBILE ── */
-@media(max-width:900px){
-  nav{padding:14px 20px}
-  .nav-links{display:none}
-  .hero{grid-template-columns:1fr;padding:40px 20px;gap:40px}
-  .hero h1{font-size:36px}
-  .hero-visual{display:none}
-  section{padding:48px 20px}
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media(max-width:1024px){
+  .hero-grid,.how-grid{grid-template-columns:1fr;gap:48px}
+  .hero-visual,.how-preview{display:none}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
   .insights-grid,.features-grid,.pricing-grid,.testi-grid{grid-template-columns:1fr}
-  .how-grid{grid-template-columns:repeat(2,1fr);gap:24px}
-  .how-grid::before{display:none}
-  .months-grid{grid-template-columns:repeat(6,1fr)}
   .footer-top{grid-template-columns:1fr 1fr}
-  .proof-bar,.features-wrap,.cta-wrap,footer{padding-left:20px;padding-right:20px}
+  .nav-links{display:none}
+  .hero,.section,.features-inner,.pricing-inner,.testi-wrap,.how-wrap,.cta-wrap,footer,.logos-bar{padding-left:24px;padding-right:24px}
+  .stats-strip{padding:40px 24px}
+  .faq-inner{padding:48px 24px}
+  .hero h1{font-size:40px}
+  .section h2{font-size:32px}
+  .cta-wrap h2{font-size:36px}
 }
 </style>
 </head>
 <body>
 
-<!-- TICKER TAPE -->
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-track" id="tickerTrack"></div>
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="tickerEl"></div>
 </div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Seasonax<span>.io</span></div>
-  <ul class="nav-links">
-    <li><a href="#insights">Insights</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-  </ul>
-  <div class="nav-cta">
-    <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-ghost">Log in</button></a>
-    <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-primary">Start free trial</button></a>
+  <div class="nav-logo">
+    <!-- SVG Logo Mark -->
+    <svg class="logo-mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="8" fill="#0F1C30"/>
+      <path d="M8 22 L13 16 L18 19 L24 11" stroke="#E8961A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="24" cy="11" r="2.5" fill="#E8961A"/>
+      <path d="M8 26 L26 26" stroke="#1A2D45" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="8" y="23.5" width="3" height="2.5" rx="1" fill="#00C278" opacity="0.7"/>
+      <rect x="13" y="21" width="3" height="5" rx="1" fill="#00C278" opacity="0.7"/>
+      <rect x="18" y="19" width="3" height="7" rx="1" fill="#E8961A" opacity="0.8"/>
+      <rect x="23" y="15" width="3" height="11" rx="1" fill="#E8961A"/>
+    </svg>
+    <div class="logo-text">Season<span>AX</span></div>
+  </div>
+  <nav class="nav-links">
+    <a href="#insights" class="nav-link">Insights</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#faq" class="nav-link">FAQ</a>
+  </nav>
+  <div class="nav-right">
+    <a href="/seasonax-auth.html"><button class="btn-nav-ghost">Log in</button></a>
+    <a href="/seasonax-auth.html"><button class="btn-nav-cta">Start free →</button></a>
   </div>
 </nav>
 
 <!-- HERO -->
-<div style="max-width:1320px;margin:0 auto">
+<div style="background:var(--navy);border-bottom:1px solid var(--border)">
 <div class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow">Market Intelligence Platform</div>
-    <h1>Trade smarter with <em>15 years</em> of seasonal data</h1>
-    <p class="hero-sub">Seasonax decodes every market's hidden calendar patterns. Know historically which months favor gains, which to avoid, and exactly when to act — for 100+ stocks, ETFs and indices.</p>
-    <div class="hero-actions">
-      <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-xl">Start free trial</button></a>
-      <a href="market-seasonality.html" style="text-decoration:none"><button class="btn-xl-ghost">Open the app →</button></a>
-    </div>
-    <div class="hero-note">✓ No credit card required &nbsp;·&nbsp; ✓ 3 free analyses &nbsp;·&nbsp; ✓ Cancel anytime</div>
-  </div>
-
-  <div class="hero-visual">
-    <div class="floating-tag ft1">+2.5% avg ↑ Nov historically</div>
-    <div class="hero-card">
-      <div class="hc-header">
-        <div class="hc-title">S&amp;P 500 · 15-Year Seasonal Returns</div>
-        <div class="hc-badge">LIVE DATA</div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-label">Market Intelligence Platform</div>
+      <h1>The market runs<br>on a <span class="accent">calendar.</span><br><span class="dim">Now you can read it.</span></h1>
+      <p class="hero-sub">SeasonAX decodes <strong>15 years of hidden patterns</strong> across 100+ stocks, ETFs and indices. Know exactly which months favor gains — and which to avoid.</p>
+      <div class="hero-actions">
+        <a href="/seasonax-auth.html"><button class="btn-hero">Start free trial &nbsp;→</button></a>
+        <a href="/market-seasonality.html"><button class="btn-hero-ghost">Open the app</button></a>
       </div>
-      <div class="hc-body">
-        <div class="month-bars" id="heroBarChart"></div>
-      </div>
-      <div class="hc-stats">
-        <div class="hcs"><div class="hcs-val" style="color:var(--green)">Nov</div><div class="hcs-lbl">Best Month</div></div>
-        <div class="hcs"><div class="hcs-val" style="color:var(--red)">Sep</div><div class="hcs-lbl">Worst Month</div></div>
-        <div class="hcs"><div class="hcs-val" style="color:var(--amber)">9/12</div><div class="hcs-lbl">Positive Months</div></div>
+      <div class="hero-trust">
+        <div class="hero-trust-item">No credit card</div>
+        <div class="hero-trust-item">3 free analyses</div>
+        <div class="hero-trust-item">Cancel anytime</div>
       </div>
     </div>
-    <div class="floating-tag ft2">Sep: historically -0.7% ↓</div>
+
+    <div class="hero-visual">
+      <div class="float-card fc1">
+        <div class="fc-label">November · S&amp;P 500</div>
+        <div class="fc-val" style="color:var(--green)">+1.7%</div>
+        <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">70% win rate · 15yr avg</div>
+      </div>
+      <div class="hero-terminal">
+        <div class="ht-bar">
+          <div class="ht-dot" style="background:#FF5F57"></div>
+          <div class="ht-dot" style="background:#FEBC2E"></div>
+          <div class="ht-dot" style="background:#28C840"></div>
+          <div class="ht-title">S&P 500 · 15-YEAR SEASONAL HEATMAP</div>
+          <div class="ht-badge">● LIVE</div>
+        </div>
+        <div class="ht-body">
+          <div class="heatmap" id="heatmap"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">Avg monthly return · 2009–2024</div>
+            <div style="display:flex;gap:12px;font-family:var(--mono);font-size:9px;color:var(--muted)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:rgba(0,194,120,.6);display:inline-block"></span>Positive</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:rgba(232,64,74,.6);display:inline-block"></span>Negative</span>
+            </div>
+          </div>
+        </div>
+        <div class="insight-strip">
+          <div class="is-icon">📊</div>
+          <div class="is-text" id="insightText">Loading insight...</div>
+        </div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fc-label">September · S&amp;P 500</div>
+        <div class="fc-val" style="color:var(--red)">-0.7%</div>
+        <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:2px">42% win rate · historically worst</div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
 
-<!-- PROOF BAR -->
-<div class="proof-bar">
-  <div class="proof-inner">
-    <div class="proof-stat"><div class="ps-val">100+</div><div class="ps-lbl">Stocks &amp; ETFs covered</div></div>
-    <div class="proof-div"></div>
-    <div class="proof-stat"><div class="ps-val">20 yrs</div><div class="ps-lbl">Max historical depth</div></div>
-    <div class="proof-div"></div>
-    <div class="proof-stat"><div class="ps-val">12</div><div class="ps-lbl">Monthly patterns per asset</div></div>
-    <div class="proof-div"></div>
-    <div class="proof-stat"><div class="ps-val">8</div><div class="ps-lbl">Sector-specific analyses</div></div>
-    <div class="proof-div"></div>
-    <div class="proof-stat"><div class="ps-val">15yr</div><div class="ps-lbl">Default analysis window</div></div>
+<!-- LOGOS BAR -->
+<div class="logos-bar">
+  <div class="logos-inner">
+    <div class="logos-label">Assets covered</div>
+    <div class="logos-list">
+      <div class="logo-item">S&amp;P 500</div>
+      <div class="logo-item">NASDAQ</div>
+      <div class="logo-item">BITCOIN</div>
+      <div class="logo-item">NVIDIA</div>
+      <div class="logo-item">TESLA</div>
+      <div class="logo-item">GOLD</div>
+      <div class="logo-item">PALANTIR</div>
+      <div class="logo-item">APPLE</div>
+      <div class="logo-item">+ 92 MORE</div>
+    </div>
   </div>
 </div>
 
-<!-- HISTORICAL INSIGHTS -->
-<section id="insights">
-  <div class="section-eyebrow">Historical Insights</div>
-  <h2 class="section-title">The market runs on a <em style="font-style:normal;color:var(--amber)">calendar</em></h2>
-  <p class="section-sub">Decades of data reveal patterns most investors never see. Here are six you can act on today.</p>
+<!-- STATS -->
+<div style="background:var(--navy)">
+<div class="stats-strip">
+  <div class="stat-block">
+    <div class="sb-num"><span id="c1">0</span><span>+</span></div>
+    <div class="sb-label">Assets tracked across stocks, ETFs, indices &amp; crypto</div>
+  </div>
+  <div class="stat-block">
+    <div class="sb-num"><span id="c2">0</span><span>yr</span></div>
+    <div class="sb-label">Maximum historical depth available on any asset</div>
+  </div>
+  <div class="stat-block">
+    <div class="sb-num"><span id="c3">0</span><span>k+</span></div>
+    <div class="sb-label">Monthly data points powering the seasonal models</div>
+  </div>
+  <div class="stat-block">
+    <div class="sb-num"><span id="c4">0</span><span>%</span></div>
+    <div class="sb-label">Average November win rate for S&amp;P 500 over 15 years</div>
+  </div>
+</div>
+</div>
 
+<!-- INSIGHTS -->
+<div style="background:var(--navy);border-top:1px solid var(--border)" id="insights">
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">Historical Insights</div>
+    <h2>Patterns that repeat.<br><em>Every year.</em></h2>
+    <p class="section-sub">Decades of price data reveal calendar effects most investors never see. Here are six that have repeated consistently for 15+ years.</p>
+  </div>
   <div class="insights-grid">
-    <div class="insight-card">
-      <div class="ic-month">November</div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">November · S&P 500</div><div class="ic-tag bull">BULLISH</div></div>
       <div class="ic-stat pos">+1.7%</div>
-      <div class="ic-asset">S&amp;P 500 · 15-year avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:85%;background:var(--green);opacity:.6"></div></div>
-      <div class="ic-desc">November opens the historically strongest 6-month window. Post-election optimism, holiday spending expectations, and institutional year-end buying converge.</div>
-      <span class="ic-tag bull">70% win rate</span>
+      <div class="ic-asset">15-year average monthly return</div>
+      <div class="ic-desc">The start of the historically strongest 6-month window. Post-election optimism, holiday spending expectations, and institutional year-end positioning converge into consistent gains.</div>
+      <div class="ic-footer"><div class="ic-win">70% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:70%;background:var(--green);opacity:.6"></div></div></div>
     </div>
-    <div class="insight-card">
-      <div class="ic-month">September</div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">September · S&P 500</div><div class="ic-tag bear">BEARISH</div></div>
       <div class="ic-stat neg">-0.7%</div>
-      <div class="ic-asset">S&amp;P 500 · 15-year avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:35%;background:var(--red);opacity:.6"></div></div>
-      <div class="ic-desc">The only month to average a loss every decade. Institutional rebalancing, back-from-summer selling, and mutual fund year-end redemptions create consistent headwinds.</div>
-      <span class="ic-tag bear">42% win rate</span>
+      <div class="ic-asset">15-year average monthly return</div>
+      <div class="ic-desc">The only month to average a loss across every measured decade. Institutional rebalancing, fund redemptions, and return-from-summer selling pressure create consistent headwinds.</div>
+      <div class="ic-footer"><div class="ic-win">42% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:42%;background:var(--red);opacity:.6"></div></div></div>
     </div>
-    <div class="insight-card">
-      <div class="ic-month">October "Uptober"</div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">October · Bitcoin</div><div class="ic-tag bull">BULLISH</div></div>
       <div class="ic-stat pos">+21.4%</div>
-      <div class="ic-asset">Bitcoin · 10-year avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:100%;background:var(--amber);opacity:.6"></div></div>
-      <div class="ic-desc">Bitcoin's most reliable seasonal phenomenon. October has been positive 75% of years, driven by halving cycle timing and institutional Q4 accumulation ahead of year-end.</div>
-      <span class="ic-tag bull">75% win rate</span>
+      <div class="ic-asset">10-year average monthly return</div>
+      <div class="ic-desc">"Uptober" — Bitcoin's most reliable seasonal phenomenon. Positive in 75% of years, driven by halving cycle timing and institutional accumulation ahead of the Q4 year-end rally.</div>
+      <div class="ic-footer"><div class="ic-win">75% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:75%;background:var(--green);opacity:.6"></div></div></div>
     </div>
-    <div class="insight-card">
-      <div class="ic-month">January Effect</div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">January · Russell 2000</div><div class="ic-tag bull">BULLISH</div></div>
       <div class="ic-stat pos">+2.8%</div>
-      <div class="ic-asset">Russell 2000 · 15-year avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:92%;background:var(--green);opacity:.6"></div></div>
-      <div class="ic-desc">Small caps surge in January as December's tax-loss selling reverses. Beaten-down stocks repurchased. The Russell 2000 shows the strongest January effect of any major index.</div>
-      <span class="ic-tag bull">68% win rate</span>
+      <div class="ic-asset">15-year average monthly return</div>
+      <div class="ic-desc">The January Effect is most pronounced in small caps. December's tax-loss selling reverses sharply as beaten-down stocks are repurchased — the strongest January of any major index.</div>
+      <div class="ic-footer"><div class="ic-win">68% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:68%;background:var(--green);opacity:.6"></div></div></div>
     </div>
-    <div class="insight-card">
-      <div class="ic-month">Summer Doldrums</div>
-      <div class="ic-stat neg">-1.1%</div>
-      <div class="ic-asset">NASDAQ · June-Aug avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:44%;background:var(--red);opacity:.6"></div></div>
-      <div class="ic-desc">The "Sell in May" effect hits growth stocks hardest. Tech-heavy NASDAQ sees consistent summer weakness as institutional traders reduce risk before autumn volatility season.</div>
-      <span class="ic-tag bear">Low liquidity risk</span>
-    </div>
-    <div class="insight-card">
-      <div class="ic-month">Q4 Santa Rally</div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">November · NASDAQ</div><div class="ic-tag bull">BULLISH</div></div>
       <div class="ic-stat pos">+3.2%</div>
-      <div class="ic-asset">NASDAQ · Nov–Dec avg</div>
-      <div class="ic-bar"><div class="ic-bar-fill" style="width:78%;background:var(--blue);opacity:.6"></div></div>
-      <div class="ic-desc">The November–December window is the single most reliable positive stretch in US equities. Year-end tax positioning, holiday optimism, and window dressing combine.</div>
-      <span class="ic-tag note">72% win rate</span>
+      <div class="ic-asset">15-year average monthly return</div>
+      <div class="ic-desc">Tech's strongest seasonal month. Holiday consumer electronics demand, year-end growth positioning, and AI/chip sector momentum combine for the NASDAQ's most reliable monthly gain.</div>
+      <div class="ic-footer"><div class="ic-win">72% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:72%;background:var(--green);opacity:.6"></div></div></div>
+    </div>
+    <div class="ic">
+      <div class="ic-header"><div class="ic-month">June · Crypto</div><div class="ic-tag bear">BEARISH</div></div>
+      <div class="ic-stat neg">-8.7%</div>
+      <div class="ic-asset">10-year average monthly return</div>
+      <div class="ic-desc">Crypto's worst seasonal month — consistently. Summer risk-off rotation, low institutional participation, and the end of spring momentum cycles create the most reliable crypto sell window.</div>
+      <div class="ic-footer"><div class="ic-win">35% win rate</div><div class="ic-bar"><div class="ic-fill" style="width:35%;background:var(--red);opacity:.6"></div></div></div>
     </div>
   </div>
-</section>
+</div>
+</div>
 
 <!-- FEATURES -->
 <div class="features-wrap" id="features">
   <div class="features-inner">
-    <div class="section-eyebrow">Platform Features</div>
-    <h2 class="section-title">Everything you need to read the market's rhythm</h2>
-    <p class="section-sub">Built for serious investors who understand that timing is just as important as selection.</p>
+    <div class="section-header">
+      <div class="eyebrow">Platform Features</div>
+      <h2>Built for investors who<br>take <em>timing seriously.</em></h2>
+      <p class="section-sub">Every feature is designed around one principle: turning historical pattern data into actionable intelligence, fast.</p>
+    </div>
     <div class="features-grid">
       <div class="feat">
+        <div class="feat-num">01</div>
         <div class="feat-icon">📅</div>
         <h3>Seasonal Calendar Wheel</h3>
-        <p>A radial 12-month visualization showing average returns and win rates at a glance. Instantly see the full seasonal picture for any asset.</p>
+        <p>A radial 12-month visualization showing average returns and win rates at a glance. See the full annual pattern of any asset in under 3 seconds.</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">📊</div>
-        <h3>Monthly Return Bars</h3>
-        <p>Precise average % return per month with historical win rates and observation counts across up to 20 years of data.</p>
+        <div class="feat-num">02</div>
+        <div class="feat-icon">🔥</div>
+        <h3>Monthly Return Heatmap</h3>
+        <p>Color-coded monthly return grid with precise averages, win rates, and observation counts across up to 20 years of history.</p>
       </div>
       <div class="feat">
+        <div class="feat-num">03</div>
         <div class="feat-icon">🔍</div>
-        <h3>100+ Assets Covered</h3>
-        <p>From S&amp;P 500 to Palantir, Bitcoin to US Treasuries. Browse by sector with a searchable sidebar organized by category.</p>
+        <h3>100+ Assets</h3>
+        <p>S&amp;P 500 to Palantir, Bitcoin to Treasuries. Fully searchable sidebar organized by sector with collapsible categories.</p>
       </div>
       <div class="feat">
+        <div class="feat-num">04</div>
         <div class="feat-icon">🧠</div>
         <h3>AI Pattern Analysis</h3>
-        <p>Every analysis comes with a detailed AI-generated report covering key patterns, best entry windows, caution periods, and trading strategies.</p>
+        <p>Every analysis includes a detailed written breakdown: key patterns, best entry windows, caution periods, trading strategies, and risk caveats.</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">⏱️</div>
+        <div class="feat-num">05</div>
+        <div class="feat-icon">⏱</div>
         <h3>Flexible Time Windows</h3>
-        <p>Analyze 1, 2, 3, 5, 10, 15, or 20 years of history. Compare recent patterns to long-term tendencies to spot changing behavior.</p>
+        <p>1 to 20 years of history. Compare recent patterns to long-term tendencies to spot regime changes and evolving seasonality.</p>
       </div>
       <div class="feat">
+        <div class="feat-num">06</div>
         <div class="feat-icon">📱</div>
-        <h3>Mobile Ready</h3>
-        <p>Full functionality on any device. Check seasonal setups on the go without compromising on data depth or visual quality.</p>
+        <h3>Mobile First</h3>
+        <p>Full functionality on any screen. Check seasonal setups on the go — the data and visualizations work on phone, tablet, and desktop.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-eyebrow">How It Works</div>
-  <h2 class="section-title">From data to decision in 30 seconds</h2>
-  <p class="section-sub">No finance degree required. Seasonax turns 15 years of price history into actionable monthly intelligence.</p>
-
-  <div class="how-grid">
-    <div class="how-step">
-      <div class="how-num">01</div>
-      <h4>Pick your asset</h4>
-      <p>Browse 100+ stocks, ETFs, indices, and crypto from our searchable sidebar organized by sector.</p>
-    </div>
-    <div class="how-step">
-      <div class="how-num">02</div>
-      <h4>Choose time window</h4>
-      <p>Select 1 to 20 years of history depending on how far back you want the seasonal patterns to go.</p>
-    </div>
-    <div class="how-step">
-      <div class="how-num">03</div>
-      <h4>Read the calendar</h4>
-      <p>The seasonal wheel and bar chart instantly reveal which months favor gains, which to avoid, and by how much.</p>
-    </div>
-    <div class="how-step">
-      <div class="how-num">04</div>
-      <h4>Get AI analysis</h4>
-      <p>A full written breakdown covers key patterns, best entry windows, trading strategies, and risk caveats.</p>
-    </div>
+<div style="background:var(--navy);border-top:1px solid var(--border)">
+<div class="how-wrap">
+  <div class="section-header">
+    <div class="eyebrow">How It Works</div>
+    <h2>From zero to insight<br>in <em>30 seconds.</em></h2>
   </div>
-
-  <!-- Calendar grid preview -->
-  <div class="calendar-preview">
-    <div class="cp-header">
-      <div class="cp-title">S&amp;P 500 · Monthly Return Heatmap · 15 Years</div>
-      <div class="cp-tabs">
-        <div class="cp-tab active">S&amp;P 500</div>
-        <div class="cp-tab">NASDAQ</div>
-        <div class="cp-tab">Bitcoin</div>
+  <div class="how-grid">
+    <div class="how-steps">
+      <div class="how-step active">
+        <div class="hs-num">01</div>
+        <div class="hs-content">
+          <div class="hs-title">Pick your asset</div>
+          <div class="hs-desc">Browse 100+ stocks, ETFs, indices and crypto organized by sector in a collapsible sidebar. Or search instantly by name or ticker.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="hs-num">02</div>
+        <div class="hs-content">
+          <div class="hs-title">Choose your time window</div>
+          <div class="hs-desc">Select 1 to 20 years of history. Longer windows smooth out noise; shorter windows capture recent regime changes.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="hs-num">03</div>
+        <div class="hs-content">
+          <div class="hs-title">Read the calendar</div>
+          <div class="hs-desc">The seasonal wheel, heatmap, and bar charts instantly show which months average gains, which average losses, and by exactly how much.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="hs-num">04</div>
+        <div class="hs-content">
+          <div class="hs-title">Get AI analysis</div>
+          <div class="hs-desc">A written breakdown explains the mechanics: why each month behaves as it does, the best entry windows, and how to use the data in practice.</div>
+        </div>
       </div>
     </div>
-    <div class="months-grid" id="monthGrid"></div>
-    <div class="cp-legend">
-      <span><span class="cp-dot" style="background:rgba(46,204,113,.7)"></span>Positive avg</span>
-      <span><span class="cp-dot" style="background:rgba(232,64,64,.7)"></span>Negative avg</span>
+    <div class="how-preview">
+      <div class="hp-bar">
+        <div class="hp-dot" style="background:#FF5F57"></div>
+        <div class="hp-dot" style="background:#FEBC2E"></div>
+        <div class="hp-dot" style="background:#28C840"></div>
+        <div class="hp-title">NVIDIA · 15-YEAR SEASONALITY</div>
+      </div>
+      <div class="hp-body">
+        <div class="mini-bars" id="miniBars"></div>
+      </div>
     </div>
   </div>
-</section>
+</div>
+</div>
 
 <!-- PRICING -->
-<section id="pricing" style="padding-bottom:0">
-  <div class="section-eyebrow">Pricing</div>
-  <h2 class="section-title">Start free. Upgrade when you're ready.</h2>
-  <p class="section-sub">No lock-in, no complicated tiers. Just clear pricing for serious investors.</p>
-
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-tier">Free</div>
-      <div class="price-amount">£0<span>/mo</span></div>
-      <div class="price-period">Forever free</div>
-      <div class="price-divider"></div>
-      <ul class="price-features">
-        <li>3 analyses per month</li>
-        <li>Index funds &amp; ETFs only</li>
-        <li>15-year history window</li>
-        <li>Calendar wheel &amp; bar chart</li>
-        <li class="no">Individual stocks</li>
-        <li class="no">AI pattern analysis</li>
-        <li class="no">CSV export</li>
-        <li class="no">Portfolio watchlist</li>
-      </ul>
-      <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-plan ghost">Get started free</button></a>
+<div class="pricing-wrap" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-header">
+      <div class="eyebrow">Pricing</div>
+      <h2>Start free.<br><em>Upgrade when ready.</em></h2>
+      <p class="section-sub">No lock-in, no hidden fees. Transparent pricing for investors at every level.</p>
     </div>
-
-    <div class="price-card featured">
-      <div class="price-badge">Most Popular</div>
-      <div class="price-tier">Pro</div>
-      <div class="price-amount">£9<span>.99/mo</span></div>
-      <div class="price-period">Billed monthly · cancel anytime</div>
-      <div class="price-divider"></div>
-      <ul class="price-features">
-        <li>Unlimited analyses</li>
-        <li>All 100+ stocks, ETFs &amp; crypto</li>
-        <li>1–20 year history windows</li>
-        <li>Calendar wheel &amp; bar chart</li>
-        <li>AI pattern analysis</li>
-        <li>CSV export</li>
-        <li class="no">Portfolio watchlist</li>
-        <li class="no">API access</li>
-      </ul>
-      <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-plan amber">Start 7-day free trial</button></a>
-    </div>
-
-    <div class="price-card">
-      <div class="price-tier">Lifetime</div>
-      <div class="price-amount">£99<span> once</span></div>
-      <div class="price-period">Pay once, yours forever</div>
-      <div class="price-divider"></div>
-      <ul class="price-features">
-        <li>Everything in Pro</li>
-        <li>Portfolio watchlist (10 assets)</li>
-        <li>Email seasonal alerts</li>
-        <li>Early access to new features</li>
-        <li>API access (50 req/day)</li>
-        <li>Priority support</li>
-        <li class="no">White-label use</li>
-        <li class="no">Team seats</li>
-      </ul>
-      <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-plan ghost">Get lifetime access</button></a>
+    <div class="pricing-grid">
+      <div class="pc">
+        <div class="pc-tier">Free</div>
+        <div class="pc-price"><div class="pc-amount"><sup>£</sup>0</div></div>
+        <div class="pc-period">Forever free</div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check">✓</span>3 analyses per month</li>
+          <li><span class="check">✓</span>Index funds &amp; ETFs only</li>
+          <li><span class="check">✓</span>15-year history</li>
+          <li><span class="check">✓</span>Calendar wheel &amp; heatmap</li>
+          <li class="off"><span class="cross">—</span>Individual stocks</li>
+          <li class="off"><span class="cross">—</span>AI pattern analysis</li>
+          <li class="off"><span class="cross">—</span>CSV export</li>
+        </ul>
+        <a href="/seasonax-auth.html"><button class="btn-pc ghost">Get started free</button></a>
+      </div>
+      <div class="pc featured">
+        <div class="pc-popular">Most Popular</div>
+        <div class="pc-tier">Pro</div>
+        <div class="pc-price"><div class="pc-amount"><sup>£</sup>9<sub>.99/mo</sub></div></div>
+        <div class="pc-period">Billed monthly · cancel anytime</div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check">✓</span>Unlimited analyses</li>
+          <li><span class="check">✓</span>All 100+ stocks, ETFs &amp; crypto</li>
+          <li><span class="check">✓</span>1–20 year history windows</li>
+          <li><span class="check">✓</span>AI pattern analysis</li>
+          <li><span class="check">✓</span>CSV export</li>
+          <li><span class="check">✓</span>Priority support</li>
+          <li class="off"><span class="cross">—</span>Portfolio watchlist</li>
+        </ul>
+        <a href="/seasonax-auth.html"><button class="btn-pc primary">Start 7-day free trial</button></a>
+      </div>
+      <div class="pc">
+        <div class="pc-tier">Lifetime</div>
+        <div class="pc-price"><div class="pc-amount"><sup>£</sup>99</div></div>
+        <div class="pc-period">Pay once, yours forever</div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check">✓</span>Everything in Pro</li>
+          <li><span class="check">✓</span>Portfolio watchlist</li>
+          <li><span class="check">✓</span>Email seasonal alerts</li>
+          <li><span class="check">✓</span>Early access to features</li>
+          <li><span class="check">✓</span>API access (50 req/day)</li>
+          <li><span class="check">✓</span>Founding member badge</li>
+          <li class="off"><span class="cross">—</span>Team seats</li>
+        </ul>
+        <a href="/seasonax-auth.html"><button class="btn-pc ghost">Get lifetime access</button></a>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- TESTIMONIALS -->
-<section>
-  <div class="section-eyebrow">Early Users</div>
-  <h2 class="section-title">Investors already using seasonal data</h2>
+<div style="background:var(--navy);border-top:1px solid var(--border)">
+<div class="testi-wrap">
+  <div class="section-header">
+    <div class="eyebrow">Early Users</div>
+    <h2>What investors are<br><em>saying.</em></h2>
+  </div>
   <div class="testi-grid">
-    <div class="testi">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"I've been trading for 12 years and September has always made me nervous. Now I know exactly why — and I have the data to back up reducing exposure every August."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">MR</div>
-        <div><div class="testi-name">Marcus R.</div><div class="testi-role">Retail investor, 12 years</div></div>
-      </div>
+    <div class="tc">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"I've been trading for 12 years and September always made me nervous. Now I know exactly why — and I have 15 years of data to back up reducing exposure in August."</div>
+      <div class="tc-author"><div class="tc-avatar">MR</div><div><div class="tc-name">Marcus R.</div><div class="tc-role">Retail investor · 12 years</div></div></div>
     </div>
-    <div class="testi">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"The Bitcoin Uptober data alone justified my subscription. I've been using it to time my DCA entries and it's dramatically improved my average cost basis."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">SK</div>
-        <div><div class="testi-name">Sophia K.</div><div class="testi-role">Crypto investor</div></div>
-      </div>
+    <div class="tc">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"The Bitcoin Uptober data alone justified the subscription. I've used it to time DCA entries and it's dramatically improved my average cost basis over the last two cycles."</div>
+      <div class="tc-author"><div class="tc-avatar">SK</div><div><div class="tc-name">Sophia K.</div><div class="tc-role">Crypto investor</div></div></div>
     </div>
-    <div class="testi">
-      <div class="testi-stars">★★★★☆</div>
-      <div class="testi-text">"The AI analysis section genuinely surprised me. It doesn't just show the data — it explains the mechanics behind why each month behaves the way it does."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">JL</div>
-        <div><div class="testi-name">James L.</div><div class="testi-role">Options trader</div></div>
-      </div>
+    <div class="tc">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"The AI analysis doesn't just show the data — it explains the mechanics behind why each month behaves the way it does. That context is what makes it genuinely useful."</div>
+      <div class="tc-author"><div class="tc-avatar">JL</div><div><div class="tc-name">James L.</div><div class="tc-role">Options trader</div></div></div>
     </div>
   </div>
-</section>
+</div>
+</div>
 
 <!-- FAQ -->
-<section style="padding-top:0;max-width:760px">
-  <div class="section-eyebrow">FAQ</div>
-  <h2 class="section-title">Common questions</h2>
-  <div class="faq-list">
-    <details class="faq-item">
-      <summary class="faq-q">Is seasonal data reliable for making trading decisions? <span class="faq-arrow">▾</span></summary>
-      <div class="faq-a">Seasonal patterns are statistical tendencies derived from long-term historical data — not guarantees. They work best as one input among several, alongside fundamentals, technical analysis, and macro context. We always include caveats in every analysis. Past seasonal performance does not guarantee future results.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">Where does the data come from? <span class="faq-arrow">▾</span></summary>
-      <div class="faq-a">Our seasonal patterns are based on research-backed historical return data compiled from major market data sources. The AI analysis synthesizes known seasonal phenomena documented in academic finance literature and institutional research.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">Can I cancel my subscription anytime? <span class="faq-arrow">▾</span></summary>
-      <div class="faq-a">Yes — cancel anytime from your account settings. You keep full access until the end of your billing period. No questions asked, no cancellation fees.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">What assets will you add next? <span class="faq-arrow">▾</span></summary>
-      <div class="faq-a">We're actively expanding coverage to include more international indices (FTSE 100, DAX, Nikkei), commodities (crude oil, natural gas, agricultural), and additional crypto assets. Pro subscribers get early access and a vote on what we prioritize.</div>
-    </details>
-    <details class="faq-item">
-      <summary class="faq-q">Is there an API for developers? <span class="faq-arrow">▾</span></summary>
-      <div class="faq-a">A read-only API is included in the Lifetime plan at 50 requests/day. We're building a full API tier for developers and institutional users — join the waitlist from your account settings.</div>
-    </details>
+<div class="faq-wrap" id="faq">
+  <div class="faq-inner">
+    <div class="section-header">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common <em>questions.</em></h2>
+    </div>
+    <div class="faq-list">
+      <details open>
+        <summary>Is seasonal data reliable for trading decisions? <span class="faq-arrow">+</span></summary>
+        <div class="faq-body">Seasonal patterns are statistical tendencies from long-term data — not guarantees. They work best as one input alongside fundamentals, technicals, and macro context. Every SeasonAX analysis includes explicit caveats. Past seasonal performance does not guarantee future results.</div>
+      </details>
+      <details>
+        <summary>Where does the data come from? <span class="faq-arrow">+</span></summary>
+        <div class="faq-body">Seasonal patterns are based on research-backed historical return data compiled from major market data sources. The AI analysis synthesizes documented seasonal phenomena from academic finance literature and institutional research reports.</div>
+      </details>
+      <details>
+        <summary>Can I cancel anytime? <span class="faq-arrow">+</span></summary>
+        <div class="faq-body">Yes — cancel anytime from your account settings with one click. You keep full Pro access until the end of your billing period. No questions asked, no cancellation fees, no retention dark patterns.</div>
+      </details>
+      <details>
+        <summary>What assets are you adding next? <span class="faq-arrow">+</span></summary>
+        <div class="faq-body">We're actively expanding to international indices (FTSE 100, DAX, Nikkei 225), commodities (crude oil, natural gas, wheat), and more crypto assets. Pro subscribers get early access and vote on what we prioritize.</div>
+      </details>
+      <details>
+        <summary>Is there an API? <span class="faq-arrow">+</span></summary>
+        <div class="faq-body">A read-only API at 50 requests/day is included in the Lifetime plan. A full developer API tier is in the roadmap — join the waitlist from your account settings once signed up.</div>
+      </details>
+    </div>
   </div>
-</section>
+</div>
 
 <!-- CTA -->
 <div class="cta-wrap">
+  <div class="cta-bg"></div>
   <div class="cta-inner">
-    <h2>Stop guessing. Start reading the <em>calendar</em>.</h2>
-    <p>15 years of data. 100+ assets. Instant seasonal intelligence. Your first 3 analyses are completely free — no card required.</p>
+    <div class="eyebrow" style="justify-content:center;margin-bottom:20px">Start today</div>
+    <h2>Stop guessing.<br>Read the <span style="color:var(--amber2)">calendar.</span></h2>
+    <p>15 years of data. 100+ assets. Instant seasonal intelligence. Your first 3 analyses are completely free.</p>
     <div class="cta-actions">
-      <a href="seasonax-auth.html" style="text-decoration:none"><button class="btn-xl">Start free today</button></a>
-      <button class="btn-xl-ghost">View pricing →</button>
+      <a href="/seasonax-auth.html"><button class="btn-hero">Create free account →</button></a>
+      <a href="/market-seasonality.html"><button class="btn-hero-ghost">Open the app</button></a>
     </div>
-    <div class="cta-note">✓ Free forever tier available &nbsp;·&nbsp; ✓ No credit card for trial &nbsp;·&nbsp; ✓ Cancel anytime</div>
+    <div class="cta-note">✓ No credit card &nbsp;·&nbsp; ✓ Free forever tier &nbsp;·&nbsp; ✓ Cancel anytime</div>
   </div>
 </div>
 
@@ -584,29 +737,32 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 60
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="logo">Seasonax.io</div>
-        <p>Market seasonality intelligence for self-directed investors. Understand the calendar patterns that move markets.</p>
+        <div class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 34 34" fill="none"><rect width="34" height="34" rx="8" fill="#0F1C30"/><path d="M8 22 L13 16 L18 19 L24 11" stroke="#E8961A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="24" cy="11" r="2.5" fill="#E8961A"/><rect x="8" y="23.5" width="3" height="2.5" rx="1" fill="#00C278" opacity="0.7"/><rect x="13" y="21" width="3" height="5" rx="1" fill="#00C278" opacity="0.7"/><rect x="18" y="19" width="3" height="7" rx="1" fill="#E8961A" opacity="0.8"/><rect x="23" y="15" width="3" height="11" rx="1" fill="#E8961A"/></svg>
+          <div class="logo-text">Season<span style="color:var(--amber2)">AX</span></div>
+        </div>
+        <p>Professional market seasonality intelligence for self-directed investors. Understand the calendar patterns that move markets.</p>
       </div>
       <div class="footer-col">
-        <h4>Product</h4>
+        <h5>Product</h5>
         <ul>
           <li><a href="#">Features</a></li>
-          <li><a href="#">Pricing</a></li>
+          <li><a href="#pricing">Pricing</a></li>
           <li><a href="#">Changelog</a></li>
           <li><a href="#">API docs</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h5>Company</h5>
         <ul>
           <li><a href="#">About</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Careers</a></li>
           <li><a href="#">Contact</a></li>
+          <li><a href="#">Careers</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Legal</h4>
+        <h5>Legal</h5>
         <ul>
           <li><a href="#">Privacy policy</a></li>
           <li><a href="#">Terms of service</a></li>
@@ -616,75 +772,114 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:48px 60
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2025 Seasonax.io · All rights reserved</div>
-      <div class="footer-disclaimer">Past seasonal performance does not guarantee future results. Seasonax provides data for informational purposes only and does not constitute financial advice.</div>
+      <div class="footer-copy">© 2025 SeasonAX · All rights reserved</div>
+      <div class="footer-disc">Past seasonal performance does not guarantee future results. SeasonAX provides historical data for informational purposes only and does not constitute financial advice. Investing involves risk.</div>
     </div>
   </div>
 </footer>
 
 <script>
-// ── Ticker tape ──────────────────────────────────────────
-const tickers = [
-  {sym:'SPY',val:'+1.2%',up:true},{sym:'QQQ',val:'+0.8%',up:true},
-  {sym:'AAPL',val:'+2.1%',up:true},{sym:'TSLA',val:'-1.4%',up:false},
-  {sym:'NVDA',val:'+3.8%',up:true},{sym:'MSFT',val:'+0.6%',up:true},
-  {sym:'BTC',val:'+4.2%',up:true},{sym:'META',val:'+1.9%',up:true},
-  {sym:'AMZN',val:'+0.3%',up:true},{sym:'GLD',val:'+0.5%',up:true},
-  {sym:'PLTR',val:'-2.1%',up:false},{sym:'AMD',val:'+1.7%',up:true},
-  {sym:'COIN',val:'+5.4%',up:true},{sym:'JPM',val:'+0.8%',up:true},
-  {sym:'^GSPC',val:'+0.9%',up:true},{sym:'RIVN',val:'-3.2%',up:false},
+// ── Ticker tape ────────────────────────────────────────
+const ticks = [
+  {s:'SPY',p:'591.24',c:'+1.2%',u:true},{s:'QQQ',p:'512.80',c:'+0.8%',u:true},
+  {s:'AAPL',p:'213.55',c:'+2.1%',u:true},{s:'TSLA',p:'248.42',c:'-1.4%',u:false},
+  {s:'NVDA',p:'1,089.30',c:'+3.8%',u:true},{s:'MSFT',p:'429.17',c:'+0.6%',u:true},
+  {s:'BTC',p:'67,420',c:'+4.2%',u:true},{s:'META',p:'538.91',c:'+1.9%',u:true},
+  {s:'AMZN',p:'192.34',c:'+0.3%',u:true},{s:'GLD',p:'224.10',c:'+0.5%',u:true},
+  {s:'PLTR',p:'24.18',c:'-2.1%',u:false},{s:'AMD',p:'178.22',c:'+1.7%',u:true},
+  {s:'COIN',p:'242.50',c:'+5.4%',u:true},{s:'JPM',p:'198.44',c:'+0.8%',u:true},
+  {s:'RIVN',p:'10.22',c:'-3.2%',u:false},{s:'SOFI',p:'9.18',c:'+2.3%',u:true},
 ];
-const track = document.getElementById('tickerTrack');
-const doubled = [...tickers,...tickers];
-track.innerHTML = doubled.map(t=>`
-  <span class="ticker-item">
-    <span class="ticker-sym">${t.sym}</span>
-    <span class="ticker-val ${t.up?'up':'dn'}">${t.val}</span>
+const t2 = [...ticks,...ticks];
+document.getElementById('tickerEl').innerHTML = t2.map(t=>`
+  <span class="t-item">
+    <span class="t-sym">${t.s}</span>
+    <span class="t-price">${t.p}</span>
+    <span class="t-chg ${t.u?'up':'dn'}">${t.c}</span>
   </span>`).join('');
 
-// ── Hero bar chart ───────────────────────────────────────
-const spData = [
-  {m:'Jan',v:1.1,p:true},{m:'Feb',v:0.1,p:true},{m:'Mar',v:1.2,p:true},
-  {m:'Apr',v:1.5,p:true},{m:'May',v:0.3,p:true},{m:'Jun',v:0.1,p:true},
-  {m:'Jul',v:1.4,p:true},{m:'Aug',v:-0.2,p:false},{m:'Sep',v:-0.7,p:false},
-  {m:'Oct',v:0.9,p:true},{m:'Nov',v:1.7,p:true},{m:'Dec',v:1.5,p:true}
-];
-const maxV = Math.max(...spData.map(d=>Math.abs(d.v)));
-const bc = document.getElementById('heroBarChart');
-bc.innerHTML = spData.map(d=>{
-  const w = (Math.abs(d.v)/maxV*100).toFixed(0);
-  const col = d.p ? 'var(--green)' : 'var(--red)';
-  const sign = d.p ? '+' : '';
-  return `<div class="mb-row">
-    <div class="mb-label">${d.m}</div>
-    <div class="mb-track"><div class="mb-fill" style="--w:${w}%;width:${w}%;background:${col};opacity:.7"></div></div>
-    <div class="mb-val ${d.p?'p':'n'}">${sign}${d.v.toFixed(1)}%</div>
-  </div>`;
-}).join('');
-
-// ── Month heatmap grid ───────────────────────────────────
-const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const spAvg=[1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5];
-const grid = document.getElementById('monthGrid');
-const maxA = Math.max(...spAvg.map(Math.abs));
-grid.innerHTML = months.map((m,i)=>{
-  const v = spAvg[i];
-  const norm = Math.abs(v)/maxA;
-  const op = 0.15 + norm*0.65;
-  const bg = v>=0 ? `rgba(46,204,113,${op})` : `rgba(232,64,64,${op})`;
+// ── Heatmap ────────────────────────────────────────────
+const MO = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+const MF = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const sp = [1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5];
+const wr = [62,52,65,68,57,52,64,47,42,59,70,72];
+const mx = Math.max(...sp.map(Math.abs));
+document.getElementById('heatmap').innerHTML = sp.map((v,i)=>{
+  const n = Math.abs(v)/mx;
+  const op = 0.15 + n*0.7;
+  const bg = v>=0 ? `rgba(0,194,120,${op})` : `rgba(232,64,74,${op})`;
   const col = v>=0 ? 'var(--green)' : 'var(--red)';
-  return `<div class="mg-cell" style="background:${bg}">
-    <div class="mg-month">${m}</div>
-    <div class="mg-val" style="color:${col}">${v>0?'+':''}${v.toFixed(1)}%</div>
+  return `<div class="hm-cell" style="background:${bg}" title="${MF[i]}: avg ${v>0?'+':''}${v}%, win rate ${wr[i]}%">
+    <div class="hm-mo">${MO[i]}</div>
+    <div class="hm-val" style="color:${col}">${v>0?'+':''}${v}</div>
+    <div class="hm-wr" style="color:${col}">${wr[i]}%</div>
   </div>`;
 }).join('');
 
-// ── FAQ smooth open ──────────────────────────────────────
-document.querySelectorAll('details').forEach(d=>{
-  d.addEventListener('toggle',()=>{
-    if(d.open) document.querySelectorAll('details').forEach(other=>{
-      if(other!==d) other.open=false;
-    });
+// ── Rotating insights ──────────────────────────────────
+const insights = [
+  '<strong>November</strong> has been the S&P 500\'s strongest month for 11 of the last 15 years',
+  '<strong>September</strong> is the only month to average a loss in the S&P 500 over every measured decade',
+  'Bitcoin\'s <strong>"Uptober"</strong> pattern has held in 75% of years since 2013',
+  'The <strong>January Effect</strong> is strongest in small caps — Russell 2000 averages +2.8% in Jan',
+  '<strong>Sell in May</strong> — the S&P 500 May–Oct window averages just +0.3%/month vs +1.2% Nov–Apr',
+  'NASDAQ\'s <strong>worst month</strong> is September at -1.1% — tech sells off harder than the broad market',
+];
+let ii = 0;
+function rotateInsight(){
+  document.getElementById('insightText').innerHTML = insights[ii++ % insights.length];
+}
+rotateInsight();
+setInterval(rotateInsight, 4000);
+
+// ── Counter animation ──────────────────────────────────
+function animCount(id, target, suffix='', duration=1800){
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function step(now){
+    const p = Math.min((now-start)/duration,1);
+    const ease = 1-Math.pow(1-p,3);
+    el.textContent = Math.round(ease*target);
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animCount('c1',100);animCount('c2',20);
+      animCount('c3',36);animCount('c4',70);
+      obs.disconnect();
+    }
+  });
+},{threshold:0.3});
+obs.observe(document.getElementById('c1').parentElement.parentElement);
+
+// ── Mini bars (how-it-works preview) ──────────────────
+const nvda = [
+  {m:'Jan',v:3.1,p:true},{m:'Feb',v:1.2,p:true},{m:'Mar',v:1.8,p:true},
+  {m:'Apr',v:2.4,p:true},{m:'May',v:-0.8,p:false},{m:'Jun',v:-1.1,p:false},
+  {m:'Jul',v:2.8,p:true},{m:'Aug',v:1.4,p:true},{m:'Sep',v:-1.8,p:false},
+  {m:'Oct',v:1.5,p:true},{m:'Nov',v:3.2,p:true},{m:'Dec',v:2.1,p:true}
+];
+const nvdaMax = Math.max(...nvda.map(d=>Math.abs(d.v)));
+document.getElementById('miniBars').innerHTML = nvda.map(d=>{
+  const w=(Math.abs(d.v)/nvdaMax*100).toFixed(0);
+  const col=d.p?'var(--green)':'var(--red)';
+  const sign=d.p?'+':'';
+  return `<div class="mb">
+    <div class="mb-l">${d.m}</div>
+    <div class="mb-t"><div class="mb-f" style="width:${w}%;background:${col};opacity:.7"></div></div>
+    <div class="mb-v" style="color:${col}">${sign}${d.v}%</div>
+  </div>`;
+}).join('');
+
+// ── How-it-works step highlighting ────────────────────
+document.querySelectorAll('.how-step').forEach((step,i)=>{
+  step.addEventListener('click',()=>{
+    document.querySelectorAll('.how-step').forEach(s=>s.classList.remove('active'));
+    step.classList.add('active');
   });
 });
 </script>
