@@ -234,6 +234,123 @@ button{cursor:pointer;font-family:var(--sans)}
 .bt-legend span{display:flex;align-items:center;gap:5px}
 .bt-ld{width:14px;height:2px;display:inline-block;border-radius:1px}
 @media(max-width:768px){.bt-stats{grid-template-columns:repeat(3,1fr)}.bt-row{flex-direction:column}}
+
+/* ── EVENT STUDIES ── */
+.es-catblock{margin-bottom:30px}
+.es-cathead{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;padding:8px 0 12px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.es-cathead::after{content:'';flex:1;height:1px;background:rgba(232,147,24,.14)}
+.es-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:10px}
+.es-card{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.es-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .2s}
+.es-card:hover{background:var(--s1);border-color:var(--b3);transform:translateY(-2px)}
+.es-card:hover::before{background:var(--amber2)}
+.es-card.selected{background:rgba(232,147,24,.06);border-color:var(--amber2)}
+.es-card.selected::before{background:var(--amber2)}
+.es-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+.es-card-name{font-size:14px;font-weight:600;color:var(--w);letter-spacing:-.01em;line-height:1.3}
+.es-card-freq{font:400 9px/1.4 var(--mono);color:var(--w4);text-align:right;white-space:nowrap;flex-shrink:0}
+.es-card-headline{font:600 20px/1 var(--mono);letter-spacing:-.02em;margin-bottom:8px}
+.es-card-desc{font-size:12px;color:var(--w3);line-height:1.55}
+.es-inst{display:grid;grid-template-columns:230px 1fr 70px;align-items:center;gap:8px}
+.es-inst-l{font:400 10px/1.3 var(--mono);color:var(--w4);text-align:right}
+.es-inst-t{height:16px;background:var(--s1);border-radius:2px;overflow:hidden}
+.es-inst-f{height:100%;border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.es-inst-v{font:600 10px/1 var(--mono);text-align:right}
+.es-playbook{display:flex;flex-direction:column;gap:10px}
+.es-pb-item{display:flex;gap:12px;align-items:flex-start;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px 14px}
+.es-pb-num{width:22px;height:22px;border-radius:5px;background:rgba(232,147,24,.12);border:1px solid rgba(232,147,24,.3);color:var(--amber2);font:600 11px/1 var(--mono);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.es-pb-text{font-size:13px;color:var(--w2);line-height:1.6}
+
+/* ── EARNINGS ANALYSIS ── */
+.ea-scen{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ea-scen-card{background:var(--s1);border:1px solid var(--b2);border-radius:10px;padding:16px;position:relative;overflow:hidden}
+.ea-scen-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.ea-scen-card.g::before{background:var(--green)}
+.ea-scen-card.r::before{background:var(--red)}
+.ea-scen-title{font-size:13px;font-weight:600;color:var(--w);margin-bottom:4px}
+.ea-scen-sub{font:400 10px/1.4 var(--mono);color:var(--w4);margin-bottom:12px}
+.ea-scen-stat{font:600 22px/1 var(--mono);margin-bottom:4px}
+.ea-scen-lbl{font:400 9px/1 var(--mono);color:var(--w4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.ea-scen-note{font-size:11px;color:var(--w3);line-height:1.55}
+.ea-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ea-tab{background:transparent;border:1px solid var(--b2);color:var(--w4);padding:6px 14px;border-radius:20px;font:500 11px/1 var(--sans);transition:all .18s;cursor:pointer}
+.ea-tab:hover{border-color:var(--b3);color:var(--w2)}
+.ea-tab.active{background:rgba(232,147,24,.1);border-color:rgba(232,147,24,.4);color:var(--amber2)}
+.ea-tablewrap{overflow-x:auto}
+.ea-table{width:100%;border-collapse:collapse;min-width:780px}
+.ea-table th{font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);text-align:right;padding:10px 12px;border-bottom:1px solid var(--b2);cursor:pointer;user-select:none;white-space:nowrap}
+.ea-table th:hover{color:var(--amber2)}
+.ea-table th.l{text-align:left}
+.ea-table td{font:400 12px/1 var(--mono);padding:11px 12px;border-bottom:1px solid var(--b1);text-align:right;white-space:nowrap}
+.ea-table td.l{text-align:left}
+.ea-table tr:hover td{background:rgba(255,255,255,.015)}
+.ea-tk{color:var(--amber2);font-weight:600}
+.ea-nm{color:var(--w3);font-size:11px}
+.ea-tag{font:600 9px/1 var(--mono);padding:3px 8px;border-radius:3px;display:inline-block}
+.ea-tag.beat{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
+.ea-tag.miss{background:rgba(240,64,80,.08);color:var(--red);border:1px solid rgba(240,64,80,.2)}
+@media(max-width:900px){.ea-scen{grid-template-columns:repeat(2,1fr)}.es-inst{grid-template-columns:130px 1fr 60px}}
+
+/* ── SCREENER ── */
+.sc-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.sc-row{display:grid;grid-template-columns:24px 1fr 110px 64px 76px;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--b1)}
+.sc-rank{font:600 10px/1 var(--mono);color:var(--w5)}
+.sc-id{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-more{font:400 9px/1 var(--mono);color:var(--w5);margin-left:6px}
+.sc-win{display:flex;align-items:center;gap:6px;font:400 9px/1 var(--mono);color:var(--w4)}
+.sc-winbar{flex:1;height:4px;background:var(--s1);border-radius:2px;overflow:hidden}
+.sc-avg{font:600 12px/1 var(--mono);text-align:right}
+.sc-go{background:none;border:1px solid var(--b2);color:var(--w4);padding:4px 9px;border-radius:5px;font:500 10px/1 var(--mono);cursor:pointer;transition:all .15s;white-space:nowrap}
+.sc-go:hover{border-color:var(--amber2);color:var(--amber2)}
+.sc-shifts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sc-shift{background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:5px}
+.sc-shift-d{font:600 14px/1 var(--mono)}
+/* ── WATCHLIST ── */
+.wl-suggest{position:absolute;left:24px;right:24px;top:100%;margin-top:-8px;background:var(--bg3);border:1px solid var(--b3);border-radius:8px;z-index:50;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.wl-sg{padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s;border-bottom:1px solid var(--b1)}
+.wl-sg:last-child{border-bottom:none}
+.wl-sg:hover{background:var(--s1)}
+.wl-sg-add{margin-left:auto;font:600 10px/1 var(--mono);color:var(--amber2)}
+.wl-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.3fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--b1)}
+.wl-cell{display:flex;flex-direction:column;gap:2px}
+.wl-cl{font:400 8px/1 var(--mono);color:var(--w5);letter-spacing:.1em;text-transform:uppercase}
+.wl-cv{font:600 14px/1 var(--mono)}
+.wl-cw{font:400 9px/1 var(--mono);color:var(--w4)}
+.wl-status{font:500 11px/1.4 var(--mono)}
+.wl-actions{display:flex;gap:6px;align-items:center}
+.wl-x{background:none;border:1px solid var(--b2);color:var(--w4);width:24px;height:24px;border-radius:5px;font-size:13px;cursor:pointer;transition:all .15s;line-height:1}
+.wl-x:hover{border-color:var(--red);color:var(--red)}
+/* ── CORRELATIONS ── */
+.pr-mrow{display:grid;grid-template-columns:34px 1fr 110px;align-items:center;gap:8px;padding:4px 0}
+.pr-ml{font:400 10px/1 var(--mono);color:var(--w4);text-align:right}
+.pr-bars{display:flex;flex-direction:column;gap:3px}
+.pr-bt{height:9px;background:var(--s1);border-radius:2px;overflow:hidden}
+.pr-bf{height:100%;border-radius:2px;transition:width .5s}
+.pr-mv{font:500 10px/1 var(--mono);text-align:right;color:var(--w4)}
+/* ── CALENDAR ── */
+.ec-row{display:grid;grid-template-columns:52px 1fr 84px 100px 100px;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--b1)}
+.ec-date{background:var(--s1);border:1px solid var(--b2);border-radius:7px;padding:6px 4px;text-align:center}
+.ec-mo{font:600 8px/1 var(--mono);letter-spacing:.12em;color:var(--amber2)}
+.ec-day{font:600 16px/1.2 var(--mono);color:var(--w)}
+.ec-name{font-size:13px;font-weight:500;color:var(--w2)}
+.ec-type{font:600 8px/1 var(--mono);letter-spacing:.1em;padding:4px 8px;border-radius:3px;text-align:center}
+.ec-fed{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
+.ec-data{background:rgba(77,163,255,.08);color:#4DA3FF;border:1px solid rgba(77,163,255,.2)}
+.ec-pol{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
+.ec-earn{background:rgba(155,127,255,.08);color:#9B7FFF;border:1px solid rgba(155,127,255,.2)}
+.ec-struct{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
+.ec-count{font:500 11px/1 var(--mono);color:var(--w3);text-align:right}
+.ec-act{text-align:right}
+/* mode bar wrap for 9 tabs */
+.mode-bar{flex-wrap:wrap}
+.mode-tab{padding:9px 18px;font-size:12px}
+@media(max-width:900px){
+  .sc-cols{grid-template-columns:1fr}
+  .sc-shifts{grid-template-columns:1fr}
+  .wl-row{grid-template-columns:1fr 1fr;row-gap:8px}
+  .ec-row{grid-template-columns:48px 1fr 90px;row-gap:6px}
+  .ec-type,.ec-act{display:none}
+}
 </style>
 </head>
 <body>
@@ -277,8 +394,15 @@ button{cursor:pointer;font-family:var(--sans)}
 
   <!-- MODE SWITCHER -->
   <div class="mode-bar">
-    <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Seasonal Analyzer</button>
-    <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Strategy Backtest</button>
+    <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Analyzer</button>
+    <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Backtest</button>
+    <button class="mode-tab" id="mt_events" onclick="switchMode('events')">Event Studies</button>
+    <button class="mode-tab" id="mt_earnings" onclick="switchMode('earnings')">Earnings</button>
+    <button class="mode-tab" id="mt_screener" onclick="switchMode('screener')">Screener</button>
+    <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist</button>
+    <button class="mode-tab" id="mt_month" onclick="switchMode('month')">This Month</button>
+    <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations</button>
+    <button class="mode-tab" id="mt_calendar" onclick="switchMode('calendar')">Calendar</button>
   </div>
 
   <div id="modeAnalyzer">
@@ -374,6 +498,132 @@ button{cursor:pointer;font-family:var(--sans)}
       </div>
     </div>
     <div id="btResults"></div>
+  </div>
+
+  <!-- EVENT STUDIES MODE -->
+  <div id="modeEvents" style="display:none">
+    <div id="esBrowser"></div>
+    <div id="esDetail" style="display:none;margin-top:36px"></div>
+  </div>
+
+  <!-- EARNINGS ANALYSIS MODE -->
+  <div id="modeEarnings" style="display:none">
+    <div class="bt-stats" id="eaStats" style="border-radius:12px 12px 0 0"></div>
+    <div class="bt-panel">
+      <div class="bt-ptitle">The Four Earnings Scenarios &mdash; computed live from the tracker below</div>
+      <div class="ea-scen" id="eaScen"></div>
+    </div>
+    <div class="bt-panel">
+      <div class="bt-ptitle">Post-Earnings Performance Tracker &mdash; click any column to sort</div>
+      <div class="ea-filters" id="eaFilters"></div>
+      <div class="ea-tablewrap"><table class="ea-table" id="eaTable"></table></div>
+    </div>
+    <div class="bt-panel">
+      <div class="ai-header"><span class="ai-badge">Earnings Intelligence</span><span class="ai-title">How to interpret the next report</span></div>
+      <div class="aitxt" style="margin-bottom:22px">The most documented anomaly in earnings is post-earnings announcement drift (PEAD): stocks that move decisively on a report tend to KEEP moving in that direction for one to three months, rather than instantly pricing everything in. You can see it in this dataset &mdash; the day-1 direction held at the one-month mark in the overwhelming majority of cases, and the day-1 verdict — from Amazon’s October 2025 surge to Meta’s post-report slide — told you where the next month was heading.
+
+The four scenarios above are the practical framework. The dangerous quadrants are the contradictory ones: a BEAT that sells off means the market is rejecting the quality of the beat &mdash; usually guidance &mdash; and those names (Palantir, Microsoft and Nvidia in this sample) continued falling for weeks. A MISS that rallies means expectations were already destroyed, and that washout has historically marked durable lows. In both cases the price reaction carried more information than the EPS line. Before the next report you trade, ask one question: what is positioning expecting? The reaction to the NUMBER is unpredictable; the reaction relative to EXPECTATIONS follows the patterns on this page.</div>
+      <div class="bt-ptitle">Earnings Playbook</div>
+      <div class="es-playbook" id="eaPlaybook"></div>
+    </div>
+    <div class="bt-panel last">
+      <div class="bt-disclaimer">EARNINGS STUDY &mdash; figures are research-based representations of notable recent reports, presented for education. EPS surprise percentages and price reactions are approximate. Past post-earnings behavior does not guarantee future outcomes. Not financial advice.</div>
+    </div>
+  </div>
+
+
+  <!-- SEASONAL SCREENER MODE -->
+  <div id="modeScreener" style="display:none">
+    <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div class="bt-label" style="margin:0">Screen month</div>
+      <select class="bt-select" id="scMonth" style="max-width:200px"></select>
+      <div class="ea-nm">Defaults to the current month · rankings update instantly</div>
+    </div>
+    <div class="bt-stats" id="scStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
+    <div class="bt-panel">
+      <div class="sc-cols">
+        <div>
+          <div class="bt-ptitle" id="scStrongTitle" style="color:var(--green)">Strongest</div>
+          <div id="scStrong"></div>
+        </div>
+        <div>
+          <div class="bt-ptitle" id="scWeakTitle" style="color:var(--red)">Weakest</div>
+          <div id="scWeak"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bt-panel last">
+      <div class="bt-ptitle" id="scShiftTitle">Momentum swings</div>
+      <div class="sc-shifts" id="scShifts"></div>
+      <div class="bt-disclaimer" style="margin-top:16px">SCREENER — rankings reflect historical seasonal averages by pattern group, not predictions. Multiple assets share a pattern group; "+N similar" indicates peers with the same seasonal profile.</div>
+    </div>
+  </div>
+
+  <!-- WATCHLIST MODE -->
+  <div id="modeWatchlist" style="display:none">
+    <div class="bt-config" style="margin-bottom:18px;position:relative">
+      <div class="bt-label" style="margin-bottom:8px">Add an asset (max 10)</div>
+      <input type="text" class="filter-search" id="wlSearch" placeholder="Search ticker or name to add..." autocomplete="off">
+      <div class="wl-suggest" id="wlSuggest" style="display:none"></div>
+    </div>
+    <div class="bt-stats" id="wlStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
+    <div class="bt-panel last">
+      <div class="bt-ptitle">Your seasonal dashboard</div>
+      <div id="wlList"></div>
+      <div class="bt-disclaimer" style="margin-top:16px">WATCHLIST — stored locally in your browser. Status lines compare the current month's historical average with next month's for each asset's seasonal pattern.</div>
+    </div>
+  </div>
+
+  <!-- THIS MONTH MODE -->
+  <div id="modeMonth" style="display:none">
+    <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div class="bt-label" style="margin:0">Month</div>
+      <select class="bt-select" id="mhMonth" style="max-width:200px"></select>
+    </div>
+    <div class="bt-stats" id="mhStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
+    <div class="bt-panel">
+      <div class="ai-header"><span class="ai-badge">Market History</span><span class="ai-title" id="mhTitle">This month</span></div>
+      <div class="aitxt" id="mhBlurb"></div>
+    </div>
+    <div class="bt-panel last">
+      <div class="bt-ptitle">Defining moments of this month</div>
+      <div class="bt-yrgrid" id="mhEvents"></div>
+    </div>
+  </div>
+
+  <!-- CORRELATIONS MODE -->
+  <div id="modePairs" style="display:none">
+    <div class="bt-config" style="margin-bottom:18px">
+      <div class="bt-row">
+        <div class="bt-field"><label class="bt-label">Asset A</label><select class="bt-select" id="prA" onchange="prRun()"></select></div>
+        <div class="bt-field"><label class="bt-label">Asset B</label><select class="bt-select" id="prB" onchange="prRun()"></select></div>
+      </div>
+      <div class="bt-label" style="margin:14px 0 8px">Notable pairs</div>
+      <div class="ea-filters" id="prPresets" style="margin-bottom:0"></div>
+    </div>
+    <div id="prResults" style="display:none">
+      <div class="bt-stats" id="prStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
+      <div class="bt-panel">
+        <div class="bt-ptitle">Monthly seasonal rhythm — side by side</div>
+        <div id="prChart"></div>
+        <div class="bt-legend" id="prLegend"></div>
+      </div>
+      <div class="bt-panel last">
+        <div class="ai-header"><span class="ai-badge">Pair Intelligence</span><span class="ai-title">What the correlation means</span></div>
+        <div class="aitxt" id="prText"></div>
+        <div class="bt-disclaimer" style="margin-top:16px">CORRELATION — computed across the 12 monthly seasonal averages of each asset's pattern group. Seasonal correlation is not price correlation; it measures calendar rhythm alignment only.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR MODE -->
+  <div id="modeCalendar" style="display:none">
+    <div class="bt-stats" id="ecStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(4,1fr)"></div>
+    <div class="bt-panel last">
+      <div class="bt-ptitle">Upcoming market catalysts</div>
+      <div id="ecList"></div>
+      <div class="bt-disclaimer" style="margin-top:16px">CALENDAR — FOMC dates are the Federal Reserve's published 2026 schedule. CPI and earnings dates marked (approx) are estimated from typical release timing and may shift. Each playbook link opens the full historical event study.</div>
+    </div>
   </div>
 
 </div>
@@ -1677,7 +1927,7 @@ async function initAuth(){
 
 function showUserMenu(user){
   const name = user.user_metadata?.full_name || user.email.split('@')[0];
-  document.getElementById('userBadge').textContent = '👤 ' + name;
+  document.getElementById('userBadge').textContent = name;
   document.getElementById('userMenu').style.display = 'flex';
   document.getElementById('loginPrompt').style.display = 'none';
 }
@@ -1723,11 +1973,32 @@ initAuth();
 // ============================================================
 // MODE SWITCHER
 // ============================================================
+var MODE_HERO = {
+  analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 500+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
+  backtest: ['Test any window. <em>25 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
+  events:   ['When history repeats, <em>know the script.</em>', 'Fed decisions, elections, CPI prints, mega-cap earnings, halvings \u2014 and every major crash. How markets actually behaved, with a playbook for each.'],
+  earnings: ['Earnings move markets. <em>Read the reaction.</em>', 'What really happens 1 week, 2 weeks and 1 month after companies report \u2014 and how to interpret the next print before you trade it.'],
+  screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
+  watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
+  month: ['This month, <em>in market history.</em>', 'The average returns, the famous crashes and the legendary rallies that happened in this calendar month.'],
+  pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
+  calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.']
+};
 function switchMode(mode) {
-  document.getElementById('modeAnalyzer').style.display = mode === 'analyzer' ? 'block' : 'none';
-  document.getElementById('modeBacktest').style.display = mode === 'backtest' ? 'block' : 'none';
-  document.getElementById('mt_analyzer').classList.toggle('active', mode === 'analyzer');
-  document.getElementById('mt_backtest').classList.toggle('active', mode === 'backtest');
+  var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', earnings:'modeEarnings', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar' };
+  Object.keys(names).forEach(function(m) {
+    var sec = document.getElementById(names[m]);
+    if (sec) sec.style.display = (m === mode) ? 'block' : 'none';
+    var tab = document.getElementById('mt_' + m);
+    if (tab) tab.classList.toggle('active', m === mode);
+  });
+  var h = MODE_HERO[mode];
+  if (h) {
+    var t = document.querySelector('.hs-title');
+    var s = document.querySelector('.hs-sub');
+    if (t) t.innerHTML = h[0];
+    if (s) s.innerHTML = h[1];
+  }
 }
 
 // ============================================================
@@ -1941,6 +2212,1493 @@ function runBacktest() {
 }
 
 btInit();
+
+// ============================================================
+// EVENT STUDIES — data library
+// ============================================================
+var EVENT_STUDIES = [
+
+{ category: "Monetary Policy" },
+{
+  id:"fomc", name:"FOMC Rate Decisions", freq:"8 meetings / year", asset:"S&P 500",
+  headline:"+0.27% avg day-of", hcolor:"g",
+  desc:"How the market behaves around Federal Reserve interest-rate announcements.",
+  stats:[
+    {v:"+0.27%", l:"Avg day-of return", c:"g"},
+    {v:"+0.49%", l:"Pre-FOMC 24h drift", c:"g"},
+    {v:"63%",    l:"Day-of win rate", c:"a"},
+    {v:"240+",   l:"Meetings sampled", c:"w"}
+  ],
+  xlabel:"Trading days from announcement",
+  path:[[-5,99.5],[-3,99.7],[-1,99.95],[0,100.27],[1,100.2],[3,100.15],[5,100.3],[10,100.5],[20,100.8],[30,101.1]],
+  instTitle:"Recent FOMC day S&P 500 moves",
+  instances:[
+    {l:"Jan 2026 (hold, data fog)", v:0.3},{l:"Dec 2025 (third cut)", v:0.4},
+    {l:"Oct 2025 (cut, hawkish Powell)", v:-1.0},{l:"Sep 2025 (cuts resume)", v:-0.1},
+    {l:"Jun 2025 (hold, tariff watch)", v:0.2},{l:"Mar 2025 (hold, relief)", v:1.1},
+    {l:"Dec 2024 (hawkish cut)", v:-2.9},{l:"Sep 2024 (50bp cut)", v:1.7}
+  ],
+  insight:"The most studied calendar event in finance. NY Fed research (Lucca & Moench) found that since 1994, a striking share of the entire equity risk premium has been earned in the 24 hours BEFORE scheduled FOMC announcements — the famous \"pre-FOMC announcement drift\" of roughly +0.49%. The day itself averages +0.27% with a 63% win rate, but the dispersion is huge: dovish surprises have produced +3% days, hawkish surprises -3% days. Since 2022, press-conference language has mattered more than the decision itself — several meetings saw the initial move fully reverse while Powell spoke. Volatility is reliably elevated: option-implied moves on FOMC days run roughly 2x a normal session, and implied volatility consistently collapses immediately after the statement (the \"vol crush\").",
+  playbook:[
+    "The historical edge is being LONG into the announcement, not after it — the pre-FOMC drift is the documented anomaly.",
+    "Expect the first move to be wrong: initial spikes frequently reverse during the press conference.",
+    "Options are systematically expensive into FOMC days; volatility sellers have historically been paid for the vol crush.",
+    "Hawkish-surprise days (-1% or worse) have historically been followed by weak weeks — momentum, not mean reversion."
+  ]
+},
+{
+  id:"firstcut", name:"First Rate Cut of a Cycle", freq:"7 cycles since 1984", asset:"S&P 500",
+  headline:"+12% avg 12m (no recession)", hcolor:"g",
+  desc:"What happens to equities in the year after the Fed begins cutting rates.",
+  stats:[
+    {v:"+12%", l:"12m later, no recession", c:"g"},
+    {v:"-12%", l:"12m later, recession", c:"r"},
+    {v:"6/7",  l:"Cycles positive at 3m", c:"a"},
+    {v:"7",    l:"Cutting cycles sampled", c:"w"}
+  ],
+  xlabel:"Trading days from first cut",
+  path:[[-20,98.5],[-10,99.3],[0,100],[10,101],[21,102],[42,103.2],[63,104],[126,106.5],[189,108],[252,112]],
+  instTitle:"S&P 500, 12 months after the first cut",
+  instances:[
+    {l:"Sep 2024 cycle", v:15.8},{l:"Jul 2019 cycle", v:9.8},
+    {l:"Sep 2007 cycle (GFC)", v:-20.6},{l:"Jan 2001 cycle (dot-com)", v:-13.5},
+    {l:"Jul 1995 cycle (soft landing)", v:18.7},{l:"Jun 1989 cycle", v:11.4},
+    {l:"Sep 1984 cycle", v:13.1}
+  ],
+  insight:"The single most important question after the first cut is WHY the Fed is cutting. When the first cut is an \"insurance\" cut into a still-growing economy (1984, 1995, 2019, 2024), the S&P 500 has averaged roughly +12% over the following 12 months — 1995 launched one of the greatest bull runs in history. When the first cut comes because the economy is already rolling into recession (2001, 2007), the average 12-month outcome flips to roughly -12%, because cuts cannot outrun collapsing earnings. The 3-month window is more forgiving — 6 of 7 cycles were positive a quarter after the first cut — which is exactly why the danger is mistaking the early relief rally for the all-clear.",
+  playbook:[
+    "Don't trade the cut — trade the reason for it. Growth data decides whether you're in the +12% or -12% script.",
+    "The first 3 months after a cut are usually green even in the bad scenarios; strength alone proves nothing.",
+    "Rate-sensitive groups (small caps, REITs, homebuilders) have historically led in the no-recession script.",
+    "If unemployment is rising when the Fed cuts, history says defensives and bonds beat equities over 12 months."
+  ]
+},
+
+{ category: "Economic Data" },
+{
+  id:"cpi", name:"CPI Releases", freq:"Monthly · 8:30am ET", asset:"S&P 500",
+  headline:"±1.0% avg move (2022-23)", hcolor:"a",
+  desc:"Inflation prints became the market's biggest single-day event of the post-COVID era.",
+  stats:[
+    {v:"±1.0%", l:"Avg abs move 2022-23", c:"a"},
+    {v:"±0.3%", l:"Avg abs move pre-2021", c:"w"},
+    {v:"+5.5%", l:"Best CPI day (Nov 2022)", c:"g"},
+    {v:"-4.3%", l:"Worst CPI day (Sep 2022)", c:"r"}
+  ],
+  xlabel:"Trading days from release",
+  path:[[-5,100.1],[-3,100.05],[-1,99.9],[0,100.15],[1,100.2],[3,100.3],[5,100.35],[10,100.5],[20,100.7],[30,100.8]],
+  instTitle:"Notable CPI-day S&P 500 moves",
+  instances:[
+    {l:"Oct 24 2025 (shutdown-delayed, cool)", v:0.8},{l:"Sep 11 2025 (in-line, cut sealed)", v:0.9},
+    {l:"Jul 15 2025 (first tariff pass-through)", v:-0.4},{l:"Apr 10 2025 (cool \u2014 ignored in tariff chaos)", v:-3.5},
+    {l:"Nov 10 2022 (cool print, record rally)", v:5.5},{l:"Sep 13 2022 (hot print, record rout)", v:-4.3},
+    {l:"Jun 10 2022 (9.1% peak)", v:-2.9},{l:"May 15 2024 (cool)", v:1.2}
+  ],
+  insight:"Before 2021, CPI day was a non-event — the S&P 500 moved about ±0.3%, indistinguishable from a normal session. The inflation shock changed that completely: through 2022-23 the average absolute CPI-day move exploded to ±1.0%, with tails far beyond. November 10, 2022 — a single cooler-than-expected print — produced a +5.5% day, the best single day for the S&P since 2020, and the NASDAQ rose +7.4%. The asymmetry matters: in a high-inflation regime, COOL surprises produced bigger rallies than hot surprises produced selloffs, because positioning was defensively skewed. As inflation normalized in 2024-25, CPI-day moves compressed back toward ±0.4% — the event's power is regime-dependent, not constant.",
+  playbook:[
+    "CPI-day power is regime-dependent: it only dominates when inflation is the market's primary fear.",
+    "The bigger move historically comes from the surprise AGAINST positioning — cool prints in bear markets are rocket fuel.",
+    "The first 30 minutes set the day's direction far more reliably on CPI days than normal days.",
+    "Avoid expiring-that-day options ahead of the print unless you're explicitly paying for the lottery ticket."
+  ]
+},
+{
+  id:"nfp", name:"Nonfarm Payrolls (Jobs Report)", freq:"First Friday monthly", asset:"S&P 500",
+  headline:"±0.6% avg move", hcolor:"a",
+  desc:"The monthly US jobs report — the original market-moving data release.",
+  stats:[
+    {v:"±0.6%", l:"Avg abs day move", c:"a"},
+    {v:"55%",   l:"Day-of win rate", c:"w"},
+    {v:"+2.3%", l:"Best NFP day (2023)", c:"g"},
+    {v:"-3.0%", l:"Worst NFP day (2022)", c:"r"}
+  ],
+  xlabel:"Trading days from release",
+  path:[[-5,100],[-3,100.05],[-1,99.95],[0,100.1],[1,100.15],[3,100.2],[5,100.25],[10,100.4],[20,100.55],[30,100.7]],
+  instTitle:"Notable jobs-day S&P 500 moves",
+  instances:[
+    {l:"Sep 5 2025 (weak \u2014 Sep cut sealed)", v:-0.3},{l:"Aug 1 2025 (miss + huge revisions)", v:-1.6},
+    {l:"Jun 6 2025 (solid beat)", v:1.0},{l:"May 2 2025 (resilience relief)", v:1.5},
+    {l:"Aug 2024 (recession scare)", v:-1.8},{l:"Sep 2024 (blowout beat)", v:0.9},
+    {l:"Jan 2023 (517k shock)", v:-1.0},{l:"Apr 2022 (hot wages)", v:-3.0}
+  ],
+  insight:"Payrolls is the longest-running scheduled macro event, and its meaning flips with the regime. In inflation-fear regimes (2022), STRONG jobs numbers were bad news — they meant more Fed hikes — so the worst jobs-day of recent years (-3.0%, April 2022) came on hot wage growth. In growth-fear regimes (mid-2024), the same strong number became good news and weak prints caused selloffs — the August 2024 miss triggered a -1.8% day and a global volatility spike. The headline payroll figure is also among the most heavily revised statistics in economics: initial prints are routinely revised by 50-100k, which is why the market reaction often exceeds what the final data would justify.",
+  playbook:[
+    "Decide first which regime you're in: is good news good, or is good news bad? That flips the entire trade.",
+    "Wage growth (average hourly earnings) has often mattered more than the headline jobs number.",
+    "Revisions to prior months frequently move markets as much as the headline — read the whole release.",
+    "Jobs Friday + a long weekend has historically amplified moves: traders cut risk rather than hold."
+  ]
+},
+
+{ category: "Politics & Elections" },
+{
+  id:"election", name:"US Presidential Elections", freq:"Every 4 years · November", asset:"S&P 500",
+  headline:"+7.5% avg election year", hcolor:"g",
+  desc:"How markets trade into, through, and after presidential elections.",
+  stats:[
+    {v:"+7.5%", l:"Avg election-year return", c:"g"},
+    {v:"83%",   l:"Positive election years since 1928", c:"a"},
+    {v:"+2.5%", l:"Day after 2024 result", c:"g"},
+    {v:"24",    l:"Elections sampled", c:"w"}
+  ],
+  xlabel:"Trading days from election day",
+  path:[[-60,97],[-40,97.8],[-20,98.2],[-10,98.5],[-5,99],[0,100],[1,101.2],[5,101.8],[10,102.3],[21,103],[42,104],[63,105]],
+  instTitle:"S&P 500 day after election day",
+  instances:[
+    {l:"2024 (Trump)", v:2.5},{l:"2020 (Biden)", v:2.2},
+    {l:"2016 (Trump)", v:1.1},{l:"2012 (Obama)", v:-2.4},
+    {l:"2008 (Obama, GFC)", v:-5.3},{l:"2004 (Bush)", v:1.1},
+    {l:"2000 (contested)", v:-1.6},{l:"1996 (Clinton)", v:1.5}
+  ],
+  insight:"Election years average +7.5% for the S&P 500 and have been positive 83% of the time since 1928 — but the path matters more than the destination. The classic pattern: markets chop sideways with elevated volatility in September-October as uncertainty peaks, then rally once the result is known — almost regardless of who wins. The market hates uncertainty far more than it hates either party: 2016 and 2024 both produced strong next-day rallies on results many predicted would crash markets, while the contested 2000 election (no result for 36 days) produced one of the few sustained post-election drawdowns. Resolution is the trade, not the winner. The exception is when an election lands inside an existing crisis — 2008's -5.3% next-day drop was the financial crisis, not the ballot.",
+  playbook:[
+    "Buy the resolution, not the candidate — uncertainty removal has been the reliable rally trigger.",
+    "Pre-election October chop is normal and has historically been a buying window, not a warning.",
+    "A contested or delayed result is the genuine risk scenario (see 2000: -8% during the dispute).",
+    "Sector rotation by expected policy (energy, defense, clean tech) is where the winner actually matters."
+  ]
+},
+{
+  id:"midterm", name:"Midterm Elections", freq:"Every 4 years · November", asset:"S&P 500",
+  headline:"100% positive 12m after", hcolor:"g",
+  desc:"The strongest political-calendar pattern in market history.",
+  stats:[
+    {v:"19/19", l:"Positive 12m after, since 1946", c:"g"},
+    {v:"+15%",  l:"Avg 12m post-midterm return", c:"g"},
+    {v:"-1%",   l:"Avg midterm-year (pre-vote)", c:"r"},
+    {v:"19",    l:"Midterms sampled", c:"w"}
+  ],
+  xlabel:"Trading days from midterm",
+  path:[[-40,96],[-20,97],[-10,98],[0,100],[10,101.5],[21,102.5],[63,105],[126,108],[189,111],[252,115]],
+  instTitle:"S&P 500, 12 months after midterms",
+  instances:[
+    {l:"2022 midterm", v:14.0},{l:"2018 midterm", v:12.1},
+    {l:"2014 midterm", v:3.0},{l:"2010 midterm", v:5.9},
+    {l:"2006 midterm", v:12.4},{l:"2002 midterm", v:14.9},
+    {l:"1998 midterm", v:20.9},{l:"1994 midterm", v:29.7}
+  ],
+  insight:"This is the closest thing to a perfect record in market seasonality: the S&P 500 has been HIGHER 12 months after every single midterm election since 1946 — 19 out of 19, averaging roughly +15%. The mechanism is a double tailwind. First, midterm years themselves are historically the weakest of the 4-year presidential cycle (markets dislike the uncertainty), creating a depressed base. Second, midterms usually produce divided government, and markets historically love gridlock — legislative paralysis means no major policy shocks. The pattern held even in brutal environments: the 2002 midterm landed near the dot-com bottom (+14.9% followed), and the 2022 midterm came mid-bear-market (+14.0% followed). No seasonal pattern is guaranteed, but none has a longer unbroken record.",
+  playbook:[
+    "The 12-month post-midterm window is statistically the strongest of the entire 4-year cycle.",
+    "Midterm-year weakness (especially Sep-Oct) has historically been the setup, not the warning.",
+    "Divided-government outcomes have historically been the most bullish — gridlock is a feature.",
+    "19/19 is remarkable but n=19 is small; size it as a tailwind, not a certainty."
+  ]
+},
+
+{ category: "Earnings Events" },
+{
+  id:"nvda_e", name:"Nvidia Earnings", freq:"Quarterly · after close", asset:"NVDA",
+  headline:"±8.7% avg move", hcolor:"a",
+  desc:"The single biggest recurring stock event of the AI era — it moves the whole market.",
+  stats:[
+    {v:"±8.7%", l:"Avg abs next-day move", c:"a"},
+    {v:"+24.4%",l:"Best reaction (May 2023)", c:"g"},
+    {v:"-10%",  l:"Typical 'good but not enough'", c:"r"},
+    {v:"$200B+",l:"Market cap swung in a day", c:"w"}
+  ],
+  xlabel:"Trading days from report",
+  path:[[-5,98],[-3,98.8],[-1,99.5],[0,100],[1,104],[3,104.8],[5,105.5],[10,106],[20,107],[30,108]],
+  instTitle:"NVDA next-day reactions",
+  instances:[
+    {l:"Nov 2025 (beat \u2014 reversed on AI jitters)", v:-3.2},{l:"Aug 2025 (in-line)", v:-0.8},
+    {l:"May 2025 (export-charge beat)", v:3.2},{l:"Feb 2025 (good, not enough)", v:-8.5},
+    {l:"Nov 2024", v:0.5},{l:"Aug 2024", v:-6.4},
+    {l:"Feb 2024 (beat)", v:16.4},{l:"May 2023 (AI guidance shock)", v:24.4}
+  ],
+  insight:"The May 2023 report is already legend: Nvidia guided revenue ~50% above Wall Street's estimate, the stock gained +24.4% overnight, and roughly $200 billion of market value appeared in a session — the announcement that ignited the AI capex supercycle. Since then NVDA earnings have functioned as a macro event: index futures, semiconductor ETFs, and AI-adjacent names all reprice on the number, and option markets routinely imply ±8-10% single-day moves. The pattern that emerged is brutal escalation: beating estimates stopped being enough — the stock began selling off on results that merely met elevated expectations (-6.4% Aug 2024, -8.5% Feb 2025 despite record numbers). The bar resets higher every quarter; the trade is expectations versus delivery, not good versus bad. By late 2025 the dynamic sharpened again: November\u2019s quarter was a clean beat-and-raise, yet the stock reversed from +5% to negative in a session as the market began stress-testing the circular financing behind AI capex \u2014 at $4 trillion scale, the debate moved from Nvidia\u2019s numbers to the durability of its customers\u2019 spending.",
+  playbook:[
+    "The implied move (straddle price) tells you the market's expected swing — the edge is having a view versus THAT.",
+    "Guidance, not the reported quarter, has driven nearly every large reaction.",
+    "NVDA earnings is a market-wide event: SMH, SOXX and even S&P futures reprice with it.",
+    "After mega-beats, strength persisted for weeks; after disappointments, the fade also trended. Momentum, not reversion."
+  ]
+},
+{
+  id:"tsla_e", name:"Tesla Earnings", freq:"Quarterly · after close", asset:"TSLA",
+  headline:"±9.5% avg move", hcolor:"a",
+  desc:"The most volatile mega-cap earnings event on the calendar.",
+  stats:[
+    {v:"±9.5%", l:"Avg abs next-day move", c:"a"},
+    {v:"+21.9%",l:"Best reaction (Oct 2024)", c:"g"},
+    {v:"-12.1%",l:"Worst recent reaction", c:"r"},
+    {v:"~2x",   l:"Move vs other mega-caps", c:"w"}
+  ],
+  xlabel:"Trading days from report",
+  path:[[-5,99],[-3,99.5],[-1,100],[0,100],[1,103],[3,102.5],[5,103.5],[10,104],[20,103],[30,105]],
+  instTitle:"TSLA next-day reactions",
+  instances:[
+    {l:"Oct 2025 (margin miss)", v:-3.8},{l:"Jul 2025 (\u2018rough quarters\u2019 warning)", v:-8.2},
+    {l:"Apr 2025 (big miss \u2014 Musk refocus rally)", v:5.4},{l:"Jan 2025 (miss, narrative save)", v:2.9},
+    {l:"Oct 2024 (margin beat)", v:21.9},{l:"Jul 2024 (miss)", v:-12.3},
+    {l:"Apr 2024 (robotaxi pivot)", v:12.1},{l:"Jan 2024 (warning)", v:-12.1}
+  ],
+  insight:"Tesla's earnings reactions average roughly ±9.5% — about double a typical mega-cap — because the stock trades on narrative as much as numbers. The recent record shows it: January 2024's cautious guidance produced -12.1%; three months later an even weaker quarter produced +12.1% because Musk pivoted the story to robotaxis. October 2024 delivered the best reaction in years (+21.9%) on a margin beat that broke a streak of disappointments. The consistent lesson is that deliveries are pre-announced weeks earlier, so the quarter's headline is rarely the surprise — margins and the narrative arc of the call are what reprice the stock. Six of eight recent reactions exceeded ±9%, making TSLA the most reliable volatility event among large caps.",
+  playbook:[
+    "Deliveries are known in advance — margins and the call narrative are the real event.",
+    "Options imply huge moves and are usually still underpriced for the tails; both ±12% and ±20% have happened.",
+    "Reaction direction has frequently contradicted the headline numbers; narrative dominates.",
+    "TSLA earnings reactions tend to RUN for several sessions — the day-1 move has historically continued, not reversed."
+  ]
+},
+{
+  id:"aapl_e", name:"Apple Earnings", freq:"Quarterly · after close", asset:"AAPL",
+  headline:"±3.9% avg move", hcolor:"a",
+  desc:"The world's largest company reporting — steadier, but it anchors the whole index.",
+  stats:[
+    {v:"±3.9%", l:"Avg abs next-day move", c:"a"},
+    {v:"+8.9%", l:"Best recent reaction", c:"g"},
+    {v:"-4.8%", l:"Worst recent reaction", c:"r"},
+    {v:"~7%",   l:"Weight in S&P 500", c:"w"}
+  ],
+  xlabel:"Trading days from report",
+  path:[[-5,99.4],[-3,99.7],[-1,100],[0,100],[1,101.2],[3,101.5],[5,101.8],[10,102],[20,102.5],[30,103]],
+  instTitle:"AAPL next-day reactions",
+  instances:[
+    {l:"Oct 2025 (record holiday guide)", v:0.5},{l:"May 2025 (tariff overhang)", v:-3.7},
+    {l:"Aug 2024 (services beat)", v:1.7},{l:"May 2024 (buyback)", v:6.0},
+    {l:"Feb 2024 (China worry)", v:-0.5},{l:"Aug 2023 (rev decline)", v:-4.8},
+    {l:"Feb 2023 (miss \u2014 rallied anyway)", v:2.4},{l:"Oct 2022 (relief)", v:7.6}
+  ],
+  insight:"Apple is the calmest of the mega-cap earnings events (±3.9% average) but arguably the most systemically important: at roughly 7% of the S&P 500, an Apple surprise moves every index fund on the planet. Its reactions are also famously counterintuitive — February 2023 saw the stock RISE 2.4% on a rare across-the-board miss, because expectations had been crushed in advance, while August 2023 fell -4.8% on numbers that beat estimates. The May 2024 report is the modern template: a record $110 billion buyback announcement overwhelmed soft iPhone numbers and drove +6%. With Apple, capital return and services growth have repeatedly mattered more than the hardware cycle the headlines obsess over.",
+  playbook:[
+    "Positioning into the print matters more than the print — crushed expectations have produced rallies on misses.",
+    "Buyback announcements (often in the spring report) have repeatedly trumped soft product numbers.",
+    "Watch services margin: it is the quiet driver of Apple's multiple.",
+    "An Apple gap moves the entire index — even index-only investors are trading this event."
+  ]
+},
+
+{ category: "Crypto Events" },
+{
+  id:"halving", name:"Bitcoin Halving", freq:"Every ~4 years", asset:"BTC",
+  headline:"Every cycle: new ATH after", hcolor:"g",
+  desc:"The supply shock written into Bitcoin's code — issuance cut by 50% every 210,000 blocks.",
+  stats:[
+    {v:"4/4",    l:"Halvings followed by new ATH", c:"g"},
+    {v:"+8,500%",l:"12m after 2012 halving", c:"g"},
+    {v:"+33%",   l:"12m after 2024 halving", c:"a"},
+    {v:"~450d",  l:"Avg time halving \u2192 cycle peak", c:"w"}
+  ],
+  xlabel:"Days from halving",
+  path:[[-60,90],[-30,95],[0,100],[30,103],[60,108],[120,125],[180,150],[270,210],[365,300],[450,380],[500,340]],
+  instTitle:"BTC return ~12 months after each halving",
+  instances:[
+    {l:"Nov 2012 halving ($12)", v:8500},
+    {l:"Jul 2016 halving ($650)", v:285},
+    {l:"May 2020 halving ($8.6k)", v:560},
+    {l:"Apr 2024 halving ($64k)", v:33}
+  ],
+  insight:"The halving cuts Bitcoin's new supply in half overnight — the only major asset with a pre-scheduled supply shock. The record is unambiguous in direction and shrinking in magnitude: all four halvings were followed by a new all-time high, but the 12-month returns collapsed from roughly +8,500% (2012) to +285% (2016), +560% (2020), and about +48% (2024) as the asset's market cap grew a thousand-fold and ETFs changed the buyer base. The timing pattern is remarkably consistent: the cycle peak has arrived roughly 350-550 days AFTER each halving, never before it — which is why \"buy the halving, hold 12-18 months\" became the defining crypto seasonal trade. The day itself is a non-event (it's known years in advance); the supply squeeze compounds over the following year. The 2024 cycle then followed the script with eerie precision: Bitcoin peaked near $126,000 in early October 2025 \u2014 roughly day 535 after the halving, inside the historical 450\u2013550 day window \u2014 before rolling into its familiar post-peak correction.",
+  playbook:[
+    "The halving day itself does nothing — the historical edge is the 12-18 month window after it.",
+    "Each cycle's return has been roughly an order of magnitude smaller; calibrate expectations accordingly.",
+    "Cycle peaks have historically landed ~450 days post-halving — that window is where distribution began.",
+    "Post-halving years contain 50-70% drawdowns WITHIN the uptrend; the pattern rewards holders, not leverage."
+  ]
+},
+{
+  id:"btcetf", name:"Spot Bitcoin ETF Approval", freq:"One-off · Jan 10 2024", asset:"BTC",
+  headline:"Sell the news, then +90%", hcolor:"g",
+  desc:"The most anticipated approval in crypto history — and a perfect sell-the-news case study.",
+  stats:[
+    {v:"-15%",  l:"First 12 days after approval", c:"r"},
+    {v:"+90%",  l:"Following 9 weeks", c:"g"},
+    {v:"$1B+",  l:"Daily ETF inflows at peak", c:"a"},
+    {v:"11",    l:"ETFs approved same day", c:"w"}
+  ],
+  xlabel:"Days from approval",
+  path:[[-30,88],[-10,96],[0,100],[5,94],[12,85],[20,92],[30,103],[45,125],[60,150],[75,160]],
+  instTitle:"BTC around the approval",
+  instances:[
+    {l:"30 days before (anticipation)", v:14},
+    {l:"Days 0-12 (sell the news)", v:-15},
+    {l:"Days 12-60 (inflow wave)", v:76},
+    {l:"To March 2024 ATH ($73k)", v:90}
+  ],
+  insight:"January 10, 2024 — the SEC approved eleven spot Bitcoin ETFs simultaneously after a decade of rejections. What followed was a textbook two-act structure. Act one: sell the news. Bitcoin dropped roughly 15% in twelve days as traders who had bought the rumor took profits and the converted GBTC trust bled billions in outflows. Many declared the ETF a failure. Act two: the actual flows arrived. BlackRock's IBIT became the fastest ETF in history to $10 billion AUM, daily net inflows exceeded $1 billion at the peak, and Bitcoin rallied about 90% to a new all-time high ($73k) within nine weeks — BEFORE the halving. The lesson generalizes: known catalysts get front-run and dumped, but structural demand changes win over weeks, not days.",
+  playbook:[
+    "Anticipated events get sold first — the immediate reaction to a known catalyst is usually noise.",
+    "Structural flow changes (a new buyer class) play out over weeks; that was the real trade.",
+    "Watch the flows, not the price: ETF net inflows led the rally by days.",
+    "The pattern repeats across assets: approval/inclusion events dip first, then re-rate."
+  ]
+},
+
+{ category: "Crashes & Crises" },
+{
+  id:"tariff25", name:"2025 Tariff Shock", freq:"Apr 2 \u2013 Apr 9, 2025", asset:"S&P 500",
+  headline:"-19% then best day since '08", hcolor:"r",
+  desc:"\u201cLiberation Day\u201d tariffs erased $6 trillion in two days \u2014 then a 90-day pause produced one of the best days since WWII.",
+  stats:[
+    {v:"-10.5%", l:"Two sessions (Apr 3-4)", c:"r"},
+    {v:"-19%",  l:"Peak-to-trough drawdown", c:"r"},
+    {v:"+9.5%", l:"Best day (Apr 9 pause)", c:"g"},
+    {v:"2mo",   l:"To new all-time highs", c:"g"}
+  ],
+  xlabel:"Trading days from April 2 2025 announcement",
+  path:[[-25,99],[-10,96.5],[0,95],[1,90.4],[2,85],[3,84.6],[4,81.3],[5,89],[6,86.2],[10,88],[15,92],[25,96],[40,100.5],[55,103]],
+  instTitle:"The April 2025 sequence",
+  instances:[
+    {l:"Apr 3 \u2014 the tariff math lands", v:-4.8},
+    {l:"Apr 4 \u2014 China retaliates", v:-6.0},
+    {l:"Apr 7 \u2014 false-rumor whipsaw day", v:-0.2},
+    {l:"Apr 9 \u2014 90-day pause announced", v:9.5},
+    {l:"Apr 10 \u2014 the give-back day", v:-3.5},
+    {l:"Late Jun \u2014 new all-time high", v:0}
+  ],
+  insight:"On April 2, 2025 \u2014 \u201cLiberation Day\u201d \u2014 the White House announced the steepest tariff schedule in a century, and markets delivered a two-session, $6 trillion verdict: -10.5% on the S&P, VIX above 50, and the NASDAQ into bear-market territory. The decisive tell was the bond market: Treasury yields ROSE during the equity crash \u2014 the opposite of a normal flight to safety \u2014 signaling foreign selling and forcing the policy climbdown. On April 9 a 90-day pause was announced mid-session and the S&P exploded +9.5% (NASDAQ +12.2%) \u2014 among the three best days since WWII, landing five days after the worst. April 7 added the era\u2019s signature moment: a false headline about a pause sent stocks +8% in minutes before reversing \u2014 pure headline-algorithm markets. From the April 7 low, the index reclaimed all-time highs by late June \u2014 under three months. Policy-made crashes can be policy-unmade at the same speed.",
+  playbook:[
+    "Policy-induced crashes are reversible by the same pen that caused them \u2014 they have resolved far faster than recession or credit crashes.",
+    "Watch bonds during equity panics: yields RISING during a crash signals systemic stress \u2014 and historically forces the policy retreat.",
+    "The +9.5% day landed 5 days after the -6% day. Exiting into tariff panic meant missing the single move that repaired the year.",
+    "Headline-driven regimes whipsaw violently (Apr 7\u2019s false-rumor spike); position sizing beats reaction speed."
+  ]
+},
+{
+  id:"black87", name:"Black Monday 1987", freq:"Oct 19, 1987", asset:"Dow Jones",
+  headline:"-22.6% in one day", hcolor:"r",
+  desc:"The worst single trading day in US market history.",
+  stats:[
+    {v:"-22.6%", l:"Single-day drop", c:"r"},
+    {v:"-33%",  l:"Peak-to-trough", c:"r"},
+    {v:"~2yrs", l:"Time to recover high", c:"a"},
+    {v:"+2.3%", l:"1987 still ended POSITIVE", c:"g"}
+  ],
+  xlabel:"Trading days from Oct 14 peak area",
+  path:[[0,100],[1,97],[2,95.3],[3,90.6],[4,69.9],[6,73],[10,75],[20,77],[40,79],[60,81]],
+  instTitle:"The week's daily moves",
+  instances:[
+    {l:"Wed Oct 14", v:-3.8},{l:"Thu Oct 15", v:-2.4},
+    {l:"Fri Oct 16", v:-4.6},{l:"Mon Oct 19 (Black Monday)", v:-22.6},
+    {l:"Tue Oct 20", v:5.9},{l:"Wed Oct 21", v:10.1}
+  ],
+  insight:"On October 19, 1987 the Dow fell 22.6% in a single session — still the worst one-day decline ever, roughly double the worst day of 1929 or 2020. The cause was structural, not fundamental: \"portfolio insurance\" programs automatically sold futures as prices fell, which pushed prices lower, which triggered more selling — the first machine-driven feedback loop crash. Three details every investor should know: the crash was preceded by a -10% slide the prior week (the warning was there); the two days AFTER Black Monday included a +10.1% session — among the best days ever, landing inside the worst week; and despite all of it, 1987 closed POSITIVE for the year. The aftermath gave us circuit breakers, which is why a literal repeat is now mechanically impossible — trading halts at -7%, -13%, and -20%.",
+  playbook:[
+    "The best days cluster inside the worst weeks — panic-selling has historically meant missing the violent rebounds.",
+    "Mechanical/leverage-driven crashes (no fundamental cause) recovered far faster than recession crashes.",
+    "Circuit breakers (-7%/-13%/-20% halts) exist because of this day; tail mechanics have changed.",
+    "A -10% week preceded it: accelerating declines into a weekend remain a classic stress signature."
+  ]
+},
+{
+  id:"dotcom", name:"Dot-Com Crash 2000-02", freq:"Mar 2000 \u2013 Oct 2002", asset:"NASDAQ",
+  headline:"-78% over 2.5 years", hcolor:"r",
+  desc:"The slow-motion collapse of the internet bubble.",
+  stats:[
+    {v:"-78%",  l:"NASDAQ peak-to-trough", c:"r"},
+    {v:"-49%",  l:"S&P 500 drawdown", c:"r"},
+    {v:"15yrs", l:"NASDAQ to reclaim high", c:"a"},
+    {v:"930d",  l:"Days of decline", c:"w"}
+  ],
+  xlabel:"Days from March 2000 peak",
+  path:[[0,100],[30,88],[60,78],[120,70],[180,62],[250,52],[365,42],[450,38],[550,30],[650,24],[700,22],[780,26]],
+  instTitle:"The bear-market rallies (then new lows)",
+  instances:[
+    {l:"May-Jul 2000 rally", v:33},{l:"...then to new low", v:-40},
+    {l:"Apr-May 2001 rally", v:41},{l:"...then to new low", v:-45},
+    {l:"Oct-Dec 2001 rally", v:45},{l:"...final leg down", v:-46}
+  ],
+  insight:"The dot-com crash was not a crash — it was a grind. The NASDAQ lost 78% over 930 days, punctuated by THREE separate rallies of +33% to +45% that each sucked investors back in before new lows. That is the defining lesson: bubble unwinds kill with hope, not panic. Companies with no earnings went to zero, but the carnage took the giants too — Cisco fell 89%, Amazon 94%, Microsoft 65% — and the NASDAQ needed FIFTEEN YEARS (2015) to reclaim its 2000 high. Yet inside the wreckage, the survivors compounded into history's greatest businesses: $10,000 in Amazon at its 2001 low became millions. The bubble was right about the internet and wrong about price — the technology thesis succeeding did not save investors who paid 200x revenue for it.",
+  playbook:[
+    "Bubble unwinds feature multiple +30-45% rallies that fail — a big bounce is not proof of a bottom.",
+    "Valuation is the only defense: the thesis being RIGHT didn't save anyone who overpaid for it.",
+    "Survivors of a burst bubble can be generational buys — but only identifiable by balance sheet, not story.",
+    "Recovery from valuation bubbles is measured in decades, not quarters. Diversification exists for this."
+  ]
+},
+{
+  id:"gfc", name:"Global Financial Crisis 2008", freq:"Oct 2007 \u2013 Mar 2009", asset:"S&P 500",
+  headline:"-57% peak-to-trough", hcolor:"r",
+  desc:"The banking-system collapse that nearly broke global finance.",
+  stats:[
+    {v:"-57%",  l:"S&P peak-to-trough", c:"r"},
+    {v:"-8.8%", l:"Worst day (Sep 29 2008)", c:"r"},
+    {v:"+11.6%",l:"Best day (Oct 13 2008)", c:"g"},
+    {v:"4yrs",  l:"To reclaim 2007 high", c:"a"}
+  ],
+  xlabel:"Days from October 2007 peak",
+  path:[[0,100],[60,93],[120,88],[180,82],[240,78],[300,70],[330,55],[345,48],[365,45],[420,44],[480,43],[510,46],[550,52]],
+  instTitle:"The most violent days",
+  instances:[
+    {l:"Sep 29 2008 (TARP fails)", v:-8.8},{l:"Oct 13 2008 (bank plan)", v:11.6},
+    {l:"Oct 15 2008", v:-9.0},{l:"Oct 28 2008", v:10.8},
+    {l:"Dec 1 2008", v:-8.9},{l:"Mar 23 2009 (off the low)", v:7.1}
+  ],
+  insight:"The GFC was the closest the modern financial system has come to total failure: Lehman bankrupt, AIG nationalized, money-market funds breaking the buck, interbank lending frozen. The S&P fell 57% over 17 months — but look at the daily record: the BEST days in decades (+11.6%, +10.8%) landed within days of the worst (-9.0%, -8.8%). An investor who missed just the 10 best days of 2008-09 — almost all of which occurred during the panic — roughly halved their long-term returns. The bottom (March 9, 2009: S&P 666) arrived not when the news improved but when forced selling exhausted itself; the news stayed terrible for months while stocks climbed 60%. The recovery took four years to reclaim the 2007 high, then ran for a decade.",
+  playbook:[
+    "The best days live inside the panic — exiting after big drops has historically locked in the worst of both worlds.",
+    "Bottoms form on exhausted selling, not good news. The news was still awful in March 2009.",
+    "Systemic crises end when policy goes unlimited (TARP, QE) — the policy pivot was the buy signal.",
+    "Quality businesses fell 50%+ alongside broken ones; crisis indiscrimination is the long-term investor's gift."
+  ]
+},
+{
+  id:"flash10", name:"Flash Crash 2010", freq:"May 6, 2010 · 36 minutes", asset:"S&P 500",
+  headline:"-9% in minutes", hcolor:"r",
+  desc:"The day the machines broke the market — and fixed it within the hour.",
+  stats:[
+    {v:"-9%",   l:"Intraday plunge", c:"r"},
+    {v:"36min", l:"Crash duration", c:"a"},
+    {v:"$1T",   l:"Value erased (briefly)", c:"r"},
+    {v:"-3.2%", l:"Actual close that day", c:"w"}
+  ],
+  xlabel:"Minutes from 2:32pm ET",
+  path:[[0,100],[5,99.4],[10,98.8],[15,97],[18,94.5],[20,91.5],[25,93],[30,95.5],[40,97],[50,97.8],[60,98.2]],
+  instTitle:"What individual stocks did (minutes)",
+  instances:[
+    {l:"Accenture: $40 \u2192 $0.01", v:-99.9},
+    {l:"P&G intraday", v:-37},
+    {l:"Apple briefly printed $100k", v:0},
+    {l:"S&P low to 3pm recovery", v:6.5}
+  ],
+  insight:"At 2:32pm on May 6, 2010, a single large algorithmic sell order in S&P futures triggered a liquidity vacuum: high-frequency market makers withdrew simultaneously, and for 36 minutes prices ceased to mean anything. The S&P fell 9%; Accenture — a healthy $25 billion company — traded at one CENT; Apple briefly printed $100,000 a share; roughly $1 trillion in market value vanished and mostly reappeared within the hour. The market closed down just 3.2%. Over 20,000 trades were cancelled afterward, and the episode produced stock-level circuit breakers (limit-up/limit-down) that now halt individual names on extreme moves. The enduring lesson is about market structure: liquidity is a fair-weather friend — abundant until the exact moment everyone needs it.",
+  playbook:[
+    "Never leave resting stop-loss MARKET orders on quality holdings — they executed at absurd prices that day.",
+    "Liquidity evaporates precisely when needed; size positions assuming exits get expensive in stress.",
+    "Stock-level circuit breakers now exist because of this day — single-name death-prints are largely fixed.",
+    "Structural flash events recover in hours; the danger was reacting, not the event itself."
+  ]
+},
+{
+  id:"covid", name:"COVID Crash 2020", freq:"Feb 19 \u2013 Mar 23, 2020", asset:"S&P 500",
+  headline:"-34% in 33 days", hcolor:"r",
+  desc:"The fastest bear market in history — and the fastest recovery.",
+  stats:[
+    {v:"-34%",  l:"Drawdown in 33 days", c:"r"},
+    {v:"-12%",  l:"Worst day (Mar 16)", c:"r"},
+    {v:"+9.4%", l:"Best day (Mar 24)", c:"g"},
+    {v:"5mo",   l:"To reclaim the high", c:"g"}
+  ],
+  xlabel:"Days from Feb 19 peak",
+  path:[[0,100],[5,96],[10,89],[15,84],[20,76],[25,71],[33,66],[40,72],[50,78],[70,85],[100,92],[126,100],[150,104]],
+  instTitle:"The historic daily swings",
+  instances:[
+    {l:"Mar 12 2020", v:-9.5},{l:"Mar 13 2020", v:9.3},
+    {l:"Mar 16 2020 (worst since '87)", v:-12.0},{l:"Mar 17 2020", v:6.0},
+    {l:"Mar 24 2020 (Fed unlimited QE)", v:9.4},{l:"Apr 6 2020", v:7.0}
+  ],
+  insight:"COVID compressed an entire bear market into 33 days: -34% from the February 19 peak to March 23 — the fastest 30% drawdown ever recorded, with FOUR separate circuit-breaker halts in eight trading days and a -12% session (March 16) worse than any day of 2008. Then came the fastest recovery ever: the Fed announced unlimited QE on March 23 (the exact bottom, to the day), Congress passed $2 trillion in stimulus, and the S&P reclaimed its all-time high by August — five months. Whipsaw days were unprecedented: -9.5% Thursday, +9.3% Friday. The crash also produced history's greatest buying opportunity in specific names: Amazon, Nvidia and the digital economy never looked back. Policy speed, not virus news, set the bottom — cases were still EXPLODING in late March while stocks soared.",
+  playbook:[
+    "The bottom printed the day policy went unlimited — not when the actual news improved. Track the response, not the crisis.",
+    "Fastest crash, fastest recovery: modern crashes resolve quicker because policy reaction is now instant.",
+    "Back-to-back ±9% days mean position sizing is survival — leverage died in March 2020 even when 'right'.",
+    "Crisis accelerates existing trends; the winners of the prior regime (digital) led the recovery, not the losers."
+  ]
+},
+{
+  id:"bear22", name:"2022 Rate-Hike Bear Market", freq:"Jan \u2013 Oct 2022", asset:"S&P 500",
+  headline:"-25% over 9 months", hcolor:"r",
+  desc:"The bear market caused entirely by the Fed — stocks AND bonds fell together.",
+  stats:[
+    {v:"-25%",  l:"S&P peak-to-trough", c:"r"},
+    {v:"-36%",  l:"NASDAQ drawdown", c:"r"},
+    {v:"-17%",  l:"Bonds (AGG) \u2014 worst ever", c:"r"},
+    {v:"525bp", l:"Fed hikes in 16 months", c:"a"}
+  ],
+  xlabel:"Days from January 2022 peak",
+  path:[[0,100],[30,93],[60,91],[90,87],[120,82],[150,78],[170,76],[200,82],[230,78],[270,75],[290,76],[330,81],[365,84]],
+  instTitle:"The 2022 sequence",
+  instances:[
+    {l:"Jan-Mar (first leg)", v:-13},{l:"Mar rally (bear trap)", v:11},
+    {l:"Apr-Jun (rate shock)", v:-21},{l:"Jul-Aug rally (bear trap)", v:17},
+    {l:"Aug-Oct (final leg)", v:-19},{l:"Oct 13 reversal day onwards", v:14}
+  ],
+  insight:"2022 broke the one rule every portfolio was built on: that bonds protect you when stocks fall. With inflation at 9%, the Fed hiked 525bp in 16 months — the fastest tightening since 1980 — and BOTH fell: the S&P -25%, the NASDAQ -36%, and the aggregate bond index -17%, its worst year in recorded history. The classic 60/40 portfolio had its worst year since 1937. The bear was a grind of traps: two separate +11% and +17% rallies failed before the October 13 capitulation — a day that opened -2.4% on a hot CPI print and closed +2.6%, one of the great reversal days, which marked the low almost exactly. Long-duration growth was the epicenter (profitless tech fell 70-90%) while energy rose 59% — the only green sector.",
+  playbook:[
+    "When inflation is the problem, bonds don't hedge stocks — they fall together. Diversification must include real assets.",
+    "Rate-driven bears punish duration: the longer the cash flows (growth/tech), the bigger the drawdown.",
+    "Bear-market rallies of +10-17% failed twice; trend confirmation beats bottom-guessing.",
+    "The low printed on a TERRIBLE news day that reversed (Oct 13) — capitulation reversals mark bottoms, not good news."
+  ]
+},
+{
+  id:"svb", name:"SVB Banking Crisis 2023", freq:"Mar 8-13, 2023", asset:"Regional Banks (KRE)",
+  headline:"-30% in days", hcolor:"r",
+  desc:"A 48-hour bank run in the smartphone era — and the crisis that wasn't.",
+  stats:[
+    {v:"-60%",  l:"SVB stock, single day", c:"r"},
+    {v:"-30%",  l:"Regional banks (KRE)", c:"r"},
+    {v:"-5%",   l:"S&P max drawdown", c:"a"},
+    {v:"+20%",  l:"NASDAQ next 3 months", c:"g"}
+  ],
+  xlabel:"Days from March 8 2023",
+  path:[[0,100],[1,92],[2,80],[5,72],[8,70],[12,71],[20,73],[40,76],[60,80],[90,84]],
+  instTitle:"The contagion scoreboard",
+  instances:[
+    {l:"SVB (seized Mar 10)", v:-100},
+    {l:"First Republic (eventually)", v:-97},
+    {l:"Credit Suisse (rescued)", v:-70},
+    {l:"KRE regional bank ETF", v:-30},
+    {l:"S&P 500 through it all", v:-4.6},
+    {l:"NASDAQ next 3 months", v:20}
+  ],
+  insight:"Silicon Valley Bank — the 16th largest US bank — went from \"fine\" to seized in roughly 48 hours, as $42 billion of deposits fled in a single day via smartphone. The mechanism was 2022's rate shock arriving on bank balance sheets: SVB held long-duration bonds bought at zero rates, sitting on massive unrealized losses the moment depositors wanted cash. Signature Bank followed days later; Credit Suisse — a 167-year-old global bank — was forced into UBS within the week. And yet: the S&P fell less than 5%. Regulators guaranteed all deposits within 72 hours, the Fed opened an emergency facility (BTFP), and the market made one of its sharpest macro pivots ever — rate-hike expectations collapsed, and the NASDAQ rallied 20% in three months as falling yields re-rated tech. A banking crisis became a tech bull catalyst.",
+  playbook:[
+    "Modern bank runs take hours, not weeks — speed of policy response is everything, and it was fast.",
+    "Contained financial stress can be BULLISH for the index: it forces the Fed dovish (the 2023 tech rally).",
+    "The losers were specific (concentrated, uninsured-deposit banks); indiscriminate regional-bank selling overshot.",
+    "When a crisis hits one sector, look at who benefits from the policy response — that was the trade."
+  ]
+}
+];
+
+// ============================================================
+// EVENT STUDIES — UI (all fresh, es-prefixed)
+// ============================================================
+var esSelectedId = null;
+
+function esBuild() {
+  var wrap = document.getElementById('esBrowser');
+  if (!wrap) return;
+  var html = '';
+  var inCat = false;
+  EVENT_STUDIES.forEach(function(ev) {
+    if (ev.category) {
+      if (inCat) html += '</div></div>';
+      html += '<div class="es-catblock"><div class="es-cathead">' + ev.category + '</div><div class="es-grid">';
+      inCat = true;
+    } else {
+      var hc = ev.hcolor === 'g' ? 'var(--green)' : (ev.hcolor === 'r' ? 'var(--red)' : 'var(--amber2)');
+      html += '<div class="es-card' + (ev.id === esSelectedId ? ' selected' : '') + '" onclick="esSelect(\'' + ev.id + '\')" id="esc_' + ev.id + '">' +
+        '<div class="es-card-top">' +
+          '<div class="es-card-name">' + ev.name + '</div>' +
+          '<div class="es-card-freq">' + ev.freq + '</div>' +
+        '</div>' +
+        '<div class="es-card-headline" style="color:' + hc + '">' + ev.headline + '</div>' +
+        '<div class="es-card-desc">' + ev.desc + '</div>' +
+      '</div>';
+    }
+  });
+  if (inCat) html += '</div></div>';
+  wrap.innerHTML = html;
+}
+
+function esFind(id) {
+  for (var i = 0; i < EVENT_STUDIES.length; i++) if (EVENT_STUDIES[i].id === id) return EVENT_STUDIES[i];
+  return null;
+}
+
+function esChart(path, xlabel) {
+  var W = 860, H = 250, pad = 40;
+  var xs = path.map(function(p){ return p[0]; });
+  var ys = path.map(function(p){ return p[1]; });
+  var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
+  var lo = Math.min.apply(null, ys), hi = Math.max.apply(null, ys);
+  if (hi - lo < 1) hi = lo + 1;
+  var padY = (hi - lo) * 0.08; lo -= padY; hi += padY;
+  function px(x){ return pad + (W - pad * 2) * (x - x0) / (x1 - x0 || 1); }
+  function py(y){ return H - pad - (H - pad * 2) * (y - lo) / (hi - lo); }
+  var grid = '';
+  for (var g = 0; g <= 4; g++) {
+    var gv = lo + (hi - lo) * g / 4;
+    var gy = py(gv).toFixed(1);
+    grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>';
+    grid += '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
+  }
+  // baseline at 100
+  if (lo < 100 && hi > 100) {
+    grid += '<line x1="' + pad + '" y1="' + py(100).toFixed(1) + '" x2="' + (W - pad) + '" y2="' + py(100).toFixed(1) + '" stroke="#243A52" stroke-width="1" stroke-dasharray="3 3"/>';
+  }
+  // zero-day marker
+  if (x0 < 0 && x1 > 0) {
+    grid += '<line x1="' + px(0).toFixed(1) + '" y1="' + pad + '" x2="' + px(0).toFixed(1) + '" y2="' + (H - pad) + '" stroke="rgba(232,147,24,.35)" stroke-width="1" stroke-dasharray="3 3"/>';
+    grid += '<text x="' + px(0).toFixed(1) + '" y="' + (pad - 8) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#E89318">EVENT</text>';
+  }
+  var d = '';
+  path.forEach(function(p, i){ d += (i === 0 ? 'M' : 'L') + px(p[0]).toFixed(1) + ' ' + py(p[1]).toFixed(1); });
+  var area = d + 'L' + px(x1).toFixed(1) + ' ' + (H - pad) + 'L' + px(x0).toFixed(1) + ' ' + (H - pad) + 'Z';
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
+    '<path d="' + area + '" fill="rgba(232,147,24,.06)"/>' +
+    '<path d="' + d + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
+    '<text x="' + (W / 2) + '" y="' + (H - 6) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + xlabel + '</text>' +
+    '</svg>';
+  return svg;
+}
+
+function esSelect(id) {
+  if (esSelectedId) {
+    var oldC = document.getElementById('esc_' + esSelectedId);
+    if (oldC) oldC.classList.remove('selected');
+  }
+  esSelectedId = id;
+  var card = document.getElementById('esc_' + id);
+  if (card) card.classList.add('selected');
+
+  var ev = esFind(id);
+  if (!ev) return;
+
+  function col(c) { return c === 'g' ? 'var(--green)' : (c === 'r' ? 'var(--red)' : (c === 'a' ? 'var(--amber2)' : 'var(--w2)')); }
+
+  // Stats strip
+  var stats = '';
+  ev.stats.forEach(function(s) {
+    stats += '<div class="bts"><div class="bts-v" style="color:' + col(s.c) + '">' + s.v + '</div><div class="bts-l">' + s.l + '</div></div>';
+  });
+
+  // Instances bars
+  var maxAbs = 1;
+  ev.instances.forEach(function(it){ if (Math.abs(it.v) > maxAbs) maxAbs = Math.abs(it.v); });
+  var inst = '';
+  ev.instances.forEach(function(it) {
+    var w = (Math.abs(it.v) / maxAbs * 100).toFixed(0);
+    var c = it.v >= 0 ? 'var(--green)' : 'var(--red)';
+    var sign = it.v >= 0 ? '+' : '';
+    inst += '<div class="es-inst">' +
+      '<div class="es-inst-l">' + it.l + '</div>' +
+      '<div class="es-inst-t"><div class="es-inst-f" style="width:0%;background:' + c + ';opacity:.72" data-w="' + w + '"></div></div>' +
+      '<div class="es-inst-v" style="color:' + c + '">' + sign + it.v + '%</div>' +
+    '</div>';
+  });
+
+  // Playbook
+  var pb = '';
+  ev.playbook.forEach(function(p, i) {
+    pb += '<div class="es-pb-item"><div class="es-pb-num">' + (i + 1) + '</div><div class="es-pb-text">' + p + '</div></div>';
+  });
+
+  var detail = document.getElementById('esDetail');
+  detail.style.display = 'block';
+  detail.innerHTML =
+    '<div class="sel-header" style="border-radius:12px 12px 0 0;border-bottom:none">' +
+      '<div class="sel-left">' +
+        '<div class="sel-ticker" style="font-size:22px">' + ev.name + '</div>' +
+        '<div><div class="sel-name">' + ev.asset + '</div><div class="sel-sector">' + ev.freq + '</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="bt-stats" style="border-radius:0">' + stats + '</div>' +
+    '<div class="bt-panel">' +
+      '<div class="bt-ptitle">Average Market Path Around The Event (indexed to 100)</div>' +
+      esChart(ev.path, ev.xlabel) +
+    '</div>' +
+    '<div class="bt-panel">' +
+      '<div class="bt-ptitle">' + ev.instTitle + '</div>' +
+      '<div class="bt-yrgrid">' + inst + '</div>' +
+    '</div>' +
+    '<div class="bt-panel">' +
+      '<div class="ai-header"><span class="ai-badge">Event Intelligence</span><span class="ai-title">What history says</span></div>' +
+      '<div class="aitxt" style="margin-bottom:22px">' + ev.insight + '</div>' +
+      '<div class="bt-ptitle">Trading Playbook</div>' +
+      '<div class="es-playbook">' + pb + '</div>' +
+    '</div>' +
+    '<div class="bt-panel last">' +
+      '<div class="bt-disclaimer">EVENT STUDY \u2014 figures are research-based historical averages and notable instances, presented for education. Average paths are stylized representations of typical behavior, not tradable price data. Past behavior around events does not guarantee future outcomes.</div>' +
+    '</div>';
+
+  setTimeout(function() {
+    document.querySelectorAll('.es-inst-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
+    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+esBuild();
+
+// ============================================================
+// EARNINGS ANALYSIS — post-earnings performance tracker
+// ============================================================
+var EA_DATA = [
+  // t, n=name, sec, d=reported, sup=EPS surprise %, day1, w1, w2, m1 (% moves)
+  {t:"NVDA", n:"Nvidia",        sec:"Semis",      d:"Nov 2025", sup:5.2,   day1:-3.2,  w1:-6.0,  w2:-4.1,  m1:-2.0},
+  {t:"PLTR", n:"Palantir",      sec:"Data/AI",    d:"Nov 2025", sup:7.0,   day1:-7.9,  w1:-11.0, w2:-9.2,  m1:-6.0},
+  {t:"WMT",  n:"Walmart",       sec:"Retail",     d:"Nov 2025", sup:4.0,   day1:6.5,   w1:7.1,   w2:8.0,   m1:9.2},
+  {t:"DIS",  n:"Walt Disney",   sec:"Media",      d:"Nov 2025", sup:-3.5,  day1:-7.8,  w1:-6.4,  w2:-5.0,  m1:-3.1},
+  {t:"UBER", n:"Uber",          sec:"Rideshare",  d:"Nov 2025", sup:-9.0,  day1:-5.1,  w1:-3.2,  w2:-1.0,  m1:3.0},
+  {t:"AMZN", n:"Amazon",        sec:"E-comm",     d:"Oct 2025", sup:23.0,  day1:9.6,   w1:10.5,  w2:9.2,   m1:12.4},
+  {t:"GOOGL",n:"Alphabet",      sec:"Internet",   d:"Oct 2025", sup:23.0,  day1:6.3,   w1:8.0,   w2:9.4,   m1:14.2},
+  {t:"META", n:"Meta Platforms",sec:"Social",     d:"Oct 2025", sup:-68.0, day1:-11.3, w1:-13.0, w2:-12.1, m1:-16.0},
+  {t:"MSFT", n:"Microsoft",     sec:"Cloud",      d:"Oct 2025", sup:3.5,   day1:-2.9,  w1:-4.0,  w2:-5.2,  m1:-8.0},
+  {t:"AAPL", n:"Apple",         sec:"Hardware",   d:"Oct 2025", sup:2.4,   day1:0.5,   w1:2.1,   w2:4.0,   m1:7.2},
+  {t:"NFLX", n:"Netflix",       sec:"Streaming",  d:"Oct 2025", sup:-12.0, day1:-10.1, w1:-9.0,  w2:-8.2,  m1:-7.0},
+  {t:"TSLA", n:"Tesla",         sec:"EV",         d:"Oct 2025", sup:-10.0, day1:-3.8,  w1:-5.0,  w2:-4.2,  m1:-1.0},
+  {t:"JPM",  n:"JPMorgan",      sec:"Banking",    d:"Oct 2025", sup:9.0,   day1:-1.9,  w1:0.2,   w2:2.0,   m1:4.1},
+  {t:"GS",   n:"Goldman Sachs", sec:"Banking",    d:"Oct 2025", sup:18.0,  day1:-2.0,  w1:-0.8,  w2:1.2,   m1:3.4},
+  {t:"BA",   n:"Boeing",        sec:"Aerospace",  d:"Oct 2025", sup:-85.0, day1:-4.4,  w1:-3.0,  w2:-1.2,  m1:2.0},
+  {t:"PYPL", n:"PayPal",        sec:"Fintech",    d:"Oct 2025", sup:6.0,   day1:3.9,   w1:2.0,   w2:0.4,   m1:-2.8},
+  {t:"SNAP", n:"Snap",          sec:"Social",     d:"Oct 2025", sup:4.0,   day1:15.8,  w1:12.2,  w2:10.0,  m1:6.4},
+  {t:"ORCL", n:"Oracle",        sec:"Cloud/AI",   d:"Sep 2025", sup:-0.7,  day1:35.9,  w1:28.0,  w2:22.4,  m1:10.0},
+  {t:"AVGO", n:"Broadcom",      sec:"Semis",      d:"Sep 2025", sup:3.4,   day1:9.4,   w1:12.0,  w2:10.3,  m1:16.0},
+  {t:"MU",   n:"Micron",        sec:"Memory",     d:"Sep 2025", sup:7.5,   day1:4.6,   w1:9.0,   w2:12.5,  m1:20.4},
+  {t:"LLY",  n:"Eli Lilly",     sec:"Pharma",     d:"Aug 2025", sup:9.0,   day1:-14.1, w1:-12.0, w2:-10.2, m1:-4.0},
+  {t:"TSLA", n:"Tesla",         sec:"EV",         d:"Jul 2025", sup:-2.5,  day1:-8.2,  w1:-9.5,  w2:-7.0,  m1:-4.2},
+  {t:"NVDA", n:"Nvidia",        sec:"Semis",      d:"May 2025", sup:1.4,   day1:3.2,   w1:5.1,   w2:8.0,   m1:14.3},
+  {t:"TSLA", n:"Tesla",         sec:"EV",         d:"Apr 2025", sup:-18.0, day1:5.4,   w1:9.2,   w2:12.0,  m1:18.5},
+  {t:"PLTR", n:"Palantir",      sec:"Data/AI",    d:"Feb 2025", sup:10.0,  day1:24.0,  w1:30.1,  w2:33.0,  m1:4.0},
+  {t:"NFLX", n:"Netflix",       sec:"Streaming",  d:"Jan 2025", sup:3.2,   day1:9.7,   w1:11.0,  w2:13.2,  m1:6.1}
+];
+
+var eaFilter = 'all';
+var eaSortKey = 'none';
+var eaSortDir = -1;
+
+function eaScenario(r) {
+  if (r.sup >= 0 && r.day1 >= 0) return 'br'; // beat & rallied
+  if (r.sup >= 0 && r.day1 < 0)  return 'bf'; // beat & sold off
+  if (r.sup < 0 && r.day1 < 0)   return 'mf'; // missed & fell
+  return 'mr';                                 // missed & rallied
+}
+
+function eaCol(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
+function eaSgn(v, dp) { return (v >= 0 ? '+' : '') + v.toFixed(dp === undefined ? 1 : dp) + '%'; }
+
+function eaAgg() {
+  var up = EA_DATA.filter(function(r){ return r.day1 >= 0; });
+  var dn = EA_DATA.filter(function(r){ return r.day1 < 0; });
+  function avg(arr, k) { if (!arr.length) return 0; var s = 0; arr.forEach(function(r){ s += r[k]; }); return s / arr.length; }
+  var cont = EA_DATA.filter(function(r){ return (r.day1 >= 0) === (r.m1 >= 0); }).length;
+  var absD1 = 0; EA_DATA.forEach(function(r){ absD1 += Math.abs(r.day1); }); absD1 /= EA_DATA.length;
+  var big = EA_DATA[0];
+  EA_DATA.forEach(function(r){ if (Math.abs(r.m1) > Math.abs(big.m1)) big = r; });
+  return {
+    n: EA_DATA.length,
+    absD1: absD1,
+    contPct: Math.round(cont / EA_DATA.length * 100),
+    m1Up: avg(up, 'm1'),
+    m1Dn: avg(dn, 'm1'),
+    big: big
+  };
+}
+
+function eaBuildStats() {
+  var a = eaAgg();
+  var el = document.getElementById('eaStats');
+  if (!el) return;
+  el.innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + a.n + '</div><div class="bts-l">Reports tracked</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">\u00b1' + a.absD1.toFixed(1) + '%</div><div class="bts-l">Avg day-1 move</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + a.contPct + '%</div><div class="bts-l">Day-1 direction held at 1M</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + eaSgn(a.m1Up) + '</div><div class="bts-l">Avg 1M after UP day-1</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + eaSgn(a.m1Dn) + '</div><div class="bts-l">Avg 1M after DOWN day-1</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:' + eaCol(a.big.m1) + '">' + a.big.t + ' ' + eaSgn(a.big.m1) + '</div><div class="bts-l">Biggest 1M drift</div></div>';
+}
+
+function eaBuildScen() {
+  var el = document.getElementById('eaScen');
+  if (!el) return;
+  var defs = [
+    { k:'br', cls:'g', title:'Beat & Rallied', sub:'EPS beat + positive day-1',
+      note:'The classic drift setup. Strength after a beat has historically CONTINUED for weeks \u2014 this is post-earnings announcement drift in action.' },
+    { k:'bf', cls:'r', title:'Beat & Sold Off', sub:'EPS beat + negative day-1',
+      note:'The expectations trap. The market is telling you the beat wasn\u2019t enough \u2014 guidance or quality disappointed. Weakness has tended to persist.' },
+    { k:'mf', cls:'r', title:'Missed & Fell', sub:'EPS miss + negative day-1',
+      note:'Confirmed deterioration. The drift works in reverse \u2014 these names have kept underperforming for weeks after the report.' },
+    { k:'mr', cls:'g', title:'Missed & Rallied', sub:'EPS miss + positive day-1',
+      note:'The washout signal. When bad news can\u2019t push a stock down, expectations were already at rock bottom \u2014 often a contrarian bottom marker.' }
+  ];
+  var html = '';
+  defs.forEach(function(d) {
+    var rows = EA_DATA.filter(function(r){ return eaScenario(r) === d.k; });
+    var avgM1 = 0;
+    rows.forEach(function(r){ avgM1 += r.m1; });
+    avgM1 = rows.length ? avgM1 / rows.length : 0;
+    html += '<div class="ea-scen-card ' + d.cls + '">' +
+      '<div class="ea-scen-title">' + d.title + '</div>' +
+      '<div class="ea-scen-sub">' + d.sub + ' \u00b7 ' + rows.length + ' cases</div>' +
+      '<div class="ea-scen-stat" style="color:' + eaCol(avgM1) + '">' + eaSgn(avgM1) + '</div>' +
+      '<div class="ea-scen-lbl">Avg return 1 month later</div>' +
+      '<div class="ea-scen-note">' + d.note + '</div>' +
+    '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function eaBuildFilters() {
+  var el = document.getElementById('eaFilters');
+  if (!el) return;
+  var defs = [
+    { k:'all', label:'All reports' },
+    { k:'br',  label:'Beat & Rallied' },
+    { k:'bf',  label:'Beat & Sold Off' },
+    { k:'mf',  label:'Missed & Fell' },
+    { k:'mr',  label:'Missed & Rallied' }
+  ];
+  el.innerHTML = '';
+  defs.forEach(function(d, i) {
+    var b = document.createElement('button');
+    b.className = 'ea-tab' + (i === 0 ? ' active' : '');
+    b.textContent = d.label;
+    b.addEventListener('click', function() {
+      document.querySelectorAll('.ea-tab').forEach(function(t){ t.classList.remove('active'); });
+      b.classList.add('active');
+      eaFilter = d.k;
+      eaBuildTable();
+    });
+    el.appendChild(b);
+  });
+}
+
+function eaSortBy(key) {
+  if (eaSortKey === key) { eaSortDir = -eaSortDir; } else { eaSortKey = key; eaSortDir = -1; }
+  eaBuildTable();
+}
+
+function eaBuildTable() {
+  var el = document.getElementById('eaTable');
+  if (!el) return;
+  var rows = EA_DATA.filter(function(r){ return eaFilter === 'all' || eaScenario(r) === eaFilter; });
+  if (eaSortKey !== 'none') {
+    rows = rows.slice().sort(function(a, b) {
+      if (eaSortKey === 't') return eaSortDir * a.t.localeCompare(b.t);
+      return eaSortDir * (a[eaSortKey] - b[eaSortKey]);
+    });
+  }
+  var arrow = eaSortDir === -1 ? ' \u25be' : ' \u25b4';
+  function th(key, label, left) {
+    return '<th class="' + (left ? 'l' : '') + '" onclick="eaSortBy(\'' + key + '\')">' + label + (eaSortKey === key ? arrow : '') + '</th>';
+  }
+  var html = '<thead><tr>' +
+    th('t', 'Company', true) +
+    '<th>Reported</th>' +
+    th('sup', 'EPS surprise') +
+    th('day1', 'Day 1') +
+    th('w1', '+1 Week') +
+    th('w2', '+2 Weeks') +
+    th('m1', '+1 Month') +
+    '</tr></thead><tbody>';
+  rows.forEach(function(r) {
+    var tag = r.sup >= 0 ?
+      '<span class="ea-tag beat">BEAT ' + eaSgn(r.sup, 1) + '</span>' :
+      '<span class="ea-tag miss">MISS ' + eaSgn(r.sup, 1) + '</span>';
+    html += '<tr>' +
+      '<td class="l"><span class="ea-tk">' + r.t + '</span> <span class="ea-nm">' + r.n + '</span></td>' +
+      '<td style="color:var(--w4)">' + r.d + '</td>' +
+      '<td>' + tag + '</td>' +
+      '<td style="color:' + eaCol(r.day1) + ';font-weight:600">' + eaSgn(r.day1) + '</td>' +
+      '<td style="color:' + eaCol(r.w1) + '">' + eaSgn(r.w1) + '</td>' +
+      '<td style="color:' + eaCol(r.w2) + '">' + eaSgn(r.w2) + '</td>' +
+      '<td style="color:' + eaCol(r.m1) + ';font-weight:600">' + eaSgn(r.m1) + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody>';
+  el.innerHTML = html;
+}
+
+function eaBuildPlaybook() {
+  var el = document.getElementById('eaPlaybook');
+  if (!el) return;
+  var items = [
+    "Trade the reaction, not the report. In this dataset the day-1 direction held at the 1-month mark far more often than the EPS beat/miss did \u2014 the market\u2019s verdict beats the accountant\u2019s.",
+    "A beat that sells off is a warning, not a discount. Beat-and-fell names (Palantir, Microsoft and Nvidia in late 2025) kept sliding for weeks \u2014 the market was pricing valuation and AI-capex durability, not the headline.",
+    "A miss that rallies is one of the strongest contrarian signals. When ugly headlines (Oracle\u2019s EPS miss, Tesla\u2019s April 2025 washout) can\u2019t make a stock go down, the selling was already done \u2014 Oracle\u2019s +36% day on a technical miss is the most extreme example in modern large-cap history.",
+    "Guidance drives more day-1 reactions than results do. Most violent moves in the table trace to forward guidance, not the reported quarter.",
+    "The drift is a 1-week-to-3-month edge, not a year-long one. Academic research on post-earnings announcement drift shows it decays after about a quarter \u2014 by the next report, the clock resets."
+  ];
+  var html = '';
+  items.forEach(function(p, i) {
+    html += '<div class="es-pb-item"><div class="es-pb-num">' + (i + 1) + '</div><div class="es-pb-text">' + p + '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function eaInit() {
+  eaBuildStats();
+  eaBuildScen();
+  eaBuildFilters();
+  eaBuildTable();
+  eaBuildPlaybook();
+}
+eaInit();
+
+// ============================================================
+// SEASONAL SCREENER
+// ============================================================
+function scPattern(item) { return PATTERNS[item.pattern || 'broadIndex'] || PATTERNS.broadIndex; }
+
+function scAssetsByPattern(patKey) {
+  return CATALOGUE.filter(function(it){ return !it.section && (it.pattern || 'broadIndex') === patKey; });
+}
+
+function scRank(monthIdx, dir) {
+  var pats = Object.keys(PATTERNS).map(function(k) {
+    return { k: k, avg: PATTERNS[k][monthIdx].avg, win: PATTERNS[k][monthIdx].win, note: PATTERNS[k][monthIdx].note };
+  });
+  pats.sort(function(a, b){ return dir * (b.avg - a.avg); });
+  var rows = [];
+  pats.forEach(function(p) {
+    if (rows.length >= 12) return;
+    var assets = scAssetsByPattern(p.k);
+    var take = assets.slice(0, 3);
+    take.forEach(function(a, i) {
+      if (rows.length < 12) rows.push({ item: a, avg: p.avg, win: p.win, more: (i === take.length - 1 && assets.length > 3) ? assets.length - 3 : 0 });
+    });
+  });
+  return rows;
+}
+
+function scRow(r, rank) {
+  var col = r.avg >= 0 ? 'var(--green)' : 'var(--red)';
+  var sign = r.avg >= 0 ? '+' : '';
+  var badge = r.item.region ? '<span class="region-badge region-' + r.item.region.toLowerCase() + '">' + r.item.region + '</span>' : '';
+  var more = r.more ? '<span class="sc-more">+' + r.more + ' similar</span>' : '';
+  return '<div class="sc-row">' +
+    '<div class="sc-rank">' + rank + '</div>' +
+    '<div class="sc-id"><span class="ea-tk">' + r.item.ticker + '</span><span class="ea-nm"> ' + r.item.name + '</span> ' + badge + more + '</div>' +
+    '<div class="sc-win"><div class="sc-winbar"><div style="width:' + r.win + '%;height:100%;background:' + col + ';opacity:.5;border-radius:2px"></div></div><span>' + r.win + '%</span></div>' +
+    '<div class="sc-avg" style="color:' + col + '">' + sign + Number(r.avg).toFixed(1) + '%</div>' +
+    '<button class="sc-go" onclick="scGo(\'' + r.item.id + '\')">Analyze \u2192</button>' +
+  '</div>';
+}
+
+function scGo(id) {
+  switchMode('analyzer');
+  setTimeout(function(){ selectAsset(id); }, 80);
+}
+
+function scBuild() {
+  var mSel = document.getElementById('scMonth');
+  if (!mSel) return;
+  var monthIdx = parseInt(mSel.value, 10);
+  var nextIdx = (monthIdx + 1) % 12;
+
+  // Stats
+  var patKeys = Object.keys(PATTERNS);
+  var pos = patKeys.filter(function(k){ return PATTERNS[k][monthIdx].avg > 0; }).length;
+  var bestK = patKeys[0], worstK = patKeys[0];
+  patKeys.forEach(function(k) {
+    if (PATTERNS[k][monthIdx].avg > PATTERNS[bestK][monthIdx].avg) bestK = k;
+    if (PATTERNS[k][monthIdx].avg < PATTERNS[worstK][monthIdx].avg) worstK = k;
+  });
+  var bestA = scAssetsByPattern(bestK)[0], worstA = scAssetsByPattern(worstK)[0];
+  var nAssets = CATALOGUE.filter(function(it){ return !it.section; }).length;
+  document.getElementById('scStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + nAssets + '</div><div class="bts-l">Assets screened</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[monthIdx] + '</div><div class="bts-l">Screening month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + Math.round(pos / patKeys.length * 100) + '%</div><div class="bts-l">Patterns positive</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (bestA ? bestA.ticker : '-') + ' +' + PATTERNS[bestK][monthIdx].avg.toFixed(1) + '%</div><div class="bts-l">Strongest pattern</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (worstA ? worstA.ticker : '-') + ' ' + PATTERNS[worstK][monthIdx].avg.toFixed(1) + '%</div><div class="bts-l">Weakest pattern</div></div>';
+
+  // Strong / weak lists
+  var strong = scRank(monthIdx, 1), weak = scRank(monthIdx, -1);
+  var sH = '', wH = '';
+  strong.forEach(function(r, i){ sH += scRow(r, i + 1); });
+  weak.forEach(function(r, i){ wH += scRow(r, i + 1); });
+  document.getElementById('scStrong').innerHTML = sH;
+  document.getElementById('scWeak').innerHTML = wH;
+  document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
+  document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
+
+  // Momentum shifts into next month
+  var shifts = patKeys.map(function(k) {
+    return { k: k, delta: PATTERNS[k][nextIdx].avg - PATTERNS[k][monthIdx].avg, next: PATTERNS[k][nextIdx].avg };
+  }).sort(function(a, b){ return b.delta - a.delta; }).slice(0, 6);
+  var shH = '';
+  shifts.forEach(function(s) {
+    var a = scAssetsByPattern(s.k)[0];
+    if (!a) return;
+    var col = s.delta >= 0 ? 'var(--green)' : 'var(--red)';
+    shH += '<div class="sc-shift">' +
+      '<div><span class="ea-tk">' + a.ticker + '</span><span class="ea-nm"> ' + a.name + '</span></div>' +
+      '<div class="sc-shift-d" style="color:' + col + '">' + (s.delta >= 0 ? '+' : '') + s.delta.toFixed(1) + 'pp swing</div>' +
+      '<div class="ea-nm">' + MF_LONG[nextIdx] + ' avg: ' + (s.next >= 0 ? '+' : '') + s.next.toFixed(1) + '%</div>' +
+    '</div>';
+  });
+  document.getElementById('scShifts').innerHTML = shH;
+  document.getElementById('scShiftTitle').textContent = 'Biggest momentum swings into ' + MF_LONG[nextIdx];
+}
+
+function scInit() {
+  var mSel = document.getElementById('scMonth');
+  if (!mSel) return;
+  var nowM = new Date().getMonth();
+  var html = '';
+  for (var i = 0; i < 12; i++) html += '<option value="' + i + '"' + (i === nowM ? ' selected' : '') + '>' + MF_LONG[i] + '</option>';
+  mSel.innerHTML = html;
+  mSel.addEventListener('change', scBuild);
+  scBuild();
+}
+scInit();
+
+// ============================================================
+// WATCHLIST
+// ============================================================
+var WL_KEY = 'sx_watchlist';
+var WL_MAX = 10;
+
+function wlGet() {
+  try { return JSON.parse(localStorage.getItem(WL_KEY) || '[]'); } catch (e) { return []; }
+}
+function wlSave(ids) { localStorage.setItem(WL_KEY, JSON.stringify(ids.slice(0, WL_MAX))); }
+
+function wlAdd(id) {
+  var ids = wlGet();
+  if (ids.indexOf(id) !== -1) return;
+  if (ids.length >= WL_MAX) { alert('Watchlist is full (10 assets max). Remove one first.'); return; }
+  ids.push(id);
+  wlSave(ids);
+  document.getElementById('wlSearch').value = '';
+  document.getElementById('wlSuggest').style.display = 'none';
+  wlRender();
+}
+function wlRemove(id) {
+  wlSave(wlGet().filter(function(x){ return x !== id; }));
+  wlRender();
+}
+
+function wlSuggest() {
+  var q = document.getElementById('wlSearch').value.toLowerCase().trim();
+  var box = document.getElementById('wlSuggest');
+  if (!q) { box.style.display = 'none'; return; }
+  var ids = wlGet();
+  var hits = CATALOGUE.filter(function(it) {
+    return !it.section && ids.indexOf(it.id) === -1 &&
+      ((it.ticker || '').toLowerCase().indexOf(q) !== -1 || (it.name || '').toLowerCase().indexOf(q) !== -1);
+  }).slice(0, 8);
+  if (!hits.length) { box.style.display = 'none'; return; }
+  var html = '';
+  hits.forEach(function(it) {
+    html += '<div class="wl-sg" onclick="wlAdd(\'' + it.id + '\')"><span class="ea-tk">' + it.ticker + '</span> <span class="ea-nm">' + it.name + '</span><span class="wl-sg-add">+ Add</span></div>';
+  });
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+function wlDaysToNextMonth() {
+  var now = new Date();
+  var next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  return Math.ceil((next - now) / 86400000);
+}
+
+function wlRender() {
+  var wrap = document.getElementById('wlList');
+  if (!wrap) return;
+  var ids = wlGet();
+  var nowM = new Date().getMonth();
+  var nextM = (nowM + 1) % 12;
+  var days = wlDaysToNextMonth();
+
+  if (!ids.length) {
+    document.getElementById('wlStats').innerHTML =
+      '<div class="bts" style="grid-column:1/-1"><div class="bts-v" style="color:var(--w3)">Your watchlist is empty</div><div class="bts-l">Search above to add up to 10 assets</div></div>';
+    wrap.innerHTML = '<div class="analysis-empty" style="border:1px dashed var(--b2);border-radius:12px">Add assets with the search box \u2014 then this becomes your personal seasonal dashboard.</div>';
+    return;
+  }
+
+  var items = ids.map(function(id) {
+    for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return CATALOGUE[i];
+    return null;
+  }).filter(Boolean);
+
+  // Stats
+  var sumNow = 0, best = items[0], worst = items[0];
+  items.forEach(function(it) {
+    var p = scPattern(it);
+    sumNow += p[nowM].avg;
+    if (scPattern(it)[nowM].avg > scPattern(best)[nowM].avg) best = it;
+    if (scPattern(it)[nowM].avg < scPattern(worst)[nowM].avg) worst = it;
+  });
+  var avgNow = sumNow / items.length;
+  document.getElementById('wlStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + items.length + '/' + WL_MAX + '</div><div class="bts-l">Assets tracked</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:' + (avgNow >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgNow >= 0 ? '+' : '') + avgNow.toFixed(1) + '%</div><div class="bts-l">Portfolio avg \u00b7 ' + MF_LONG[nowM] + '</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + best.ticker + '</div><div class="bts-l">Strongest this month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + worst.ticker + '</div><div class="bts-l">Weakest this month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + days + 'd</div><div class="bts-l">Until ' + MF_LONG[nextM] + '</div></div>';
+
+  var html = '';
+  items.forEach(function(it) {
+    var p = scPattern(it);
+    var cur = p[nowM], nxt = p[nextM];
+    var curCol = cur.avg >= 0 ? 'var(--green)' : 'var(--red)';
+    var nxtCol = nxt.avg >= 0 ? 'var(--green)' : 'var(--red)';
+    var status, sCol;
+    if (nxt.avg > cur.avg && nxt.avg > 0.8) { status = 'Entering strength in ' + days + 'd'; sCol = 'var(--green)'; }
+    else if (nxt.avg < cur.avg && nxt.avg < -0.3) { status = 'Entering weakness in ' + days + 'd'; sCol = 'var(--red)'; }
+    else { status = 'Seasonal trend steady'; sCol = 'var(--w4)'; }
+    var badge = it.region ? '<span class="region-badge region-' + it.region.toLowerCase() + '">' + it.region + '</span>' : '';
+    html += '<div class="wl-row">' +
+      '<div class="wl-id"><span class="ea-tk">' + it.ticker + '</span><div class="ea-nm">' + it.name + ' ' + badge + '</div></div>' +
+      '<div class="wl-cell"><div class="wl-cl">' + MF_LONG[nowM].slice(0,3) + ' avg</div><div class="wl-cv" style="color:' + curCol + '">' + (cur.avg >= 0 ? '+' : '') + cur.avg.toFixed(1) + '%</div><div class="wl-cw">' + cur.win + '% win</div></div>' +
+      '<div class="wl-cell"><div class="wl-cl">' + MF_LONG[nextM].slice(0,3) + ' avg</div><div class="wl-cv" style="color:' + nxtCol + '">' + (nxt.avg >= 0 ? '+' : '') + nxt.avg.toFixed(1) + '%</div><div class="wl-cw">' + nxt.win + '% win</div></div>' +
+      '<div class="wl-status" style="color:' + sCol + '">' + status + '</div>' +
+      '<div class="wl-actions"><button class="sc-go" onclick="scGo(\'' + it.id + '\')">Analyze</button><button class="wl-x" onclick="wlRemove(\'' + it.id + '\')">\u00d7</button></div>' +
+    '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function wlInit() {
+  var s = document.getElementById('wlSearch');
+  if (!s) return;
+  s.addEventListener('input', wlSuggest);
+  wlRender();
+}
+wlInit();
+
+// ============================================================
+// THIS MONTH IN HISTORY
+// ============================================================
+var MH_DATA = [
+{ // January
+  blurb:"January sets the year's tone \u2014 literally, by legend. The \u201cJanuary Barometer\u201d holds that as January goes, so goes the year, and it has been right roughly 70% of the time since 1950. The month belongs to small caps: the January Effect \u2014 December tax-loss selling violently reversing \u2014 makes it the Russell 2000's best month of the year. January is also earnings-season kickoff and historically the month of surprise central-bank action.",
+  events:[
+    {l:"Jan 3 2001 \u2014 surprise Fed cut, NASDAQ's best day ever", v:14.2},
+    {l:"Jan 2018 \u2014 the melt-up month before Volmageddon", v:5.6},
+    {l:"Jan 10 2024 \u2014 spot Bitcoin ETFs approved after a decade", v:-15},
+    {l:"Jan 2008 \u2014 emergency 75bp cut as crisis built", v:-6.1}
+  ]},
+{ // February
+  blurb:"February is the forgettable month \u2014 historically near-flat with a sub-55% win rate \u2014 but it has produced some of the most violent single days on record. It hosted the 2018 \u201cVolmageddon\u201d that wiped out short-volatility funds overnight, and the exact pre-COVID top of February 19, 2020. Mid-February is peak earnings season, when roughly half the S&P reports inside three weeks.",
+  events:[
+    {l:"Feb 5 2018 \u2014 Volmageddon, VIX doubles in a day", v:-4.1},
+    {l:"Feb 19 2020 \u2014 the exact pre-COVID market top", v:0},
+    {l:"Feb 24 2022 \u2014 Ukraine invasion; stocks reverse UP", v:1.5},
+    {l:"Feb 2009 \u2014 the GFC's brutal final full month down", v:-11.0}
+  ]},
+{ // March
+  blurb:"March is the month of bottoms and tops. The dot-com bubble peaked March 10, 2000; the GFC ended March 9, 2009; the COVID crash bottomed March 23, 2020 \u2014 three of the most important turning points in modern history, all in March. It is also fiscal year-end in Japan and home to quarterly quad-witching expiration, making late March structurally turbulent and liquidity-heavy.",
+  events:[
+    {l:"Mar 9 2009 \u2014 THE generational GFC bottom (S&P 666)", v:0},
+    {l:"Mar 10 2000 \u2014 NASDAQ 5,048: the dot-com peak", v:0},
+    {l:"Mar 23 2020 \u2014 Fed goes unlimited; COVID low printed", v:9.4},
+    {l:"Mar 10 2023 \u2014 SVB seized; banking mini-crisis", v:-4.6}
+  ]},
+{ // April
+  blurb:"April has historically been one of the strongest months of the year \u2014 the tail end of the \u201cBest Six Months\u201d window, powered by Q1 earnings optimism and spring fund flows. April 2020 delivered +12.7%, the best single month since 1987, as markets roared back from the COVID low. The famous exception: April 2000, when the dot-com unwind began in earnest.",
+  events:[
+    {l:"Apr 2020 \u2014 best month since 1987 off the COVID low", v:12.7},
+    {l:"Apr 2000 \u2014 NASDAQ's first post-bubble collapse month", v:-15.6},
+    {l:"Apr 2024 \u2014 rate-fear pullback inside the AI bull", v:-4.2},
+    {l:"Apr 1999 \u2014 peak dot-com euphoria month", v:3.8}
+  ]},
+{ // May
+  blurb:"\u201cSell in May and go away\u201d \u2014 the most famous phrase in seasonality, marking the start of the historically weak May\u2013October half. The stats are real but gentler than the slogan: summer months average roughly +0.3%/month versus +1.2% for winter. May owns one structural scar \u2014 the 2010 Flash Crash \u2014 and one modern counterexample: Nvidia's May 2023 guidance, which launched the AI supercycle.",
+  events:[
+    {l:"May 6 2010 \u2014 Flash Crash: -9% in 36 minutes", v:-3.2},
+    {l:"May 24 2023 \u2014 NVDA guidance ignites the AI era", v:24.4},
+    {l:"May 2022 \u2014 bear-market low attempt and reversal", v:0.2},
+    {l:"May 2013 \u2014 \u201ctaper tantrum\u201d begins", v:-1.4}
+  ]},
+{ // June
+  blurb:"June is the heart of the summer doldrums \u2014 historically one of the weakest months with low volume and institutional vacation drift. But it punches above its weight for event risk: a scheduled FOMC meeting with fresh projections, quad-witching expiry, and Russell index rebalancing \u2014 the year's single biggest volume day. June 2022 printed that bear market's panic low; June 2016 delivered the Brexit shock.",
+  events:[
+    {l:"Jun 16 2022 \u2014 the 2022 bear's capitulation low", v:0},
+    {l:"Jun 24 2016 \u2014 Brexit result shocks markets", v:-3.6},
+    {l:"Jun 2020 \u2014 recovery rally powers through doubt", v:1.8},
+    {l:"Jun 13 2022 \u2014 hot CPI triggers -3.9% rout", v:-3.9}
+  ]},
+{ // July
+  blurb:"July is the secret star of summer \u2014 the strongest month of the May\u2013October half, driven by Q2 earnings season and the \u201cearly July rally\u201d around Independence Day. The best month in Dow history was a July: +33.6% in 1932, the bottom of the Great Depression. July 2022's +9.1% bear-market rally remains the textbook example of why shorts fear this month.",
+  events:[
+    {l:"Jul 1932 \u2014 best month in Dow history", v:33.6},
+    {l:"Jul 2022 \u2014 ferocious +9.1% bear-market rally", v:9.1},
+    {l:"Jul 2024 \u2014 great rotation: small caps explode vs tech", v:0},
+    {l:"Jul 13 2023 \u2014 disinflation confirmed; soft landing priced", v:0.9}
+  ]},
+{ // August
+  blurb:"August is thin, twitchy and dangerous \u2014 the lowest-volume month of the year, which means shocks hit harder. The 2011 US credit downgrade, the 2015 China devaluation flash crash, and the 2024 yen carry-trade unwind (VIX 65 before breakfast) all landed in August. Jackson Hole at month-end regularly resets Fed expectations for autumn.",
+  events:[
+    {l:"Aug 5 2024 \u2014 yen carry unwind; VIX spikes to 65", v:-3.0},
+    {l:"Aug 8 2011 \u2014 US downgrade aftermath", v:-6.7},
+    {l:"Aug 24 2015 \u2014 China deval flash crash; Dow -1000 open", v:-3.9},
+    {l:"Aug 2017 \u2014 the calmest August ever recorded", v:0.1}
+  ]},
+{ // September
+  blurb:"September is statistically the worst month in market history \u2014 the only one to average a loss across every measured decade, in the US, UK, Germany and Japan alike. Institutional rebalancing, fiscal year-ends, and post-summer risk reduction all collide. It hosted Lehman's bankruptcy, the post-9/11 reopening plunge, and 2022's -9.3% washout. If seasonality has one iron law, it's September caution.",
+  events:[
+    {l:"Sep 15 2008 \u2014 Lehman Brothers files; system breaks", v:-4.7},
+    {l:"Sep 17 2001 \u2014 post-9/11 reopening plunge", v:-4.9},
+    {l:"Sep 2022 \u2014 the bear's worst month", v:-9.3},
+    {l:"Sep 1998 \u2014 LTCM collapse and Fed-brokered rescue", v:-5.7}
+  ]},
+{ // October
+  blurb:"October carries the crash mythology \u2014 1929, 1987, and 2008's worst days all happened here \u2014 but the data tells the opposite story: October is the \u201cbear killer.\u201d More bear markets have ENDED in October than any other month (1974, 1990, 2002, 2011, 2022). Volatility peaks, then the year's strongest seasonal stretch begins. October is where panic historically met its buyer.",
+  events:[
+    {l:"Oct 19 1987 \u2014 Black Monday, -22.6% in one day", v:-22.6},
+    {l:"Oct 13 2022 \u2014 hot-CPI reversal day marks the bear's low", v:2.6},
+    {l:"Oct 2011 \u2014 +10.8% month kills the eurozone bear", v:10.8},
+    {l:"Oct 2008 \u2014 the GFC's most violent month", v:-16.9}
+  ]},
+{ // November
+  blurb:"November is statistically the best month of the year and the gateway to the strongest stretch on the calendar \u2014 the November\u2013April \u201cBest Six Months.\u201d Election resolution, holiday-spending optimism and institutional year-end positioning all push the same direction. November 2020 added the vaccine rotation; November 2022 delivered the +5.5% CPI day. Crypto's Singles-Day-adjacent strength makes it Bitcoin's second-best month too.",
+  events:[
+    {l:"Nov 10 2022 \u2014 cool CPI: best day since 2020", v:5.5},
+    {l:"Nov 9 2020 \u2014 vaccine Monday; historic value rotation", v:1.2},
+    {l:"Nov 2022 \u2014 FTX collapses; crypto winter deepens", v:-16},
+    {l:"Nov 2021 \u2014 NASDAQ's exact cycle top", v:0}
+  ]},
+{ // December
+  blurb:"December closes the year with the \u201cSanta Claus rally\u201d \u2014 the final five trading days plus the first two of January, positive roughly 75% of the time since 1950. Tax-loss selling pressures losers early, then window dressing lifts winners late. The great exception proves the rule: December 2018's -9.2% (worst since 1931) ended with the Christmas Eve capitulation and a +5% day right after \u2014 the bottom, almost to the hour.",
+  events:[
+    {l:"Dec 2018 \u2014 worst December since 1931", v:-9.2},
+    {l:"Dec 26 2018 \u2014 the post-Christmas reversal day", v:5.0},
+    {l:"Dec 1996 \u2014 \u201cirrational exuberance\u201d speech", v:-0.4},
+    {l:"Dec 2023 \u2014 everything-rally on the Fed pivot", v:4.4}
+  ]}
+];
+
+function mhBuild() {
+  var sel = document.getElementById('mhMonth');
+  if (!sel) return;
+  var mi = parseInt(sel.value, 10);
+  var d = MH_DATA[mi];
+
+  // Stat strip from key patterns
+  function pv(key) { return PATTERNS[key][mi]; }
+  function cell(label, p) {
+    var col = p.avg >= 0 ? 'var(--green)' : 'var(--red)';
+    return '<div class="bts"><div class="bts-v" style="color:' + col + '">' + (p.avg >= 0 ? '+' : '') + p.avg.toFixed(1) + '%</div><div class="bts-l">' + label + ' \u00b7 ' + p.win + '% win</div></div>';
+  }
+  document.getElementById('mhStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[mi] + '</div><div class="bts-l">Month in focus</div></div>' +
+    cell('S&P 500', pv('broadIndex')) +
+    cell('NASDAQ/Tech', pv('techGrowth')) +
+    cell('Bitcoin', pv('crypto')) +
+    cell('Gold', pv('gold'));
+
+  document.getElementById('mhTitle').textContent = MF_LONG[mi] + ' in market history';
+  document.getElementById('mhBlurb').innerHTML = d.blurb;
+
+  var maxAbs = 1;
+  d.events.forEach(function(e){ if (Math.abs(e.v) > maxAbs) maxAbs = Math.abs(e.v); });
+  var html = '';
+  d.events.forEach(function(e) {
+    var col = e.v > 0 ? 'var(--green)' : (e.v < 0 ? 'var(--red)' : 'var(--w4)');
+    var w = (Math.abs(e.v) / maxAbs * 100).toFixed(0);
+    var val = e.v === 0 ? 'pivot' : ((e.v > 0 ? '+' : '') + e.v + '%');
+    html += '<div class="es-inst">' +
+      '<div class="es-inst-l" style="text-align:left">' + e.l + '</div>' +
+      '<div class="es-inst-t"><div class="es-inst-f" style="width:0%;background:' + col + ';opacity:.72" data-w="' + w + '"></div></div>' +
+      '<div class="es-inst-v" style="color:' + col + '">' + val + '</div>' +
+    '</div>';
+  });
+  document.getElementById('mhEvents').innerHTML = html;
+  setTimeout(function() {
+    document.querySelectorAll('#mhEvents .es-inst-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
+  }, 80);
+}
+
+function mhInit() {
+  var sel = document.getElementById('mhMonth');
+  if (!sel) return;
+  var nowM = new Date().getMonth();
+  var html = '';
+  for (var i = 0; i < 12; i++) html += '<option value="' + i + '"' + (i === nowM ? ' selected' : '') + '>' + MF_LONG[i] + '</option>';
+  sel.innerHTML = html;
+  sel.addEventListener('change', mhBuild);
+  mhBuild();
+}
+mhInit();
+
+// ============================================================
+// SEASONAL CORRELATIONS
+// ============================================================
+function prPattern(id) {
+  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) {
+    return PATTERNS[CATALOGUE[i].pattern || 'broadIndex'] || PATTERNS.broadIndex;
+  }
+  return PATTERNS.broadIndex;
+}
+function prItem(id) {
+  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return CATALOGUE[i];
+  return null;
+}
+function prPearson(a, b) {
+  var n = 12, sa = 0, sb = 0;
+  for (var i = 0; i < n; i++) { sa += a[i]; sb += b[i]; }
+  var ma = sa / n, mb = sb / n, cov = 0, va = 0, vb = 0;
+  for (var j = 0; j < n; j++) {
+    cov += (a[j] - ma) * (b[j] - mb);
+    va += (a[j] - ma) * (a[j] - ma);
+    vb += (b[j] - mb) * (b[j] - mb);
+  }
+  if (va === 0 || vb === 0) return 0;
+  return cov / Math.sqrt(va * vb);
+}
+
+function prInterpret(r, tA, tB) {
+  if (r >= 0.75) return 'STRONGLY ALIGNED \u2014 ' + tA + ' and ' + tB + ' run on the same seasonal engine. They rise and fall in the same months, so holding both doubles your exposure to one calendar rhythm rather than diversifying it. Their strong months compound \u2014 and so do their weak ones.';
+  if (r >= 0.35) return 'MODERATELY ALIGNED \u2014 ' + tA + ' and ' + tB + ' share a broad seasonal direction but diverge in specific months. The divergence months below are where pair trades and rebalancing have historically had the most edge.';
+  if (r >= -0.35) return 'INDEPENDENT RHYTHMS \u2014 ' + tA + ' and ' + tB + ' march to different calendars. This is genuine seasonal diversification: one\u2019s weak window is often the other\u2019s neutral or strong window, smoothing the combined equity curve.';
+  return 'OPPOSITE SEASONS \u2014 ' + tA + ' tends to be strong exactly when ' + tB + ' is weak. Historically this is the most valuable kind of pair: rotating between them by calendar, or holding both, has hedged each one\u2019s worst months with the other\u2019s best.';
+}
+
+function prRun() {
+  var idA = document.getElementById('prA').value;
+  var idB = document.getElementById('prB').value;
+  var iA = prItem(idA), iB = prItem(idB);
+  if (!iA || !iB) return;
+  var pA = prPattern(idA), pB = prPattern(idB);
+  var avgsA = pA.map(function(m){ return m.avg; });
+  var avgsB = pB.map(function(m){ return m.avg; });
+  var r = prPearson(avgsA, avgsB);
+
+  // Best joint month, biggest divergence
+  var bestJoint = 0, bigDiv = 0;
+  for (var i = 1; i < 12; i++) {
+    if (avgsA[i] + avgsB[i] > avgsA[bestJoint] + avgsB[bestJoint]) bestJoint = i;
+    if (Math.abs(avgsA[i] - avgsB[i]) > Math.abs(avgsA[bigDiv] - avgsB[bigDiv])) bigDiv = i;
+  }
+  var rCol = r >= 0.35 ? 'var(--green)' : (r <= -0.35 ? 'var(--purple, #9B7FFF)' : 'var(--amber2)');
+
+  document.getElementById('prStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:' + rCol + '">' + r.toFixed(2) + '</div><div class="bts-l">Seasonal correlation</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + iA.ticker + '</div><div class="bts-l">Asset A</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:#4DA3FF">' + iB.ticker + '</div><div class="bts-l">Asset B</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + MF_LONG[bestJoint].slice(0,3) + '</div><div class="bts-l">Best joint month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[bigDiv].slice(0,3) + '</div><div class="bts-l">Biggest divergence</div></div>';
+
+  // Grouped bars
+  var mx = 0.5;
+  avgsA.concat(avgsB).forEach(function(v){ if (Math.abs(v) > mx) mx = Math.abs(v); });
+  var html = '';
+  for (var m = 0; m < 12; m++) {
+    var wA = (Math.abs(avgsA[m]) / mx * 100).toFixed(0);
+    var wB = (Math.abs(avgsB[m]) / mx * 100).toFixed(0);
+    var cA = avgsA[m] >= 0 ? '#E89318' : '#F04050';
+    var cB = avgsB[m] >= 0 ? '#4DA3FF' : '#F04050';
+    html += '<div class="pr-mrow">' +
+      '<div class="pr-ml">' + MF_LONG[m].slice(0,3) + '</div>' +
+      '<div class="pr-bars">' +
+        '<div class="pr-bt"><div class="pr-bf" style="width:' + wA + '%;background:' + cA + ';opacity:.8"></div></div>' +
+        '<div class="pr-bt"><div class="pr-bf" style="width:' + wB + '%;background:' + cB + ';opacity:.8"></div></div>' +
+      '</div>' +
+      '<div class="pr-mv"><span style="color:' + (avgsA[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgsA[m] >= 0 ? '+' : '') + avgsA[m].toFixed(1) + '</span> / <span style="color:' + (avgsB[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgsB[m] >= 0 ? '+' : '') + avgsB[m].toFixed(1) + '</span></div>' +
+    '</div>';
+  }
+  document.getElementById('prChart').innerHTML = html;
+  document.getElementById('prLegend').innerHTML =
+    '<span><span class="bt-ld" style="background:#E89318"></span>' + iA.ticker + '</span>' +
+    '<span><span class="bt-ld" style="background:#4DA3FF"></span>' + iB.ticker + '</span>';
+  document.getElementById('prText').innerHTML = prInterpret(r, iA.name, iB.name);
+  document.getElementById('prResults').style.display = 'block';
+}
+
+function prLoad(a, b) {
+  document.getElementById('prA').value = a;
+  document.getElementById('prB').value = b;
+  prRun();
+}
+
+function prInit() {
+  var selA = document.getElementById('prA');
+  var selB = document.getElementById('prB');
+  if (!selA) return;
+  var html = '', open = false;
+  CATALOGUE.forEach(function(item) {
+    if (item.section) {
+      if (open) html += '</optgroup>';
+      html += '<optgroup label="' + item.section + '">';
+      open = true;
+    } else {
+      html += '<option value="' + item.id + '">' + item.ticker + ' \u2014 ' + item.name + '</option>';
+    }
+  });
+  if (open) html += '</optgroup>';
+  selA.innerHTML = html;
+  selB.innerHTML = html;
+  selA.value = 'gld';
+  selB.value = 'riouk';
+
+  // Notable pairs
+  var pairs = [
+    { a:'gld', b:'riouk', l:'Gold vs Miners' },
+    { a:'btc', b:'coin', l:'Bitcoin vs Coinbase' },
+    { a:'sp500', b:'tlt', l:'S&P 500 vs Treasuries' },
+    { a:'xle', b:'qqq', l:'Energy vs NASDAQ' },
+    { a:'alibaba', b:'sp500', l:'China Tech vs S&P' },
+    { a:'nvda', b:'samsung', l:'Nvidia vs Samsung' }
+  ];
+  var ph = '';
+  pairs.forEach(function(p) {
+    ph += '<button class="ea-tab" onclick="prLoad(\'' + p.a + '\',\'' + p.b + '\')">' + p.l + '</button>';
+  });
+  document.getElementById('prPresets').innerHTML = ph;
+  prRun();
+}
+prInit();
+
+// ============================================================
+// ECONOMIC CALENDAR — upcoming catalysts with playbook links
+// ============================================================
+function ecBuildEvents() {
+  var now = new Date();
+  var out = [];
+
+  // FOMC 2026 scheduled decision days
+  var fomc = ['2026-01-28','2026-03-18','2026-04-29','2026-06-17','2026-07-29','2026-09-16','2026-10-28','2026-12-09'];
+  fomc.forEach(function(d) {
+    out.push({ date: new Date(d + 'T19:00:00Z'), name: 'FOMC Rate Decision', type: 'FED', play: 'fomc', approx: false });
+  });
+
+  // CPI ~ release mid-month, NFP = first Friday — generate next 9 months
+  for (var k = 0; k < 9; k++) {
+    var base = new Date(now.getFullYear(), now.getMonth() + k, 1);
+    // First Friday
+    var fri = new Date(base);
+    while (fri.getDay() !== 5) fri.setDate(fri.getDate() + 1);
+    out.push({ date: new Date(fri.getFullYear(), fri.getMonth(), fri.getDate(), 13, 30), name: 'Nonfarm Payrolls', type: 'DATA', play: 'nfp', approx: false });
+    // CPI approx 12th (skip weekends)
+    var cpi = new Date(base.getFullYear(), base.getMonth(), 12, 13, 30);
+    if (cpi.getDay() === 6) cpi.setDate(14);
+    if (cpi.getDay() === 0) cpi.setDate(13);
+    out.push({ date: cpi, name: 'CPI Inflation Report', type: 'DATA', play: 'cpi', approx: true });
+  }
+
+  // Quad witching: third Friday of Mar/Jun/Sep/Dec
+  [2, 5, 8, 11].forEach(function(m) {
+    var d = new Date(2026, m, 1), count = 0;
+    while (true) {
+      if (d.getDay() === 5) { count++; if (count === 3) break; }
+      d.setDate(d.getDate() + 1);
+    }
+    out.push({ date: new Date(2026, m, d.getDate(), 20, 0), name: 'Quad Witching Expiry', type: 'STRUCT', play: null, approx: false });
+  });
+
+  // Specials
+  out.push({ date: new Date('2026-08-28T14:00:00Z'), name: 'Jackson Hole Symposium', type: 'FED', play: 'fomc', approx: true });
+  out.push({ date: new Date('2026-11-03T23:00:00Z'), name: 'US Midterm Elections', type: 'POLITICS', play: 'midterm', approx: false });
+  out.push({ date: new Date('2026-07-22T20:00:00Z'), name: 'Tesla Q2 Earnings', type: 'EARNINGS', play: 'tsla_e', approx: true });
+  out.push({ date: new Date('2026-08-26T20:00:00Z'), name: 'Nvidia Q2 Earnings', type: 'EARNINGS', play: 'nvda_e', approx: true });
+  out.push({ date: new Date('2026-07-30T20:00:00Z'), name: 'Apple Q3 Earnings', type: 'EARNINGS', play: 'aapl_e', approx: true });
+
+  // Future only, sorted, top 20
+  out = out.filter(function(e){ return e.date > now; });
+  out.sort(function(a, b){ return a.date - b.date; });
+  return out.slice(0, 20);
+}
+
+function ecGo(playId) {
+  switchMode('events');
+  setTimeout(function(){ esSelect(playId); }, 80);
+}
+
+function ecInit() {
+  var wrap = document.getElementById('ecList');
+  if (!wrap) return;
+  var evs = ecBuildEvents();
+  var now = new Date();
+  var moAb = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  // Stats: next FOMC / CPI / NFP / big one
+  function nextOf(type, name) {
+    for (var i = 0; i < evs.length; i++) if ((name && evs[i].name === name) || (!name && evs[i].type === type)) return evs[i];
+    return null;
+  }
+  function daysTo(e) { return e ? Math.max(0, Math.ceil((e.date - now) / 86400000)) : '-'; }
+  var nF = nextOf(null, 'FOMC Rate Decision'), nC = nextOf(null, 'CPI Inflation Report'), nN = nextOf(null, 'Nonfarm Payrolls'), nM = nextOf(null, 'US Midterm Elections');
+  document.getElementById('ecStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + daysTo(nF) + 'd</div><div class="bts-l">Next FOMC decision</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + daysTo(nC) + 'd</div><div class="bts-l">Next CPI report</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + daysTo(nN) + 'd</div><div class="bts-l">Next jobs report</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + daysTo(nM) + 'd</div><div class="bts-l">US midterm elections</div></div>';
+
+  var typeCls = { FED:'ec-fed', DATA:'ec-data', POLITICS:'ec-pol', EARNINGS:'ec-earn', STRUCT:'ec-struct' };
+  var html = '';
+  evs.forEach(function(e) {
+    var d = e.date;
+    var days = Math.max(0, Math.ceil((d - now) / 86400000));
+    var dayStr = days === 0 ? 'TODAY' : (days === 1 ? 'TOMORROW' : 'in ' + days + ' days');
+    var play = e.play ? '<button class="sc-go" onclick="ecGo(\'' + e.play + '\')">Playbook \u2192</button>' : '<span class="ea-nm" style="font-size:10px">structural</span>';
+    html += '<div class="ec-row">' +
+      '<div class="ec-date"><div class="ec-mo">' + moAb[d.getMonth()] + '</div><div class="ec-day">' + d.getDate() + '</div></div>' +
+      '<div class="ec-name">' + e.name + (e.approx ? ' <span class="ea-nm" style="font-size:9px">(approx)</span>' : '') + '</div>' +
+      '<div class="ec-type ' + (typeCls[e.type] || '') + '">' + e.type + '</div>' +
+      '<div class="ec-count">' + dayStr + '</div>' +
+      '<div class="ec-act">' + play + '</div>' +
+    '</div>';
+  });
+  wrap.innerHTML = html;
+}
+ecInit();
 
 </script>
 </body>
