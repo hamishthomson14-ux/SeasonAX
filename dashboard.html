@@ -158,6 +158,17 @@ button{cursor:pointer;font-family:var(--sans)}
   </div>
   <div class="main-grid">
     <div>
+      
+      <div id="upgradeBanner" style="display:none;background:rgba(232,147,24,.06);border:1px solid rgba(232,147,24,.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 9 tools &amp; 460+ global assets</div>
+          <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 3 analyses/month &middot; indices &amp; ETFs only</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Upgrade &mdash; &pound;19.99/mo</button>
+          <button onclick="stripeCheckout('price_1ThF5A2MZ73Stw01PfOUuDNl','payment')" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Lifetime &pound;299</button>
+        </div>
+      </div>
       <div class="sec-label">Research Tools &#8212; choose where to go</div>
       <div class="tools-grid">
         <a href="/market-seasonality.html" class="tool-card featured" onclick="lsSet('analyzer')">
@@ -561,6 +572,26 @@ function buildDashboard(){
   if(evts.length>0){var nd=Math.max(0,Math.ceil((evts[0].d-now)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
 }
 buildDashboard();
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+async function stripeCheckout(priceId, mode) {
+  var btn = event.target;
+  btn.disabled = true;
+  var orig = btn.textContent;
+  btn.textContent = 'Loading...';
+  try {
+    var res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ priceId: priceId, mode: mode })
+    });
+    var data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { alert('Checkout error: ' + (data.error || 'Try again')); btn.disabled = false; btn.textContent = orig; }
+  } catch(e) { btn.disabled = false; btn.textContent = orig; }
+}
 </script>
 </body>
 </html>
