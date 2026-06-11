@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research &amp; Insights — SeasonAX</title>
+<meta name="description" content="Deep research on market seasonality. Why September always loses, the Halloween Indicator, Bitcoin's Uptober, and what happens when the Fed cuts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+.n-logo{display:flex;align-items:center;gap:9px}
+.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
+.n-word b{color:var(--amber2)}
+.nav-links{display:flex;gap:4px}
+.nl{padding:6px 12px;font-size:13px;color:var(--w3);border-radius:5px;transition:all .15s}
+.nl:hover{color:var(--w);background:rgba(255,255,255,.05)}
+.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
+.btn-cta:hover{background:var(--amber2)}
+
+/* HERO */
+.hero{padding:80px 48px 64px;border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.h-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 100% 100% at 0% 0%,black,transparent);opacity:.3;pointer-events:none}
+.h-in{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
+.hero-h{font:800 56px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:16px}
+.hero-h em{font-style:normal;color:var(--amber2)}
+.hero-sub{font-size:18px;color:var(--w3);max-width:540px;line-height:1.68}
+
+/* ARTICLES GRID */
+.articles{max-width:1200px;margin:0 auto;padding:72px 48px}
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:72px}
+.article-card{background:var(--bg);padding:36px 32px;position:relative;overflow:hidden;transition:background .18s;cursor:pointer;display:flex;flex-direction:column}
+.article-card:hover{background:var(--bg2)}
+.article-card:hover .ac-arr{color:var(--amber2);transform:translate(3px,-3px)}
+.ac-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px;align-self:flex-start}
+.ac-cat.season{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
+.ac-cat.events{background:rgba(77,163,255,.08);color:#4DA3FF;border:1px solid rgba(77,163,255,.2)}
+.ac-cat.crypto{background:rgba(155,127,255,.08);color:#9B7FFF;border:1px solid rgba(155,127,255,.2)}
+.ac-h{font:800 22px/1.2 var(--disp);letter-spacing:-.03em;margin-bottom:12px;color:var(--w)}
+.ac-sub{font-size:14px;color:var(--w3);line-height:1.68;flex:1;margin-bottom:24px}
+.ac-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.ac-date{font:400 10px/1 var(--mono);color:var(--w5)}
+.ac-read{font:500 11px/1 var(--mono);color:var(--amber2)}
+.ac-arr{position:absolute;right:26px;top:26px;color:var(--w5);font-size:16px;transition:all .2s}
+
+/* FULL ARTICLE PAGE */
+.article-wrap{max-width:1200px;margin:0 auto;padding:0 48px}
+.article-page{display:none;padding:64px 0 100px}
+.article-page.active{display:block}
+.ap-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:48px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
+.ap-back:hover{color:var(--amber2)}
+.ap-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px}
+.ap-h{font:800 52px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:16px;max-width:760px}
+.ap-h em{font-style:normal;color:var(--amber2)}
+.ap-meta{font:400 11px/1 var(--mono);color:var(--w4);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--b1)}
+.ap-body{display:grid;grid-template-columns:1fr 340px;gap:72px;align-items:start}
+.ap-text h2{font:800 26px/1.2 var(--disp);letter-spacing:-.03em;margin:48px 0 16px;color:var(--w)}
+.ap-text h2:first-child{margin-top:0}
+.ap-text h3{font:600 18px/1.3 var(--sans);margin:32px 0 12px;color:var(--w2)}
+.ap-text p{font-size:16px;color:var(--w3);line-height:1.82;margin-bottom:18px}
+.ap-text p:last-child{margin-bottom:0}
+.ap-text strong{color:var(--w2);font-weight:500}
+.ap-text em{font-style:italic;color:var(--w2)}
+.ap-text ul{padding-left:20px;margin-bottom:18px}
+.ap-text ul li{font-size:15px;color:var(--w3);line-height:1.7;margin-bottom:8px}
+.ap-pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:18px 0 18px 24px}
+.ap-pullquote p{font:700 20px/1.4 var(--disp);letter-spacing:-.02em;color:var(--w);margin:0}
+/* Data callout */
+.ap-stat{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:22px 24px;margin:28px 0}
+.ap-stat-v{font:700 44px/1 var(--mono);letter-spacing:-.03em;margin-bottom:6px}
+.ap-stat-v.g{color:var(--green)}.ap-stat-v.r{color:var(--red)}.ap-stat-v.a{color:var(--amber2)}
+.ap-stat-l{font:400 12px/1.5 var(--mono);color:var(--w4)}
+/* Sidebar */
+.ap-sidebar{position:sticky;top:72px}
+.ap-toc{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;margin-bottom:20px}
+.ap-toc-h{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber2);margin-bottom:14px}
+.ap-toc ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ap-toc li a{font-size:13px;color:var(--w4);transition:color .15s;line-height:1.4;display:block}
+.ap-toc li a:hover{color:var(--amber2)}
+.ap-cta-box{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:24px;text-align:center}
+.ap-cta-box h4{font:700 18px/1.2 var(--disp);letter-spacing:-.02em;margin-bottom:10px}
+.ap-cta-box p{font-size:13px;color:var(--w3);line-height:1.6;margin-bottom:18px}
+.btn-amber{background:var(--amber);color:var(--bg);border:none;padding:11px 20px;border-radius:7px;font:700 13px/1 var(--sans);width:100%;cursor:pointer;transition:all .18s}
+.btn-amber:hover{background:var(--amber2)}
+
+/* NEWSLETTER */
+.newsletter{background:var(--bg2);border-top:1px solid var(--b1);padding:72px 48px}
+.nl-in{max-width:560px;margin:0 auto;text-align:center}
+.nl-h{font:800 36px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:12px}
+.nl-h em{font-style:normal;color:var(--amber2)}
+.nl-p{font-size:16px;color:var(--w3);margin-bottom:28px;line-height:1.65}
+.nl-form{display:flex;gap:10px}
+.nl-input{flex:1;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 16px;font-size:14px;border-radius:7px;outline:none;transition:border-color .2s;font-family:var(--sans)}
+.nl-input:focus{border-color:var(--amber2)}
+.nl-input::placeholder{color:var(--w4)}
+.nl-btn{background:var(--amber);color:var(--bg);border:none;padding:12px 22px;border-radius:7px;font:700 13px/1 var(--sans);cursor:pointer;transition:all .18s;white-space:nowrap}
+.nl-btn:hover{background:var(--amber2)}
+.nl-note{font:400 11px/1 var(--mono);color:var(--w5);margin-top:12px}
+
+footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
+.ft-links a:hover{color:var(--amber2)}
+.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
+
+@media(max-width:1024px){
+  .nav{padding:0 24px}.nav-links{display:none}
+  .hero,.articles,.article-wrap,.newsletter,footer{padding-left:24px;padding-right:24px}
+  .articles-grid{grid-template-columns:1fr}
+  .ap-body{grid-template-columns:1fr}
+  .ap-sidebar{display:none}
+  .hero-h{font-size:38px}
+  .ap-h{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="n-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
+    <a href="/index.html"><div class="n-word">Season<b>AX</b></div></a>
+  </div>
+  <div class="nav-links">
+    <a href="/index.html" class="nl">Home</a>
+    <a href="/about.html" class="nl">About</a>
+    <a href="/contact.html" class="nl">Contact</a>
+  </div>
+  <a href="/seasonax-auth.html"><button class="btn-cta">Start free &rarr;</button></a>
+</nav>
+
+<!-- INDEX VIEW -->
+<div id="indexView">
+  <div class="hero">
+    <div class="h-dg" aria-hidden="true"></div>
+    <div class="h-in">
+      <div class="eyebrow">Research &amp; Insights</div>
+      <h1 class="hero-h">The data behind<br><em>the patterns.</em></h1>
+      <p class="hero-sub">Deep research on market seasonality &mdash; why the calendar effects exist, what the data actually shows, and how to use it.</p>
+    </div>
+  </div>
+
+  <div class="articles">
+    <div class="articles-grid">
+      <div class="article-card" onclick="openArticle('sep')">
+        <div class="ac-arr">&#8599;</div>
+        <span class="ac-cat season">Seasonality</span>
+        <h2 class="ac-h">Why September Is Always the Worst Month</h2>
+        <p class="ac-sub">The only month to average a net loss in every measured decade. 70 years of data, four structural reasons, and what to actually do about it.</p>
+        <div class="ac-meta">
+          <span class="ac-date">June 2026 &nbsp;&middot;&nbsp; 8 min read</span>
+          <span class="ac-read">Read &rarr;</span>
+        </div>
+      </div>
+      <div class="article-card" onclick="openArticle('halloween')">
+        <div class="ac-arr">&#8599;</div>
+        <span class="ac-cat season">Seasonality</span>
+        <h2 class="ac-h">The Halloween Indicator: Does "Sell in May" Actually Work?</h2>
+        <p class="ac-sub">The most famous phrase in seasonality tested against 75 years of data. The answer is more nuanced &mdash; and more useful &mdash; than the slogan suggests.</p>
+        <div class="ac-meta">
+          <span class="ac-date">May 2026 &nbsp;&middot;&nbsp; 10 min read</span>
+          <span class="ac-read">Read &rarr;</span>
+        </div>
+      </div>
+      <div class="article-card" onclick="openArticle('uptober')">
+        <div class="ac-arr">&#8599;</div>
+        <span class="ac-cat crypto">Crypto</span>
+        <h2 class="ac-h">Uptober: Why Bitcoin's October Effect Is Real</h2>
+        <p class="ac-sub">+21.4% average. Positive in 9 of 12 years. The mechanics behind Bitcoin's most reliable seasonal pattern &mdash; and why it keeps working.</p>
+        <div class="ac-meta">
+          <span class="ac-date">April 2026 &nbsp;&middot;&nbsp; 7 min read</span>
+          <span class="ac-read">Read &rarr;</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:40px 0;border-top:1px solid var(--b1)">
+      <div style="font:500 11px/1 var(--mono);color:var(--w4);letter-spacing:.08em">More research coming soon &mdash; subscribe below to get notified</div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE VIEWS -->
+<div class="article-wrap">
+
+<!-- SEPTEMBER ARTICLE -->
+<div class="article-page" id="art_sep">
+  <div style="padding-top:48px">
+    <span class="ap-back" onclick="closeArticle()">&#8592; Back to Research</span>
+    <span class="ap-cat season" style="display:inline-block;margin-bottom:20px">Seasonality</span>
+    <h1 class="ap-h">Why September Is Always<br>the <em>Worst Month</em></h1>
+    <div class="ap-meta">SeasonAX Research &nbsp;&middot;&nbsp; June 2026 &nbsp;&middot;&nbsp; 8 min read &nbsp;&middot;&nbsp; S&amp;P 500, NASDAQ, global indices</div>
+    <div class="ap-body">
+      <div class="ap-text">
+        <h2>The one iron law of market seasonality</h2>
+        <p>If you have to choose one seasonal pattern to remember, it's this: <strong>September loses money.</strong> Not sometimes. Not in bad years. On average, consistently, across every decade of modern market history, in the US, UK, Germany and Japan simultaneously.</p>
+        <p>The S&P 500 averages <strong>-0.7%</strong> in September over 15 years &mdash; the only month to average a net loss. The NASDAQ is worse at <strong>-1.4%</strong>. The win rate &mdash; the percentage of Septembers where the market ends the month higher than it started &mdash; sits at just 42% for the S&P and 39% for the NASDAQ. You're more likely to lose money in September than not.</p>
+        <div class="ap-stat"><div class="ap-stat-v r">-0.7%</div><div class="ap-stat-l">S&P 500 average September return &nbsp;&middot;&nbsp; 15-year period &nbsp;&middot;&nbsp; 42% win rate</div></div>
+        <p>This isn't a recent phenomenon driven by a few bad years. Academic studies going back to the 1950s consistently identify September as the weakest month in US equities. The pattern pre-dates the internet, the Fed's current framework, algorithmic trading and every other structural change in markets over the last 70 years. It's not noise.</p>
+
+        <div class="ap-pullquote"><p>"September is the only month to average a net loss in the S&P 500 across every measured decade."</p></div>
+
+        <h2>Why does it happen? Four structural reasons</h2>
+        <h3>1. Institutional fiscal year-end selling</h3>
+        <p>Many institutional investors &mdash; particularly US mutual funds &mdash; have fiscal years ending on October 31. That means September is their last full month to realise losses for tax purposes (tax-loss harvesting), lock in gains, and rebalance portfolios toward their year-end target allocations. The net effect is systematic selling pressure that shows up in the data every year.</p>
+        <h3>2. Post-summer return from vacation</h3>
+        <p>August is already thin and low-volume as institutional traders take summer holidays. September is when they come back &mdash; and the first thing many portfolio managers do in September is reassess risk positions that were left running on autopilot through July and August. If those positions have run up, the temptation to lock in gains is highest in the first weeks of September.</p>
+        <h3>3. Retail redemptions</h3>
+        <p>Academic research by Ritter and Chopra has documented elevated mutual fund redemptions in September, linked to school-year financial planning (tuition payments, end-of-summer expenses) and the psychological tendency to review financial decisions at the start of autumn. Net outflows from equity funds create selling pressure that market makers must absorb.</p>
+        <h3>4. The psychology of autumn</h3>
+        <p>Behavioural finance research has found correlations between seasonal affective patterns and risk appetite. Investors are measurably more risk-averse in autumn than spring, even controlling for fundamentals. The end of summer also tends to bring renewed focus on geopolitical risks, Federal Reserve meetings (September hosts one of the eight annual FOMC decisions), and the beginning of earnings pre-announcement season &mdash; all of which can add uncertainty.</p>
+
+        <h2>The global version of the same pattern</h2>
+        <p>What makes September seasonality particularly credible is that it isn't a US anomaly. The FTSE 100 averages roughly <strong>-0.6%</strong> in September. The DAX averages <strong>-0.7%</strong>. The Nikkei shows <strong>-0.7%</strong>. Four major markets in four different countries, with different regulatory environments, different investor bases and different fiscal years, all producing the same result. That level of consistency points to structural behavioural factors, not US-specific mechanics.</p>
+
+        <h2>The data in practice: worst September cases</h2>
+        <p>The average masks some genuinely severe individual Septembers. September 2022 delivered <strong>-9.3%</strong> for the S&P 500 &mdash; the bear market's worst single month, amplified by rate-hike panic. September 2001 saw the post-9/11 reopening plunge. September 2008 had Lehman. September 1998 had the LTCM crisis. September is consistently where bad things get worse.</p>
+        <div class="ap-stat"><div class="ap-stat-v r">-9.3%</div><div class="ap-stat-l">S&P 500 September 2022 &nbsp;&middot;&nbsp; the bear market's single worst month</div></div>
+
+        <h2>What to actually do with this</h2>
+        <p>The data doesn't say "sell everything on September 1st and buy back on October 1st." Seasonal patterns are tendencies, not certainties &mdash; and trading costs matter. What the data supports is a set of more modest adjustments:</p>
+        <ul>
+          <li><strong>Reduce new long exposure in late August.</strong> If you were planning to initiate a position, the historical data suggests waiting until October has a better base rate than entering in September.</li>
+          <li><strong>Be more aggressive about taking profits on long positions.</strong> If you have unrealised gains heading into September, the seasonal headwind gives you a reason to trim that you wouldn't have in November.</li>
+          <li><strong>Don't be surprised by weakness.</strong> Psychological preparation matters &mdash; knowing September is historically weak prevents panic-selling during a normal seasonal pullback.</li>
+          <li><strong>Watch for October as a buying window.</strong> More bear markets have ended in October than any other month. September weakness has historically set up October opportunities.</li>
+        </ul>
+        <p>The key is using this as one input among several, not a standalone trading rule. Combined with a read on macro conditions, valuations and trend, the September tendency gives you a meaningful calibration point that most retail investors don't have.</p>
+      </div>
+      <div class="ap-sidebar">
+        <div class="ap-toc">
+          <div class="ap-toc-h">In this article</div>
+          <ul>
+            <li><a href="#">The one iron law</a></li>
+            <li><a href="#">Four structural reasons</a></li>
+            <li><a href="#">The global pattern</a></li>
+            <li><a href="#">Worst September cases</a></li>
+            <li><a href="#">What to actually do</a></li>
+          </ul>
+        </div>
+        <div class="ap-cta-box">
+          <h4>See September for any asset</h4>
+          <p>Open the SeasonAX analyzer to see September's historical pattern for any of 460+ global assets.</p>
+          <a href="/market-seasonality.html"><button class="btn-amber">Open the app &rarr;</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HALLOWEEN ARTICLE -->
+<div class="article-page" id="art_halloween">
+  <div style="padding-top:48px">
+    <span class="ap-back" onclick="closeArticle()">&#8592; Back to Research</span>
+    <span class="ap-cat season" style="display:inline-block;margin-bottom:20px">Seasonality</span>
+    <h1 class="ap-h">The Halloween Indicator:<br>Does <em>"Sell in May"</em> Work?</h1>
+    <div class="ap-meta">SeasonAX Research &nbsp;&middot;&nbsp; May 2026 &nbsp;&middot;&nbsp; 10 min read &nbsp;&middot;&nbsp; S&P 500, global markets</div>
+    <div class="ap-body">
+      <div class="ap-text">
+        <h2>The most famous phrase in investing, tested</h2>
+        <p>"Sell in May and go away, come back on St Leger's Day." It's the most quoted piece of market folklore in history. It's also &mdash; in its rough outline &mdash; supported by 75 years of data. The more interesting question is what exactly the data shows, and what it doesn't.</p>
+        <p>The academic version of the same observation is called the <strong>Halloween Indicator</strong>, named for the switching date of October 31. First documented in the <em>American Economic Review</em> in 2002 by Bouman and Jacobsen, it found that equity markets in 36 of 37 countries showed meaningfully higher returns in the November&ndash;April period than the May&ndash;October period. Not just the US. Not just recently. 36 of 37 countries.</p>
+        <div class="ap-stat"><div class="ap-stat-v g">+1.2%</div><div class="ap-stat-l">S&P 500 average monthly return, November&ndash;April &nbsp;&middot;&nbsp; vs +0.3% for May&ndash;October</div></div>
+
+        <h2>The numbers: what 15 years shows</h2>
+        <p>Over the last 15 years (2009&ndash;2024), the S&P 500's average monthly return in the November&ndash;April window was approximately <strong>+1.2%</strong>, against <strong>+0.3%</strong> for May&ndash;October. That 0.9 percentage point difference per month compounds significantly over time. A portfolio that was fully invested November&ndash;April and in cash May&ndash;October would have outperformed buy-and-hold in <strong>11 of 15 years</strong>, with materially lower maximum drawdowns during the weak period.</p>
+        <p>The "Best Six Months" strategy isn't a quirk of one good period. Looking at decade-by-decade data going back to the 1950s, the seasonal pattern holds in the 1950s, 1960s, 1970s, 1980s, 1990s, 2000s and 2010s. No decade has broken it decisively &mdash; though the 2020s introduced the complication of COVID and the 2021 bull market disrupting the May&ndash;October weakness.</p>
+
+        <div class="ap-pullquote"><p>"36 of 37 countries showed higher returns November&ndash;April. This is not a US anomaly."</p></div>
+
+        <h2>Why does the winter period outperform?</h2>
+        <p>The honest answer is that nobody has definitively proven the mechanism. The main competing theories are:</p>
+        <ul>
+          <li><strong>Holiday-spending optimism.</strong> Consumer sentiment is measurably higher heading into Thanksgiving and Christmas, which feeds into retail and consumer sector performance, which anchors broader indices.</li>
+          <li><strong>Institutional year-end positioning.</strong> Fund managers building positions for the following year tend to buy in November&ndash;December, and their January effect rebalancing adds further support.</li>
+          <li><strong>Reduced summer risk appetite.</strong> Trading desks run with lighter books in July&ndash;August, meaning lower liquidity and higher volatility per dollar of news &mdash; which on balance tends to be negative for markets.</li>
+          <li><strong>Earnings cycle timing.</strong> Q3 earnings (reported in October&ndash;November) tend to be the most market-moving quarter, and the release of better-than-expected results into November has historically added upside momentum.</li>
+        </ul>
+
+        <h2>What the strategy doesn't do</h2>
+        <p>Here's what the slogan obscures: the May&ndash;October period isn't reliably negative. It's just <em>less reliably positive</em>. The average monthly return is +0.3%, not negative. In the 2020 COVID recovery, May&ndash;October 2020 was extraordinarily strong. In 2021, the "bad" summer months were positive. The seasonal tendency is a meaningful statistical edge, not a deterministic rule.</p>
+        <p>The practical version of the strategy isn't binary switching between stocks and cash. Most seasonal investors use it to <strong>tilt</strong>: overweight equities in the winter months, reduce exposure or move toward defensive sectors in summer, without fully exiting. That approach captures most of the seasonal edge without the whipsaw risk of missing a strong summer.</p>
+        <div class="ap-stat"><div class="ap-stat-v g">11/15</div><div class="ap-stat-l">Years the seasonal strategy outperformed buy-and-hold, 2009&ndash;2024</div></div>
+
+        <h2>The SeasonAX view</h2>
+        <p>The Halloween Indicator is the original seasonal pattern &mdash; everything else on the SeasonAX platform is a refinement of this basic observation applied to specific assets and time windows. November is the strongest individual month (+1.7% average, 70% win rate). September is the weakest (-0.7%, 42% win rate). That 2.4 percentage point monthly spread is the mechanical expression of the "Sell in May" effect at the individual month level.</p>
+      </div>
+      <div class="ap-sidebar">
+        <div class="ap-toc">
+          <div class="ap-toc-h">In this article</div>
+          <ul>
+            <li><a href="#">The Halloween Indicator</a></li>
+            <li><a href="#">15 years of numbers</a></li>
+            <li><a href="#">Why winter outperforms</a></li>
+            <li><a href="#">What it doesn't do</a></li>
+            <li><a href="#">The SeasonAX view</a></li>
+          </ul>
+        </div>
+        <div class="ap-cta-box">
+          <h4>Run the Best Six Months backtest</h4>
+          <p>Test the Nov&ndash;Apr strategy against buy-and-hold for any asset, from 2000 to 2025.</p>
+          <a href="/market-seasonality.html"><button class="btn-amber">Open Backtest &rarr;</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPTOBER ARTICLE -->
+<div class="article-page" id="art_uptober">
+  <div style="padding-top:48px">
+    <span class="ap-back" onclick="closeArticle()">&#8592; Back to Research</span>
+    <span class="ap-cat crypto" style="display:inline-block;margin-bottom:20px">Crypto</span>
+    <h1 class="ap-h">Uptober: Why Bitcoin's<br><em>October Effect</em> Is Real</h1>
+    <div class="ap-meta">SeasonAX Research &nbsp;&middot;&nbsp; April 2026 &nbsp;&middot;&nbsp; 7 min read &nbsp;&middot;&nbsp; Bitcoin, crypto seasonality</div>
+    <div class="ap-body">
+      <div class="ap-text">
+        <h2>The most reliable pattern in crypto</h2>
+        <p>Bitcoin averages <strong>+21.4%</strong> in October across 12 years of data. It has been positive in <strong>9 of 12 Octobers</strong>. The win rate of 75% is higher than any other month for any major asset in the SeasonAX database. In an asset class defined by volatility and chaos, that level of calendar consistency is remarkable enough to warrant serious analysis.</p>
+        <div class="ap-stat"><div class="ap-stat-v a">+21.4%</div><div class="ap-stat-l">Bitcoin average October return &nbsp;&middot;&nbsp; 2012&ndash;2024 &nbsp;&middot;&nbsp; 75% win rate</div></div>
+        <p>"Uptober" has been a fixture of crypto trading culture for years &mdash; but the cultural narrative and the actual data point in the same direction, which is unusual. This isn't manufactured hype. Something structural is happening in October that consistently benefits Bitcoin's price.</p>
+
+        <h2>Three mechanics behind Uptober</h2>
+        <h3>1. Halving cycle timing</h3>
+        <p>Bitcoin's halvings (which cut the issuance rate by 50%) have occurred in November 2012, July 2016, May 2020, and April 2024. The post-halving cycle typically sees the strongest price appreciation roughly 6&ndash;18 months after the halving. For multiple cycles, October has landed inside this accumulation window &mdash; when supply is tightening but the full demand response hasn't yet arrived. The 2024 halving (April) placed October 2024 at exactly the 6-month mark, which the data confirmed: Bitcoin peaked near $126,000 in October 2025, roughly 535 days post-halving.</p>
+        <h3>2. Institutional Q4 accumulation</h3>
+        <p>Since the introduction of Bitcoin futures in December 2017 and the maturation of institutional crypto markets, October has become the month when institutional allocators build positions ahead of Q4. The logic mirrors traditional equity seasonality: fiscal year-end positioning, year-end performance chasing, and the beginning of the strongest seasonal window for risk assets all point to accumulation in October.</p>
+        <h3>3. Recovery from September weakness</h3>
+        <p>Bitcoin's September is almost as bad as its October is good: averaging <strong>-5.8%</strong> with a 33% win rate, September is Bitcoin's worst month. The pattern of September weakness followed by October strength creates a mechanical setup: sellers exhausted by September, buyers stepping in as the seasonal turn becomes apparent to experienced participants. This pattern has been self-reinforcing &mdash; as more people know about Uptober, the early positioning anticipating it creates the very effect it predicts.</p>
+
+        <div class="ap-pullquote"><p>"September is Bitcoin's worst month at -5.8%. October is its best at +21.4%. That 27-point swing in a single calendar turn is the largest seasonal gap of any major asset."</p></div>
+
+        <h2>The three bad Octobers</h2>
+        <p>Of Bitcoin's 12 measured Octobers, three were negative: 2014, 2018, and 2019. All three occurred during sustained bear markets where macro and structural forces overwhelmed seasonal tendencies. The 2018 case is instructive &mdash; October 2018 was negative despite strong seasonals, as the broader crypto bear market (which would see Bitcoin fall 84% peak-to-trough) dominated every other factor.</p>
+        <p>This is the key qualifier: seasonal patterns are tendencies that hold when other forces are neutral or aligned. When a bear market is in full force, no seasonal pattern reliably reverses it. The 75% win rate already prices in three failures over 12 years &mdash; the three years where the macro backdrop was too negative for seasonality to overcome.</p>
+
+        <h2>Beyond Bitcoin: the crypto seasonal calendar</h2>
+        <p>The October effect is strongest in Bitcoin, but adjacent assets show similar patterns. Ethereum averages +15.2% in October. Coinbase, as a proxy for crypto sentiment, shows a similar Q4 buildup. The November&ndash;December window extends the strength: November is Bitcoin's second-strongest month at +18.6% average, as the Uptober momentum tends to continue into the Singles Day period and year-end crypto positioning.</p>
+        <p>The weakest stretch for crypto is June&ndash;September &mdash; particularly June (-8.7%) and September (-5.8%). Investors who understood this calendar and used it to time entries around October have systematically positioned better than those ignoring it entirely.</p>
+      </div>
+      <div class="ap-sidebar">
+        <div class="ap-toc">
+          <div class="ap-toc-h">In this article</div>
+          <ul>
+            <li><a href="#">The most reliable pattern</a></li>
+            <li><a href="#">Three mechanics</a></li>
+            <li><a href="#">The three bad Octobers</a></li>
+            <li><a href="#">Beyond Bitcoin</a></li>
+          </ul>
+        </div>
+        <div class="ap-cta-box">
+          <h4>See Bitcoin's full seasonal calendar</h4>
+          <p>All 12 months, win rates, and AI analysis for Bitcoin &mdash; including the full halving cycle context.</p>
+          <a href="/market-seasonality.html"><button class="btn-amber">Analyze Bitcoin &rarr;</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /article-wrap -->
+
+<!-- NEWSLETTER -->
+<div class="newsletter" id="nlSection">
+  <div class="nl-in">
+    <h2 class="nl-h">Research in your<br><em>inbox.</em></h2>
+    <p class="nl-p">New articles, seasonal alerts and platform updates. One email when it matters. Never spam.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" id="nlEmail" placeholder="your@email.com">
+      <button class="nl-btn" onclick="nlSubmit()">Subscribe</button>
+    </div>
+    <div class="nl-note" id="nlNote">&#10003; Free forever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; No spam</div>
+  </div>
+</div>
+
+<footer>
+  <div class="n-logo" style="display:flex;align-items:center;gap:9px">
+    <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/></svg>
+    <div class="n-word">Season<b style="color:var(--amber2)">AX</b></div>
+  </div>
+  <div class="ft-links">
+    <a href="/index.html">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/terms-of-service.html">Terms</a>
+    <a href="/privacy-policy.html">Privacy</a>
+  </div>
+  <div class="ft-copy">&copy; 2026 SeasonAX</div>
+</footer>
+
+<script>
+function openArticle(id) {
+  document.getElementById('indexView').style.display = 'none';
+  document.querySelectorAll('.article-page').forEach(function(el){ el.classList.remove('active'); });
+  var art = document.getElementById('art_' + id);
+  if (art) { art.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  document.getElementById('nlSection').style.display = 'none';
+}
+function closeArticle() {
+  document.getElementById('indexView').style.display = 'block';
+  document.querySelectorAll('.article-page').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('nlSection').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function nlSubmit() {
+  var v = document.getElementById('nlEmail').value.trim();
+  if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+    document.getElementById('nlNote').textContent = 'Please enter a valid email address.';
+    document.getElementById('nlNote').style.color = 'var(--red)';
+    return;
+  }
+  document.getElementById('nlNote').textContent = 'You\'re subscribed. We\'ll be in touch.';
+  document.getElementById('nlNote').style.color = 'var(--green)';
+  document.getElementById('nlEmail').value = '';
+}
+</script>
+</body>
+</html>
