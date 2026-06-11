@@ -3,289 +3,510 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seasonax — Sign in</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>SeasonAX &mdash; Sign in</title>
+<meta name="description" content="Sign in to SeasonAX. Professional seasonal market intelligence for serious investors.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
 :root{
-  --navy:#080F1E;--navy2:#0D1829;--slate:#1A2640;--slate2:#243352;
-  --amber:#F5A623;--green:#2ECC71;--red:#E84040;
-  --white:#E8EDF4;--muted:#7A8FA6;--border:#1E3050;
-  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;
+  --disp:"Syne",sans-serif;
+  --sans:"Inter",sans-serif;
 }
-body{background:var(--navy);color:var(--white);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
-a{color:var(--amber);text-decoration:none}
-a:hover{text-decoration:underline}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
 
-/* NAV */
-nav{padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--amber);text-decoration:none}
-.logo span{color:var(--muted);font-weight:300}
-.nav-back{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.nav-back:hover{color:var(--white)}
+/* ── LEFT PANEL ── */
+.left{background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;min-height:100vh;padding:40px 56px;position:relative;overflow:hidden}
+.left-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 80% 60% at 30% 20%,black 20%,transparent 80%);pointer-events:none;opacity:.4}
+.left-glow1{position:absolute;top:-120px;left:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
+.left-glow2{position:absolute;bottom:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,201,126,.04),transparent 65%);pointer-events:none}
 
-/* MAIN */
-.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
-.auth-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:40px;width:100%;max-width:420px}
+.l-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto;position:relative;z-index:1}
+.l-word{font:800 18px/1 var(--disp);letter-spacing:-.02em;color:var(--w)}
+.l-word b{color:var(--amber2);font-weight:800}
 
-/* TABS */
-.tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--border)}
-.tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
-.tab.active{color:var(--amber);border-bottom-color:var(--amber)}
+.l-hero{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;padding:48px 0}
+.l-tag{font:500 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.l-tag::before{content:"";width:16px;height:1px;background:var(--amber2)}
+.l-h{font:800 48px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:16px;color:var(--w)}
+.l-h em{font-style:normal;color:var(--amber2)}
+.l-sub{font-size:16px;color:var(--w3);line-height:1.72;max-width:380px;margin-bottom:48px}
 
-/* FORM */
-.form-group{margin-bottom:18px}
-label{display:block;font-size:12px;font-family:var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-input{width:100%;background:var(--slate);border:1px solid var(--border);color:var(--white);padding:11px 14px;font-family:var(--sans);font-size:14px;border-radius:6px;outline:none;transition:border-color .2s}
-input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.1)}
-input::placeholder{color:var(--muted)}
+/* Stat cards */
+.l-stats{display:flex;flex-direction:column;gap:10px;margin-bottom:48px}
+.l-stat{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:14px 18px;transition:border-color .2s}
+.l-stat:hover{border-color:var(--b3)}
+.l-stat-v{font:600 22px/1 var(--mono);letter-spacing:-.02em;min-width:72px}
+.l-stat-v.g{color:var(--green)}.l-stat-v.r{color:var(--red)}.l-stat-v.a{color:var(--amber2)}
+.l-stat-text{}
+.l-stat-l{font-size:13px;color:var(--w2);font-weight:500;margin-bottom:2px}
+.l-stat-s{font:400 10px/1 var(--mono);color:var(--w4)}
 
-.btn-submit{width:100%;background:var(--amber);color:var(--navy);border:none;padding:13px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:opacity .2s;margin-top:4px}
-.btn-submit:hover{opacity:.88}
-.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+/* Bottom trust */
+.l-trust{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
+.l-trust-row{display:flex;align-items:center;gap:8px;font:400 11px/1 var(--mono);color:var(--w4)}
+.l-trust-row::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
 
-.form-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
-.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── RIGHT PANEL ── */
+.right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 56px;background:var(--bg)}
 
-/* OAUTH BUTTONS */
-.btn-oauth{width:100%;background:var(--slate);border:1px solid var(--border);color:var(--white);padding:11px;border-radius:6px;font-size:14px;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;transition:border-color .2s}
-.btn-oauth:hover{border-color:var(--amber)}
+.r-inner{width:100%;max-width:420px}
+.r-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:40px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
+.r-back:hover{color:var(--amber2)}
 
-/* MESSAGES */
-.msg{padding:11px 14px;border-radius:6px;font-size:13px;margin-bottom:18px;display:none}
-.msg.error{background:rgba(232,64,64,.1);border:1px solid rgba(232,64,64,.3);color:#ff8080}
-.msg.success{background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--green)}
-.msg.show{display:block}
+/* Tabs */
+.r-tabs{display:flex;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:4px;margin-bottom:32px}
+.r-tab{flex:1;padding:9px;border-radius:5px;font:600 13px/1 var(--sans);text-align:center;cursor:pointer;transition:all .18s;color:var(--w4);border:none;background:none}
+.r-tab.on{background:var(--amber);color:var(--bg)}
+.r-tab:not(.on):hover{color:var(--w)}
 
-/* PASSWORD STRENGTH */
-.pw-strength{margin-top:6px;height:3px;border-radius:2px;background:var(--slate);overflow:hidden}
-.pw-bar{height:100%;border-radius:2px;transition:width .3s,background .3s}
+/* Form fields */
+.r-label{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);display:block;margin-bottom:7px}
+.r-group{margin-bottom:18px;position:relative}
+.r-input{width:100%;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:13px 16px;font:400 14px/1 var(--sans);border-radius:8px;outline:none;transition:all .2s;-webkit-appearance:none}
+.r-input:focus{border-color:var(--amber2);box-shadow:0 0 0 3px rgba(232,147,24,.08);background:var(--s2)}
+.r-input::placeholder{color:var(--w4)}
+.r-input.err{border-color:var(--red)}
+.r-input.ok{border-color:var(--green)}
+.r-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--w4);cursor:pointer;font:400 11px/1 var(--mono);padding:4px;transition:color .15s}
+.r-toggle:hover{color:var(--amber2)}
 
-/* FORGOT */
-.forgot-link{float:right;font-size:12px;color:var(--muted);margin-top:-2px}
-.forgot-link:hover{color:var(--amber)}
+/* Password strength */
+.r-strength{display:flex;gap:4px;margin-top:7px}
+.r-str-bar{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.r-str-label{font:400 10px/1 var(--mono);color:var(--w4);margin-top:5px}
 
-/* VERIFY STATE */
-.verify-state{text-align:center;padding:20px 0}
-.verify-icon{font-size:48px;margin-bottom:16px}
-.verify-state h2{font-size:22px;font-weight:700;margin-bottom:10px}
-.verify-state p{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px}
+/* Error / hint */
+.r-hint{font:400 11px/1.5 var(--mono);color:var(--red);margin-top:6px;min-height:16px}
+.r-hint.ok{color:var(--green)}
+.r-hint.info{color:var(--w4)}
 
-/* FOOTER */
-footer{padding:20px 40px;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--muted)}
+/* CTA button */
+.r-btn{width:100%;background:var(--amber);color:var(--bg);border:none;padding:14px;border-radius:8px;font:700 15px/1 var(--sans);letter-spacing:.01em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.r-btn:hover:not(:disabled){background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,147,24,.28)}
+.r-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Divider */
+.r-div{display:flex;align-items:center;gap:14px;margin:22px 0;font:400 11px/1 var(--mono);color:var(--w5)}
+.r-div::before,.r-div::after{content:"";flex:1;height:1px;background:var(--b1)}
+
+/* Links */
+.r-link{font:500 13px/1 var(--sans);color:var(--amber2);cursor:pointer;transition:color .15s}
+.r-link:hover{color:var(--amber)}
+.r-small{font:400 11px/1 var(--mono);color:var(--w5);text-align:center;margin-top:18px}
+.r-small a{color:var(--w4);transition:color .15s}
+.r-small a:hover{color:var(--amber2)}
+
+/* Success / Email check state */
+.r-success{text-align:center;padding:12px 0}
+.r-success-icon{width:60px;height:60px;background:rgba(0,201,126,.08);border:1px solid rgba(0,201,126,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:26px}
+.r-success-h{font:800 22px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.r-success-p{font-size:14px;color:var(--w3);line-height:1.7;max-width:300px;margin:0 auto 24px}
+.r-success-note{font:400 11px/1 var(--mono);color:var(--w5)}
+
+/* Loading spinner */
+.spinner{width:16px;height:16px;border:2px solid rgba(4,7,15,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Forgot password link */
+.r-forgot{text-align:right;margin-bottom:18px}
+
+/* Trust strip at bottom of form */
+.r-trust{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:28px;padding-top:20px;border-top:1px solid var(--b1)}
+.r-trust-item{display:flex;align-items:center;gap:5px;font:400 10px/1 var(--mono);color:var(--w5)}
+
+/* Mobile */
+@media(max-width:900px){
+  body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .left{min-height:auto;padding:24px;display:block}
+  .l-hero{padding:24px 0}
+  .l-h{font-size:32px}
+  .l-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .l-trust{display:none}
+  .right{padding:32px 24px;min-height:auto}
+  .r-inner{max-width:100%}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="https://season-ax.vercel.app" class="logo">Seasonax<span>.io</span></a>
-  <a href="https://season-ax.vercel.app" class="nav-back">← Back to home</a>
-</nav>
+<!-- LEFT PANEL -->
+<div class="left">
+  <div class="left-grid" aria-hidden="true"></div>
+  <div class="left-glow1" aria-hidden="true"></div>
+  <div class="left-glow2" aria-hidden="true"></div>
 
-<div class="auth-wrap">
-  <div class="auth-card">
+  <div class="l-logo">
+    <svg width="30" height="30" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <div class="l-word">Season<b>AX</b></div>
+  </div>
 
-    <!-- Normal auth form -->
-    <div id="authForm">
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab('login')" id="tab-login">Sign in</div>
-        <div class="tab" onclick="switchTab('signup')" id="tab-signup">Create account</div>
+  <div class="l-hero">
+    <div class="l-tag">Professional Seasonal Intelligence</div>
+    <h1 class="l-h">The market runs<br>on a <em>calendar.</em><br>Now you do too.</h1>
+    <p class="l-sub">460+ global assets. 9 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
+
+    <div class="l-stats">
+      <div class="l-stat">
+        <div class="l-stat-v r">-0.7%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">S&amp;P 500 &mdash; September average</div>
+          <div class="l-stat-s">15-year average &middot; 42% win rate</div>
+        </div>
       </div>
-
-      <div id="msgBox" class="msg"></div>
-
-      <!-- LOGIN FORM -->
-      <div id="formLogin">
-        <div class="form-group">
-          <label>Email address</label>
-          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+      <div class="l-stat">
+        <div class="l-stat-v g">+1.7%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">S&amp;P 500 &mdash; November average</div>
+          <div class="l-stat-s">15-year average &middot; 70% win rate</div>
         </div>
-        <div class="form-group">
-          <label>Password <a href="#" class="forgot-link" onclick="showForgot();return false">Forgot password?</a></label>
-          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-        </div>
-        <button class="btn-submit" id="loginBtn" onclick="doLogin()">Sign in</button>
-        <div class="form-footer">Don't have an account? <a href="#" onclick="switchTab('signup');return false">Sign up free</a></div>
       </div>
+      <div class="l-stat">
+        <div class="l-stat-v a">+21.4%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">Bitcoin &mdash; October average</div>
+          <div class="l-stat-s">12-year average &middot; 75% win rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <!-- SIGNUP FORM -->
-      <div id="formSignup" style="display:none">
-        <div class="form-group">
-          <label>Full name</label>
-          <input type="text" id="signupName" placeholder="Your name" autocomplete="name">
-        </div>
-        <div class="form-group">
-          <label>Email address</label>
-          <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="signupPassword" placeholder="Min. 8 characters" autocomplete="new-password" oninput="checkStrength(this.value)" onkeydown="if(event.key==='Enter')doSignup()">
-          <div class="pw-strength"><div class="pw-bar" id="pwBar" style="width:0%"></div></div>
-        </div>
-        <button class="btn-submit" id="signupBtn" onclick="doSignup()">Create free account</button>
-        <div class="form-footer" style="font-size:12px;margin-top:16px">By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></div>
-        <div class="form-footer">Already have an account? <a href="#" onclick="switchTab('login');return false">Sign in</a></div>
+  <div class="l-trust">
+    <div class="l-trust-row">Free forever tier &mdash; no card ever required</div>
+    <div class="l-trust-row">Cancel Pro anytime in one click</div>
+    <div class="l-trust-row">Auth by Supabase &middot; Payments by Stripe</div>
+    <div class="l-trust-row">GDPR compliant &middot; We never sell your data</div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right">
+  <div class="r-inner">
+    <a href="/index.html" class="r-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to SeasonAX
+    </a>
+
+    <!-- TABS -->
+    <div class="r-tabs" id="tabs" style="display:none">
+      <button class="r-tab on" id="tab_in" onclick="showTab('in')">Sign in</button>
+      <button class="r-tab" id="tab_up" onclick="showTab('up')">Create account</button>
+    </div>
+
+    <!-- SIGN IN FORM -->
+    <div id="form_in">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Welcome back</div>
+        <div style="font-size:14px;color:var(--w3)">Sign in to access your seasonal intelligence platform.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="si_email">Email address</label>
+        <input class="r-input" type="email" id="si_email" placeholder="you@example.com" autocomplete="email">
+        <div class="r-hint" id="si_email_hint"></div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="si_pw">Password</label>
+        <input class="r-input" type="password" id="si_pw" placeholder="Your password" autocomplete="current-password">
+        <button class="r-toggle" onclick="togglePw('si_pw',this)" type="button">show</button>
+        <div class="r-hint" id="si_pw_hint"></div>
+      </div>
+      <div class="r-forgot">
+        <span class="r-link" onclick="showForgot()">Forgot password?</span>
+      </div>
+      <button class="r-btn" id="si_btn" onclick="signIn()">
+        <span id="si_btn_txt">Sign in</span>
+      </button>
+      <div class="r-hint" id="si_err" style="text-align:center;margin-top:12px"></div>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span style="font-size:14px;color:var(--w3)">Don&apos;t have an account? </span>
+        <span class="r-link" onclick="showTab('up')">Create one free</span>
       </div>
     </div>
 
-    <!-- Verify email state -->
-    <div id="verifyState" style="display:none">
-      <div class="verify-state">
-        <div class="verify-icon">📬</div>
-        <h2>Check your email</h2>
-        <p>We sent a confirmation link to <strong id="verifyEmail"></strong>.<br>Click the link to activate your account and start your free trial.</p>
-        <button class="btn-submit" style="max-width:200px;margin:0 auto" onclick="switchTab('login');document.getElementById('verifyState').style.display='none';document.getElementById('authForm').style.display='block'">Back to sign in</button>
-        <div class="form-footer" style="margin-top:16px">Didn't receive it? Check your spam folder or <a href="#" onclick="resendEmail();return false">resend</a>.</div>
+    <!-- SIGN UP FORM -->
+    <div id="form_up" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Create your account</div>
+        <div style="font-size:14px;color:var(--w3)">Free forever &mdash; no credit card needed to get started.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="su_email">Email address</label>
+        <input class="r-input" type="email" id="su_email" placeholder="you@example.com" autocomplete="email" oninput="validateEmail(this,'su_email_hint')">
+        <div class="r-hint" id="su_email_hint"></div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="su_pw">Password</label>
+        <input class="r-input" type="password" id="su_pw" placeholder="Minimum 8 characters" autocomplete="new-password" oninput="updateStrength(this.value)">
+        <button class="r-toggle" onclick="togglePw('su_pw',this)" type="button">show</button>
+        <div class="r-strength" id="strength_bars">
+          <div class="r-str-bar" id="sb1"></div>
+          <div class="r-str-bar" id="sb2"></div>
+          <div class="r-str-bar" id="sb3"></div>
+          <div class="r-str-bar" id="sb4"></div>
+        </div>
+        <div class="r-str-label" id="str_label"></div>
+      </div>
+      <button class="r-btn" id="su_btn" onclick="signUp()">
+        <span id="su_btn_txt">Create free account</span>
+      </button>
+      <div class="r-hint" id="su_err" style="text-align:center;margin-top:12px"></div>
+      <div class="r-small" style="margin-top:14px">By creating an account you agree to our <a href="/terms-of-service.html">Terms of Service</a> and <a href="/privacy-policy.html">Privacy Policy</a></div>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span style="font-size:14px;color:var(--w3)">Already have an account? </span>
+        <span class="r-link" onclick="showTab('in')">Sign in</span>
       </div>
     </div>
 
-    <!-- Forgot password state -->
-    <div id="forgotState" style="display:none">
-      <h2 style="font-size:20px;font-weight:700;margin-bottom:8px">Reset password</h2>
-      <p style="font-size:14px;color:var(--muted);margin-bottom:24px">Enter your email and we'll send you a reset link.</p>
-      <div id="forgotMsg" class="msg"></div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" id="forgotEmail" placeholder="you@example.com">
+    <!-- FORGOT PASSWORD -->
+    <div id="form_forgot" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Reset password</div>
+        <div style="font-size:14px;color:var(--w3)">Enter your email and we&apos;ll send a reset link.</div>
       </div>
-      <button class="btn-submit" onclick="doReset()">Send reset link</button>
-      <div class="form-footer" style="margin-top:16px"><a href="#" onclick="hideForgot();return false">← Back to sign in</a></div>
+      <div class="r-group">
+        <label class="r-label" for="fp_email">Email address</label>
+        <input class="r-input" type="email" id="fp_email" placeholder="you@example.com">
+        <div class="r-hint" id="fp_hint"></div>
+      </div>
+      <button class="r-btn" id="fp_btn" onclick="sendReset()">
+        <span id="fp_btn_txt">Send reset link</span>
+      </button>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span class="r-link" onclick="showTab('in')">Back to sign in</span>
+      </div>
+    </div>
+
+    <!-- EMAIL CONFIRM STATE -->
+    <div id="form_confirm" style="display:none">
+      <div class="r-success">
+        <div class="r-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="#00C97E" stroke-width="1.5" fill="none"/><path d="M2 6l10 7 10-7" stroke="#00C97E" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="r-success-h">Check your email</div>
+        <p class="r-success-p">We sent a confirmation link to <strong id="confirm_email" style="color:var(--amber2)"></strong>. Click it to activate your account and start exploring SeasonAX.</p>
+        <div class="r-success-note">Didn&apos;t get it? Check your spam folder. Links expire after 24 hours.</div>
+      </div>
+    </div>
+
+    <!-- RESET SENT STATE -->
+    <div id="form_reset_sent" style="display:none">
+      <div class="r-success">
+        <div class="r-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#00C97E" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#00C97E" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="r-success-h">Reset link sent</div>
+        <p class="r-success-p">Check your inbox for a password reset link. It will expire in 1 hour.</p>
+        <div style="margin-top:20px"><span class="r-link" onclick="showTab('in')">Back to sign in</span></div>
+      </div>
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div class="r-trust">
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        SSL secured
+      </div>
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Supabase auth
+      </div>
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        No spam ever
+      </div>
     </div>
 
   </div>
 </div>
 
-<footer>Seasonax.io &nbsp;·&nbsp; Your data is encrypted and never sold &nbsp;·&nbsp; <a href="#">Privacy</a></footer>
-
 <script>
-const SUPABASE_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
+var sb = window.supabase.createClient(SB_URL, SB_KEY);
 
 // Check if already logged in
-sb.auth.getSession().then(({data:{session}})=>{
-  if(session) window.location.href = '/market-seasonality.html';
-});
-
-// Auth state change
-sb.auth.onAuthStateChange((event, session)=>{
-  if(event === 'SIGNED_IN' && session){
+sb.auth.getSession().then(function(r) {
+  if (r.data && r.data.session) {
     window.location.href = '/market-seasonality.html';
+  } else {
+    // Check URL for tab param
+    var hash = window.location.hash;
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'up' || hash === '#signup') {
+      showTab('up');
+    } else {
+      showTab('in');
+    }
+    // Pre-fill email if passed
+    var email = params.get('email');
+    if (email) {
+      var el = document.getElementById('su_email');
+      if (el) { el.value = decodeURIComponent(email); showTab('up'); }
+    }
+    document.getElementById('tabs').style.display = 'flex';
   }
 });
 
-function switchTab(tab){
-  document.getElementById('tab-login').classList.toggle('active', tab==='login');
-  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
-  document.getElementById('formLogin').style.display = tab==='login' ? 'block' : 'none';
-  document.getElementById('formSignup').style.display = tab==='signup' ? 'block' : 'none';
-  hideMsg();
-}
-
-function showMsg(text, type='error'){
-  const el = document.getElementById('msgBox');
-  el.textContent = text;
-  el.className = 'msg show ' + type;
-}
-function hideMsg(){
-  document.getElementById('msgBox').className = 'msg';
-}
-
-function setLoading(btnId, loading, label){
-  const btn = document.getElementById(btnId);
-  btn.disabled = loading;
-  btn.textContent = loading ? 'Please wait…' : label;
-}
-
-async function doLogin(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  if(!email || !password){ showMsg('Please enter your email and password.'); return; }
-  setLoading('loginBtn', true, 'Sign in');
-  const {error} = await sb.auth.signInWithPassword({email, password});
-  setLoading('loginBtn', false, 'Sign in');
-  if(error){ showMsg(friendlyError(error.message)); return; }
-  // onAuthStateChange handles redirect
-}
-
-async function doSignup(){
-  const name = document.getElementById('signupName').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  if(!name){ showMsg('Please enter your name.'); return; }
-  if(!email){ showMsg('Please enter your email address.'); return; }
-  if(password.length < 8){ showMsg('Password must be at least 8 characters.'); return; }
-  setLoading('signupBtn', true, 'Create free account');
-  const {data, error} = await sb.auth.signUp({
-    email, password,
-    options:{ data:{ full_name: name } }
-  });
-  setLoading('signupBtn', false, 'Create free account');
-  if(error){ showMsg(friendlyError(error.message)); return; }
-  // If session exists immediately → email confirm is off, redirect happens via onAuthStateChange
-  // If no session → email confirm is on, show verify screen
-  if(!data.session){
-    document.getElementById('verifyEmail').textContent = email;
-    document.getElementById('authForm').style.display = 'none';
-    document.getElementById('verifyState').style.display = 'block';
+// ── Tab switching ─────────────────────────────────────
+function showTab(t) {
+  var forms = ['in','up','forgot','confirm','reset_sent'];
+  forms.forEach(function(f){ var el=document.getElementById('form_'+f); if(el) el.style.display='none'; });
+  var el = document.getElementById('form_'+t);
+  if (el) el.style.display = 'block';
+  var tabs = document.getElementById('tabs');
+  if (tabs) {
+    var ti = document.getElementById('tab_in');
+    var tu = document.getElementById('tab_up');
+    if (ti) ti.classList.toggle('on', t==='in');
+    if (tu) tu.classList.toggle('on', t==='up');
+    tabs.style.display = (t==='in'||t==='up') ? 'flex' : 'none';
   }
 }
 
-async function doReset(){
-  const email = document.getElementById('forgotEmail').value.trim();
-  if(!email){ showForgotMsg('Please enter your email.','error'); return; }
-  const {error} = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/seasonax-auth.html'
-  });
-  if(error){ showForgotMsg(friendlyError(error.message),'error'); return; }
-  showForgotMsg('Reset link sent! Check your inbox.','success');
+function showForgot() {
+  showTab('forgot');
 }
 
-function showForgotMsg(text, type){
-  const el = document.getElementById('forgotMsg');
-  el.textContent = text; el.className = 'msg show ' + type;
+// ── Helpers ───────────────────────────────────────────
+function setLoading(btnId, txtId, loading) {
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(txtId);
+  if (!btn || !txt) return;
+  btn.disabled = loading;
+  txt.innerHTML = loading ? '<div class="spinner"></div>' : txt.getAttribute('data-label') || txt.textContent;
 }
 
-function showForgot(){
-  document.getElementById('authForm').style.display = 'none';
-  document.getElementById('forgotState').style.display = 'block';
-}
-function hideForgot(){
-  document.getElementById('forgotState').style.display = 'none';
-  document.getElementById('authForm').style.display = 'block';
+function togglePw(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'hide'; }
+  else { inp.type = 'password'; btn.textContent = 'show'; }
 }
 
-async function resendEmail(){
-  const email = document.getElementById('verifyEmail').textContent;
-  await sb.auth.resend({type:'signup', email});
-  alert('Resent! Check your inbox.');
+function validateEmail(inp, hintId) {
+  var hint = document.getElementById(hintId);
+  if (!hint) return;
+  var v = inp.value.trim();
+  if (!v) { hint.textContent=''; inp.className='r-input'; return; }
+  var ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+  hint.textContent = ok ? '' : 'Please enter a valid email address';
+  hint.className = ok ? 'r-hint ok' : 'r-hint';
+  inp.className = ok ? 'r-input ok' : 'r-input err';
 }
 
-function checkStrength(pw){
-  let score = 0;
-  if(pw.length >= 8) score++;
-  if(/[A-Z]/.test(pw)) score++;
-  if(/[0-9]/.test(pw)) score++;
-  if(/[^A-Za-z0-9]/.test(pw)) score++;
-  const bar = document.getElementById('pwBar');
-  const cols = ['','#E84040','#F5A623','#4A9EFF','#2ECC71'];
-  const widths = ['0%','25%','50%','75%','100%'];
-  bar.style.width = widths[score];
-  bar.style.background = cols[score];
+// ── Password strength ─────────────────────────────────
+function updateStrength(pw) {
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  var cols = ['','#F04050','#E89318','#F5A52F','#00C97E'];
+  var labels = ['','Weak','Fair','Good','Strong'];
+  for (var i = 1; i <= 4; i++) {
+    var bar = document.getElementById('sb'+i);
+    if (bar) bar.style.background = i <= score ? cols[score] : 'var(--b2)';
+  }
+  var lbl = document.getElementById('str_label');
+  if (lbl) { lbl.textContent = pw.length ? labels[score] : ''; lbl.style.color = cols[score] || 'var(--w4)'; }
 }
 
-function friendlyError(msg){
-  if(msg.includes('Invalid login')) return 'Incorrect email or password. Please try again.';
-  if(msg.includes('Email not confirmed')) return 'Please confirm your email first — check your inbox.';
-  if(msg.includes('already registered')) return 'This email is already registered. Try signing in instead.';
-  if(msg.includes('Password should')) return 'Password must be at least 8 characters.';
-  if(msg.includes('rate limit')) return 'Too many attempts. Please wait a moment and try again.';
-  return msg;
+// ── Sign In ───────────────────────────────────────────
+async function signIn() {
+  var email = (document.getElementById('si_email').value||'').trim();
+  var pw = document.getElementById('si_pw').value;
+  var err = document.getElementById('si_err');
+  err.textContent = '';
+  if (!email || !pw) { err.textContent = 'Please enter your email and password.'; err.className='r-hint'; return; }
+  setLoading('si_btn','si_btn_txt',true);
+  try {
+    var r = await sb.auth.signInWithPassword({ email: email, password: pw });
+    if (r.error) throw r.error;
+    window.location.href = '/market-seasonality.html';
+  } catch(e) {
+    err.className = 'r-hint';
+    err.textContent = e.message.includes('Invalid') ? 'Incorrect email or password.' : (e.message || 'Sign in failed. Please try again.');
+    setLoading('si_btn','si_btn_txt',false);
+    document.getElementById('si_btn_txt').textContent = 'Sign in';
+    document.getElementById('si_btn').disabled = false;
+  }
 }
+
+// ── Sign Up ───────────────────────────────────────────
+async function signUp() {
+  var email = (document.getElementById('su_email').value||'').trim();
+  var pw = document.getElementById('su_pw').value;
+  var err = document.getElementById('su_err');
+  err.textContent = '';
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent='Please enter a valid email address.'; err.className='r-hint'; return; }
+  if (pw.length < 8) { err.textContent='Password must be at least 8 characters.'; err.className='r-hint'; return; }
+  setLoading('su_btn','su_btn_txt',true);
+  try {
+    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://season-ax.vercel.app/market-seasonality.html' } });
+    if (r.error) throw r.error;
+    document.getElementById('confirm_email').textContent = email;
+    showTab('confirm');
+    document.getElementById('tabs').style.display = 'none';
+  } catch(e) {
+    err.className = 'r-hint';
+    err.textContent = e.message.includes('already') ? 'An account with this email already exists. Try signing in.' : (e.message || 'Sign up failed. Please try again.');
+    setLoading('su_btn','su_btn_txt',false);
+    document.getElementById('su_btn_txt').textContent = 'Create free account';
+    document.getElementById('su_btn').disabled = false;
+  }
+}
+
+// ── Password Reset ────────────────────────────────────
+async function sendReset() {
+  var email = (document.getElementById('fp_email').value||'').trim();
+  var hint = document.getElementById('fp_hint');
+  hint.textContent = '';
+  if (!email) { hint.textContent='Please enter your email address.'; hint.className='r-hint'; return; }
+  setLoading('fp_btn','fp_btn_txt',true);
+  try {
+    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://season-ax.vercel.app/seasonax-auth.html' });
+    if (r.error) throw r.error;
+    showTab('reset_sent');
+    document.getElementById('tabs').style.display = 'none';
+  } catch(e) {
+    hint.textContent = e.message || 'Failed to send reset email.';
+    hint.className = 'r-hint';
+    setLoading('fp_btn','fp_btn_txt',false);
+    document.getElementById('fp_btn_txt').textContent = 'Send reset link';
+    document.getElementById('fp_btn').disabled = false;
+  }
+}
+
+// Enter key support
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var fi = document.getElementById('form_in');
+  var fu = document.getElementById('form_up');
+  var ff = document.getElementById('form_forgot');
+  if (fi && fi.style.display !== 'none') signIn();
+  else if (fu && fu.style.display !== 'none') signUp();
+  else if (ff && ff.style.display !== 'none') sendReset();
+});
 </script>
 </body>
 </html>

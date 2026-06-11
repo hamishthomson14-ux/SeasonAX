@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About SeasonAX — Why We Built This</title>
+<meta name="description" content="SeasonAX was built because September kept costing money and nobody was talking about it. The story behind the platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;
+  --disp:"Syne",sans-serif;
+  --sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--sans)}
+
+/* NAV */
+.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+.n-logo{display:flex;align-items:center;gap:9px}
+.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
+.n-word b{color:var(--amber2);font-weight:800}
+.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;transition:all .18s}
+.btn-cta:hover{background:var(--amber2)}
+
+/* HERO */
+.about-hero{position:relative;padding:100px 48px 80px;text-align:center;overflow:hidden;border-bottom:1px solid var(--b1)}
+.ah-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black,transparent);pointer-events:none;opacity:.35}
+.ah-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
+.ah-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.ah-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+.ah-eyebrow::before,.ah-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
+.ah-h{font:800 64px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:24px}
+.ah-h em{font-style:normal;color:var(--amber2)}
+.ah-sub{font-size:20px;color:var(--w2);line-height:1.65;max-width:580px;margin:0 auto}
+
+/* STORY */
+.story{max-width:760px;margin:0 auto;padding:80px 48px}
+.s-section{margin-bottom:72px}
+.s-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.s-label::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
+.s-h{font:800 36px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:20px}
+.s-h em{font-style:normal;color:var(--amber2)}
+.s-body{font-size:16px;color:var(--w3);line-height:1.82}
+.s-body p{margin-bottom:20px}
+.s-body p:last-child{margin-bottom:0}
+.s-body strong{color:var(--w2);font-weight:500}
+
+/* Pull quote */
+.pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:20px 0 20px 28px}
+.pq-text{font:700 22px/1.4 var(--disp);letter-spacing:-.02em;color:var(--w);margin-bottom:10px}
+.pq-attr{font:400 11px/1 var(--mono);color:var(--w4);letter-spacing:.06em}
+
+/* Stat highlight inline */
+.s-stat{display:inline-flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:4px 12px 4px 8px;font:600 14px/1 var(--mono);vertical-align:middle;margin:0 4px}
+.s-stat em{font-style:normal;font-size:20px;font-weight:700;margin-right:2px}
+.s-stat.g em{color:var(--green)}
+.s-stat.r em{color:var(--red)}
+.s-stat.a em{color:var(--amber2)}
+
+/* Timeline */
+.timeline{position:relative;margin:0 0 72px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(var(--b2),transparent)}
+.tl-item{position:relative;padding-bottom:36px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-34px;top:5px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--amber2);background:var(--bg)}
+.tl-dot.filled{background:var(--amber2)}
+.tl-date{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--amber2);text-transform:uppercase;margin-bottom:8px}
+.tl-h{font:600 16px/1.3 var(--sans);color:var(--w2);margin-bottom:6px;letter-spacing:-.01em}
+.tl-p{font-size:14px;color:var(--w4);line-height:1.65}
+
+/* Data sources grid */
+.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
+.src-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;transition:border-color .2s}
+.src-card:hover{border-color:var(--b3)}
+.src-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.src-name{font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
+.src-desc{font:400 11px/1.5 var(--mono);color:var(--w4)}
+
+/* Principles */
+.principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.principle{display:flex;gap:16px;align-items:flex-start;background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px 22px;transition:border-color .2s}
+.principle:hover{border-color:var(--b3)}
+.pr-n{width:32px;height:32px;border-radius:7px;background:rgba(232,147,24,.1);border:1px solid rgba(232,147,24,.2);color:var(--amber2);font:700 13px/1 var(--mono);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pr-t{font:600 14px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
+.pr-d{font-size:13px;color:var(--w4);line-height:1.6}
+
+/* What we are not */
+.not-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.not-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;position:relative;overflow:hidden}
+.not-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.not-card.is::before{background:var(--green)}
+.not-card.not::before{background:var(--red)}
+.nc-label{font:600 8px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:12px}
+.nc-label.is{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
+.nc-label.not{background:rgba(240,64,80,.08);color:var(--red);border:1px solid rgba(240,64,80,.2)}
+.nc-items{list-style:none;display:flex;flex-direction:column;gap:7px}
+.nc-items li{font-size:13px;color:var(--w3);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
+.nc-items li span{flex-shrink:0;margin-top:1px}
+
+/* CTA */
+.about-cta{background:var(--bg2);border-top:1px solid var(--b1);padding:80px 48px;text-align:center}
+.ac-in{max-width:520px;margin:0 auto}
+.ac-h{font:800 40px/1.1 var(--disp);letter-spacing:-.04em;margin-bottom:16px}
+.ac-h em{font-style:normal;color:var(--amber2)}
+.ac-p{font-size:16px;color:var(--w3);line-height:1.7;margin-bottom:36px}
+.btn-hero{background:var(--amber);color:var(--bg);border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;margin-right:10px}
+.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,147,24,.3)}
+.btn-ghost-l{background:none;border:1px solid var(--s3);color:var(--w2);padding:14px 26px;border-radius:8px;font-size:15px;transition:all .2s;display:inline-flex;align-items:center}
+.btn-ghost-l:hover{border-color:var(--amber2);color:var(--w)}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
+.ft-links a:hover{color:var(--amber2)}
+.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
+
+@media(max-width:900px){
+  .ah-h{font-size:40px}
+  .about-hero,.story,.about-cta,footer{padding-left:24px;padding-right:24px}
+  .sources-grid{grid-template-columns:1fr}
+  .not-grid{grid-template-columns:1fr}
+  .nav{padding:0 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="n-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <a href="/index.html"><div class="n-word">Season<b>AX</b></div></a>
+  </div>
+  <a href="/seasonax-auth.html"><button class="btn-cta">Start free &rarr;</button></a>
+</nav>
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="ah-dg" aria-hidden="true"></div>
+  <div class="ah-glow" aria-hidden="true"></div>
+  <div class="ah-inner">
+    <div class="ah-eyebrow">Our story</div>
+    <h1 class="ah-h">Built because<br><em>September kept<br>costing us money.</em></h1>
+    <p class="ah-sub">SeasonAX exists because one pattern was hiding in plain sight for decades, and almost nobody was making it easy to see.</p>
+  </div>
+</div>
+
+<!-- STORY -->
+<div class="story">
+
+  <!-- The Origin -->
+  <div class="s-section">
+    <div class="s-label">The origin</div>
+    <h2 class="s-h">It started with a<br>terrible <em>September.</em></h2>
+    <div class="s-body">
+      <p>September 2022. The S&P 500 fell <strong>9.3%</strong>. Portfolio down. In pain. And the same thing had happened, to varying degrees, the September before, and the one before that. So the question became: <em>is this just bad luck, or is there something structural here?</em></p>
+      <p>Three hours of research later, the answer was unambiguous. September is statistically the worst month in market history &mdash; the only month to average a net loss across <strong>every measured decade</strong>, in the US, UK, Germany and Japan simultaneously. Not a coincidence. Not a 2022 anomaly. A structural pattern that has held for over 70 years.</p>
+      <p>Then the next question: what are the good months? November &mdash; +1.7% average, 70% win rate over 15 years. The entire "Best Six Months" from November through April. Bitcoin in October, up in 9 of 12 years. January for small caps. The data was everywhere once you knew where to look.</p>
+    </div>
+    <div class="pullquote">
+      <div class="pq-text">"The edge wasn't secret. It was just fragmented, scattered across academic papers and institutional research that most investors never see."</div>
+    </div>
+    <div class="s-body">
+      <p>The existing tools were either priced for hedge funds (£40k+/year Bloomberg terminals) or too simplistic to be useful. There was no professional-grade seasonal analysis tool built for self-directed investors who take their portfolios seriously. So we built one.</p>
+    </div>
+  </div>
+
+  <!-- The numbers -->
+  <div class="s-section">
+    <div class="s-label">The data</div>
+    <h2 class="s-h">What <em>15 years</em><br>actually shows.</h2>
+    <div class="s-body">
+      <p>These aren't theories. They're the averages from 15 years of monthly return data across every major asset class:</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0">
+      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
+        <div style="font:700 36px/1 var(--mono);color:var(--red);margin-bottom:6px">-0.7%</div>
+        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">S&P 500 avg<br>September</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
+        <div style="font:700 36px/1 var(--mono);color:var(--green);margin-bottom:6px">+1.7%</div>
+        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">S&P 500 avg<br>November</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
+        <div style="font:700 36px/1 var(--mono);color:var(--amber2);margin-bottom:6px">+21.4%</div>
+        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">Bitcoin avg<br>October</div>
+      </div>
+    </div>
+    <div class="s-body">
+      <p>The gap between September (-0.7%) and November (+1.7%) is 2.4 percentage points per month. Over a 15-year period, an investor who simply avoided September and was overweight November would have materially outperformed one who held constant positions all year &mdash; with <strong>less risk, not more</strong>. That's the entire premise of SeasonAX.</p>
+    </div>
+  </div>
+
+  <!-- Product timeline -->
+  <div class="s-section">
+    <div class="s-label">The build</div>
+    <h2 class="s-h">From frustration<br>to <em>nine tools.</em></h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-date">The problem</div>
+        <div class="tl-h">September 2022 &mdash; The question that started everything</div>
+        <div class="tl-p">After a painful month in the market, I started asking: is September always like this? Three hours of research confirmed it had been for 70 years. The idea for SeasonAX was born.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-date">The data</div>
+        <div class="tl-h">2023 &mdash; Building the pattern library</div>
+        <div class="tl-p">15 years of monthly return data for 460+ assets compiled. US, UK, German and Asian markets. Twelve distinct seasonal patterns mapped: broad index, tech growth, crypto, gold, energy, healthcare and regional variants for UK mining, German auto, Japan export, China internet and Korean tech.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-date">The platform</div>
+        <div class="tl-h">2024 &mdash; The first version ships</div>
+        <div class="tl-p">The Seasonal Analyzer goes live with 100+ assets. Strategy Backtest follows. Supabase authentication, free tier gating, and the core visual language &mdash; the calendar wheel, heatmap and bar charts &mdash; are established.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-date">The expansion</div>
+        <div class="tl-h">2025 &mdash; From one tool to nine</div>
+        <div class="tl-p">460 global assets added across US, UK, Germany and Asia Pacific. Event Studies library built (19 events including the 2025 Tariff Shock and SVB). Earnings Analysis tracker launched. Screener, Watchlist, This Month in History, Correlations and Economic Calendar complete the platform.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">What's next</div>
+        <div class="tl-h">2026 &mdash; Real prices + mobile app</div>
+        <div class="tl-p">Real-time historical price integration (replacing the seasonal model with actual price data), mobile app, email alerts when your watchlist assets enter historically strong windows, and API access for developers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data sources -->
+  <div class="s-section">
+    <div class="s-label">Methodology</div>
+    <h2 class="s-h">What's <em>under the hood.</em></h2>
+    <div class="s-body">
+      <p>SeasonAX's seasonal patterns are derived from historical monthly return data and cross-referenced against academic finance research on market seasonality. We're transparent about how it works because transparency is non-negotiable for a financial data product.</p>
+    </div>
+    <div class="sources-grid">
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128200;</div>
+        <div class="src-name">Monthly return data</div>
+        <div class="src-desc">15-year average monthly returns compiled from major financial data sources. Observation counts shown for every data point.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(0,201,126,.08)">&#128218;</div>
+        <div class="src-name">Academic research</div>
+        <div class="src-desc">Seasonal patterns cross-referenced against peer-reviewed finance literature including the Halloween Indicator, January Effect and pre-FOMC drift studies.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(77,163,255,.08)">&#127760;</div>
+        <div class="src-name">Regional modelling</div>
+        <div class="src-desc">UK, German and Asian seasonal patterns modelled with region-specific adjustments: Japanese fiscal year-end, Chinese New Year effect, German auto cycle, UK mining and resource seasonality.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(155,127,255,.08)">&#9201;</div>
+        <div class="src-name">Backtest simulation</div>
+        <div class="src-desc">Strategy backtests use a deterministic simulation engine seeded from the seasonal model. Results are clearly labelled as model-based, not real historical price data.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(232,64,74,.08)">&#9888;</div>
+        <div class="src-name">Explicit caveats</div>
+        <div class="src-desc">Every analysis output includes explicit limitations. Seasonal patterns are statistical tendencies, not guarantees. We say this loudly, not in tiny print.</div>
+      </div>
+      <div class="src-card">
+        <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128260;</div>
+        <div class="src-name">Regular updates</div>
+        <div class="src-desc">Event Studies and Earnings Analysis data is updated as new events occur. The patterns themselves are reviewed annually. Last updated: June 2026.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Principles -->
+  <div class="s-section">
+    <div class="s-label">How we work</div>
+    <h2 class="s-h">The principles we<br>won't <em>compromise on.</em></h2>
+    <div class="principles">
+      <div class="principle">
+        <div class="pr-n">01</div>
+        <div>
+          <div class="pr-t">No fake testimonials. Ever.</div>
+          <div class="pr-d">We're a new product. We don't have 500 verified reviews yet. We will not invent them. Our data is the proof of concept &mdash; not fabricated quotes from made-up users. When we have real users who choose to share their experience, we'll show them.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="pr-n">02</div>
+        <div>
+          <div class="pr-t">Explicit limitations on every output.</div>
+          <div class="pr-d">Seasonal patterns are tendencies, not predictions. Every analysis, backtest and event study on the platform carries an explicit caveat saying exactly that. We designed the product to be useful, not to make you feel more certain than the data justifies.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="pr-n">03</div>
+        <div>
+          <div class="pr-t">Simulated data is labelled as simulated.</div>
+          <div class="pr-d">Our backtests are generated from the seasonal model, not real historical price data. This is disclosed prominently on every backtest result. When real price data is integrated (on the roadmap), it will be clearly distinguished from modelled data.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="pr-n">04</div>
+        <div>
+          <div class="pr-t">Simple, honest pricing.</div>
+          <div class="pr-d">Free tier, Pro at &pound;9.99/month, Lifetime at &pound;99. One-click cancellation, no retention friction. We will never introduce dark patterns, manipulative upgrade prompts or misleading annual-versus-monthly pricing sleight of hand.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What we are / are not -->
+  <div class="s-section">
+    <div class="s-label">Clarity</div>
+    <h2 class="s-h">What SeasonAX <em>is<br>and is not.</em></h2>
+    <div class="not-grid">
+      <div class="not-card is">
+        <span class="nc-label is">SeasonAX is</span>
+        <ul class="nc-items">
+          <li><span style="color:var(--green)">&#10003;</span>A historical data and pattern analysis tool</li>
+          <li><span style="color:var(--green)">&#10003;</span>An educational resource on seasonal market tendencies</li>
+          <li><span style="color:var(--green)">&#10003;</span>One useful input among many for investment decisions</li>
+          <li><span style="color:var(--green)">&#10003;</span>Transparent about its methodology and limitations</li>
+          <li><span style="color:var(--green)">&#10003;</span>Built by investors who use it themselves</li>
+        </ul>
+      </div>
+      <div class="not-card not">
+        <span class="nc-label not">SeasonAX is not</span>
+        <ul class="nc-items">
+          <li><span style="color:var(--red)">&#10007;</span>Financial advice or investment recommendations</li>
+          <li><span style="color:var(--red)">&#10007;</span>A guarantee of future returns</li>
+          <li><span style="color:var(--red)">&#10007;</span>A replacement for your own research</li>
+          <li><span style="color:var(--red)">&#10007;</span>A licensed investment advisory service</li>
+          <li><span style="color:var(--red)">&#10007;</span>Suitable as your only decision-making tool</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="about-cta">
+  <div class="ac-in">
+    <div class="ac-h">Ready to see your<br><em>assets' calendars?</em></div>
+    <p class="ac-p">Free forever tier. No credit card. Three analyses per month, all Event Studies and the full Economic Calendar &mdash; yours immediately.</p>
+    <a href="/seasonax-auth.html"><button class="btn-hero">Create free account &rarr;</button></a>
+    <a href="/market-seasonality.html"><button class="btn-ghost-l">Open the app</button></a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="n-logo">
+    <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
+    <div class="n-word">Season<b>AX</b></div>
+  </div>
+  <div class="ft-links">
+    <a href="/index.html">Home</a>
+    <a href="/market-seasonality.html">App</a>
+    <a href="/terms-of-service.html">Terms</a>
+    <a href="/privacy-policy.html">Privacy</a>
+  </div>
+  <div class="ft-copy">&copy; 2026 SeasonAX</div>
+</footer>
+
+</body>
+</html>
