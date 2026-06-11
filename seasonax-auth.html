@@ -347,7 +347,7 @@ var sb = window.supabase.createClient(SB_URL, SB_KEY);
 // Check if already logged in
 sb.auth.getSession().then(function(r) {
   if (r.data && r.data.session) {
-    window.location.href = '/market-seasonality.html';
+    window.location.href = '/dashboard.html';
   } else {
     // Check URL for tab param
     var hash = window.location.hash;
@@ -442,7 +442,7 @@ async function signIn() {
   try {
     var r = await sb.auth.signInWithPassword({ email: email, password: pw });
     if (r.error) throw r.error;
-    window.location.href = '/market-seasonality.html';
+    window.location.href = '/dashboard.html';
   } catch(e) {
     err.className = 'r-hint';
     err.textContent = e.message.includes('Invalid') ? 'Incorrect email or password.' : (e.message || 'Sign in failed. Please try again.');
@@ -462,7 +462,7 @@ async function signUp() {
   if (pw.length < 8) { err.textContent='Password must be at least 8 characters.'; err.className='r-hint'; return; }
   setLoading('su_btn','su_btn_txt',true);
   try {
-    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://season-ax.vercel.app/market-seasonality.html' } });
+    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://season-ax.vercel.app/dashboard.html' } });
     if (r.error) throw r.error;
     document.getElementById('confirm_email').textContent = email;
     showTab('confirm');
@@ -508,5 +508,6 @@ document.addEventListener('keydown', function(e) {
   else if (ff && ff.style.display !== 'none') sendReset();
 });
 </script>
+<script src="/chat-widget.js"></script>
 </body>
 </html>

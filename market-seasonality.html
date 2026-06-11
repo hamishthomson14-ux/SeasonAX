@@ -372,7 +372,7 @@ button{cursor:pointer;font-family:var(--sans)}
     <div class="nav-sub">Seasonal Analyzer</div>
   </div>
   <div class="nav-right">
-    <a href="/index.html" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">← Home</a>
+    <a href="/dashboard.html" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
     <div id="userMenu" style="display:none;align-items:center;gap:8px">
       <div class="user-badge" id="userBadge"></div>
       <button class="btn-so" onclick="signOut()">Sign out</button>
@@ -1898,6 +1898,14 @@ function run() {
 buildRegionTabs();
 buildSectorTabs();
 buildBrowser('', null, null);
+
+// Handle pre-selected asset and mode from dashboard quick-launch
+(function(){
+  var mode = localStorage.getItem('sax_mode');
+  var preselect = localStorage.getItem('sax_preselect');
+  if(mode) { localStorage.removeItem('sax_mode'); setTimeout(function(){ switchMode(mode); },100); }
+  if(preselect) { localStorage.removeItem('sax_preselect'); setTimeout(function(){ selectAsset(preselect); },200); }
+})();
 
 
 // ═══════════════════════════════════════════════════════
@@ -3701,5 +3709,6 @@ function ecInit() {
 ecInit();
 
 </script>
+<script src="/chat-widget.js"></script>
 </body>
 </html>
