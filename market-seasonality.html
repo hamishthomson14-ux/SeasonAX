@@ -359,6 +359,12 @@ button{cursor:pointer;font-family:var(--sans)}
 .tier-badge.free{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
 .tier-badge.pro{background:rgba(232,147,24,.1);color:var(--amber2);border:1px solid rgba(232,147,24,.25)}
 .tier-badge.lifetime{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.25)}
+
+.mt-lock{font-size:9px;opacity:.55;margin-left:3px}
+body.is-pro .mt-lock{display:none}
+
+.mode-divider{width:1px;align-self:stretch;background:var(--b2);margin:0 4px;flex-shrink:0}
+body.is-pro .mode-divider{display:none}
 </style>
 </head>
 <body>
@@ -403,14 +409,15 @@ button{cursor:pointer;font-family:var(--sans)}
   <!-- MODE SWITCHER -->
   <div class="mode-bar">
     <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Analyzer</button>
-    <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Backtest</button>
     <button class="mode-tab" id="mt_events" onclick="switchMode('events')">Event Studies</button>
-    <button class="mode-tab" id="mt_earnings" onclick="switchMode('earnings')">Earnings</button>
-    <button class="mode-tab" id="mt_screener" onclick="switchMode('screener')">Screener</button>
-    <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist</button>
     <button class="mode-tab" id="mt_month" onclick="switchMode('month')">This Month</button>
-    <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations</button>
     <button class="mode-tab" id="mt_calendar" onclick="switchMode('calendar')">Calendar</button>
+    <div class="mode-divider"></div>
+    <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Backtest <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_earnings" onclick="switchMode('earnings')">Earnings <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_screener" onclick="switchMode('screener')">Screener <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations <span class="mt-lock">&#128274;</span></button>
   </div>
 
   <div id="modeAnalyzer">
@@ -1976,6 +1983,8 @@ function showUserMenu(user){
     tb.textContent = label;
     tb.className = 'tier-badge ' + label.toLowerCase();
   }
+  document.body.classList.toggle('is-pro', isPro());
+  buildBrowser(document.getElementById('searchBox') ? document.getElementById('searchBox').value : '', activeRegion, activeSector);
 }
 
 function subscriptionLabel(){
@@ -2021,12 +2030,15 @@ function checkAssetAccess(assetId){
   return false;
 }
 
-function showPaywall(reason){
+function showPaywall(reason, toolName){
   var title = document.getElementById('pwTitle');
   var sub = document.getElementById('pwSub');
   if(reason === 'asset'){
     if(title) title.textContent = 'This asset is part of Pro';
     if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 460+ assets \u2014 individual stocks, crypto and every regional market.';
+  } else if(reason === 'tool'){
+    if(title) title.textContent = (toolName || 'This tool') + ' is a Pro feature';
+    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 460+ assets and every other tool.';
   } else {
     if(title) title.textContent = 'You\u2019ve used your 3 free analyses';
     if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 460+ assets.';
@@ -2058,7 +2070,14 @@ var MODE_HERO = {
   pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
   calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.']
 };
+var PRO_ONLY_MODES = ['backtest','earnings','screener','watchlist','pairs'];
+var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations' };
+
 function switchMode(mode) {
+  if (PRO_ONLY_MODES.indexOf(mode) !== -1 && !isPro()) {
+    showPaywall('tool', MODE_LABELS[mode]);
+    return;
+  }
   var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', earnings:'modeEarnings', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar' };
   Object.keys(names).forEach(function(m) {
     var sec = document.getElementById(names[m]);
