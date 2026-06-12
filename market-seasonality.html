@@ -351,6 +351,14 @@ button{cursor:pointer;font-family:var(--sans)}
   .ec-row{grid-template-columns:48px 1fr 90px;row-gap:6px}
   .ec-type,.ec-act{display:none}
 }
+
+.asset-card.locked{opacity:.5;position:relative}
+.asset-card.locked::after{content:'\1F512';position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
+.asset-card.locked:hover{opacity:.75}
+.tier-badge{font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-left:8px}
+.tier-badge.free{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
+.tier-badge.pro{background:rgba(232,147,24,.1);color:var(--amber2);border:1px solid rgba(232,147,24,.25)}
+.tier-badge.lifetime{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.25)}
 </style>
 </head>
 <body>
@@ -374,7 +382,7 @@ button{cursor:pointer;font-family:var(--sans)}
   <div class="nav-right">
     <a href="/dashboard.html" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
     <div id="userMenu" style="display:none;align-items:center;gap:8px">
-      <div class="user-badge" id="userBadge"></div>
+      <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
       <button class="btn-so" onclick="signOut()">Sign out</button>
     </div>
     <div id="loginPrompt" style="display:none">
@@ -633,8 +641,8 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
   <div class="pw-card">
     <div class="pw-line"></div>
     <div class="pw-icon">🔒</div>
-    <div class="pw-title">You've used your 3 free analyses</div>
-    <div class="pw-sub">Create a free account to get 3 more analyses per month, or upgrade to Pro (£19.99/mo) for unlimited access to all 460+ assets.</div>
+    <div class="pw-title" id="pwTitle">You&rsquo;ve used your 3 free analyses</div>
+    <div class="pw-sub" id="pwSub">Create a free account to get 3 analyses per month, or upgrade to Pro (&pound;19.99/mo) for unlimited access to all 460+ assets.</div>
     <div class="pw-btns">
       <a href="/seasonax-auth.html" class="pw-primary">Create free account</a>
       <a href="/index.html#pricing" class="pw-ghost">View plans from £19.99/mo</a>
@@ -1646,7 +1654,8 @@ function buildBrowser(q, regionFilter, sectorFilter) {
     var badge = group.region ? '<span class="region-badge region-' + group.region.toLowerCase() + '">' + group.region + '</span>' : '';
     var cards = '';
     group.items.forEach(function(item) {
-      cards += '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') +
+      var locked = (!isPro() && !isFreeAsset(item.id)) ? ' locked' : '';
+      cards += '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') + locked +
         '" onclick="selectAsset(\'' + item.id + '\')" id="ac_' + item.id + '">' +
         '<div class="ac-ticker">' + (item.ticker || '') + '</div>' +
         '<div class="ac-name">' + (item.name || '') + '</div>' +
@@ -1699,6 +1708,7 @@ function handleSearch() {
 // SELECT ASSET
 // ============================================================
 function selectAsset(id) {
+  if (!checkAssetAccess(id)) return;
   if (selectedId) {
     var old = document.getElementById('ac_' + selectedId);
     if (old) old.classList.remove('selected');
@@ -1895,6 +1905,29 @@ function run() {
 // ============================================================
 // INIT
 // ============================================================
+
+
+let currentUser = null;
+
+// ── FREE TIER ASSET ACCESS ───────────────────────────
+var FREE_SECTIONS = ['Index Funds & ETFs','UK Indices','German Indices'];
+var FREE_EXTRA_IDS = ['nikkei','hsi','kospi','sensex'];
+var FREE_ASSET_IDS = (function(){
+  var ids = []; var curSection = '';
+  CATALOGUE.forEach(function(it){
+    if(it.section){ curSection = it.section; }
+    else if(FREE_SECTIONS.indexOf(curSection) !== -1){ ids.push(it.id); }
+  });
+  FREE_EXTRA_IDS.forEach(function(id){ if(ids.indexOf(id)===-1) ids.push(id); });
+  return ids;
+})();
+function isFreeAsset(id){ return FREE_ASSET_IDS.indexOf(id) !== -1; }
+function isPro(){
+  if(!currentUser) return false;
+  var sub = currentUser.user_metadata && currentUser.user_metadata.subscription;
+  return sub === 'pro' || sub === 'lifetime';
+}
+
 buildRegionTabs();
 buildSectorTabs();
 buildBrowser('', null, null);
@@ -1917,7 +1950,6 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const FREE_LIMIT = 3;
-let currentUser = null;
 let analysisCount = 0;
 
 async function initAuth(){
@@ -1928,8 +1960,8 @@ async function initAuth(){
     loadUsageCount();
   } else {
     document.getElementById('loginPrompt').style.display = 'block';
-    // Load from localStorage for guests
-    analysisCount = parseInt(localStorage.getItem('sx_guest_count') || '0');
+    const thisMonth = new Date().toISOString().slice(0,7);
+    analysisCount = parseInt(localStorage.getItem('sx_guest_' + thisMonth) || '0');
   }
 }
 
@@ -1938,11 +1970,25 @@ function showUserMenu(user){
   document.getElementById('userBadge').textContent = name;
   document.getElementById('userMenu').style.display = 'flex';
   document.getElementById('loginPrompt').style.display = 'none';
+  var tb = document.getElementById('tierBadge');
+  if(tb){
+    var label = subscriptionLabel();
+    tb.textContent = label;
+    tb.className = 'tier-badge ' + label.toLowerCase();
+  }
+}
+
+function subscriptionLabel(){
+  if(!currentUser) return 'Guest';
+  var sub = currentUser.user_metadata && currentUser.user_metadata.subscription;
+  if(sub === 'lifetime') return 'Lifetime';
+  if(sub === 'pro') return 'Pro';
+  return 'Free';
 }
 
 async function loadUsageCount(){
-  const thisMonth = new Date().toISOString().slice(0,7); // YYYY-MM
-  const key = 'sx_usage_' + thisMonth;
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const key = 'sx_usage_' + currentUser.id + '_' + thisMonth;
   analysisCount = parseInt(localStorage.getItem(key) || '0');
 }
 
@@ -1952,27 +1998,47 @@ async function signOut(){
 }
 
 function trackAnalysis(){
+  if(isPro()) return;
   const thisMonth = new Date().toISOString().slice(0,7);
-  const key = currentUser ? 'sx_usage_' + thisMonth : 'sx_guest_count';
+  const key = currentUser ? 'sx_usage_' + currentUser.id + '_' + thisMonth : 'sx_guest_' + thisMonth;
   analysisCount++;
   localStorage.setItem(key, analysisCount);
 }
 
 function checkUsageLimit(){
-  if(currentUser) return true; // logged-in users: no limit (free tier = 3/month enforced separately)
+  if(isPro()) return true;
   if(analysisCount >= FREE_LIMIT){
-    showPaywall();
+    showPaywall('limit');
     return false;
   }
   return true;
 }
 
-function showPaywall(){
+function checkAssetAccess(assetId){
+  if(isPro()) return true;
+  if(isFreeAsset(assetId)) return true;
+  showPaywall('asset');
+  return false;
+}
+
+function showPaywall(reason){
+  var title = document.getElementById('pwTitle');
+  var sub = document.getElementById('pwSub');
+  if(reason === 'asset'){
+    if(title) title.textContent = 'This asset is part of Pro';
+    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 460+ assets \u2014 individual stocks, crypto and every regional market.';
+  } else {
+    if(title) title.textContent = 'You\u2019ve used your 3 free analyses';
+    if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 460+ assets.';
+  }
   document.getElementById('paywallOverlay').style.display = 'flex';
 }
 
 // Init on load
 initAuth();
+
+
+
 
 
 
@@ -2088,6 +2154,7 @@ function btWindowMonths(buyM, sellM, buyDay, sellDay) {
 function runBacktest() {
   if (!checkUsageLimit()) return;
   var assetId = document.getElementById('btAsset').value;
+  if (!checkAssetAccess(assetId)) return;
   var buyM = parseInt(document.getElementById('btBuyMonth').value, 10);
   var sellM = parseInt(document.getElementById('btSellMonth').value, 10);
   var buyDay = document.getElementById('btBuyDay').value;
