@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SeasonAX — Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -208,6 +214,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       <div class="wl-sub">Here&#8217;s your seasonal intelligence for <span id="monthName"></span>. Choose a tool to begin.</div>
     </div>
     <div class="wl-right">
+      <button class="wl-btn ghost" id="manageSubBtn" style="display:none" onclick="openBillingPortal()">Manage Subscription</button>
       <a href="/market-seasonality.html"><button class="wl-btn primary">&#9654; Open Analyzer</button></a>
       <a href="/index.html"><button class="wl-btn ghost">&#8592; Home</button></a>
     </div>
@@ -338,9 +345,43 @@ async function initAuth() {
   if (isPro) {
     var banner = document.getElementById('upgradeBanner');
     if (banner) banner.style.display = 'none';
+    // Only show Manage Subscription for active paid subscriptions, not Lifetime (no recurring billing to manage)
+    // but Lifetime customers may still want receipts/portal access for their one-time payment
+    var msb = document.getElementById('manageSubBtn');
+    if (msb) {
+      msb.style.display = 'inline-flex';
+      msb.dataset.userId = user.id;
+    }
   } else {
     var banner2 = document.getElementById('upgradeBanner');
     if (banner2) banner2.style.display = 'flex';
+  }
+}
+
+async function openBillingPortal() {
+  var btn = document.getElementById('manageSubBtn');
+  var userId = btn.dataset.userId;
+  var orig = btn.textContent;
+  btn.textContent = 'Loading...';
+  btn.disabled = true;
+  try {
+    var res = await fetch('/api/create-portal-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: userId })
+    });
+    var data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(data.error || 'Could not open billing portal. Please try again or contact support.');
+      btn.textContent = orig;
+      btn.disabled = false;
+    }
+  } catch (e) {
+    alert('Something went wrong. Please try again.');
+    btn.textContent = orig;
+    btn.disabled = false;
   }
 }
 async function signOut() { await sb.auth.signOut(); window.location.href = '/seasonax-auth.html'; }
