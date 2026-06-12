@@ -734,14 +734,18 @@ function buildDashboard(){
     {d:new Date('2026-08-26T20:00:00Z'),n:'Nvidia Q2 Earnings',t:'earn'},
   ].filter(function(e){return e.d>now;}).slice(0,5);
   document.getElementById('cwList').innerHTML=evts.map(function(e){
-    var days=Math.max(0,Math.ceil((e.d-now)/86400000));
+    var a=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var b=new Date(e.d.getFullYear(),e.d.getMonth(),e.d.getDate());
+    var days=Math.max(0,Math.round((b-a)/86400000));
     var dstr=days===0?'Today':'in '+days+' days';
     return '<div class="cw-item">'+
       '<div class="cw-date"><div class="cw-mo">'+MO_AB[e.d.getMonth()]+'</div><div class="cw-day">'+e.d.getDate()+'</div></div>'+
       '<div style="flex:1"><div class="cw-name">'+e.n+'</div><div class="cw-days">'+dstr+'</div></div>'+
       '<div class="cw-type '+e.t+'">'+e.t.toUpperCase()+'</div></div>';
   }).join('');
-  if(evts.length>0){var nd=Math.max(0,Math.ceil((evts[0].d-now)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
+  if(evts.length>0){var na=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var nb=new Date(evts[0].d.getFullYear(),evts[0].d.getMonth(),evts[0].d.getDate());
+    var nd=Math.max(0,Math.round((nb-na)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
 }
 buildDashboard();
 obMaybeShow();

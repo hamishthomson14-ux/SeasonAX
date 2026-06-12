@@ -3767,7 +3767,12 @@ function ecInit() {
     for (var i = 0; i < evs.length; i++) if ((name && evs[i].name === name) || (!name && evs[i].type === type)) return evs[i];
     return null;
   }
-  function daysTo(e) { return e ? Math.max(0, Math.ceil((e.date - now) / 86400000)) : '-'; }
+  function daysTo(e) {
+    if (!e) return '-';
+    var a = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var b = new Date(e.date.getFullYear(), e.date.getMonth(), e.date.getDate());
+    return Math.max(0, Math.round((b - a) / 86400000));
+  }
   var nF = nextOf(null, 'FOMC Rate Decision'), nC = nextOf(null, 'CPI Inflation Report'), nN = nextOf(null, 'Nonfarm Payrolls'), nM = nextOf(null, 'US Midterm Elections');
   document.getElementById('ecStats').innerHTML =
     '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + daysTo(nF) + 'd</div><div class="bts-l">Next FOMC decision</div></div>' +
@@ -3779,7 +3784,7 @@ function ecInit() {
   var html = '';
   evs.forEach(function(e) {
     var d = e.date;
-    var days = Math.max(0, Math.ceil((d - now) / 86400000));
+    var days = daysTo(e);
     var dayStr = days === 0 ? 'TODAY' : (days === 1 ? 'TOMORROW' : 'in ' + days + ' days');
     var play = e.play ? '<button class="sc-go" onclick="ecGo(\'' + e.play + '\')">Playbook \u2192</button>' : '<span class="ea-nm" style="font-size:10px">structural</span>';
     html += '<div class="ec-row">' +
