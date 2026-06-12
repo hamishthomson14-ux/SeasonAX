@@ -160,6 +160,11 @@ button{cursor:pointer;font-family:var(--sans)}
 .ob-btn.primary{background:var(--amber);color:var(--bg)}
 .ob-btn.primary:hover{background:var(--amber2)}
 @media(max-width:560px){.ob-pv-grid{grid-template-columns:1fr 1fr 1fr}.ob-header,.ob-body{padding-left:22px;padding-right:22px}.ob-title{font-size:24px}}
+
+.tc-lock{font:600 8px/1 var(--mono);letter-spacing:.1em;color:var(--w4);background:var(--s1);border:1px solid var(--b2);padding:2px 7px;border-radius:3px;margin-top:4px;display:inline-block}
+body.is-pro .tc-lock{display:none}
+.tool-card.pro-locked{opacity:.7}
+body.is-pro .tool-card.pro-locked{opacity:1}
 </style>
 </head>
 <body>
@@ -236,8 +241,8 @@ button{cursor:pointer;font-family:var(--sans)}
           <div class="tc-desc">Pick any of 460+ global assets and see its complete 15-year seasonal calendar. Heatmap, win rates, calendar wheel and full AI written analysis.</div>
           <div class="tc-footer"><span class="tc-stat">US &#183; UK &#183; Germany &#183; Asia</span><span class="tc-arr">&#8599;</span></div>
         </a>
-        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('backtest')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)">&#9201;</div><div class="tc-num">02</div></div>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('backtest')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)">&#9201;</div><div style="text-align:right"><div class="tc-num">02</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Strategy Backtest</div>
           <div class="tc-desc">Build a seasonal entry/exit strategy and test it across 25 years. Equity curve, CAGR, win rate vs buy-and-hold.</div>
           <div class="tc-footer"><span class="tc-stat">2000 &#8212; 2025</span><span class="tc-arr">&#8599;</span></div>
@@ -248,20 +253,20 @@ button{cursor:pointer;font-family:var(--sans)}
           <div class="tc-desc">Fed decisions, elections, halvings, crashes &#8212; COVID, GFC, 2025 tariff shock. Deep historical playbooks for every major market event.</div>
           <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
         </a>
-        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('earnings')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)">&#128200;</div><div style="text-align:right"><div class="tc-num">04</div><span class="tc-badge new">26 reports</span></div></div>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('earnings')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)">&#128200;</div><div style="text-align:right"><div class="tc-num">04</div><span class="tc-badge new">26 reports</span><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Earnings Analysis</div>
           <div class="tc-desc">Post-earnings drift tracker. Day 1, +1 week, +2 weeks, +1 month data. Beat vs miss scenario framework with win rates.</div>
           <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
         </a>
-        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('screener')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)">&#128269;</div><div class="tc-num">05</div></div>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('screener')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)">&#128269;</div><div style="text-align:right"><div class="tc-num">05</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Seasonal Screener</div>
           <div class="tc-desc">Which assets are entering their strongest seasonal window right now? Ranked by current month performance, all 460 assets.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc5stat">460+ assets</span><span class="tc-arr">&#8599;</span></div>
         </a>
-        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('watchlist')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)">&#128218;</div><div class="tc-num">06</div></div>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('watchlist')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)">&#128218;</div><div style="text-align:right"><div class="tc-num">06</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">My Watchlist</div>
           <div class="tc-desc">Your personal seasonal dashboard. Track up to 10 assets &#8212; see this month and next month&#8217;s outlook for everything you hold.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc6stat">Set up watchlist</span><span class="tc-arr">&#8599;</span></div>
@@ -272,8 +277,8 @@ button{cursor:pointer;font-family:var(--sans)}
           <div class="tc-desc">The crashes, rallies and legends that shaped every calendar month. Market history written as a research essay with live pattern data.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc7stat">12 months</span><span class="tc-arr">&#8599;</span></div>
         </a>
-        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('pairs')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)">&#128279;</div><div class="tc-num">08</div></div>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('pairs')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)">&#128279;</div><div style="text-align:right"><div class="tc-num">08</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Seasonal Correlations</div>
           <div class="tc-desc">Compare any two assets&#8217; yearly rhythms. Find pairs that move together &#8212; and pairs that hedge each other&#8217;s weakest months.</div>
           <div class="tc-footer"><span class="tc-stat">Pearson analysis</span><span class="tc-arr">&#8599;</span></div>
@@ -325,6 +330,18 @@ async function initAuth() {
   var h = new Date().getHours();
   var tod = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
   document.getElementById('greeting').innerHTML = 'Good ' + tod + ', ' + name + '. <em>Ready to trade the calendar?</em>';
+
+  // Subscription tier — hide PRO locks and upgrade banner for Pro/Lifetime users
+  var sub = user.user_metadata && user.user_metadata.subscription;
+  var isPro = sub === 'pro' || sub === 'lifetime';
+  document.body.classList.toggle('is-pro', isPro);
+  if (isPro) {
+    var banner = document.getElementById('upgradeBanner');
+    if (banner) banner.style.display = 'none';
+  } else {
+    var banner2 = document.getElementById('upgradeBanner');
+    if (banner2) banner2.style.display = 'flex';
+  }
 }
 async function signOut() { await sb.auth.signOut(); window.location.href = '/seasonax-auth.html'; }
 initAuth();
