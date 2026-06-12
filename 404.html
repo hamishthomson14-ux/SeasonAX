@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — SeasonAX</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;
+  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+.nav{height:56px;padding:0 32px;display:flex;align-items:center;border-bottom:1px solid var(--b1)}
+.n-logo{display:flex;align-items:center;gap:9px}
+.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
+.n-word b{color:var(--amber2)}
+
+.wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:40px 24px;text-align:center;overflow:hidden}
+.dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,black,transparent);pointer-events:none;opacity:.4}
+.glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(232,147,24,.08),transparent 65%);pointer-events:none}
+
+.content{position:relative;z-index:1;max-width:520px}
+.chart{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:36px;height:90px}
+.bar{width:18px;border-radius:4px 4px 0 0;animation:rise 1.4s ease-out infinite alternate}
+.bar:nth-child(1){height:30px;background:var(--green);animation-delay:0s}
+.bar:nth-child(2){height:55px;background:var(--green);animation-delay:.1s}
+.bar:nth-child(3){height:25px;background:var(--amber);animation-delay:.2s}
+.bar:nth-child(4){height:80px;background:var(--amber);animation-delay:.3s}
+.bar:nth-child(5){height:40px;background:var(--amber2);animation-delay:.4s}
+@keyframes rise{from{opacity:.5;transform:scaleY(.8)}to{opacity:1;transform:scaleY(1)}}
+
+.code{font:800 16px/1 var(--mono);letter-spacing:.3em;color:var(--amber2);margin-bottom:18px}
+.h{font:800 56px/1.1 var(--disp);letter-spacing:-.04em;margin-bottom:16px}
+.h em{font-style:normal;color:var(--amber2)}
+.sub{font-size:16px;color:var(--w3);line-height:1.7;margin-bottom:36px}
+.sub strong{color:var(--w2);font-weight:500}
+
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.btn{padding:13px 26px;border-radius:8px;font:600 14px/1 var(--sans);transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn.primary{background:var(--amber);color:var(--bg)}
+.btn.primary:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,147,24,.25)}
+.btn.ghost{background:none;border:1px solid var(--b2);color:var(--w2)}
+.btn.ghost:hover{border-color:var(--amber2);color:var(--w)}
+
+.links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font:400 12px/1 var(--mono)}
+.links a{color:var(--w4);transition:color .15s}
+.links a:hover{color:var(--amber2)}
+
+footer{padding:24px 32px;text-align:center;font:400 11px/1 var(--mono);color:var(--w5);border-top:1px solid var(--b1)}
+
+@media(max-width:520px){
+  .h{font-size:40px}
+  .code{font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/index.html" class="n-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <div class="n-word">Season<b>AX</b></div>
+  </a>
+</nav>
+
+<div class="wrap">
+  <div class="dg" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="content">
+    <div class="chart">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <div class="code">ERROR 404</div>
+    <h1 class="h">This page isn&rsquo;t in<br>our <em>seasonal data</em> either.</h1>
+    <p class="sub">The page you&rsquo;re looking for doesn&rsquo;t exist or has moved. But <strong>460+ assets</strong> and <strong>9 analysis tools</strong> are exactly where you left them.</p>
+    <div class="actions">
+      <a href="/dashboard.html"><button class="btn primary">Go to Dashboard &rarr;</button></a>
+      <a href="/index.html"><button class="btn ghost">Back to Home</button></a>
+    </div>
+    <div class="links">
+      <a href="/market-seasonality.html">Open App</a>
+      <a href="/blog.html">Research</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</div>
+
+<footer>&copy; 2026 SeasonAX</footer>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

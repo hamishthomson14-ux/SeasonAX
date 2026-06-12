@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SeasonAX — Professional Market Seasonality Intelligence</title>
 <meta name="description" content="15 years of seasonal data across 460+ global assets. Seasonal Analyzer, Strategy Backtest, Event Studies, Earnings Analysis, Screener and more. Know which months win.">
@@ -9,6 +15,9 @@
 <meta property="og:description" content="September loses. November wins. 15 years of data, 460 assets, 9 professional tools. Now you can trade it.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://season-ax.vercel.app">
+<meta property="og:image" content="https://season-ax.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://season-ax.vercel.app/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -447,7 +456,8 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
       <div class="pc-line" style="background:var(--amber)"></div>
       <div class="pc-tier">Pro &middot; Most Popular</div>
       <div class="pc-amt"><sup>&pound;</sup>19<sub>.99/mo</sub></div>
-      <div class="pc-per">Billed monthly &middot; or &pound;149/year &middot; cancel anytime</div>
+      <div class="pc-per">Billed monthly &middot; cancel anytime<br>
+          <button style="background:none;border:none;color:var(--amber2);font:500 12px/1 var(--mono);cursor:pointer;margin-top:8px;padding:0;text-decoration:underline" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Switch to annual &mdash; &pound;149/yr (save &pound;91)</button></div>
       <div class="pc-div"></div>
       <ul class="pc-feats">
         <li><span class="y">&#10003;</span>Unlimited analyses</li>
@@ -458,7 +468,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
         <li><span class="y">&#10003;</span>25-year strategy backtest</li>
         <li><span class="y">&#10003;</span>Priority support</li>
       </ul>
-      <a href="/seasonax-auth.html"><button class="pc-btn p">Start free &rarr; then &pound;19.99/mo</button></a>
+      <button class="pc-btn p" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Subscribe &mdash; &pound;19.99/mo</button>
     </div>
     <div class="pc">
       <div class="pc-tier">Lifetime</div>
@@ -474,7 +484,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
         <li><span class="y">&#10003;</span>Vote on the roadmap</li>
         <li><span class="y">&#10003;</span>Early access to new tools</li>
       </ul>
-      <a href="/seasonax-auth.html"><button class="pc-btn g">Get lifetime access</button></a>
+      <button class="pc-btn g" onclick="stripeCheckout('price_1ThF5A2MZ73Stw01PfOUuDNl','payment')">Buy lifetime &mdash; &pound;299</button>
     </div>
   </div>
 </section>
@@ -616,5 +626,29 @@ var pb=document.querySelector('.pb-inner');
 if(pb) io.observe(pb);
 </script>
 <script src="/chat-widget.js"></script>
+
+<!-- Stripe -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+var _spk = 'pk_test_51TgkdX2MZ73Stw01GqMBlkdRUCMB6N00kGOcDzKiyAGeV2wCUME0oSSGVlLdp7gkgEF8C8qfKMRy0xr1aO6hzqA800aYjpyCiK';
+async function stripeCheckout(priceId, mode) {
+  var btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+  try {
+    var res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ priceId: priceId, mode: mode })
+    });
+    var data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { alert('Checkout failed: ' + (data.error || 'Unknown error')); btn.disabled = false; btn.textContent = 'Try again'; }
+  } catch(e) {
+    alert('Something went wrong. Please try again.');
+    btn.disabled = false;
+  }
+}
+</script>
 </body>
 </html>
