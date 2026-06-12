@@ -116,6 +116,50 @@ button{cursor:pointer;font-family:var(--sans)}
 .qa-btn-label{font:500 11px/1 var(--sans)}
 @media(max-width:1100px){.main-grid{grid-template-columns:1fr}.tools-grid{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:repeat(3,1fr)}.ov-cell:nth-child(4),.ov-cell:nth-child(5){display:none}}
 @media(max-width:700px){.page{padding:20px 16px 60px}.topbar{padding:0 16px}.tb-center{display:none}.tools-grid{grid-template-columns:1fr}.overview{grid-template-columns:1fr 1fr}}
+
+/* ── ONBOARDING MODAL ── */
+.ob-overlay{position:fixed;inset:0;background:rgba(4,7,15,.82);backdrop-filter:blur(6px);z-index:9500;display:flex;align-items:center;justify-content:center;padding:24px;animation:obFade .25s ease}
+@keyframes obFade{from{opacity:0}to{opacity:1}}
+.ob-modal{background:var(--bg2);border:1px solid var(--b2);border-radius:16px;max-width:560px;width:100%;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.6);animation:obSlide .3s cubic-bezier(.4,0,.2,1)}
+@keyframes obSlide{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ob-header{padding:28px 32px 0}
+.ob-progress{display:flex;gap:6px;margin-bottom:24px}
+.ob-dot{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.ob-dot.active{background:var(--amber)}
+.ob-dot.done{background:rgba(232,147,24,.4)}
+.ob-body{padding:0 32px 32px}
+.ob-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.ob-title{font:800 28px/1.15 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.ob-title em{font-style:normal;color:var(--amber2)}
+.ob-text{font-size:14px;color:var(--w3);line-height:1.7;margin-bottom:22px}
+.ob-text strong{color:var(--w2);font-weight:500}
+.ob-preview{background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:16px 18px;margin-bottom:24px}
+.ob-pv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ob-pv-cell{text-align:center}
+.ob-pv-val{font:600 18px/1 var(--mono);margin-bottom:4px}
+.ob-pv-val.g{color:var(--green)}.ob-pv-val.r{color:var(--red)}.ob-pv-val.a{color:var(--amber2)}
+.ob-pv-lbl{font:400 9px/1.4 var(--mono);color:var(--w4)}
+.ob-tools{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.ob-tool{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:10px 14px}
+.ob-tool-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ob-tool-name{font:600 12px/1 var(--sans);color:var(--w2)}
+.ob-tool-desc{font:400 10px/1.4 var(--mono);color:var(--w4);margin-top:2px}
+.ob-tier{display:flex;gap:10px;margin-bottom:24px}
+.ob-tier-card{flex:1;background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:14px;text-align:center}
+.ob-tier-card.highlight{border-color:rgba(232,147,24,.3);background:rgba(232,147,24,.04)}
+.ob-tier-name{font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber2);margin-bottom:6px}
+.ob-tier-price{font:700 18px/1 var(--mono);color:var(--w);margin-bottom:6px}
+.ob-tier-desc{font:400 10px/1.5 var(--mono);color:var(--w4)}
+.ob-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ob-skip{font:500 12px/1 var(--mono);color:var(--w4);background:none;border:none;cursor:pointer;transition:color .15s;padding:8px 0}
+.ob-skip:hover{color:var(--w2)}
+.ob-actions{display:flex;gap:10px}
+.ob-btn{padding:10px 22px;border-radius:7px;font:600 13px/1 var(--sans);transition:all .18s;border:none;cursor:pointer}
+.ob-btn.ghost{background:none;border:1px solid var(--b2);color:var(--w3)}
+.ob-btn.ghost:hover{border-color:var(--b3);color:var(--w)}
+.ob-btn.primary{background:var(--amber);color:var(--bg)}
+.ob-btn.primary:hover{background:var(--amber2)}
+@media(max-width:560px){.ob-pv-grid{grid-template-columns:1fr 1fr 1fr}.ob-header,.ob-body{padding-left:22px;padding-right:22px}.ob-title{font-size:24px}}
 </style>
 </head>
 <body>
@@ -135,6 +179,21 @@ button{cursor:pointer;font-family:var(--sans)}
   <div class="tb-right">
     <div class="user-pill" id="userPill">Loading...</div>
     <button class="btn-so" onclick="signOut()">Sign out</button>
+  </div>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="ob-overlay" id="obOverlay" style="display:none">
+  <div class="ob-modal">
+    <div class="ob-header">
+      <div class="ob-progress">
+        <div class="ob-dot active" id="obDot0"></div>
+        <div class="ob-dot" id="obDot1"></div>
+        <div class="ob-dot" id="obDot2"></div>
+        <div class="ob-dot" id="obDot3"></div>
+      </div>
+    </div>
+    <div class="ob-body" id="obBody"></div>
   </div>
 </div>
 <div class="page">
@@ -491,6 +550,119 @@ var MF_LONG = ['January','February','March','April','May','June','July','August'
 var MO_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var MO_AB=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
+
+// ============================================================
+// ONBOARDING MODAL — first-visit walkthrough
+// ============================================================
+var OB_KEY = 'sax_onboarded';
+var obStep = 0;
+var OB_STEPS = [
+  {
+    icon: '&#128075;', iconBg: 'rgba(232,147,24,.1)',
+    title: 'Welcome to <em>SeasonAX.</em>',
+    body: 'Here&#8217;s the idea in one sentence: <strong>some months have historically been much better for certain assets than others</strong> &mdash; and now you can see exactly which, for any of 460+ global assets.',
+    preview: true
+  },
+  {
+    icon: '&#129520;', iconBg: 'rgba(77,163,255,.1)',
+    title: 'Nine tools. <em>One platform.</em>',
+    body: 'Your dashboard gives you direct access to all nine research tools. Here are the ones most people start with:',
+    tools: [
+      {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
+      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
+      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what\u2019s entering strength this month'},
+    ]
+  },
+  {
+    icon: '&#128202;', iconBg: 'rgba(155,127,255,.1)',
+    title: 'Plus event &amp; earnings <em>intelligence.</em>',
+    body: 'Beyond seasonality, SeasonAX gives you historical playbooks for major market events and a post-earnings drift tracker:',
+    tools: [
+      {icon:'&#128202;', bg:'rgba(155,127,255,.1)', name:'Event Studies', desc:'19 events: Fed decisions, crashes, halvings &mdash; with playbooks'},
+      {icon:'&#128200;', bg:'rgba(0,201,126,.1)', name:'Earnings Analysis', desc:'What happens 1 week, 1 month after companies report'},
+      {icon:'&#128467;', bg:'rgba(232,147,24,.1)', name:'Economic Calendar', desc:'Every FOMC, CPI and jobs date counted down'},
+    ]
+  },
+  {
+    icon: '&#127942;', iconBg: 'rgba(0,201,126,.1)',
+    title: 'Your <em>free tier.</em>',
+    body: 'You\u2019re on the Free plan: <strong>3 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Upgrade anytime for unlimited access to all 460+ assets and every tool.',
+    tiers: true,
+    final: true
+  }
+];
+
+function obRender() {
+  var s = OB_STEPS[obStep];
+  var body = document.getElementById('obBody');
+
+  // Progress dots
+  for (var i = 0; i < 4; i++) {
+    var dot = document.getElementById('obDot' + i);
+    dot.className = 'ob-dot' + (i === obStep ? ' active' : i < obStep ? ' done' : '');
+  }
+
+  var html = '<div class="ob-icon" style="background:' + s.iconBg + '">' + s.icon + '</div>';
+  html += '<div class="ob-title">' + s.title + '</div>';
+  html += '<div class="ob-text">' + s.body + '</div>';
+
+  if (s.preview) {
+    var mi = new Date().getMonth();
+    var sp = PATTERNS.broadIndex[mi], cr = PATTERNS.crypto[mi];
+    function c(v){return v>=0?'g':'r';}
+    function f(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
+    html += '<div class="ob-preview"><div class="ob-pv-grid">' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(sp.avg) + '">' + f(sp.avg) + '</div><div class="ob-pv-lbl">S&amp;P 500 this month</div></div>' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val a">' + sp.win + '%</div><div class="ob-pv-lbl">Win rate</div></div>' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(cr.avg) + '">' + f(cr.avg) + '</div><div class="ob-pv-lbl">Bitcoin this month</div></div>' +
+    '</div></div>';
+  }
+
+  if (s.tools) {
+    html += '<div class="ob-tools">';
+    s.tools.forEach(function(t) {
+      html += '<div class="ob-tool"><div class="ob-tool-icon" style="background:' + t.bg + '">' + t.icon + '</div><div><div class="ob-tool-name">' + t.name + '</div><div class="ob-tool-desc">' + t.desc + '</div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  if (s.tiers) {
+    html += '<div class="ob-tier">' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Free</div><div class="ob-tier-price">&pound;0</div><div class="ob-tier-desc">3/month<br>Indices &amp; ETFs</div></div>' +
+      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">Unlimited<br>All 460+ assets</div></div>' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Lifetime</div><div class="ob-tier-price">&pound;299</div><div class="ob-tier-desc">Pay once<br>Forever</div></div>' +
+    '</div>';
+  }
+
+  html += '<div class="ob-footer">';
+  html += '<button class="ob-skip" onclick="obClose()">Skip tour</button>';
+  html += '<div class="ob-actions">';
+  if (obStep > 0) html += '<button class="ob-btn ghost" onclick="obPrev()">Back</button>';
+  if (s.final) {
+    html += '<button class="ob-btn primary" onclick="obClose()">Get started &rarr;</button>';
+  } else {
+    html += '<button class="ob-btn primary" onclick="obNext()">Next</button>';
+  }
+  html += '</div></div>';
+
+  body.innerHTML = html;
+}
+
+function obNext() { if (obStep < OB_STEPS.length - 1) { obStep++; obRender(); } }
+function obPrev() { if (obStep > 0) { obStep--; obRender(); } }
+function obClose() {
+  document.getElementById('obOverlay').style.display = 'none';
+  localStorage.setItem(OB_KEY, '1');
+}
+
+function obMaybeShow() {
+  if (!localStorage.getItem(OB_KEY)) {
+    document.getElementById('obOverlay').style.display = 'flex';
+    obStep = 0;
+    obRender();
+  }
+}
+
 function sgn(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
 function col(v){return v>=0?'g':'r';}
 
@@ -572,6 +744,7 @@ function buildDashboard(){
   if(evts.length>0){var nd=Math.max(0,Math.ceil((evts[0].d-now)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
 }
 buildDashboard();
+obMaybeShow();
 </script>
 
 <script src="https://js.stripe.com/v3/"></script>
