@@ -244,10 +244,14 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     <a href="/terms-of-service.html">Terms</a>
     <a href="/privacy-policy.html">Privacy</a>
   </div>
+  <div style="font:400 10px/1.6 var(--mono);color:var(--w5);max-width:520px;margin-bottom:10px;opacity:.7">SeasonAX is an independently operated service. Not a registered investment adviser. Data is for informational purposes only and is not financial advice.</div>
   <div class="ft-copy">&copy; 2026 SeasonAX</div>
 </footer>
 
 <script>
+var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
+
 function submitContact() {
   var name = document.getElementById('c_name').value.trim();
   var email = document.getElementById('c_email').value.trim();
@@ -265,12 +269,26 @@ function submitContact() {
   btn.disabled = true;
   btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid rgba(4,7,15,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .7s linear infinite"></div>';
 
-  // Simulate send (replace with real endpoint when ready)
-  setTimeout(function() {
+  // Real submit — stores the message in Supabase (contact_messages table)
+  fetch(SB_URL + '/rest/v1/contact_messages', {
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({ name: name, email: email, subject: subj, message: msg })
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Submit failed (' + r.status + ')');
     document.getElementById('successEmail').textContent = email;
     document.getElementById('formView').style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
-  }, 900);
+  }).catch(function() {
+    err.textContent = 'Something went wrong sending your message. Please try again in a moment.';
+    btn.disabled = false;
+    btn.innerHTML = 'Send message';
+  });
 }
 </script>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>

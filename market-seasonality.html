@@ -377,6 +377,23 @@ body.is-pro .mt-lock{display:none}
 
 .mode-divider{width:1px;align-self:stretch;background:var(--b2);margin:0 4px;flex-shrink:0}
 body.is-pro .mode-divider{display:none}
+
+.data-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:4px;display:inline-block;margin-top:7px}
+.data-badge.real{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
+.data-badge.model{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
+
+.brief{}
+.brief-verdict{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--b2);border-left-width:3px;border-radius:10px;padding:16px 20px;margin-bottom:20px}
+.brief-verdict-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.brief-verdict-label{font:400 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:5px}
+.brief-verdict-val{font:700 17px/1 var(--disp);letter-spacing:-.01em}
+.brief-verdict-stat{margin-left:auto;text-align:right}
+.bvs-v{font:700 22px/1 var(--mono);letter-spacing:-.02em}
+.bvs-l{font:400 10px/1 var(--mono);color:var(--w4);margin-top:3px}
+.brief p{font-size:14px;line-height:1.78;color:var(--w2);margin-bottom:14px}
+.brief p.brief-caveat{font-size:12.5px;color:var(--w4);line-height:1.7;border-top:1px solid var(--b1);padding-top:14px;margin-bottom:0}
+.brief strong{color:var(--w);font-weight:600}
+@media(max-width:600px){.brief-verdict{flex-wrap:wrap}.brief-verdict-stat{margin-left:0}}
 </style>
 </head>
 <body>
@@ -451,6 +468,7 @@ body.is-pro .mode-divider{display:none}
         <div>
           <div class="sel-name" id="selName">—</div>
           <div class="sel-sector" id="selSector"></div>
+          <div class="data-badge model" id="dataSourceBadge" style="display:none"></div>
         </div>
       </div>
       <div class="sel-right">
@@ -628,7 +646,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
       <div class="bt-label" style="margin:14px 0 8px">Notable pairs</div>
       <div class="ea-filters" id="prPresets" style="margin-bottom:0"></div>
     </div>
-    <div id="prResults" style="display:none">
+    <div id="prResults" style="display:none"><div style="text-align:right;margin-bottom:8px"><span class="data-badge model" id="prDataBadge" style="display:none"></span></div>
       <div class="bt-stats" id="prStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
       <div class="bt-panel">
         <div class="bt-ptitle">Monthly seasonal rhythm — side by side</div>
@@ -1844,6 +1862,131 @@ function animateBars(){
   },80);
 }
 
+// ============================================================
+// REAL PRICE DATA LAYER
+// Fetches actual monthly closes via /api/prices (keyless proxy)
+// and computes true seasonal stats. Falls back to model with an
+// honest MODELLED badge when real data is unavailable.
+// ============================================================
+var REAL_CACHE = {};
+var lastDataSource = 'model';
+
+var STOOQ_MAP = {
+  'sp500':'^spx','nasdaq':'^ndq','dowjones':'^dji','russell2000':'^rut',
+  'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
+  'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
+  'btc':'btcusd','eth':'ethusd',
+  'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
+  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us','xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us'
+};
+
+function stooqSymbol(item) {
+  if (!item) return null;
+  if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
+  var t = (item.ticker || '').toLowerCase();
+  if (!t || t.charAt(0) === '^') return null;
+  if (t.indexOf('.l') !== -1)  return t.replace('.l', '.uk');
+  if (t.indexOf('.de') !== -1) return t; // already .de
+  if (item.region === 'US') return t + '.us';
+  return null;
+}
+
+function computeRealMonths(rows, yearsWanted) {
+  // rows: [{d:'YYYY-MM-DD', c:close}, ...] monthly, oldest first
+  var byMonth = [[],[],[],[],[],[],[],[],[],[],[],[]];
+  var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
+  for (var i = 1; i < rows.length; i++) {
+    var prev = rows[i-1], cur = rows[i];
+    var dt = new Date(cur.d);
+    if (dt.getFullYear() < cutoffYear) continue;
+    if (!isFinite(prev.c) || prev.c <= 0) continue;
+    var ret = ((cur.c - prev.c) / prev.c) * 100;
+    if (!isFinite(ret) || Math.abs(ret) > 95) continue;
+    byMonth[dt.getMonth()].push(ret);
+  }
+  var months = [];
+  for (var m = 0; m < 12; m++) {
+    var arr = byMonth[m];
+    if (arr.length < 5) return null; // not enough observations for honesty
+    var sum = 0, wins = 0;
+    for (var j = 0; j < arr.length; j++) { sum += arr[j]; if (arr[j] > 0) wins++; }
+    months.push({
+      m: MO[m],
+      avg: +(sum / arr.length).toFixed(2),
+      win: Math.round((wins / arr.length) * 100),
+      n: arr.length,
+      note: ''
+    });
+  }
+  return months;
+}
+
+function fetchRealMonths(item, yearsWanted, cb) {
+  var sym = stooqSymbol(item);
+  if (!sym) { cb(null); return; }
+  var ck = sym + ':' + yearsWanted;
+  if (REAL_CACHE[ck]) { cb(REAL_CACHE[ck]); return; }
+  fetch('/api/prices?s=' + encodeURIComponent(sym))
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.monthly || data.monthly.length < 36) { cb(null); return; }
+      var months = computeRealMonths(data.monthly, yearsWanted);
+      if (months) {
+        // Preserve the model's written notes per month for colour
+        var patKey = (item.pattern) || 'broadIndex';
+        var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
+        for (var i = 0; i < 12; i++) months[i].note = pat[i].note || '';
+        REAL_CACHE[ck] = months;
+      }
+      cb(months);
+    })
+    .catch(function(){ cb(null); });
+}
+
+// Shared: resolve real monthly stats for any catalogue item by id, with model fallback.
+// cb receives ({months, source}). Cached across tools.
+var MONTHS_CACHE = {};
+function getMonthsResolved(id, years, cb) {
+  var item = null;
+  for (var i = 0; i < CATALOGUE.length; i++) { if (CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; } }
+  if (!item) { cb({ months: null, source: 'model', item: null }); return; }
+  var ck = id + ':' + (years || 15);
+  if (MONTHS_CACHE[ck]) { cb({ months: MONTHS_CACHE[ck].months, source: MONTHS_CACHE[ck].source, item: item }); return; }
+  fetchRealMonths(item, years || 15, function(real) {
+    var res;
+    if (real) { res = { months: real, source: 'real', item: item }; }
+    else { res = { months: getMonths(id), source: 'model', item: item }; }
+    MONTHS_CACHE[ck] = { months: res.months, source: res.source };
+    cb(res);
+  });
+}
+
+// Resolve many ids in parallel (bounded), then call cb with a map {id: {months, source}}
+function getManyMonthsResolved(ids, years, cb) {
+  var out = {}; var pending = ids.length;
+  if (!pending) { cb(out); return; }
+  ids.forEach(function(id) {
+    getMonthsResolved(id, years, function(res) {
+      out[id] = res;
+      if (--pending === 0) cb(out);
+    });
+  });
+}
+
+function setDataBadge(source, nYears) {
+  lastDataSource = source;
+  var b = document.getElementById('dataSourceBadge');
+  if (!b) return;
+  b.style.display = 'inline-block';
+  if (source === 'real') {
+    b.innerHTML = '&#10003; VERIFIED &middot; REAL PRICE DATA' + (nYears ? ' &middot; ' + nYears + 'YR' : '');
+    b.className = 'data-badge real';
+  } else {
+    b.innerHTML = 'MODELLED PATTERN DATA';
+    b.className = 'data-badge model';
+  }
+}
+
 function getMonths(id) {
   var item=null;
   for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===id){item=CATALOGUE[i];break;} }
@@ -1862,15 +2005,83 @@ function run() {
   for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===selectedId){item=CATALOGUE[i];break;} }
   if(!item) return;
 
-  var years=document.getElementById('yrsSel').value;
+  var years=parseInt(document.getElementById('yrsSel').value, 10) || 15;
   var btn=document.getElementById('goBtn');
   btn.disabled=true;
+  pill('FETCHING REAL DATA...','loading');
+
+  // Try real price data first; fall back to the model with an honest badge.
+  fetchRealMonths(item, years, function(realMonths){
+    if (realMonths) {
+      renderRun(item, realMonths, 'real', years);
+    } else {
+      renderRun(item, getMonths(selectedId), 'model', years);
+    }
+  });
+}
+
+function generateBriefing(item, months, source, years) {
+  var MOF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now = new Date();
+  var cm = now.getMonth();
+  var sorted = months.map(function(m,i){return {i:i,avg:m.avg,win:m.win,n:m.n};}).sort(function(a,b){return b.avg-a.avg;});
+  var best = sorted[0], best2 = sorted[1], worst = sorted[11], worst2 = sorted[10];
+  var posCount = months.filter(function(m){return m.avg>0;}).length;
+  var spread = (best.avg - worst.avg).toFixed(1);
+  var cur = months[cm];
+  var nextM = months[(cm+1)%12];
+  var yearAvg = (months.reduce(function(s,m){return s+m.avg;},0)/12).toFixed(2);
+  var name = item.name || item.ticker;
+
+  function pct(v){return (v>=0?'+':'')+v.toFixed(1)+'%';}
+  function strength(w){ return w>=70?'a historically reliable':w>=58?'a moderately reliable':w>=45?'an inconsistent':'a historically weak'; }
+
+  // Verdict logic for the current month
+  var verdict, vcol;
+  if (cur.avg >= 0.8 && cur.win >= 60) { verdict = 'SEASONAL TAILWIND'; vcol = 'var(--green)'; }
+  else if (cur.avg <= -0.5 && cur.win <= 45) { verdict = 'SEASONAL HEADWIND'; vcol = 'var(--red)'; }
+  else { verdict = 'NEUTRAL SEASONALITY'; vcol = 'var(--amber2)'; }
+
+  var dataLine = source === 'real'
+    ? 'Computed from <strong>' + (cur.n || best.n || '15+') + ' years</strong> of actual monthly closing prices.'
+    : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).';
+
+  var p1 = 'Across the analysis window, ' + name + ' has averaged ' + pct(+yearAvg) + ' per month, finishing ' +
+    posCount + ' of 12 months positive on average. Its strongest seasonal window is <strong>' + MOF[best.i] +
+    '</strong> (' + pct(best.avg) + ', ' + best.win + '% win rate), followed by ' + MOF[best2.i] + ' (' + pct(best2.avg) +
+    '). The weakest is <strong>' + MOF[worst.i] + '</strong> (' + pct(worst.avg) + ', ' + worst.win +
+    '% win rate). That is a ' + spread + ' percentage-point spread between the best and worst months \u2014 ' +
+    (Math.abs(spread) > 4 ? 'a wide seasonal dispersion that has historically rewarded calendar-aware positioning.' :
+     'a relatively contained seasonal range, suggesting calendar effects are secondary to other drivers for this asset.');
+
+  var p2 = 'Right now, in <strong>' + MOF[cm] + '</strong>, ' + name + ' sits in ' + strength(cur.win) +
+    ' seasonal month: a ' + pct(cur.avg) + ' historical average with a ' + cur.win + '% win rate' +
+    (cur.n ? ' across ' + cur.n + ' observations' : '') + '. Looking ahead, ' + MOF[(cm+1)%12] + ' has averaged ' +
+    pct(nextM.avg) + ' (' + nextM.win + '% win rate), ' +
+    (nextM.avg > cur.avg ? 'a seasonal improvement from the current month.' : nextM.avg < cur.avg ? 'a seasonal deterioration from the current month.' : 'broadly in line with the current month.');
+
+  var p3 = 'Seasonality is a statistical tendency, not a guarantee \u2014 any single ' + MOF[cm] +
+    ' can and will deviate from the historical average, and these patterns work best as one input alongside trend, valuation and macro context. ' + dataLine;
+
+  return '<div class="brief">' +
+    '<div class="brief-verdict" style="border-color:' + vcol + '"><span class="brief-verdict-dot" style="background:' + vcol + '"></span>' +
+      '<div><div class="brief-verdict-label">' + MOF[cm] + ' verdict for ' + name + '</div>' +
+      '<div class="brief-verdict-val" style="color:' + vcol + '">' + verdict + '</div></div>' +
+      '<div class="brief-verdict-stat"><div class="bvs-v" style="color:' + vcol + '">' + pct(cur.avg) + '</div><div class="bvs-l">' + cur.win + '% win rate</div></div>' +
+    '</div>' +
+    '<p>' + p1 + '</p><p>' + p2 + '</p><p class="brief-caveat">' + p3 + '</p>' +
+  '</div>';
+}
+
+function renderRun(item, monthsIn, source, years) {
+  var btn=document.getElementById('goBtn');
   pill('ANALYZING...','loading');
 
   setTimeout(function(){
     try {
-      var months=getMonths(selectedId);
+      var months=monthsIn;
       var patKey=(item.pattern)||'broadIndex';
+      setDataBadge(source, source==='real' ? years : null);
       var sorted=months.slice().sort(function(a,b){return b.avg-a.avg;});
       var bestM=sorted[0].m+' +'+(+sorted[0].avg).toFixed(1)+'%';
       var worstM=sorted[11].m+' '+(+sorted[11].avg).toFixed(1)+'%';
@@ -1903,10 +2114,10 @@ function run() {
         makeCards(months)+
         '<div class="ai-panel">'+
           '<div class="ai-header">'+
-            '<span class="ai-badge">AI Analysis</span>'+
-            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Intelligence</span>'+
+            '<span class="ai-badge">Intelligence Briefing</span>'+
+            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Analysis</span>'+
           '</div>'+
-          '<div class="aitxt" id="aiTxt">'+ai+'</div>'+
+          '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years)+'</div>'+
         '</div>';
 
       animateBars();
@@ -2182,6 +2393,34 @@ function btWindowMonths(buyM, sellM, buyDay, sellDay) {
   return out;
 }
 
+// Build a real per-year, per-month return map for backtesting from actual prices.
+// cb({map, source}) where map[year][monthIndex] = pct return that month.
+var BT_REAL_CACHE = {};
+function btFetchRealReturns(item, cb) {
+  var sym = stooqSymbol(item);
+  if (!sym) { cb({ map: null, source: 'model' }); return; }
+  if (BT_REAL_CACHE[sym]) { cb({ map: BT_REAL_CACHE[sym], source: 'real' }); return; }
+  fetch('/api/prices?s=' + encodeURIComponent(sym))
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.monthly || data.monthly.length < 36) { cb({ map: null, source: 'model' }); return; }
+      var map = {};
+      for (var i = 1; i < data.monthly.length; i++) {
+        var p = data.monthly[i-1], q = data.monthly[i];
+        if (!isFinite(p.c) || p.c <= 0) continue;
+        var dt = new Date(q.d);
+        var ret = ((q.c - p.c) / p.c) * 100;
+        if (!isFinite(ret) || Math.abs(ret) > 95) continue;
+        var yr = dt.getFullYear(), mo = dt.getMonth();
+        if (!map[yr]) map[yr] = {};
+        map[yr][mo] = ret;
+      }
+      BT_REAL_CACHE[sym] = map;
+      cb({ map: map, source: 'real' });
+    })
+    .catch(function(){ cb({ map: null, source: 'model' }); });
+}
+
 function runBacktest() {
   if (!checkUsageLimit()) return;
   var assetId = document.getElementById('btAsset').value;
@@ -2209,16 +2448,33 @@ function runBacktest() {
 
   var btn = document.getElementById('btGoBtn');
   btn.disabled = true;
+  btn.textContent = 'Fetching real data...';
 
-  setTimeout(function() {
+  btFetchRealReturns(item, function(real){
+    var realMap = real.map;
+    var dataSource = real.source;
+    btn.textContent = 'Run Backtest';
+    // Per-month return: real if available for that year/month, else synthetic model.
+    function monthRet(y, mi) {
+      if (realMap && realMap[y] && typeof realMap[y][mi] === 'number') return realMap[y][mi];
+      return btMonthlyReturn(assetId, y, mi, pattern, sigma);
+    }
+    setTimeout(function() {
     try {
       var years = [], stratEq = [100], bhEq = [100];
       var wins = 0, best = null, worst = null;
+      // If using real data, clamp the year range to what we actually have.
+      if (realMap) {
+        var realYears = Object.keys(realMap).map(Number);
+        var minY = Math.min.apply(null, realYears), maxY = Math.max.apply(null, realYears);
+        if (y0 < minY) y0 = minY;
+        if (y1 > maxY) y1 = maxY;
+      }
       for (var y = y0; y <= y1; y++) {
         var r = 0;
-        winMonths.forEach(function(mi){ r += btMonthlyReturn(assetId, y, mi, pattern, sigma); });
+        winMonths.forEach(function(mi){ r += monthRet(y, mi); });
         var bh = 0;
-        for (var mi2 = 0; mi2 < 12; mi2++) bh += btMonthlyReturn(assetId, y, mi2, pattern, sigma);
+        for (var mi2 = 0; mi2 < 12; mi2++) bh += monthRet(y, mi2);
         years.push({ year: y, ret: r, bh: bh });
         if (r > 0) wins++;
         if (!best || r > best.ret) best = { year: y, ret: r };
@@ -2300,7 +2556,7 @@ function runBacktest() {
         '<div class="bt-panel last">' +
           '<div class="bt-ptitle">Year-by-Year Strategy Returns</div>' +
           '<div class="bt-yrgrid">' + yrHtml + '</div>' +
-          '<div class="bt-disclaimer">SIMULATED BACKTEST \u2014 results are generated from SeasonAX\u2019s seasonal pattern model, not actual historical prices. Deterministic per asset and window so results are reproducible. Past or simulated performance does not guarantee future results.</div>' +
+          '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from SeasonAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
         '</div>';
 
       setTimeout(function() {
@@ -2314,7 +2570,8 @@ function runBacktest() {
     } finally {
       btn.disabled = false;
     }
-  }, 350);
+    }, 350);
+  });
 }
 
 btInit();
@@ -3249,12 +3506,81 @@ function scGo(id) {
   setTimeout(function(){ selectAsset(id); }, 80);
 }
 
+// Curated liquid universe with real Stooq data — used for the real-data screener.
+var SC_UNIVERSE = ['sp500','nasdaq','dowjones','russell2000','spy','qqq','nvda','aapl','msft','tsla','amzn','meta','gld','slv','btc','eth','ftse100','dax','nikkei','xle','xlf','xlk','xlv','tlt'];
+var SC_REAL_CACHE = null;
+
+function scBuildReal(monthIdx) {
+  var nextIdx = (monthIdx + 1) % 12;
+  // Resolve (cached) real months for the universe, then rank by real current-month avg.
+  if (SC_REAL_CACHE) { scRenderReal(monthIdx, nextIdx, SC_REAL_CACHE); return; }
+  var ids = SC_UNIVERSE.filter(function(id){
+    for (var i=0;i<CATALOGUE.length;i++) if (CATALOGUE[i].id===id) return true;
+    return false;
+  });
+  getManyMonthsResolved(ids, 15, function(map){
+    SC_REAL_CACHE = map;
+    scRenderReal(monthIdx, nextIdx, map);
+  });
+}
+
+function scRenderReal(monthIdx, nextIdx, map) {
+  var rows = [];
+  Object.keys(map).forEach(function(id){
+    var res = map[id]; if (!res || !res.months) return;
+    var it = res.item;
+    rows.push({ item: it, avg: res.months[monthIdx].avg, win: res.months[monthIdx].win,
+                next: res.months[nextIdx].avg, source: res.source });
+  });
+  var anyReal = rows.some(function(r){ return r.source === 'real'; });
+  var strong = rows.slice().sort(function(a,b){return b.avg-a.avg;}).slice(0,12);
+  var weak   = rows.slice().sort(function(a,b){return a.avg-b.avg;}).slice(0,12);
+
+  var sH='', wH='';
+  strong.forEach(function(r,i){ sH += scRow(r, i+1); });
+  weak.forEach(function(r,i){ wH += scRow(r, i+1); });
+  document.getElementById('scStrong').innerHTML = sH;
+  document.getElementById('scWeak').innerHTML = wH;
+  document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
+  document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
+
+  // Momentum shifts (real)
+  var shifts = rows.map(function(r){ return { item:r.item, delta:r.next-r.avg, next:r.next }; })
+                   .sort(function(a,b){return b.delta-a.delta;}).slice(0,6);
+  var shH='';
+  shifts.forEach(function(s){
+    var col = s.delta>=0?'var(--green)':'var(--red)';
+    shH += '<div class="sc-shift"><div><span class="ea-tk">'+s.item.ticker+'</span><span class="ea-nm"> '+s.item.name+'</span></div>'+
+      '<div class="sc-shift-d" style="color:'+col+'">'+(s.delta>=0?'+':'')+s.delta.toFixed(1)+'pp swing</div>'+
+      '<div class="ea-nm">'+MF_LONG[nextIdx]+' avg: '+(s.next>=0?'+':'')+s.next.toFixed(1)+'%</div></div>';
+  });
+  document.getElementById('scShifts').innerHTML = shH;
+  document.getElementById('scShiftTitle').textContent = 'Biggest momentum swings into ' + MF_LONG[nextIdx];
+
+  // Stats strip
+  var pos = rows.filter(function(r){return r.avg>0;}).length;
+  document.getElementById('scStats').innerHTML =
+    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + rows.length + '</div><div class="bts-l">Assets screened</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[monthIdx] + '</div><div class="bts-l">Screening month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + Math.round(pos/rows.length*100) + '%</div><div class="bts-l">Assets positive</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (strong[0]?strong[0].item.ticker+' +'+strong[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Strongest asset</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (weak[0]?weak[0].item.ticker+' '+weak[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Weakest asset</div></div>' +
+    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal?'real':'model') + '">' + (anyReal?'\u2713 REAL PRICE DATA \u00b7 LIQUID UNIVERSE':'MODELLED DATA') + '</span></div>';
+}
+
 function scBuild() {
   var mSel = document.getElementById('scMonth');
   if (!mSel) return;
   var monthIdx = parseInt(mSel.value, 10);
-  var nextIdx = (monthIdx + 1) % 12;
+  // Loading state, then build from real data.
+  var st = document.getElementById('scStats');
+  if (st) st.innerHTML = '<div class="bts" style="grid-column:1/-1"><div class="bts-v" style="color:var(--w3)">Loading real price data\u2026</div></div>';
+  scBuildReal(monthIdx);
+  return;
+}
 
+function scBuildModel(monthIdx) {
+  var nextIdx = (monthIdx + 1) % 12;
   // Stats
   var patKeys = Object.keys(PATTERNS);
   var pos = patKeys.filter(function(k){ return PATTERNS[k][monthIdx].avg > 0; }).length;
@@ -3367,9 +3693,6 @@ function wlRender() {
   var wrap = document.getElementById('wlList');
   if (!wrap) return;
   var ids = wlGet();
-  var nowM = new Date().getMonth();
-  var nextM = (nowM + 1) % 12;
-  var days = wlDaysToNextMonth();
 
   if (!ids.length) {
     document.getElementById('wlStats').innerHTML =
@@ -3377,19 +3700,43 @@ function wlRender() {
     wrap.innerHTML = '<div class="analysis-empty" style="border:1px dashed var(--b2);border-radius:12px">Add assets with the search box \u2014 then this becomes your personal seasonal dashboard.</div>';
     return;
   }
+  // Resolve real data for all watchlist assets, then render.
+  var st = document.getElementById('wlStats');
+  if (st) st.innerHTML = '<div class="bts" style="grid-column:1/-1"><div class="bts-v" style="color:var(--w3)">Loading real price data\u2026</div></div>';
+  getManyMonthsResolved(ids, 15, function(map){
+    WL_MONTHS = map;
+    wlRenderWith(ids, map);
+  });
+}
+
+var WL_MONTHS = {};
+function wlMonthsFor(id) {
+  if (WL_MONTHS[id] && WL_MONTHS[id].months) return WL_MONTHS[id].months;
+  // fallback to model pattern via scPattern using the item
+  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return scPattern(CATALOGUE[i]);
+  return null;
+}
+
+function wlRenderWith(ids, map) {
+  var wrap = document.getElementById('wlList');
+  var nowM = new Date().getMonth();
+  var nextM = (nowM + 1) % 12;
+  var days = wlDaysToNextMonth();
 
   var items = ids.map(function(id) {
     for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return CATALOGUE[i];
     return null;
   }).filter(Boolean);
 
+  var anyReal = ids.some(function(id){ return map[id] && map[id].source === 'real'; });
+
   // Stats
   var sumNow = 0, best = items[0], worst = items[0];
   items.forEach(function(it) {
-    var p = scPattern(it);
+    var p = wlMonthsFor(it.id);
     sumNow += p[nowM].avg;
-    if (scPattern(it)[nowM].avg > scPattern(best)[nowM].avg) best = it;
-    if (scPattern(it)[nowM].avg < scPattern(worst)[nowM].avg) worst = it;
+    if (wlMonthsFor(it.id)[nowM].avg > wlMonthsFor(best.id)[nowM].avg) best = it;
+    if (wlMonthsFor(it.id)[nowM].avg < wlMonthsFor(worst.id)[nowM].avg) worst = it;
   });
   var avgNow = sumNow / items.length;
   document.getElementById('wlStats').innerHTML =
@@ -3397,11 +3744,12 @@ function wlRender() {
     '<div class="bts"><div class="bts-v" style="color:' + (avgNow >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgNow >= 0 ? '+' : '') + avgNow.toFixed(1) + '%</div><div class="bts-l">Portfolio avg \u00b7 ' + MF_LONG[nowM] + '</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--green)">' + best.ticker + '</div><div class="bts-l">Strongest this month</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--red)">' + worst.ticker + '</div><div class="bts-l">Weakest this month</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + days + 'd</div><div class="bts-l">Until ' + MF_LONG[nextM] + '</div></div>';
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + days + 'd</div><div class="bts-l">Until ' + MF_LONG[nextM] + '</div></div>' +
+    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal ? 'real' : 'model') + '">' + (anyReal ? '\u2713 REAL PRICE DATA' : 'MODELLED DATA') + '</span></div>';
 
   var html = '';
   items.forEach(function(it) {
-    var p = scPattern(it);
+    var p = wlMonthsFor(it.id);
     var cur = p[nowM], nxt = p[nextM];
     var curCol = cur.avg >= 0 ? 'var(--green)' : 'var(--red)';
     var nxtCol = nxt.avg >= 0 ? 'var(--green)' : 'var(--red)';
@@ -3622,7 +3970,20 @@ function prRun() {
   var idB = document.getElementById('prB').value;
   var iA = prItem(idA), iB = prItem(idB);
   if (!iA || !iB) return;
-  var pA = prPattern(idA), pB = prPattern(idB);
+  getManyMonthsResolved([idA, idB], 15, function(map){
+    var srcA = map[idA] && map[idA].source === 'real';
+    var srcB = map[idB] && map[idB].source === 'real';
+    var bothReal = srcA && srcB;
+    var badge = document.getElementById('prDataBadge');
+    if (badge) {
+      if (bothReal) { badge.innerHTML = '&#10003; REAL DATA'; badge.className = 'data-badge real'; badge.style.display='inline-block'; }
+      else { badge.innerHTML = 'PARTIAL / MODELLED'; badge.className = 'data-badge model'; badge.style.display='inline-block'; }
+    }
+    prRender(idA, idB, iA, iB, map[idA].months, map[idB].months);
+  });
+}
+
+function prRender(idA, idB, iA, iB, pA, pB) {
   var avgsA = pA.map(function(m){ return m.avg; });
   var avgsB = pB.map(function(m){ return m.avg; });
   var r = prPearson(avgsA, avgsB);

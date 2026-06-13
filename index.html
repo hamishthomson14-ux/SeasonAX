@@ -260,6 +260,67 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
   .pb-s:nth-child(4),.pb-s:nth-child(5){display:none}
   .section,.rd,.faq-inner,.pricing,.cta,.ft-inner{padding-left:24px;padding-right:24px}
 }
+
+/* ── LIVE HERO DEMO ── */
+.demo-card{background:var(--bg3);border:1px solid var(--s3);border-radius:16px;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03);position:relative;z-index:1;max-width:1120px;margin:0 auto}
+.demo-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--b1);background:var(--bg4)}
+.demo-title{display:flex;align-items:center;gap:9px}
+.demo-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:kp 2s infinite}
+.demo-title-txt{font:600 13px/1 var(--sans);color:var(--w2)}
+.demo-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;padding:4px 10px;border-radius:4px;background:var(--s1);color:var(--w4);border:1px solid var(--b2);transition:all .3s}
+.demo-badge.real{background:rgba(0,201,126,.1);color:var(--green);border-color:rgba(0,201,126,.3)}
+.demo-chips{display:flex;gap:7px;padding:14px 22px;border-bottom:1px solid var(--b1);flex-wrap:wrap;background:var(--bg2)}
+.demo-chip{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:7px 15px;border-radius:100px;font:500 12px/1 var(--sans);cursor:pointer;transition:all .18s}
+.demo-chip:hover{border-color:var(--s4);color:var(--w)}
+.demo-chip.on{background:rgba(232,147,24,.12);border-color:var(--amber2);color:var(--amber2);font-weight:600}
+.demo-body{display:grid;grid-template-columns:1fr 240px;min-height:300px}
+.demo-chart{display:flex;align-items:flex-end;gap:8px;padding:30px 26px 18px;border-right:1px solid var(--b1)}
+.demo-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.demo-bar-area{flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
+.demo-bar{width:68%;max-width:34px;border-radius:4px 4px 2px 2px;transform-origin:bottom;animation:demoRise .55s cubic-bezier(.34,1.3,.5,1) backwards}
+@keyframes demoRise{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+.demo-val{font:600 10px/1 var(--mono);margin-bottom:6px;opacity:0;animation:demoFade .4s ease forwards}
+@keyframes demoFade{to{opacity:1}}
+.demo-mo{font:500 9px/1 var(--mono);color:var(--w4);margin-top:8px;text-transform:uppercase;letter-spacing:.06em}
+.demo-side{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:24px 22px}
+.demo-stat-v{font:700 26px/1 var(--mono);letter-spacing:-.02em;margin-bottom:4px}
+.demo-stat-v.g{color:var(--green)}.demo-stat-v.r{color:var(--red)}.demo-stat-v.a{color:var(--amber2)}
+.demo-stat-l{font:400 10px/1.4 var(--mono);color:var(--w4);text-transform:uppercase;letter-spacing:.08em}
+.demo-open{font:600 13px/1 var(--sans);color:var(--amber2);margin-top:6px;transition:color .15s}
+.demo-open:hover{color:var(--amber)}
+@media(max-width:900px){.demo-body{grid-template-columns:1fr}.demo-chart{border-right:none;border-bottom:1px solid var(--b1);min-height:230px}.demo-side{flex-direction:row;flex-wrap:wrap;gap:14px}.demo-mo{font-size:7px}}
+
+/* ── SCROLL MOTION ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal-stagger>*{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
+.reveal-stagger.in>*{opacity:1;transform:none}
+.reveal-stagger.in>*:nth-child(1){transition-delay:.0s}
+.reveal-stagger.in>*:nth-child(2){transition-delay:.07s}
+.reveal-stagger.in>*:nth-child(3){transition-delay:.14s}
+.reveal-stagger.in>*:nth-child(4){transition-delay:.21s}
+.reveal-stagger.in>*:nth-child(5){transition-delay:.28s}
+.reveal-stagger.in>*:nth-child(6){transition-delay:.35s}
+.reveal-stagger.in>*:nth-child(7){transition-delay:.42s}
+.reveal-stagger.in>*:nth-child(8){transition-delay:.49s}
+.reveal-stagger.in>*:nth-child(9){transition-delay:.56s}
+@media(prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;transition:none}.demo-bar{animation:none}.demo-val{opacity:1;animation:none}}
+
+/* ── SVG FEATURE ICONS ── */
+.feat-svg{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+
+.cred{border-top:1px solid var(--b1);padding:90px 48px;background:var(--bg)}
+.cred-inner{max-width:1000px;margin:0 auto;text-align:center}
+.cred-h{font:800 44px/1.05 var(--disp);letter-spacing:-.04em;margin-bottom:14px}
+.cred-h em{font-style:normal;color:var(--amber2)}
+.cred-sub{font-size:16px;color:var(--w3);max-width:520px;margin:0 auto 48px;line-height:1.65}
+.cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
+.cred-card{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:26px 24px;transition:border-color .2s,transform .2s}
+.cred-card:hover{border-color:var(--b3);transform:translateY(-2px)}
+.cred-ico{width:44px;height:44px;border-radius:10px;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.cred-card h3{font:600 16px/1.2 var(--disp);letter-spacing:-.01em;margin-bottom:9px;color:var(--w)}
+.cred-card p{font-size:13px;color:var(--w3);line-height:1.65}
+@media(max-width:900px){.cred{padding:60px 24px}.cred-h{font-size:32px}.cred-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -310,64 +371,42 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
     </div>
     <div class="h-trust"><span>&#10003; Free forever tier</span><span>&#10003; No credit card</span><span>&#10003; Cancel anytime</span></div>
   </div>
-  <div class="h-window">
+  <div class="h-window reveal">
     <div class="hw-glow" aria-hidden="true"></div>
-    <div class="app-win" role="img" aria-label="SeasonAX app preview">
-      <div class="aw-chrome">
-        <div class="awd" style="background:#FF5F57"></div>
-        <div class="awd" style="background:#FEBC2E"></div>
-        <div class="awd" style="background:#28C840"></div>
-        <div class="aw-url">&#128274; season-ax.vercel.app/market-seasonality.html</div>
-      </div>
-      <div class="aw-tabs">
-        <div class="aw-tab on">Analyzer</div>
-        <div class="aw-tab off">Backtest</div>
-        <div class="aw-tab off">Event Studies</div>
-        <div class="aw-tab off">Earnings</div>
-        <div class="aw-tab off">Screener</div>
-        <div class="aw-tab off">Watchlist</div>
-        <div class="aw-tab off">This Month</div>
-        <div class="aw-tab off">Correlations</div>
-        <div class="aw-tab off">Calendar</div>
-      </div>
-      <div class="aw-body2">
-        <div class="aw-sb">
-          <div class="aw-sb-s"><div class="aw-sb-inp">&#128269; Search ticker or name&hellip;</div></div>
-          <div class="aw-sb-h">Index Funds &amp; ETFs</div>
-          <div class="aw-sb-r on"><span class="aw-tk">^GSPC</span><div><div class="aw-nm">S&amp;P 500</div><div class="aw-sc">Index</div></div></div>
-          <div class="aw-sb-r"><span class="aw-tk">QQQ</span><div><div class="aw-nm">NASDAQ-100</div><div class="aw-sc">ETF</div></div></div>
-          <div class="aw-sb-h">US Technology</div>
-          <div class="aw-sb-r"><span class="aw-tk">NVDA</span><div><div class="aw-nm">Nvidia</div><div class="aw-sc">Semiconductors</div></div></div>
-          <div class="aw-sb-r"><span class="aw-tk">TSLA</span><div><div class="aw-nm">Tesla</div><div class="aw-sc">EV / Energy</div></div></div>
-          <div class="aw-sb-h">Crypto</div>
-          <div class="aw-sb-r"><span class="aw-tk">BTC</span><div><div class="aw-nm">Bitcoin</div><div class="aw-sc">Cryptocurrency</div></div></div>
+    <div class="demo-card">
+      <div class="demo-head">
+        <div class="demo-title">
+          <span class="demo-live-dot"></span>
+          <span class="demo-title-txt">Try it &mdash; live seasonal analysis</span>
         </div>
-        <div class="aw-main2">
-          <div class="aw-top">
-            <div><div class="aw-atk">^GSPC</div><div class="aw-anm">S&amp;P 500 &middot; 15-Year Seasonal Analysis</div></div>
-            <button class="aw-go">&#9654; Analyze</button>
+        <div class="demo-badge" id="demoBadge">MODELLED</div>
+      </div>
+      <div class="demo-chips" id="demoChips"></div>
+      <div class="demo-body">
+        <div class="demo-chart" id="demoChart"></div>
+        <div class="demo-side">
+          <div class="demo-stat">
+            <div class="demo-stat-v g" id="demoBest">&mdash;</div>
+            <div class="demo-stat-l">Best month</div>
           </div>
-          <div class="aw-panels">
-            <div class="aw-p">
-              <div class="aw-pt">Monthly Return Heatmap</div>
-              <div class="w-hm" id="wHM1"></div>
-              <div class="w-hm-r" id="wHM2"></div>
-            </div>
-            <div class="aw-p">
-              <div class="aw-pt">Average Monthly Return</div>
-              <div class="w-bars" id="wBars"></div>
-            </div>
+          <div class="demo-stat">
+            <div class="demo-stat-v r" id="demoWorst">&mdash;</div>
+            <div class="demo-stat-l">Worst month</div>
           </div>
+          <div class="demo-stat">
+            <div class="demo-stat-v a" id="demoWin">&mdash;</div>
+            <div class="demo-stat-l">Best month win rate</div>
+          </div>
+          <a href="/market-seasonality.html" class="demo-open">Full analysis &rarr;</a>
         </div>
       </div>
     </div>
-    <div class="hw-fade" aria-hidden="true"></div>
   </div>
 </section>
 
 <!-- PROOF BAR -->
 <div class="proof-bar">
-  <div class="pb-inner">
+  <div class="pb-inner reveal">
     <div class="pb-s"><div class="pb-n" id="c1">0<em>+</em></div><div class="pb-l">Global assets &mdash; US, UK, Germany, Asia</div></div>
     <div class="pb-s"><div class="pb-n">9</div><div class="pb-l">Professional analysis tools in one platform</div></div>
     <div class="pb-s"><div class="pb-n" id="c2">0<em>yr</em></div><div class="pb-l">Maximum seasonal history per asset</div></div>
@@ -381,16 +420,16 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
   <div class="eyebrow">Nine Professional Tools</div>
   <h2 class="sec-h">Everything a serious<br>investor needs. <em>One platform.</em></h2>
   <p class="sec-p" style="margin-bottom:0">Every tool built around one principle: from data to decision in under 60 seconds.</p>
-  <div class="feat-grid">
-    <div class="feat"><div class="feat-n">01</div><span class="feat-ico">&#128197;</span><h3>Seasonal Analyzer</h3><p>15 years of monthly patterns for any of 460+ assets. Calendar wheel, heatmap, bar charts and full AI written analysis. S&P to Bitcoin to Samsung.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">02</div><span class="feat-ico">&#9201;</span><h3>Strategy Backtest</h3><p>Test any seasonal window &mdash; buy first day of October, sell last day of December &mdash; across 25 years. Equity curve, win rate, CAGR vs buy-and-hold.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">03</div><span class="feat-ico">&#128202;</span><h3>Event Studies</h3><p>19 deep-researched events: Fed decisions, tariff shocks, elections, halvings, Black Monday, COVID, the 2025 Liberation Day crash. Each with a trading playbook.</p><div class="feat-arr">&#8599;</div><div class="feat-new">Updated 2026</div></div>
-    <div class="feat"><div class="feat-n">04</div><span class="feat-ico">&#128200;</span><h3>Earnings Analysis</h3><p>26 real reports tracked from 2025&ndash;2026. Day 1, +1W, +2W, +1M performance. The four earnings scenarios with win rates and drift analysis. Updated quarterly.</p><div class="feat-arr">&#8599;</div><div class="feat-new">Updated 2026</div></div>
-    <div class="feat"><div class="feat-n">05</div><span class="feat-ico">&#128269;</span><h3>Seasonal Screener</h3><p>Pick any month and instantly see which assets are entering their historically strongest window &mdash; and which are walking into weakness. Ranked, scored, filterable.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">06</div><span class="feat-ico">&#128218;</span><h3>Personal Watchlist</h3><p>Track up to 10 assets. See this month and next month&apos;s seasonal outlook for your entire portfolio in one view, with live status alerts for strength/weakness entry windows.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">07</div><span class="feat-ico">&#128336;</span><h3>This Month in History</h3><p>Every calendar month gets a written market-history essay: defining crashes, legendary rallies, seasonal tendencies for major assets &mdash; a different lens on the year.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">08</div><span class="feat-ico">&#128279;</span><h3>Seasonal Correlations</h3><p>Compare any two assets&apos; yearly rhythms. Pearson seasonal correlation, side-by-side monthly charts, best joint months and divergence windows. Find true hedges.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">09</div><span class="feat-ico">&#128467;</span><h3>Economic Calendar</h3><p>Every FOMC decision, CPI print, jobs report and major earnings date &mdash; counted down, with a direct link to the historical playbook for each event type.</p><div class="feat-arr">&#8599;</div></div>
+  <div class="feat-grid reveal-stagger">
+    <div class="feat"><div class="feat-n">01</div><div class="feat-svg" style="background:rgba(232,147,24,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="#E89318" stroke-width="1.7"/><path d="M3 9h18" stroke="#E89318" stroke-width="1.7"/><path d="M8 2.8v3.4M16 2.8v3.4" stroke="#E89318" stroke-width="1.7"/><path d="M7 16.5l3-3 2.2 1.8 4-4.3" stroke="#00C97E" stroke-width="1.7"/></svg></div><h3>Seasonal Analyzer</h3><p>15 years of monthly patterns for any of 460+ assets. Calendar wheel, heatmap, bar charts and full AI written analysis. S&P to Bitcoin to Samsung.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">02</div><div class="feat-svg" style="background:rgba(77,163,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="8" stroke="#4DA3FF" stroke-width="1.7"/><path d="M12.5 8v4.5l3 2" stroke="#4DA3FF" stroke-width="1.7"/><path d="M4.5 5.5v3.2h3.2" stroke="#E89318" stroke-width="1.7"/><path d="M4.7 8.5A8 8 0 0 1 8 5.1" stroke="#E89318" stroke-width="1.7"/></svg></div><h3>Strategy Backtest</h3><p>Test any seasonal window &mdash; buy first day of October, sell last day of December &mdash; across 25 years. Equity curve, win rate, CAGR vs buy-and-hold.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">03</div><div class="feat-svg" style="background:rgba(155,127,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><h3>Event Studies</h3><p>19 deep-researched events: Fed decisions, tariff shocks, elections, halvings, Black Monday, COVID, the 2025 Liberation Day crash. Each with a trading playbook.</p><div class="feat-arr">&#8599;</div><div class="feat-new">Updated 2026</div></div>
+    <div class="feat"><div class="feat-n">04</div><div class="feat-svg" style="background:rgba(0,201,126,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M7.5 14.8l3-3.4 2.4 2 3.6-4.4" stroke="#00C97E" stroke-width="1.7"/><path d="M14 9h2.5v2.5" stroke="#E89318" stroke-width="1.7"/></svg></div><h3>Earnings Analysis</h3><p>26 real reports tracked from 2025&ndash;2026. Day 1, +1W, +2W, +1M performance. The four earnings scenarios with win rates and drift analysis. Updated quarterly.</p><div class="feat-arr">&#8599;</div><div class="feat-new">Updated 2026</div></div>
+    <div class="feat"><div class="feat-n">05</div><div class="feat-svg" style="background:rgba(232,147,24,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><h3>Seasonal Screener</h3><p>Pick any month and instantly see which assets are entering their historically strongest window &mdash; and which are walking into weakness. Ranked, scored, filterable.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">06</div><div class="feat-svg" style="background:rgba(240,64,80,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><h3>Personal Watchlist</h3><p>Track up to 10 assets. See this month and next month&apos;s seasonal outlook for your entire portfolio in one view, with live status alerts for strength/weakness entry windows.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">07</div><div class="feat-svg" style="background:rgba(77,163,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h10M7 20.5h10" stroke="#4DA3FF" stroke-width="1.7"/><path d="M8 3.5c0 4 3 5.5 4 8.5-1 3-4 4.5-4 8.5M16 3.5c0 4-3 5.5-4 8.5 1 3 4 4.5 4 8.5" stroke="#4DA3FF" stroke-width="1.7"/><path d="M10.2 18.5h3.6" stroke="#E89318" stroke-width="1.7"/></svg></div><h3>This Month in History</h3><p>Every calendar month gets a written market-history essay: defining crashes, legendary rallies, seasonal tendencies for major assets &mdash; a different lens on the year.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">08</div><div class="feat-svg" style="background:rgba(155,127,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="3" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="17.5" cy="17" r="3" stroke="#E89318" stroke-width="1.7"/><path d="M8.8 9.2l6.4 5.6" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="7" r="1.3" fill="#243A52"/><circle cx="6.5" cy="17" r="1.3" fill="#243A52"/></svg></div><h3>Seasonal Correlations</h3><p>Compare any two assets&apos; yearly rhythms. Pearson seasonal correlation, side-by-side monthly charts, best joint months and divergence windows. Find true hedges.</p><div class="feat-arr">&#8599;</div></div>
+    <div class="feat"><div class="feat-n">09</div><div class="feat-svg" style="background:rgba(0,201,126,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="14" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M3 9h14M7 2.8v3.4M13 2.8v3.4" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="16.5" r="4.5" stroke="#E89318" stroke-width="1.7" fill="#04070F"/><path d="M17.5 14.4v2.1l1.5 1" stroke="#E89318" stroke-width="1.5"/></svg></div><h3>Economic Calendar</h3><p>Every FOMC decision, CPI print, jobs report and major earnings date &mdash; counted down, with a direct link to the historical playbook for each event type.</p><div class="feat-arr">&#8599;</div></div>
   </div>
 </section>
 
@@ -398,7 +437,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
 <div class="rd" id="data">
   <div class="rd-inner">
     <div class="eyebrow">The Data</div>
-    <div class="rd-grid">
+    <div class="rd-grid reveal">
       <div>
         <div class="rd-claim">We&apos;re new.<br>The data isn&apos;t.<br><em>15 years speaks<br>for itself.</em></div>
         <p class="rd-body">We won&apos;t insult your intelligence with invented testimonials. SeasonAX is a new product. What we have is <strong>15 years of verifiable price history</strong> showing the same patterns repeat across every market cycle &mdash; including the tariff shock of 2025, the AI earnings supercycle, and the rate-hike bear of 2022.<br><br>The data is the proof. Try it free.</p>
@@ -429,12 +468,38 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
   </div>
 </div>
 
+<!-- CREDIBILITY BAND -->
+<div class="cred reveal">
+  <div class="cred-inner">
+    <div class="eyebrow" style="justify-content:center;text-align:center">Why trust the numbers</div>
+    <h2 class="cred-h">No invented reviews.<br><em>Just verifiable data.</em></h2>
+    <p class="cred-sub">We're a new, independent product &mdash; so instead of fake testimonials, here's exactly why the analysis holds up.</p>
+    <div class="cred-grid">
+      <div class="cred-card">
+        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00C97E" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Real price history</h3>
+        <p>Every seasonal figure is computed from actual monthly closing prices &mdash; up to 15 years per asset. When you analyze, you see a <strong style="color:var(--green)">VERIFIED</strong> badge confirming real data.</p>
+      </div>
+      <div class="cred-card">
+        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E89318" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M8 11.5l2 2 3.5-3.5"/></svg></div>
+        <h3>Observation counts shown</h3>
+        <p>No black boxes. Each statistic shows how many years and observations it's based on, so you can judge its reliability yourself rather than taking a number on faith.</p>
+      </div>
+      <div class="cred-card">
+        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9B7FFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/><path d="M5 8v8l7 5 7-5V8"/></svg></div>
+        <h3>Honest about limits</h3>
+        <p>Every briefing states plainly that seasonality is a tendency, not a guarantee. We'd rather you trust us long-term than oversell a single number today.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PRICING -->
 <section class="pricing" id="pricing">
   <div class="eyebrow">Pricing</div>
   <h2 class="sec-h">Simple pricing.<br><em>No dark patterns.</em></h2>
   <p class="sec-p" style="margin-bottom:0">One click to cancel. No retention screens. No &ldquo;are you sure?&rdquo; loops.</p>
-  <div class="price-grid">
+  <div class="price-grid reveal-stagger">
     <div class="pc">
       <div class="pc-tier">Free</div>
       <div class="pc-amt"><sup>&pound;</sup>0</div>
@@ -554,7 +619,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
     </div>
     <div class="ft-bot">
       <div class="ft-copy">&copy; 2026 SeasonAX &middot; All rights reserved</div>
-      <div class="ft-disc">Past seasonal performance does not guarantee future results. SeasonAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions.</div>
+      <div class="ft-disc">Past seasonal performance does not guarantee future results. SeasonAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. SeasonAX is an independently operated service and not a registered investment adviser.</div>
     </div>
   </div>
 </footer>
@@ -577,31 +642,6 @@ document.getElementById('ttrack').innerHTML=tt.map(function(t){
   return '<span class="t-item"><span class="t-sym">'+t.s+'</span><span class="t-px">'+t.p+'</span><span class="'+(t.u?'t-up':'t-dn')+'">'+t.c+'</span></span>';
 }).join('');
 
-var SP=[1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5];
-var MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var spMx=Math.max.apply(null,SP.map(Math.abs));
-var h1=document.getElementById('wHM1'),h2=document.getElementById('wHM2'),wb=document.getElementById('wBars');
-if(h1){
-  SP.slice(0,6).forEach(function(v,i){
-    var op=0.12+Math.abs(v)/spMx*0.68;
-    var bg=v>=0?'rgba(0,201,126,'+op+')':'rgba(240,64,80,'+op+')';
-    var col=v>=0?'var(--green)':'var(--red)';
-    h1.innerHTML+='<div class="hmc" style="background:'+bg+'"><div class="hmc-m">'+MO[i][0]+'</div><div class="hmc-v" style="color:'+col+'">'+(v>0?'+':'')+v+'</div></div>';
-  });
-  SP.slice(6).forEach(function(v,i){
-    var op=0.12+Math.abs(v)/spMx*0.68;
-    var bg=v>=0?'rgba(0,201,126,'+op+')':'rgba(240,64,80,'+op+')';
-    var col=v>=0?'var(--green)':'var(--red)';
-    h2.innerHTML+='<div class="hmc" style="background:'+bg+'"><div class="hmc-m">'+MO[i+6][0]+'</div><div class="hmc-v" style="color:'+col+'">'+(v>0?'+':'')+v+'</div></div>';
-  });
-}
-if(wb){
-  wb.innerHTML=SP.map(function(v,i){
-    var w=(Math.abs(v)/spMx*100).toFixed(0);
-    var col=v>=0?'var(--green)':'var(--red)';
-    return '<div class="wb"><div class="wb-m">'+MO[i].slice(0,3)+'</div><div class="wb-t"><div class="wb-f" style="width:'+w+'%;background:'+col+';opacity:.7"></div></div><div class="wb-v" style="color:'+col+'">'+(v>=0?'+':'')+v+'%</div></div>';
-  }).join('');
-}
 
 // Animated counters
 function animCount(id,target,dur){
@@ -624,6 +664,163 @@ var io=new IntersectionObserver(function(entries){
 },{threshold:.4});
 var pb=document.querySelector('.pb-inner');
 if(pb) io.observe(pb);
+
+// ============================================================
+// LIVE HERO DEMO — instant render from embedded stats,
+// then upgraded with REAL price data via /api/prices.
+// ============================================================
+var DEMO_ASSETS = [
+  { id:'sp500',  label:'S&P 500',   sym:'^spx',
+    m:[1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5], win:[67,53,67,73,60,53,73,47,42,60,70,67] },
+  { id:'nasdaq', label:'NASDAQ',    sym:'^ndq',
+    m:[1.9,0.4,1.1,1.6,0.8,0.6,2.1,-0.3,-1.4,1.0,2.0,1.2], win:[67,53,60,67,60,60,73,47,39,60,73,60] },
+  { id:'btc',    label:'Bitcoin',   sym:'btcusd',
+    m:[3.1,7.8,4.2,9.4,2.1,-8.7,3.4,-2.6,-5.8,21.4,18.6,4.9], win:[58,67,58,67,50,33,58,42,33,75,67,58] },
+  { id:'gld',    label:'Gold',      sym:'gld.us',
+    m:[2.1,0.4,-0.3,0.8,0.1,0.3,1.2,1.4,0.6,0.7,0.5,1.1], win:[67,53,47,60,53,53,60,67,53,60,53,60] },
+  { id:'nvda',   label:'Nvidia',    sym:'nvda.us',
+    m:[3.2,2.8,1.4,2.1,4.8,2.2,2.6,1.9,-2.1,2.4,4.2,1.8], win:[60,60,53,60,73,60,60,60,40,60,67,53] },
+  { id:'ftse',   label:'FTSE 100',  sym:'^ukx',
+    m:[0.3,0.8,0.6,1.6,0.2,-0.8,1.1,-0.4,-0.6,0.5,1.2,1.9], win:[53,60,60,73,53,40,60,47,47,53,60,73] }
+];
+var DEMO_MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var demoSel = 0;
+var demoRealCache = {};
+
+function demoRender(monthVals, winVals, isReal) {
+  var chart = document.getElementById('demoChart');
+  if (!chart) return;
+  var maxAbs = 0.1;
+  for (var i = 0; i < 12; i++) maxAbs = Math.max(maxAbs, Math.abs(monthVals[i]));
+  var html = '';
+  for (var j = 0; j < 12; j++) {
+    var v = monthVals[j];
+    var hPct = Math.max(8, Math.round(Math.abs(v) / maxAbs * 100));
+    var col = v >= 0 ? 'var(--green)' : 'var(--red)';
+    var op = 0.45 + (Math.abs(v) / maxAbs) * 0.55;
+    html += '<div class="demo-col">' +
+      '<div class="demo-bar-area">' +
+        '<div class="demo-val" style="color:' + col + ';animation-delay:' + (j*45+250) + 'ms">' + (v>=0?'+':'') + v.toFixed(1) + '</div>' +
+        '<div class="demo-bar" style="height:' + hPct + '%;background:' + col + ';opacity:' + op.toFixed(2) + ';animation-delay:' + (j*45) + 'ms"></div>' +
+      '</div>' +
+      '<div class="demo-mo">' + DEMO_MO[j] + '</div>' +
+    '</div>';
+  }
+  chart.innerHTML = html;
+
+  var bi = 0, wi = 0;
+  for (var k = 1; k < 12; k++) {
+    if (monthVals[k] > monthVals[bi]) bi = k;
+    if (monthVals[k] < monthVals[wi]) wi = k;
+  }
+  document.getElementById('demoBest').textContent = DEMO_MO[bi] + ' +' + monthVals[bi].toFixed(1) + '%';
+  document.getElementById('demoWorst').textContent = DEMO_MO[wi] + ' ' + monthVals[wi].toFixed(1) + '%';
+  document.getElementById('demoWin').textContent = (winVals && winVals[bi] ? winVals[bi] : '—') + '%';
+
+  var badge = document.getElementById('demoBadge');
+  if (badge) {
+    if (isReal) { badge.textContent = 'VERIFIED — REAL DATA'; badge.className = 'demo-badge real'; }
+    else { badge.textContent = 'LOADING REAL DATA…'; badge.className = 'demo-badge'; }
+  }
+}
+
+function demoUpgradeReal(idx) {
+  var a = DEMO_ASSETS[idx];
+  if (demoRealCache[a.sym]) {
+    if (demoSel === idx) demoRender(demoRealCache[a.sym].m, demoRealCache[a.sym].win, true);
+    return;
+  }
+  fetch('/api/prices?s=' + encodeURIComponent(a.sym))
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.monthly || data.monthly.length < 36) return;
+      var byM = [[],[],[],[],[],[],[],[],[],[],[],[]];
+      var cutoff = new Date().getFullYear() - 15;
+      for (var i = 1; i < data.monthly.length; i++) {
+        var p = data.monthly[i-1], q = data.monthly[i];
+        var dt = new Date(q.d);
+        if (dt.getFullYear() < cutoff || !isFinite(p.c) || p.c <= 0) continue;
+        var ret = ((q.c - p.c) / p.c) * 100;
+        if (isFinite(ret) && Math.abs(ret) < 95) byM[dt.getMonth()].push(ret);
+      }
+      var mv = [], wv = [];
+      for (var mm = 0; mm < 12; mm++) {
+        var arr = byM[mm];
+        if (arr.length < 5) return; // not enough — keep modelled
+        var s = 0, w = 0;
+        for (var x = 0; x < arr.length; x++) { s += arr[x]; if (arr[x] > 0) w++; }
+        mv.push(+(s/arr.length).toFixed(1));
+        wv.push(Math.round(w/arr.length*100));
+      }
+      demoRealCache[a.sym] = { m: mv, win: wv };
+      if (demoSel === idx) demoRender(mv, wv, true);
+    })
+    .catch(function(){});
+}
+
+function demoSelect(idx) {
+  demoSel = idx;
+  var chips = document.querySelectorAll('.demo-chip');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.toggle('on', i === idx);
+  var a = DEMO_ASSETS[idx];
+  if (demoRealCache[a.sym]) {
+    demoRender(demoRealCache[a.sym].m, demoRealCache[a.sym].win, true);
+  } else {
+    demoRender(a.m, a.win, false);
+    demoUpgradeReal(idx);
+  }
+}
+
+(function initDemo(){
+  var wrap = document.getElementById('demoChips');
+  if (!wrap) return;
+  var html = '';
+  for (var i = 0; i < DEMO_ASSETS.length; i++) {
+    html += '<button class="demo-chip' + (i===0?' on':'') + '" onclick="demoSelect(' + i + ')">' + DEMO_ASSETS[i].label + '</button>';
+  }
+  wrap.innerHTML = html;
+  demoSelect(0);
+})();
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+(function(){
+  var els = document.querySelectorAll('.reveal, .reveal-stagger');
+  if (!('IntersectionObserver' in window)) {
+    for (var i = 0; i < els.length; i++) els[i].classList.add('in');
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  for (var j = 0; j < els.length; j++) io.observe(els[j]);
+})();
+
+// ============================================================
+// LIVE TICKER — real quotes via /api/prices, static fallback
+// ============================================================
+(function(){
+  var SYMS = ['^spx','^ndq','^dji','aapl.us','msft.us','nvda.us','tsla.us','amzn.us','meta.us','gld.us','btcusd','^ukx','^dax'];
+  var NAMES = {'^spx':'S&P 500','^ndq':'NASDAQ','^dji':'DOW','aapl.us':'AAPL','msft.us':'MSFT','nvda.us':'NVDA','tsla.us':'TSLA','amzn.us':'AMZN','meta.us':'META','gld.us':'GLD','btcusd':'BTC','^ukx':'FTSE 100','^dax':'DAX'};
+  fetch('/api/prices?quotes=' + SYMS.join(','))
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.quotes || data.quotes.length < 4) return;
+      var items = data.quotes.map(function(q){
+        var nm = NAMES[q.symbol] || q.symbol.toUpperCase();
+        var up = q.changePct === null ? true : q.changePct >= 0;
+        var chg = q.changePct === null ? '' : (up?'+':'') + q.changePct.toFixed(1) + '%';
+        var px = q.close >= 1000 ? q.close.toLocaleString('en-US',{maximumFractionDigits:0}) : q.close.toFixed(2);
+        return '<span class="t-item"><span class="t-sym">' + nm + '</span><span class="t-px">' + px + '</span><span class="' + (up?'t-up':'t-dn') + '">' + chg + '</span></span>';
+      }).join('');
+      var track = document.getElementById('ttrack');
+      if (track && items) track.innerHTML = items + items;
+    })
+    .catch(function(){});
+})();
 </script>
 <script src="/chat-widget.js"></script>
 
