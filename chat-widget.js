@@ -1,5 +1,5 @@
 // ============================================================
-// SeasonAX Chat Widget — Claude Haiku powered
+// TimingAX Chat Widget — Claude Haiku powered
 // Include with: <script src="/chat-widget.js"></script>
 // Replace YOUR_ANTHROPIC_API_KEY with your real key from
 // console.anthropic.com
@@ -10,10 +10,10 @@
 // API key is stored securely in Vercel environment variables
 var MODEL   = 'claude-haiku-4-5-20251001';
 
-var SYSTEM_PROMPT = `You are the SeasonAX support assistant. SeasonAX is a professional market seasonality intelligence platform at season-ax.vercel.app.
+var SYSTEM_PROMPT = `You are the TimingAX support assistant. TimingAX is a professional market seasonality intelligence platform at timingax.co.uk.
 
 PRODUCT OVERVIEW:
-SeasonAX gives investors 15 years of seasonal patterns across 460+ global assets — US, UK, Germany, and Asia Pacific — so they know which months historically win and which lose.
+TimingAX gives investors 15 years of seasonal patterns across 460+ global assets — US, UK, Germany, and Asia Pacific — so they know which months historically win and which lose.
 
 NINE TOOLS ON THE PLATFORM:
 1. Seasonal Analyzer — pick any asset, see its 12-month calendar with heatmap, bar charts, win rates and AI analysis
@@ -214,7 +214,7 @@ document.head.appendChild(styleEl);
 // Floating button
 var btn = document.createElement('button');
 btn.id = 'sax-chat-btn';
-btn.setAttribute('aria-label', 'Chat with SeasonAX');
+btn.setAttribute('aria-label', 'Chat with TimingAX');
 btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`;
 document.body.appendChild(btn);
 
@@ -231,7 +231,7 @@ panel.innerHTML = `
       </svg>
     </div>
     <div class="sax-hd-text">
-      <div class="sax-hd-name">SeasonAX Assistant</div>
+      <div class="sax-hd-name">TimingAX Assistant</div>
       <div class="sax-hd-status">&#9679; Online now</div>
     </div>
     <button class="sax-hd-close" onclick="saxClose()" aria-label="Close chat">&times;</button>
@@ -244,7 +244,7 @@ panel.innerHTML = `
     <button class="sax-quick" onclick="saxQuickMsg('Is the free tier really free?')">Free tier?</button>
   </div>
   <div class="sax-input-row">
-    <textarea class="sax-textarea" id="saxInput" placeholder="Ask anything about SeasonAX…" rows="1"></textarea>
+    <textarea class="sax-textarea" id="saxInput" placeholder="Ask anything about TimingAX…" rows="1"></textarea>
     <button class="sax-send" id="saxSendBtn" onclick="saxSend()" aria-label="Send message">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
     </button>
@@ -311,7 +311,7 @@ function saxRemoveTyping() {
 
 function saxWelcome() {
   setTimeout(function() {
-    saxAddMsg('bot', "Hi there! I'm the SeasonAX assistant. I can answer questions about our seasonal data, the nine tools on the platform, pricing, or anything else about the product. What would you like to know?");
+    saxAddMsg('bot', "Hi there! I'm the TimingAX assistant. I can answer questions about our seasonal data, the nine tools on the platform, pricing, or anything else about the product. What would you like to know?");
     // Show unread badge if panel is closed
     if (!isOpen) {
       var badge = document.createElement('div');
@@ -374,7 +374,7 @@ window.saxSend = async function() {
   } catch (e) {
     saxRemoveTyping();
     saxAddMsg('bot', "I can't connect right now. Please <a href='/contact.html' style='color:#E89318'>contact the team directly</a> and we'll get back to you quickly.");
-    console.error('SeasonAX chat error:', e);
+    console.error('TimingAX chat error:', e);
   } finally {
     isTyping = false;
     document.getElementById('saxSendBtn').disabled = false;

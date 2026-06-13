@@ -9,13 +9,13 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="shortcut icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SeasonAX — Global Seasonal Pattern Analyzer</title>
-<meta property="og:title" content="SeasonAX — Global Seasonal Pattern Analyzer">
+<title>TimingAX — Global Seasonal Pattern Analyzer</title>
+<meta property="og:title" content="TimingAX — Global Seasonal Pattern Analyzer">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://season-ax.vercel.app/market-seasonality.html">
-<meta property="og:image" content="https://season-ax.vercel.app/og-image.png">
+<meta property="og:url" content="https://timingax.co.uk/market-seasonality.html">
+<meta property="og:image" content="https://timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://season-ax.vercel.app/og-image.png">
+<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -410,7 +410,7 @@ body.is-pro .mode-divider{display:none}
       <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
       <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
     </svg>
-    <div class="nav-word">Season<b>AX</b></div>
+    <div class="nav-word">Timing<b>AX</b></div>
     <div class="nav-div"></div>
     <div class="nav-sub">Seasonal Analyzer</div>
   </div>
@@ -2556,7 +2556,7 @@ function runBacktest() {
         '<div class="bt-panel last">' +
           '<div class="bt-ptitle">Year-by-Year Strategy Returns</div>' +
           '<div class="bt-yrgrid">' + yrHtml + '</div>' +
-          '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from SeasonAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
+          '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from TimingAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
         '</div>';
 
       setTimeout(function() {

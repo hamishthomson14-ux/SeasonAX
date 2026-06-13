@@ -9,14 +9,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="shortcut icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SeasonAX &mdash; Sign in</title>
-<meta property="og:title" content="SeasonAX &mdash; Sign in">
+<title>TimingAX &mdash; Sign in</title>
+<meta property="og:title" content="TimingAX &mdash; Sign in">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://season-ax.vercel.app/seasonax-auth.html">
-<meta property="og:image" content="https://season-ax.vercel.app/og-image.png">
+<meta property="og:url" content="https://timingax.co.uk/seasonax-auth.html">
+<meta property="og:image" content="https://timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://season-ax.vercel.app/og-image.png">
-<meta name="description" content="Sign in to SeasonAX. Professional seasonal market intelligence for serious investors.">
+<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="description" content="Sign in to TimingAX. Professional seasonal market intelligence for serious investors.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -167,7 +167,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
       <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
     </svg>
-    <div class="l-word">Season<b>AX</b></div>
+    <div class="l-word">Timing<b>AX</b></div>
   </div>
 
   <div class="l-hero">
@@ -213,7 +213,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
   <div class="r-inner">
     <a href="/index.html" class="r-back">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back to SeasonAX
+      Back to TimingAX
     </a>
 
     <!-- TABS -->
@@ -315,7 +315,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="#00C97E" stroke-width="1.5" fill="none"/><path d="M2 6l10 7 10-7" stroke="#00C97E" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <div class="r-success-h">Check your email</div>
-        <p class="r-success-p">We sent a confirmation link to <strong id="confirm_email" style="color:var(--amber2)"></strong>. Click it to activate your account and start exploring SeasonAX.</p>
+        <p class="r-success-p">We sent a confirmation link to <strong id="confirm_email" style="color:var(--amber2)"></strong>. Click it to activate your account and start exploring TimingAX.</p>
         <div class="r-success-note">Didn&apos;t get it? Check your spam folder. Links expire after 24 hours.</div>
       </div>
     </div>
@@ -474,7 +474,7 @@ async function signUp() {
   if (pw.length < 8) { err.textContent='Password must be at least 8 characters.'; err.className='r-hint'; return; }
   setLoading('su_btn','su_btn_txt',true);
   try {
-    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://season-ax.vercel.app/dashboard.html' } });
+    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://timingax.co.uk/dashboard.html' } });
     if (r.error) throw r.error;
     document.getElementById('confirm_email').textContent = email;
     showTab('confirm');
@@ -496,7 +496,7 @@ async function sendReset() {
   if (!email) { hint.textContent='Please enter your email address.'; hint.className='r-hint'; return; }
   setLoading('fp_btn','fp_btn_txt',true);
   try {
-    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://season-ax.vercel.app/seasonax-auth.html' });
+    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://timingax.co.uk/seasonax-auth.html' });
     if (r.error) throw r.error;
     showTab('reset_sent');
     document.getElementById('tabs').style.display = 'none';

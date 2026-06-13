@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://season-ax.vercel.app/sitemap.xml
+Sitemap: https://timingax.co.uk/sitemap.xml
