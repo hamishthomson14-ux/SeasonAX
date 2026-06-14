@@ -1965,12 +1965,34 @@ var REAL_CACHE = {};
 var lastDataSource = 'model';
 
 var STOOQ_MAP = {
-  'sp500':'^spx','nasdaq':'^ndq','dowjones':'^dji','russell2000':'^rut',
+  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
   'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
   'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
   'btc':'btcusd','eth':'ethusd',
   'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
-  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us','xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us'
+  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us','xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
+  // Asia-listed companies whose primary/most liquid listing is a US ADR
+  // (these have region:'Asia' in the catalogue, so the generic region==='US'
+  // shortcut below doesn't catch them \u2014 map them explicitly)
+  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
+  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
+};
+
+// Maps a ticker's exchange suffix (as used in our catalogue) to the suffix
+// Stooq expects for that exchange. Coverage varies by market \u2014 if Stooq
+// doesn't have data for a given symbol, fetchRealMonths() falls back to the
+// modelled pattern automatically, so adding entries here is low-risk: hits
+// get upgraded to real data, misses are unaffected (same as today).
+var EXCHANGE_SUFFIX_MAP = {
+  'l':'uk',    // London Stock Exchange (e.g. HSBA.L -> hsba.uk)
+  't':'jp',    // Tokyo Stock Exchange (e.g. 7203.T -> 7203.jp)
+  'de':'de',   // Germany (already in Stooq's format, pass through)
+  'hk':'hk',   // Hong Kong
+  'ax':'au',   // Australia (ASX)
+  'si':'sg',   // Singapore
+  'ks':'kr',   // South Korea (best effort \u2014 coverage varies)
+  'tw':'tw',   // Taiwan (best effort)
+  'ns':'in'    // India NSE (best effort)
 };
 
 function stooqSymbol(item) {
@@ -1978,8 +2000,12 @@ function stooqSymbol(item) {
   if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
   var t = (item.ticker || '').toLowerCase();
   if (!t || t.charAt(0) === '^') return null;
-  if (t.indexOf('.l') !== -1)  return t.replace('.l', '.uk');
-  if (t.indexOf('.de') !== -1) return t; // already .de
+  var m = t.match(/\.([a-z]+)$/);
+  if (m) {
+    var stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
+    if (!stooqSuf) return null; // unrecognized exchange suffix \u2014 don't guess
+    return t.slice(0, t.length - m[1].length) + stooqSuf;
+  }
   if (item.region === 'US') return t + '.us';
   return null;
 }
