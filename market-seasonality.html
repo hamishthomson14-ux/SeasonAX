@@ -162,6 +162,11 @@ button{cursor:pointer;font-family:var(--sans)}
 .ai-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .ai-badge{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2);padding:3px 9px;border-radius:3px}
 .ai-title{font-size:13px;font-weight:500;color:var(--w2)}
+.alert-btn{margin-left:auto;background:var(--s1);border:1px solid var(--b2);color:var(--w3);font:600 11px/1 var(--sans);padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.alert-btn:hover{border-color:var(--amber2);color:var(--amber2)}
+.alert-btn.active{background:rgba(232,147,24,.1);border-color:rgba(232,147,24,.35);color:var(--amber2)}
+.alert-btn:disabled{opacity:.5;cursor:default}
+@media(max-width:560px){.ai-header{flex-wrap:wrap}.alert-btn{margin-left:0}}
 .aitxt{font-size:14px;line-height:1.78;color:var(--w3);white-space:pre-wrap;max-width:900px}
 .aitxt.loading{color:var(--w4);font:400 12px/1.6 var(--mono);animation:pulse 1.5s infinite}
 
@@ -394,6 +399,33 @@ body.is-pro .mode-divider{display:none}
 .brief p.brief-caveat{font-size:12.5px;color:var(--w4);line-height:1.7;border-top:1px solid var(--b1);padding-top:14px;margin-bottom:0}
 .brief strong{color:var(--w);font-weight:600}
 @media(max-width:600px){.brief-verdict{flex-wrap:wrap}.brief-verdict-stat{margin-left:0}}
+
+.detrend-toggle{display:inline-flex;align-items:center;gap:7px;font:500 12px/1 var(--sans);color:var(--w3);cursor:pointer;padding:0 4px;user-select:none}
+.detrend-toggle input{accent-color:var(--amber);width:15px;height:15px;cursor:pointer}
+.detrend-toggle:hover{color:var(--w2)}
+.detrend-banner{display:flex;align-items:center;gap:10px;background:rgba(155,127,255,.08);border:1px solid rgba(155,127,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:var(--w2)}
+.detrend-banner b{color:#9B7FFF}
+@media(max-width:700px){.detrend-toggle{margin-top:8px}}
+
+.year-filter-sel{margin-left:6px}
+.filter-warning{display:none;background:rgba(240,64,80,.08);border:1px solid rgba(240,64,80,.25);border-radius:8px;padding:9px 14px;margin-bottom:14px;font-size:12px;color:var(--w2)}
+.yearfilter-banner{display:flex;align-items:center;gap:10px;background:rgba(77,163,255,.08);border:1px solid rgba(77,163,255,.25);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:var(--w2)}
+.yearfilter-banner b{color:var(--blue)}
+
+.pf-rows{margin-bottom:14px}
+.pf-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--b2);border-radius:8px;margin-bottom:8px}
+.pf-asset{flex:1;min-width:0}
+.pf-weight{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pf-weight-input{width:60px;background:var(--s1);border:1px solid var(--b2);color:var(--w);font:600 13px/1 var(--mono);padding:6px 8px;border-radius:6px;text-align:right}
+.pf-pct{font:600 11px/1 var(--mono);color:var(--w4);width:36px;text-align:right}
+.pf-remove{background:none;border:none;color:var(--w4);font-size:18px;line-height:1;cursor:pointer;padding:0 4px;transition:color .15s}
+.pf-remove:hover{color:var(--red)}
+.pf-total{font:500 12px/1 var(--mono);color:var(--w3);text-align:right;padding:4px 14px}
+.pf-bd-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--b1);flex-wrap:wrap}
+.pf-bd-row:last-child{border-bottom:none}
+.pf-bd-asset{flex:1 1 220px;display:flex;align-items:center;gap:8px}
+.pf-bd-stat{font-size:12px;color:var(--w3);flex-shrink:0}
+@media(max-width:640px){.pf-row{flex-wrap:wrap}.pf-bd-row{flex-direction:column;align-items:flex-start;gap:6px}}
 </style>
 </head>
 <body>
@@ -447,6 +479,7 @@ body.is-pro .mode-divider{display:none}
     <button class="mode-tab" id="mt_screener" onclick="switchMode('screener')">Screener <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_portfolio" onclick="switchMode('portfolio')">Portfolio <span class="mt-lock">&#128274;</span></button>
   </div>
 
   <div id="modeAnalyzer">
@@ -482,6 +515,18 @@ body.is-pro .mode-divider{display:none}
           <option value="15" selected>15 years</option>
           <option value="20">20 years</option>
         </select>
+        <label class="detrend-toggle" id="detrendToggle" title="Removes the asset's overall trend so you see relative seasonal strength \u2014 useful for assets that have risen a lot overall (e.g. Bitcoin, Nvidia), where raw monthly averages are mostly positive.">
+          <input type="checkbox" id="detrendChk" onchange="recomputeView()">
+          <span>Detrend</span>
+        </label>
+        <select class="yr-sel year-filter-sel" id="yearFilterSel" onchange="recomputeView()" title="Filter the analysis to specific years \u2014 e.g. the 4-year US presidential cycle, or excluding an outlier year like 2020.">
+          <option value="all">All years</option>
+          <option value="ex2020">Exclude 2020</option>
+          <option value="election">Election years</option>
+          <option value="preelection">Pre-election years</option>
+          <option value="postelection">Post-election years</option>
+          <option value="midterm">Midterm years</option>
+        </select>
         <button class="btn-analyze" id="goBtn" onclick="run()">
           <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.5l8 4.5-8 4.5V1.5z"/></svg>
           Analyze
@@ -489,6 +534,7 @@ body.is-pro .mode-divider{display:none}
         <div class="status-pill" id="pill">READY</div>
       </div>
     </div>
+    <div class="filter-warning" id="filterWarning"></div>
     <div class="analysis-body" id="analysisBody">
       <div class="analysis-empty">Hit Analyze to load the seasonal data</div>
     </div>
@@ -658,6 +704,50 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
         <div class="aitxt" id="prText"></div>
         <div class="bt-disclaimer" style="margin-top:16px">CORRELATION — computed across the 12 monthly seasonal averages of each asset's pattern group. Seasonal correlation is not price correlation; it measures calendar rhythm alignment only.</div>
       </div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO MODE -->
+  <div id="modePortfolio" style="display:none">
+    <div class="bt-config" style="margin-bottom:18px;position:relative">
+      <div class="bt-label" style="margin-bottom:8px">Add a holding (max 15)</div>
+      <input type="text" class="filter-search" id="pfSearchBox" placeholder="Search ticker or name to add..." autocomplete="off" oninput="pfSuggest()">
+      <div class="wl-suggest" id="pfSuggestBox" style="display:none"></div>
+    </div>
+    <div id="pfHoldings"></div>
+    <div id="pfEmpty" class="analysis-empty" style="border:1px dashed var(--b2);border-radius:12px">Add the assets in your portfolio and their weights (e.g. 40% S&amp;P 500, 30% Bitcoin, 30% Gold) to see your combined seasonal exposure \u2014 then this becomes your personal portfolio seasonality dashboard.</div>
+    <div id="pfResults" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <label class="detrend-toggle" id="pfDetrendToggle" title="Removes the portfolio\u2019s overall trend so you see relative seasonal strength.">
+          <input type="checkbox" id="pfDetrendChk" onchange="pfRecompute()">
+          <span>Detrend</span>
+        </label>
+        <span class="data-badge model" id="pfDataBadge" style="margin-left:auto"></span>
+      </div>
+      <div class="bt-stats" id="pfStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(3,1fr)"></div>
+      <div class="charts-row">
+        <div class="chart-panel">
+          <div class="cp-title">Portfolio Monthly Return Calendar</div>
+          <div id="pfWheel" style="display:flex;flex-direction:column;align-items:center"></div>
+        </div>
+        <div class="chart-panel">
+          <div class="cp-title" id="pfBarsTitle">Portfolio Average Monthly Return</div>
+          <div id="pfBars"></div>
+        </div>
+      </div>
+      <div id="pfCards"></div>
+      <div class="bt-panel last">
+        <div class="bt-ptitle">Holding-by-holding breakdown</div>
+        <div id="pfBreakdown"></div>
+      </div>
+      <div class="ai-panel">
+        <div class="ai-header">
+          <span class="ai-badge">Intelligence Briefing</span>
+          <span class="ai-title">Portfolio Seasonal Exposure</span>
+        </div>
+        <div class="aitxt" id="pfBriefing"></div>
+      </div>
+      <div class="bt-disclaimer" style="margin-top:16px">PORTFOLIO &mdash; the combined seasonal pattern is a weighted average of each holding's own seasonal pattern (weighted by the allocation you enter), not a true historical backtest of this exact portfolio. Win rate is similarly a weighted average across holdings. Stored locally in your browser.</div>
     </div>
   </div>
 
@@ -1823,7 +1913,8 @@ function wheel(months, name) {
   return '<svg viewBox="0 0 '+S+' '+S+'" style="width:100%;max-width:400px">'+p+'</svg>';
 }
 
-function bars(months) {
+function bars(months, sfx) {
+  sfx = sfx || '%';
   var mx=0.5;
   months.forEach(function(m){ if(Math.abs(m.avg)>mx) mx=Math.abs(m.avg); });
   var html='<div class="bars">';
@@ -1835,7 +1926,7 @@ function bars(months) {
       '<div class="brow">'+
         '<div class="bm">'+m.m+'</div>'+
         '<div class="bt"><div class="bf" style="width:0%;background:'+col+';opacity:.72" data-w="'+w+'"></div></div>'+
-        '<div class="bv '+(m.avg>=0?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+'%</div>'+
+        '<div class="bv '+(m.avg>=0?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+sfx+'</div>'+
       '</div>'+
       '<div class="bsub">WIN RATE '+m.win+'% &middot; '+m.note+'</div>'+
     '</div>';
@@ -1843,12 +1934,13 @@ function bars(months) {
   return html+'</div>';
 }
 
-function makeCards(months) {
+function makeCards(months, sfx) {
+  sfx = sfx || '%';
   var s=months.slice().sort(function(a,b){return b.avg-a.avg;});
   var t3=s.slice(0,3), b3=s.slice(-3).reverse();
   function card(m,col,sign){
     var idx=MO.indexOf(m.m);
-    return '<div class="card"><div class="cn">'+(idx>=0?MF_LONG[idx]:m.m)+'</div><div class="cv" style="color:'+col+'">'+sign+Number(m.avg).toFixed(2)+'%</div><div class="cr">'+m.win+'% win rate</div></div>';
+    return '<div class="card"><div class="cn">'+(idx>=0?MF_LONG[idx]:m.m)+'</div><div class="cv" style="color:'+col+'">'+sign+Number(m.avg).toFixed(2)+sfx+'</div><div class="cr">'+m.win+'% win rate</div></div>';
   }
   return '<div class="cards"><div class="ctitle">Best &amp; Worst Months</div><div class="cgrid">'+
     t3.map(function(m){return card(m,'var(--green)','+');}).join('')+
@@ -1891,14 +1983,18 @@ function stooqSymbol(item) {
   return null;
 }
 
-function computeRealMonths(rows, yearsWanted) {
+function computeRealMonths(rows, yearsWanted, yearFilterFn, minObs) {
   // rows: [{d:'YYYY-MM-DD', c:close}, ...] monthly, oldest first
+  // yearFilterFn: optional function(year) -> bool, e.g. for presidential-cycle filters
+  // minObs: minimum observations per month required (default 5; cycle filters allow fewer)
+  minObs = minObs || 5;
   var byMonth = [[],[],[],[],[],[],[],[],[],[],[],[]];
   var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
   for (var i = 1; i < rows.length; i++) {
     var prev = rows[i-1], cur = rows[i];
     var dt = new Date(cur.d);
     if (dt.getFullYear() < cutoffYear) continue;
+    if (yearFilterFn && !yearFilterFn(dt.getFullYear())) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     var ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
@@ -1907,7 +2003,7 @@ function computeRealMonths(rows, yearsWanted) {
   var months = [];
   for (var m = 0; m < 12; m++) {
     var arr = byMonth[m];
-    if (arr.length < 5) return null; // not enough observations for honesty
+    if (arr.length < minObs) return null; // not enough observations for honesty
     var sum = 0, wins = 0;
     for (var j = 0; j < arr.length; j++) { sum += arr[j]; if (arr[j] > 0) wins++; }
     months.push({
@@ -1921,15 +2017,61 @@ function computeRealMonths(rows, yearsWanted) {
   return months;
 }
 
+// ── YEAR-FILTER PRESETS (presidential cycle + outlier exclusion) ──────
+// US presidential elections fall on years divisible by 4 (2024, 2028...).
+var YEAR_FILTER_PRESETS = {
+  all:           { label: 'All years',              fn: null,                                    minObs: 5, years: null },
+  ex2020:        { label: 'Excluding 2020 (COVID)', fn: function(y){ return y !== 2020; },        minObs: 5, years: null },
+  election:      { label: 'Election years',         fn: function(y){ return y % 4 === 0; },       minObs: 3, years: 24 },
+  preelection:   { label: 'Pre-election years',      fn: function(y){ return y % 4 === 3; },       minObs: 3, years: 24 },
+  postelection:  { label: 'Post-election years',     fn: function(y){ return y % 4 === 1; },       minObs: 3, years: 24 },
+  midterm:       { label: 'Midterm years',           fn: function(y){ return y % 4 === 2; },       minObs: 3, years: 24 }
+};
+
+var CUR_RAW_ROWS = null; // cached raw monthly price rows for the current asset (real data only)
+
+function recomputeView() {
+  var detrend = document.getElementById('detrendChk') && document.getElementById('detrendChk').checked;
+  var filterKey = document.getElementById('yearFilterSel') ? document.getElementById('yearFilterSel').value : 'all';
+  var preset = YEAR_FILTER_PRESETS[filterKey] || YEAR_FILTER_PRESETS.all;
+  var warnEl = document.getElementById('filterWarning');
+
+  var baseMonths = CUR_MONTHS;
+  var filterApplied = false;
+
+  if (filterKey !== 'all' && CUR_SOURCE === 'real' && CUR_RAW_ROWS) {
+    var yearsForCompute = preset.years || CUR_YEARS;
+    var filtered = computeRealMonths(CUR_RAW_ROWS, yearsForCompute, preset.fn, preset.minObs);
+    if (filtered) {
+      var patKey = (CUR_ITEM.pattern) || 'broadIndex';
+      var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
+      for (var i = 0; i < 12; i++) filtered[i].note = pat[i].note || '';
+      baseMonths = filtered;
+      filterApplied = true;
+      if (warnEl) warnEl.style.display = 'none';
+    } else {
+      if (warnEl) { warnEl.style.display = 'block'; warnEl.textContent = 'Not enough historical data for "' + preset.label + '" \u2014 showing all years instead.'; }
+    }
+  } else if (filterKey !== 'all' && warnEl) {
+    warnEl.style.display = 'block';
+    warnEl.textContent = 'Year filtering requires real price data, which isn\u2019t available for this asset \u2014 showing the modelled pattern for all years.';
+  } else if (warnEl) {
+    warnEl.style.display = 'none';
+  }
+
+  CUR_YEAR_FILTER = filterApplied ? preset : null;
+  paintAnalysis(CUR_ITEM, baseMonths, CUR_SOURCE, CUR_YEARS);
+}
+
 function fetchRealMonths(item, yearsWanted, cb) {
   var sym = stooqSymbol(item);
   if (!sym) { cb(null); return; }
   var ck = sym + ':' + yearsWanted;
-  if (REAL_CACHE[ck]) { cb(REAL_CACHE[ck]); return; }
+  if (REAL_CACHE[ck]) { CUR_RAW_ROWS = REAL_RAW_ROWS_CACHE[sym] || null; cb(REAL_CACHE[ck]); return; }
   fetch('/api/prices?s=' + encodeURIComponent(sym))
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(data){
-      if (!data || !data.monthly || data.monthly.length < 36) { cb(null); return; }
+      if (!data || !data.monthly || data.monthly.length < 36) { CUR_RAW_ROWS = null; cb(null); return; }
       var months = computeRealMonths(data.monthly, yearsWanted);
       if (months) {
         // Preserve the model's written notes per month for colour
@@ -1937,11 +2079,16 @@ function fetchRealMonths(item, yearsWanted, cb) {
         var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
         for (var i = 0; i < 12; i++) months[i].note = pat[i].note || '';
         REAL_CACHE[ck] = months;
+        REAL_RAW_ROWS_CACHE[sym] = data.monthly;
+        CUR_RAW_ROWS = data.monthly;
+      } else {
+        CUR_RAW_ROWS = null;
       }
       cb(months);
     })
-    .catch(function(){ cb(null); });
+    .catch(function(){ CUR_RAW_ROWS = null; cb(null); });
 }
+var REAL_RAW_ROWS_CACHE = {};
 
 // Shared: resolve real monthly stats for any catalogue item by id, with model fallback.
 // cb receives ({months, source}). Cached across tools.
@@ -2020,7 +2167,7 @@ function run() {
   });
 }
 
-function generateBriefing(item, months, source, years) {
+function generateBriefing(item, months, source, years, detrend) {
   var MOF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var now = new Date();
   var cm = now.getMonth();
@@ -2033,7 +2180,7 @@ function generateBriefing(item, months, source, years) {
   var yearAvg = (months.reduce(function(s,m){return s+m.avg;},0)/12).toFixed(2);
   var name = item.name || item.ticker;
 
-  function pct(v){return (v>=0?'+':'')+v.toFixed(1)+'%';}
+  function pct(v){return (v>=0?'+':'')+v.toFixed(1)+(detrend?'pp':'%');}
   function strength(w){ return w>=70?'a historically reliable':w>=58?'a moderately reliable':w>=45?'an inconsistent':'a historically weak'; }
 
   // Verdict logic for the current month
@@ -2041,13 +2188,17 @@ function generateBriefing(item, months, source, years) {
   if (cur.avg >= 0.8 && cur.win >= 60) { verdict = 'SEASONAL TAILWIND'; vcol = 'var(--green)'; }
   else if (cur.avg <= -0.5 && cur.win <= 45) { verdict = 'SEASONAL HEADWIND'; vcol = 'var(--red)'; }
   else { verdict = 'NEUTRAL SEASONALITY'; vcol = 'var(--amber2)'; }
+  if (detrend) verdict += ' (RELATIVE)';
 
-  var dataLine = source === 'real'
+  var dataLine = (source === 'real'
     ? 'Computed from <strong>' + (cur.n || best.n || '15+') + ' years</strong> of actual monthly closing prices.'
-    : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).';
+    : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).')
+    + (detrend ? ' Values shown are <strong>detrended</strong> \u2014 each month\u2019s return relative to ' + name + '\u2019s own average month, with the overall trend removed.' : '');
 
-  var p1 = 'Across the analysis window, ' + name + ' has averaged ' + pct(+yearAvg) + ' per month, finishing ' +
-    posCount + ' of 12 months positive on average. Its strongest seasonal window is <strong>' + MOF[best.i] +
+  var p1Open = detrend
+    ? 'With ' + name + '\u2019s overall trend removed, ' + posCount + ' of 12 months still outperform its typical month. '
+    : 'Across the analysis window, ' + name + ' has averaged ' + pct(+yearAvg) + ' per month, finishing ' + posCount + ' of 12 months positive on average. ';
+  var p1 = p1Open + 'Its strongest seasonal window is <strong>' + MOF[best.i] +
     '</strong> (' + pct(best.avg) + ', ' + best.win + '% win rate), followed by ' + MOF[best2.i] + ' (' + pct(best2.avg) +
     '). The weakest is <strong>' + MOF[worst.i] + '</strong> (' + pct(worst.avg) + ', ' + worst.win +
     '% win rate). That is a ' + spread + ' percentage-point spread between the best and worst months \u2014 ' +
@@ -2073,63 +2224,105 @@ function generateBriefing(item, months, source, years) {
   '</div>';
 }
 
+// ── DETREND: removes the asset's overall average monthly drift so each
+// month shows RELATIVE seasonal strength vs the asset's own typical month.
+// e.g. if Bitcoin averages +5%/month overall and October averages +21%,
+// detrended October = +16pp \u2014 i.e. "16 points better than a typical month".
+function detrendMonths(months) {
+  var sum = 0;
+  for (var i = 0; i < 12; i++) sum += months[i].avg;
+  var overall = sum / 12;
+  return months.map(function(m){
+    return { m: m.m, win: m.win, n: m.n, note: m.note, avg: +(m.avg - overall).toFixed(2), rawAvg: m.avg, overall: +overall.toFixed(2) };
+  });
+}
+
+var CUR_ITEM=null, CUR_MONTHS=null, CUR_SOURCE=null, CUR_YEARS=null, CUR_YEAR_FILTER=null;
+
+function toggleDetrend() {
+  if (!CUR_MONTHS) return;
+  recomputeView();
+}
+
 function renderRun(item, monthsIn, source, years) {
   var btn=document.getElementById('goBtn');
   pill('ANALYZING...','loading');
 
   setTimeout(function(){
     try {
-      var months=monthsIn;
+      CUR_ITEM=item; CUR_MONTHS=monthsIn; CUR_SOURCE=source; CUR_YEARS=years;
+      paintAnalysis(item, monthsIn, source, years);
+      trackAnalysis();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      btn.disabled=false;
+    }
+  }, 350);
+}
+
+function paintAnalysis(item, monthsIn, source, years) {
+      var detrend = document.getElementById('detrendChk') && document.getElementById('detrendChk').checked;
+      var months = detrend ? detrendMonths(monthsIn) : monthsIn;
       var patKey=(item.pattern)||'broadIndex';
       setDataBadge(source, source==='real' ? years : null);
       var sorted=months.slice().sort(function(a,b){return b.avg-a.avg;});
-      var bestM=sorted[0].m+' +'+(+sorted[0].avg).toFixed(1)+'%';
-      var worstM=sorted[11].m+' '+(+sorted[11].avg).toFixed(1)+'%';
+      var sfx = detrend ? 'pp' : '%';
+      var sign0 = sorted[0].avg>=0?'+':'';
+      var bestM=sorted[0].m+' '+sign0+(+sorted[0].avg).toFixed(1)+sfx;
+      var worstM=sorted[11].m+' '+(+sorted[11].avg).toFixed(1)+sfx;
+      var posLabel = detrend ? 'Above-Average Months' : 'Positive Months';
       var posM=months.filter(function(m){return m.avg>0;}).length+'/12';
       var ai=ANALYSIS_BY_PATTERN[patKey]||ANALYSIS_BY_PATTERN['broadIndex']||'';
 
+      var detrendBanner = detrend
+        ? '<div class="detrend-banner"><b>&#9881; Detrended view</b> &mdash; showing each month\u2019s return relative to '+item.ticker+'\u2019s own average month ('+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12 >= 0 ? '+' : '')+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12).toFixed(2)+'%/mo overall). Positive = stronger than typical, negative = weaker than typical \u2014 even if still positive in absolute terms.</div>'
+        : '';
+
+      var yearFilterBanner = '';
+      if (CUR_YEAR_FILTER) {
+        var sampleN = months[0] && months[0].n ? months[0].n : '?';
+        yearFilterBanner = '<div class="yearfilter-banner"><b>&#128197; ' + CUR_YEAR_FILTER.label + '</b> &mdash; based on ' + sampleN + ' years matching this filter (smaller sample than the full history \u2014 read with extra caution).</div>';
+      }
+
       document.getElementById('analysisBody').innerHTML=
+        yearFilterBanner+
+        detrendBanner+
         '<div class="stats-strip">'+
-          '<div class="ss"><div class="ss-v" style="color:var(--green)">'+bestM+'</div><div class="ss-l">Best Month</div></div>'+
-          '<div class="ss"><div class="ss-v" style="color:var(--red)">'+worstM+'</div><div class="ss-l">Worst Month</div></div>'+
-          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">'+posM+'</div><div class="ss-l">Positive Months</div></div>'+
+          '<div class="ss"><div class="ss-v" style="color:var(--green)">'+bestM+'</div><div class="ss-l">Best Month'+(detrend?' (Relative)':'')+'</div></div>'+
+          '<div class="ss"><div class="ss-v" style="color:var(--red)">'+worstM+'</div><div class="ss-l">Worst Month'+(detrend?' (Relative)':'')+'</div></div>'+
+          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">'+posM+'</div><div class="ss-l">'+posLabel+'</div></div>'+
         '</div>'+
         '<div class="charts-row">'+
           '<div class="chart-panel">'+
-            '<div class="cp-title">Monthly Return Calendar</div>'+
+            '<div class="cp-title">Monthly Return Calendar'+(detrend?' (Detrended)':'')+'</div>'+
             '<div id="cwrap" style="display:flex;flex-direction:column;align-items:center">'+
               wheel(months,item.ticker)+
               '<div class="legend">'+
-                '<span><span class="ld" style="background:var(--green)"></span>Positive avg</span>'+
-                '<span><span class="ld" style="background:var(--red)"></span>Negative avg</span>'+
+                '<span><span class="ld" style="background:var(--green)"></span>'+(detrend?'Stronger than average':'Positive avg')+'</span>'+
+                '<span><span class="ld" style="background:var(--red)"></span>'+(detrend?'Weaker than average':'Negative avg')+'</span>'+
                 '<span style="font-size:10px">Arc = magnitude</span>'+
               '</div>'+
             '</div>'+
           '</div>'+
           '<div class="chart-panel">'+
-            '<div class="cp-title">Average Monthly Return</div>'+
-            bars(months)+
+            '<div class="cp-title">'+(detrend?'Relative Monthly Strength':'Average Monthly Return')+'</div>'+
+            bars(months, sfx)+
           '</div>'+
         '</div>'+
-        makeCards(months)+
+        makeCards(months, sfx)+
         '<div class="ai-panel">'+
           '<div class="ai-header">'+
             '<span class="ai-badge">Intelligence Briefing</span>'+
-            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Analysis</span>'+
+            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Analysis'+(detrend?' &middot; Detrended':'')+'</span>'+
+            '<button class="alert-btn" id="alertBtn" onclick="toggleAlert()">&#128276; Notify me</button>'+
           '</div>'+
-          '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years)+'</div>'+
+          '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years, detrend)+'</div>'+
         '</div>';
 
       animateBars();
-      trackAnalysis();
+      refreshAlertButton();
       pill('COMPLETE','done');
-    } catch(e) {
-      pill('ERROR','err');
-      console.error(e);
-    } finally {
-      btn.disabled=false;
-    }
-  },400);
 }
 
 // ============================================================
@@ -2138,6 +2331,67 @@ function renderRun(item, monthsIn, source, years) {
 
 
 let currentUser = null;
+
+// ── SEASONAL ALERTS ──────────────────────────────────
+function bestMonthOf(months) {
+  var best = 0;
+  for (var i = 1; i < 12; i++) if (months[i].avg > months[best].avg) best = i;
+  return best;
+}
+
+function refreshAlertButton() {
+  var btn = document.getElementById('alertBtn');
+  if (!btn || !CUR_ITEM) return;
+  if (!currentUser) {
+    btn.textContent = '\u{1F514} Sign in for alerts';
+    btn.classList.remove('active');
+    btn.disabled = false;
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '\u{1F514} \u2026';
+  sb.from('seasonal_alerts').select('id').eq('user_id', currentUser.id).eq('asset_id', CUR_ITEM.id).then(function(res){
+    btn.disabled = false;
+    var exists = res.data && res.data.length > 0;
+    if (exists) { btn.textContent = '\u{1F514} Alert set \u2713'; btn.classList.add('active'); }
+    else { btn.textContent = '\u{1F514} Notify me'; btn.classList.remove('active'); }
+  });
+}
+
+function toggleAlert() {
+  var btn = document.getElementById('alertBtn');
+  if (!CUR_ITEM) return;
+  if (!currentUser) {
+    window.location.href = '/seasonax-auth.html';
+    return;
+  }
+  btn.disabled = true;
+  var isActive = btn.classList.contains('active');
+  if (isActive) {
+    sb.from('seasonal_alerts').delete().eq('user_id', currentUser.id).eq('asset_id', CUR_ITEM.id).then(function(){
+      btn.disabled = false;
+      btn.textContent = '\u{1F514} Notify me';
+      btn.classList.remove('active');
+    });
+  } else {
+    var baseMonths = CUR_MONTHS; // unfiltered, non-detrended pattern
+    var bm = bestMonthOf(baseMonths);
+    sb.from('seasonal_alerts').upsert({
+      user_id: currentUser.id,
+      asset_id: CUR_ITEM.id,
+      asset_name: CUR_ITEM.name,
+      asset_ticker: CUR_ITEM.ticker,
+      best_month: bm,
+      best_avg: baseMonths[bm].avg,
+      best_win: baseMonths[bm].win
+    }, { onConflict: 'user_id,asset_id' }).then(function(res){
+      btn.disabled = false;
+      if (res.error) { btn.textContent = '\u{1F514} Notify me'; return; }
+      btn.textContent = '\u{1F514} Alert set \u2713';
+      btn.classList.add('active');
+    });
+  }
+}
 
 // ── FREE TIER ASSET ACCESS ───────────────────────────
 var FREE_SECTIONS = ['Index Funds & ETFs','UK Indices','German Indices'];
@@ -2291,17 +2545,18 @@ var MODE_HERO = {
   watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
   month: ['This month, <em>in market history.</em>', 'The average returns, the famous crashes and the legendary rallies that happened in this calendar month.'],
   pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
-  calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.']
+  calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.'],
+  portfolio: ['Your whole portfolio. <em>One seasonal picture.</em>', 'Enter your holdings and weights to see your portfolio\u2019s combined seasonal exposure \u2014 which months work for you, and which work against you.']
 };
-var PRO_ONLY_MODES = ['backtest','earnings','screener','watchlist','pairs'];
-var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations' };
+var PRO_ONLY_MODES = ['backtest','earnings','screener','watchlist','pairs','portfolio'];
+var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
 
 function switchMode(mode) {
   if (PRO_ONLY_MODES.indexOf(mode) !== -1 && !isPro()) {
     showPaywall('tool', MODE_LABELS[mode]);
     return;
   }
-  var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', earnings:'modeEarnings', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar' };
+  var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', earnings:'modeEarnings', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar', portfolio:'modePortfolio' };
   Object.keys(names).forEach(function(m) {
     var sec = document.getElementById(names[m]);
     if (sec) sec.style.display = (m === mode) ? 'block' : 'none';
@@ -4074,6 +4329,213 @@ function prInit() {
 prInit();
 
 // ============================================================
+// PORTFOLIO SEASONALITY — weighted blend of holdings' patterns
+// ============================================================
+var PF_KEY = 'sx_portfolio';
+var PF_MAX = 15;
+
+function pfGet() {
+  try { return JSON.parse(localStorage.getItem(PF_KEY) || '[]'); } catch (e) { return []; }
+}
+function pfSave(holdings) { localStorage.setItem(PF_KEY, JSON.stringify(holdings.slice(0, PF_MAX))); }
+
+function pfAdd(id) {
+  var holdings = pfGet();
+  if (holdings.some(function(h){ return h.id === id; })) return;
+  if (holdings.length >= PF_MAX) { alert('Portfolio is full (' + PF_MAX + ' holdings max). Remove one first.'); return; }
+  holdings.push({ id: id, weight: holdings.length === 0 ? 100 : 10 });
+  pfSave(holdings);
+  document.getElementById('pfSearchBox').value = '';
+  document.getElementById('pfSuggestBox').style.display = 'none';
+  pfRenderHoldings();
+}
+function pfRemove(id) {
+  pfSave(pfGet().filter(function(h){ return h.id !== id; }));
+  pfRenderHoldings();
+}
+function pfSetWeight(id, val) {
+  var holdings = pfGet();
+  var w = parseFloat(val);
+  if (!isFinite(w) || w < 0) w = 0;
+  holdings.forEach(function(h){ if (h.id === id) h.weight = w; });
+  pfSave(holdings);
+  pfRecompute();
+}
+
+function pfSuggest() {
+  var q = document.getElementById('pfSearchBox').value.toLowerCase().trim();
+  var box = document.getElementById('pfSuggestBox');
+  if (!q) { box.style.display = 'none'; return; }
+  var holdings = pfGet();
+  var ids = holdings.map(function(h){ return h.id; });
+  var hits = CATALOGUE.filter(function(it) {
+    return !it.section && ids.indexOf(it.id) === -1 &&
+      ((it.ticker || '').toLowerCase().indexOf(q) !== -1 || (it.name || '').toLowerCase().indexOf(q) !== -1);
+  }).slice(0, 8);
+  if (!hits.length) { box.style.display = 'none'; return; }
+  var html = '';
+  hits.forEach(function(it) {
+    html += '<div class="wl-sg" onclick="pfAdd(\'' + it.id + '\')"><span class="ea-tk">' + it.ticker + '</span> <span class="ea-nm">' + it.name + '</span><span class="wl-sg-add">+ Add</span></div>';
+  });
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+
+function pfItem(id) {
+  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return CATALOGUE[i];
+  return null;
+}
+
+function pfRenderHoldings() {
+  var holdings = pfGet();
+  var wrap = document.getElementById('pfHoldings');
+  var empty = document.getElementById('pfEmpty');
+  var results = document.getElementById('pfResults');
+
+  if (!holdings.length) {
+    wrap.innerHTML = '';
+    empty.style.display = 'block';
+    results.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+
+  var totalW = holdings.reduce(function(s,h){ return s + (h.weight || 0); }, 0);
+  var html = '<div class="pf-rows">';
+  holdings.forEach(function(h) {
+    var it = pfItem(h.id);
+    if (!it) return;
+    var pct = totalW > 0 ? (h.weight / totalW * 100) : 0;
+    html += '<div class="pf-row">' +
+      '<div class="pf-asset"><span class="ea-tk">' + it.ticker + '</span> <span class="ea-nm">' + it.name + '</span></div>' +
+      '<div class="pf-weight"><input type="number" min="0" step="1" value="' + h.weight + '" onchange="pfSetWeight(\'' + it.id + '\', this.value)" class="pf-weight-input">' +
+      '<span class="pf-pct">' + pct.toFixed(0) + '%</span></div>' +
+      '<button class="pf-remove" onclick="pfRemove(\'' + it.id + '\')" title="Remove">&times;</button>' +
+    '</div>';
+  });
+  var totalNote = Math.abs(totalW - 100) < 0.5
+    ? '<span style="color:var(--green)">100%</span>'
+    : '<span style="color:var(--amber2)">' + totalW.toFixed(0) + '% \u2014 weights are normalized proportionally</span>';
+  html += '<div class="pf-total">Total allocation entered: ' + totalNote + '</div></div>';
+  wrap.innerHTML = html;
+
+  pfRecompute();
+}
+
+function pfRecompute() {
+  var holdings = pfGet();
+  if (!holdings.length) return;
+  var ids = holdings.map(function(h){ return h.id; });
+  var results = document.getElementById('pfResults');
+  results.style.display = 'block';
+  document.getElementById('pfBriefing').innerHTML = '<div class="analysis-empty" style="border:none;padding:20px 0">Loading real price data for ' + ids.length + ' holdings\u2026</div>';
+
+  getManyMonthsResolved(ids, 15, function(map) {
+    var totalW = holdings.reduce(function(s,h){ return s + (h.weight || 0); }, 0);
+    if (totalW <= 0) totalW = holdings.length; // fallback: equal-weight if all zero
+
+    var portfolio = [];
+    for (var m = 0; m < 12; m++) {
+      var avgSum = 0, winSum = 0;
+      holdings.forEach(function(h) {
+        var res = map[h.id];
+        if (!res || !res.months) return;
+        var w = (totalW > 0 ? (h.weight || (totalW/holdings.length)) / totalW : 1/holdings.length);
+        avgSum += res.months[m].avg * w;
+        winSum += res.months[m].win * w;
+      });
+      portfolio.push({ m: MO[m], avg: +avgSum.toFixed(2), win: Math.round(winSum), n: null, note: '' });
+    }
+
+    var realCount = ids.filter(function(id){ return map[id] && map[id].source === 'real'; }).length;
+    var badge = document.getElementById('pfDataBadge');
+    if (realCount === ids.length) { badge.innerHTML = '&#10003; ALL HOLDINGS VERIFIED'; badge.className = 'data-badge real'; }
+    else if (realCount > 0) { badge.innerHTML = realCount + '/' + ids.length + ' HOLDINGS VERIFIED'; badge.className = 'data-badge model'; }
+    else { badge.innerHTML = 'MODELLED DATA'; badge.className = 'data-badge model'; }
+
+    var detrend = document.getElementById('pfDetrendChk') && document.getElementById('pfDetrendChk').checked;
+    var displayMonths = detrend ? detrendMonths(portfolio) : portfolio;
+    var sfx = detrend ? 'pp' : '%';
+    document.getElementById('pfBarsTitle').textContent = detrend ? 'Portfolio Relative Monthly Strength' : 'Portfolio Average Monthly Return';
+
+    // Wheel + bars (reuse Analyzer chart functions)
+    document.getElementById('pfWheel').innerHTML = wheel(displayMonths, 'PORTFOLIO') +
+      '<div class="legend">' +
+        '<span><span class="ld" style="background:var(--green)"></span>' + (detrend?'Stronger than average':'Positive avg') + '</span>' +
+        '<span><span class="ld" style="background:var(--red)"></span>' + (detrend?'Weaker than average':'Negative avg') + '</span>' +
+        '<span style="font-size:10px">Arc = magnitude</span>' +
+      '</div>';
+    document.getElementById('pfBars').innerHTML = bars(displayMonths, sfx);
+    document.getElementById('pfCards').innerHTML = makeCards(displayMonths, sfx);
+
+    // Stats strip
+    var sorted = displayMonths.slice().sort(function(a,b){ return b.avg - a.avg; });
+    var nowM = new Date().getMonth();
+    var sign0 = sorted[0].avg >= 0 ? '+' : '';
+    document.getElementById('pfStats').innerHTML =
+      '<div class="ss"><div class="ss-v" style="color:var(--green)">' + sorted[0].m + ' ' + sign0 + sorted[0].avg.toFixed(1) + sfx + '</div><div class="ss-l">Best Month' + (detrend?' (Relative)':'') + '</div></div>' +
+      '<div class="ss"><div class="ss-v" style="color:var(--red)">' + sorted[11].m + ' ' + sorted[11].avg.toFixed(1) + sfx + '</div><div class="ss-l">Worst Month' + (detrend?' (Relative)':'') + '</div></div>' +
+      '<div class="ss"><div class="ss-v" style="color:var(--amber2)">' + portfolio[nowM].avg.toFixed(1) + '%</div><div class="ss-l">This Month (' + MF_LONG[nowM] + ')</div></div>';
+
+    // Holding-by-holding breakdown table
+    var bRows = '';
+    holdings.forEach(function(h) {
+      var it = pfItem(h.id);
+      var res = map[h.id];
+      if (!it || !res || !res.months) return;
+      var w = (totalW > 0 ? (h.weight || 0) / totalW : 1/holdings.length);
+      var hSorted = res.months.slice().sort(function(a,b){ return b.avg - a.avg; });
+      var contrib = res.months[nowM].avg * w;
+      var srcBadge = res.source === 'real' ? '<span class="data-badge real" style="font-size:8px">VERIFIED</span>' : '<span class="data-badge model" style="font-size:8px">MODELLED</span>';
+      bRows += '<div class="pf-bd-row">' +
+        '<div class="pf-bd-asset"><span class="ea-tk">' + it.ticker + '</span> <span class="ea-nm">' + it.name + '</span> ' + srcBadge + '</div>' +
+        '<div class="pf-bd-stat">' + (w*100).toFixed(0) + '% weight</div>' +
+        '<div class="pf-bd-stat" style="color:var(--green)">Best: ' + hSorted[0].m + ' +' + hSorted[0].avg.toFixed(1) + '%</div>' +
+        '<div class="pf-bd-stat" style="color:var(--red)">Worst: ' + hSorted[11].m + ' ' + hSorted[11].avg.toFixed(1) + '%</div>' +
+        '<div class="pf-bd-stat" style="color:' + (contrib>=0?'var(--green)':'var(--red)') + '">' + (contrib>=0?'+':'') + contrib.toFixed(2) + 'pp contribution this month</div>' +
+      '</div>';
+    });
+    document.getElementById('pfBreakdown').innerHTML = bRows;
+
+    // Briefing
+    var best = sorted[0], worst = sorted[11];
+    var curMonth = portfolio[nowM];
+    var heaviest = holdings.slice().sort(function(a,b){ return (b.weight||0) - (a.weight||0); })[0];
+    var heaviestItem = pfItem(heaviest.id);
+    var verdict, vcol;
+    if (curMonth.avg >= 0.8 && curMonth.win >= 60) { verdict = 'SEASONAL TAILWIND'; vcol = 'var(--green)'; }
+    else if (curMonth.avg <= -0.5 && curMonth.win <= 45) { verdict = 'SEASONAL HEADWIND'; vcol = 'var(--red)'; }
+    else { verdict = 'NEUTRAL SEASONALITY'; vcol = 'var(--amber2)'; }
+
+    var p1 = (detrend
+      ? 'With the portfolio\u2019s overall trend removed, '
+      : 'Based on a weighted blend of your ' + holdings.length + ' holdings, ') +
+      'your portfolio\u2019s strongest seasonal month is <strong>' + best.m + '</strong> (' + (best.avg>=0?'+':'') + best.avg.toFixed(2) + sfx + '), and its weakest is <strong>' + worst.m + '</strong> (' + worst.avg.toFixed(2) + sfx + ').';
+
+    var p2 = 'Your largest position is <strong>' + (heaviestItem ? heaviestItem.ticker : '') + '</strong> at ' + ((totalW>0?(heaviest.weight||0)/totalW:0)*100).toFixed(0) + '% of the portfolio \u2014 its own seasonal pattern has an outsized influence on the overall result above.';
+
+    var p3 = '<span style="color:' + vcol + ';font-weight:700">' + verdict + (detrend?' (RELATIVE)':'') + '</span> for ' + MF_LONG[nowM] + ' \u2014 the portfolio\u2019s blended average for this month is ' + (curMonth.avg>=0?'+':'') + curMonth.avg.toFixed(2) + '%.';
+
+    var p4 = realCount === ids.length
+      ? 'All ' + ids.length + ' holdings are computed from <strong>real historical price data</strong>.'
+      : realCount > 0
+        ? realCount + ' of ' + ids.length + ' holdings use real price data; the rest fall back to modelled sector patterns.'
+        : 'These holdings currently use modelled sector patterns rather than real price history.';
+
+    document.getElementById('pfBriefing').innerHTML =
+      '<p>' + p1 + '</p><p>' + p2 + '</p><p>' + p3 + '</p>' +
+      '<p style="color:var(--w4);font-size:12px;margin-top:12px">' + p4 + ' This blended view is a weighted average of each holding\u2019s own seasonal pattern \u2014 it is not a historical backtest of this exact portfolio combination, and does not account for correlation effects between holdings.</p>';
+  });
+}
+
+function pfInit() {
+  var holdings = pfGet();
+  if (holdings.length) pfRenderHoldings();
+  else { document.getElementById('pfEmpty').style.display = 'block'; }
+}
+pfInit();
+
+// ============================================================
 // ECONOMIC CALENDAR — upcoming catalysts with playbook links
 // ============================================================
 function ecBuildEvents() {
@@ -4173,6 +4635,7 @@ function ecInit() {
 ecInit();
 
 </script>
+<script src="/cookie-consent.js"></script>
 <script src="/chat-widget.js"></script>
 </body>
 </html>
