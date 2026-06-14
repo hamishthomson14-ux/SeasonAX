@@ -144,11 +144,11 @@ export default async function handler(req, res) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/api/og/${id}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#04070F;--bg2:#070C18;--s1:#131E30;--amber:#E89318;--amber2:#F5A52F;--green:#00C97E;--red:#F04050;--w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--b1:#0F1E30;--b2:#162540;--mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--sans:"Inter",sans-serif}
+:root{--bg:#04070F;--bg2:#070C18;--s1:#131E30;--amber:#E89318;--amber2:#F5A52F;--green:#00C97E;--red:#F04050;--w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--b1:#0F1E30;--b2:#162540;--mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif}
 body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6}
 a{color:inherit;text-decoration:none}
 .nav{height:56px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1)}
@@ -157,7 +157,7 @@ a{color:inherit;text-decoration:none}
 .btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600}
 .wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px}
 .eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:12px}
-h1{font:800 32px/1.2 var(--disp);letter-spacing:-.02em;margin-bottom:8px}
+h1{font:800 32px/1.2 var(--disp-serif);letter-spacing:0em;margin-bottom:8px}
 .sub{color:var(--w3);font-size:14px;margin-bottom:18px}
 .badge{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:4px;display:inline-block;margin-bottom:24px}
 .badge.real{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
@@ -167,7 +167,7 @@ h1{font:800 32px/1.2 var(--disp);letter-spacing:-.02em;margin-bottom:8px}
 .callouts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
 .callout{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:16px}
 .callout .l{font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
-.callout .v{font:700 22px/1 var(--disp)}
+.callout .v{font:700 22px/1 var(--disp-serif)}
 .callout .v.pos{color:var(--green)} .callout .v.neg{color:var(--red)}
 .callout .s{font-size:12px;color:var(--w3);margin-top:4px}
 table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13.5px}
@@ -178,7 +178,7 @@ tr.cur td{background:rgba(232,147,24,.06)}
 .now-tag{font:700 8px/1 var(--mono);color:var(--amber2);border:1px solid rgba(232,147,24,.3);padding:2px 5px;border-radius:3px;margin-left:6px}
 .data-note{font-size:13px;color:var(--w3);background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;margin-bottom:24px}
 .cta{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:24px;text-align:center;margin-bottom:24px}
-.cta h2{font:700 20px/1.3 var(--disp);margin-bottom:8px}
+.cta h2{font:700 20px/1.3 var(--disp-serif);margin-bottom:8px}
 .cta p{color:var(--w3);font-size:13px;margin-bottom:14px}
 .btn-amber{background:var(--amber);color:var(--bg);border:none;padding:11px 22px;border-radius:8px;font:700 13px/1 var(--sans);display:inline-block}
 .related{margin-top:8px}
