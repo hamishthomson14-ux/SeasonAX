@@ -58,7 +58,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .page{max-width:1100px;margin:0 auto;padding:0 32px 80px}
 
 /* ── HERO STRIP ── */
-.hero-strip{padding:44px 0 32px;text-align:center;border-bottom:1px solid var(--b1);margin-bottom:36px}
+.hero-strip{padding:0 0 32px;text-align:center;border-bottom:1px solid var(--b1);margin-bottom:36px}
 .hs-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .hs-eyebrow::before,.hs-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
 .hs-title{font:800 36px/1.05 var(--disp);letter-spacing:-.03em;margin-bottom:12px}
@@ -207,7 +207,8 @@ button{cursor:pointer;font-family:var(--sans)}
 /* Mobile */
 @media(max-width:768px){
   .page{padding:0 16px 60px}
-  .hero-strip{padding:28px 0 20px}
+  .hero-strip{padding:0 0 20px}
+  .mode-bar{padding:16px 0 12px;margin:0 0 16px}
   .hs-title{font-size:26px}
   .filter-bar{gap:8px}
   .asset-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
@@ -220,7 +221,7 @@ button{cursor:pointer;font-family:var(--sans)}
 }
 
 /* ── MODE SWITCHER ── */
-.mode-bar{display:flex;gap:6px;justify-content:center;margin:0 0 28px}
+.mode-bar{display:flex;gap:6px;justify-content:center;margin:0 0 24px;position:sticky;top:56px;z-index:150;background:rgba(4,7,15,.97);backdrop-filter:blur(20px);padding:24px 0 16px;border-bottom:1px solid var(--b1)}
 .mode-tab{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:10px 26px;border-radius:8px;font:600 13px/1 var(--sans);transition:all .18s;letter-spacing:.01em;cursor:pointer}
 .mode-tab:hover{border-color:var(--amber2);color:var(--w)}
 .mode-tab.active{background:var(--amber);color:var(--bg);border-color:var(--amber)}
@@ -461,13 +462,6 @@ body.is-pro .mode-divider{display:none}
 
 <div class="page">
 
-  <!-- HERO STRIP -->
-  <div class="hero-strip">
-    <div class="hs-eyebrow">Global Market Seasonality Intelligence</div>
-    <h1 class="hs-title">Pick any market. <em>See its calendar.</em></h1>
-    <p class="hs-sub">Seasonal patterns across 500+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
-  </div>
-
   <!-- MODE SWITCHER -->
   <div class="mode-bar">
     <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Analyzer</button>
@@ -481,6 +475,13 @@ body.is-pro .mode-divider{display:none}
     <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_portfolio" onclick="switchMode('portfolio')">Portfolio <span class="mt-lock">&#128274;</span></button>
+  </div>
+
+  <!-- HERO STRIP -->
+  <div class="hero-strip">
+    <div class="hs-eyebrow">Global Market Seasonality Intelligence</div>
+    <h1 class="hs-title">Pick any market. <em>See its calendar.</em></h1>
+    <p class="hs-sub">Seasonal patterns across 500+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
   </div>
 
   <div id="modeAnalyzer">
