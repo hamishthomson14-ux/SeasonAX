@@ -2408,7 +2408,7 @@ var FREE_ASSET_IDS = (function(){
 function isFreeAsset(id){ return FREE_ASSET_IDS.indexOf(id) !== -1; }
 function isPro(){
   if(!currentUser) return false;
-  var sub = currentUser.user_metadata && currentUser.user_metadata.subscription;
+  var sub = currentUser.app_metadata && currentUser.app_metadata.subscription;
   return sub === 'pro' || sub === 'lifetime';
 }
 
@@ -2437,8 +2437,14 @@ const FREE_LIMIT = 3;
 let analysisCount = 0;
 
 async function initAuth(){
-  const { data:{ session } } = await sb.auth.getSession();
+  let { data:{ session } } = await sb.auth.getSession();
   if(session){
+    // Refresh so Pro/Lifetime status (app_metadata, set server-side by the
+    // Stripe webhook) is current even if this token predates a recent payment.
+    try {
+      const refreshed = await sb.auth.refreshSession();
+      if(refreshed.data && refreshed.data.session) session = refreshed.data.session;
+    } catch(e) {}
     currentUser = session.user;
     showUserMenu(currentUser);
     loadUsageCount();
@@ -2466,7 +2472,7 @@ function showUserMenu(user){
 
 function subscriptionLabel(){
   if(!currentUser) return 'Guest';
-  var sub = currentUser.user_metadata && currentUser.user_metadata.subscription;
+  var sub = currentUser.app_metadata && currentUser.app_metadata.subscription;
   if(sub === 'lifetime') return 'Lifetime';
   if(sub === 'pro') return 'Pro';
   return 'Free';

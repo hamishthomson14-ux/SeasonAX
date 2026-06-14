@@ -361,6 +361,12 @@ var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co'
 async function initAuth() {
   var r = await sb.auth.getSession();
   if (!r.data || !r.data.session) { window.location.href = '/auth.html'; return; }
+  // Refresh the session so Pro/Lifetime status (app_metadata, set server-side by
+  // the Stripe webhook) is up to date even if this token was issued before payment.
+  try {
+    var refreshed = await sb.auth.refreshSession();
+    if (refreshed.data && refreshed.data.session) r = refreshed;
+  } catch (e) {}
   var user = r.data.session.user;
   var name = (user.user_metadata && user.user_metadata.full_name)
     ? user.user_metadata.full_name.split(' ')[0]
@@ -372,7 +378,7 @@ async function initAuth() {
   document.getElementById('greeting').innerHTML = 'Good ' + tod + ', ' + name + '. <em>Ready to trade the calendar?</em>';
 
   // Subscription tier — hide PRO locks and upgrade banner for Pro/Lifetime users
-  var sub = user.user_metadata && user.user_metadata.subscription;
+  var sub = user.app_metadata && user.app_metadata.subscription;
   var isPro = sub === 'pro' || sub === 'lifetime';
   document.body.classList.toggle('is-pro', isPro);
   if (isPro) {
