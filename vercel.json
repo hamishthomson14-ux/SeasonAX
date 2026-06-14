@@ -1,0 +1,14 @@
+{
+  "crons": [
+    {
+      "path": "/api/send-seasonal-alerts",
+      "schedule": "0 8 * * *"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/seasonality/:id",
+      "destination": "/api/seasonality/:id"
+    }
+  ]
+}
