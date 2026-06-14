@@ -360,7 +360,7 @@ var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co'
 
 async function initAuth() {
   var r = await sb.auth.getSession();
-  if (!r.data || !r.data.session) { window.location.href = '/seasonax-auth.html'; return; }
+  if (!r.data || !r.data.session) { window.location.href = '/auth.html'; return; }
   var user = r.data.session.user;
   var name = (user.user_metadata && user.user_metadata.full_name)
     ? user.user_metadata.full_name.split(' ')[0]
@@ -422,7 +422,7 @@ async function recordReferralIfNew(user) {
 async function renderReferralWidget(user) {
   var box = document.getElementById('referralBox');
   if (!box) return;
-  var link = 'https://timingax.co.uk/seasonax-auth.html?ref=' + user.id + '&tab=up';
+  var link = 'https://timingax.co.uk/auth.html?ref=' + user.id + '&tab=up';
   document.getElementById('referralLink').value = link;
 
   var res = await sb.from('referrals').select('status').eq('referrer_id', user.id);
@@ -471,7 +471,7 @@ async function openBillingPortal() {
     btn.disabled = false;
   }
 }
-async function signOut() { await sb.auth.signOut(); window.location.href = '/seasonax-auth.html'; }
+async function signOut() { await sb.auth.signOut(); window.location.href = '/auth.html'; }
 initAuth();
 
 function updateClock() {

@@ -177,7 +177,7 @@ function planTag(p) {
 
 async function init() {
   var r = await sb.auth.getSession();
-  if (!r.data || !r.data.session) { window.location.href = '/seasonax-auth.html'; return; }
+  if (!r.data || !r.data.session) { window.location.href = '/auth.html'; return; }
   var token = r.data.session.access_token;
 
   try {
@@ -241,7 +241,7 @@ function render(data) {
     '<div class="ss-row"><span class="ss-label">Signups (30d)</span><span class="ss-val">' + data.users.signups_last_30d + '</span></div>';
 }
 
-async function signOut() { await sb.auth.signOut(); window.location.href = '/seasonax-auth.html'; }
+async function signOut() { await sb.auth.signOut(); window.location.href = '/auth.html'; }
 init();
 </script>
 </body>

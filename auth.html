@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimingAX &mdash; Sign in</title>
+<meta property="og:title" content="TimingAX &mdash; Sign in">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timingax.co.uk/auth.html">
+<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="description" content="Sign in to TimingAX. Professional seasonal market intelligence for serious investors.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;
+  --disp:"Syne",sans-serif;
+  --sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+
+/* ── LEFT PANEL ── */
+.left{background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;min-height:100vh;padding:40px 56px;position:relative;overflow:hidden}
+.left-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 80% 60% at 30% 20%,black 20%,transparent 80%);pointer-events:none;opacity:.4}
+.left-glow1{position:absolute;top:-120px;left:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
+.left-glow2{position:absolute;bottom:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,201,126,.04),transparent 65%);pointer-events:none}
+
+.l-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto;position:relative;z-index:1}
+.l-word{font:800 18px/1 var(--disp);letter-spacing:-.02em;color:var(--w)}
+.l-word b{color:var(--amber2);font-weight:800}
+
+.l-hero{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;padding:48px 0}
+.l-tag{font:500 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.l-tag::before{content:"";width:16px;height:1px;background:var(--amber2)}
+.l-h{font:800 48px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:16px;color:var(--w)}
+.l-h em{font-style:normal;color:var(--amber2)}
+.l-sub{font-size:16px;color:var(--w3);line-height:1.72;max-width:380px;margin-bottom:48px}
+
+/* Stat cards */
+.l-stats{display:flex;flex-direction:column;gap:10px;margin-bottom:48px}
+.l-stat{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:14px 18px;transition:border-color .2s}
+.l-stat:hover{border-color:var(--b3)}
+.l-stat-v{font:600 22px/1 var(--mono);letter-spacing:-.02em;min-width:72px}
+.l-stat-v.g{color:var(--green)}.l-stat-v.r{color:var(--red)}.l-stat-v.a{color:var(--amber2)}
+.l-stat-text{}
+.l-stat-l{font-size:13px;color:var(--w2);font-weight:500;margin-bottom:2px}
+.l-stat-s{font:400 10px/1 var(--mono);color:var(--w4)}
+
+/* Bottom trust */
+.l-trust{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
+.l-trust-row{display:flex;align-items:center;gap:8px;font:400 11px/1 var(--mono);color:var(--w4)}
+.l-trust-row::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── RIGHT PANEL ── */
+.right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 56px;background:var(--bg)}
+
+.r-inner{width:100%;max-width:420px}
+.r-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:40px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
+.r-back:hover{color:var(--amber2)}
+
+/* Tabs */
+.r-tabs{display:flex;background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:4px;margin-bottom:32px}
+.r-tab{flex:1;padding:9px;border-radius:5px;font:600 13px/1 var(--sans);text-align:center;cursor:pointer;transition:all .18s;color:var(--w4);border:none;background:none}
+.r-tab.on{background:var(--amber);color:var(--bg)}
+.r-tab:not(.on):hover{color:var(--w)}
+
+/* Form fields */
+.r-label{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);display:block;margin-bottom:7px}
+.r-group{margin-bottom:18px;position:relative}
+.r-input{width:100%;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:13px 16px;font:400 14px/1 var(--sans);border-radius:8px;outline:none;transition:all .2s;-webkit-appearance:none}
+.r-input:focus{border-color:var(--amber2);box-shadow:0 0 0 3px rgba(232,147,24,.08);background:var(--s2)}
+.r-input::placeholder{color:var(--w4)}
+.r-input.err{border-color:var(--red)}
+.r-input.ok{border-color:var(--green)}
+.r-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--w4);cursor:pointer;font:400 11px/1 var(--mono);padding:4px;transition:color .15s}
+.r-toggle:hover{color:var(--amber2)}
+
+/* Password strength */
+.r-strength{display:flex;gap:4px;margin-top:7px}
+.r-str-bar{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.r-str-label{font:400 10px/1 var(--mono);color:var(--w4);margin-top:5px}
+
+/* Error / hint */
+.r-hint{font:400 11px/1.5 var(--mono);color:var(--red);margin-top:6px;min-height:16px}
+.r-hint.ok{color:var(--green)}
+.r-hint.info{color:var(--w4)}
+
+/* CTA button */
+.r-btn{width:100%;background:var(--amber);color:var(--bg);border:none;padding:14px;border-radius:8px;font:700 15px/1 var(--sans);letter-spacing:.01em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.r-btn:hover:not(:disabled){background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,147,24,.28)}
+.r-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Divider */
+.r-div{display:flex;align-items:center;gap:14px;margin:22px 0;font:400 11px/1 var(--mono);color:var(--w5)}
+.r-div::before,.r-div::after{content:"";flex:1;height:1px;background:var(--b1)}
+
+/* Links */
+.r-link{font:500 13px/1 var(--sans);color:var(--amber2);cursor:pointer;transition:color .15s}
+.r-link:hover{color:var(--amber)}
+.r-small{font:400 11px/1 var(--mono);color:var(--w5);text-align:center;margin-top:18px}
+.r-small a{color:var(--w4);transition:color .15s}
+.r-small a:hover{color:var(--amber2)}
+
+/* Success / Email check state */
+.r-success{text-align:center;padding:12px 0}
+.r-success-icon{width:60px;height:60px;background:rgba(0,201,126,.08);border:1px solid rgba(0,201,126,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:26px}
+.r-success-h{font:800 22px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.r-success-p{font-size:14px;color:var(--w3);line-height:1.7;max-width:300px;margin:0 auto 24px}
+.r-success-note{font:400 11px/1 var(--mono);color:var(--w5)}
+
+/* Loading spinner */
+.spinner{width:16px;height:16px;border:2px solid rgba(4,7,15,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Forgot password link */
+.r-forgot{text-align:right;margin-bottom:18px}
+
+/* Trust strip at bottom of form */
+.r-trust{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:28px;padding-top:20px;border-top:1px solid var(--b1)}
+.r-trust-item{display:flex;align-items:center;gap:5px;font:400 10px/1 var(--mono);color:var(--w5)}
+
+/* Mobile */
+@media(max-width:900px){
+  body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .left{min-height:auto;padding:24px;display:block}
+  .l-hero{padding:24px 0}
+  .l-h{font-size:32px}
+  .l-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .l-trust{display:none}
+  .right{padding:32px 24px;min-height:auto}
+  .r-inner{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="left">
+  <div class="left-grid" aria-hidden="true"></div>
+  <div class="left-glow1" aria-hidden="true"></div>
+  <div class="left-glow2" aria-hidden="true"></div>
+
+  <div class="l-logo">
+    <svg width="30" height="30" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <div class="l-word">Timing<b>AX</b></div>
+  </div>
+
+  <div class="l-hero">
+    <div class="l-tag">Professional Seasonal Intelligence</div>
+    <h1 class="l-h">The market runs<br>on a <em>calendar.</em><br>Now you do too.</h1>
+    <p class="l-sub">430+ global assets. 10 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
+
+    <div class="l-stats">
+      <div class="l-stat">
+        <div class="l-stat-v r">-0.7%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">S&amp;P 500 &mdash; September average</div>
+          <div class="l-stat-s">15-year average &middot; 42% win rate</div>
+        </div>
+      </div>
+      <div class="l-stat">
+        <div class="l-stat-v g">+1.7%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">S&amp;P 500 &mdash; November average</div>
+          <div class="l-stat-s">15-year average &middot; 70% win rate</div>
+        </div>
+      </div>
+      <div class="l-stat">
+        <div class="l-stat-v a">+21.4%</div>
+        <div class="l-stat-text">
+          <div class="l-stat-l">Bitcoin &mdash; October average</div>
+          <div class="l-stat-s">12-year average &middot; 75% win rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-trust">
+    <div class="l-trust-row">Free forever tier &mdash; no card ever required</div>
+    <div class="l-trust-row">Cancel Pro anytime in one click</div>
+    <div class="l-trust-row">Auth by Supabase &middot; Payments by Stripe</div>
+    <div class="l-trust-row">GDPR compliant &middot; We never sell your data</div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right">
+  <div class="r-inner">
+    <a href="/index.html" class="r-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to TimingAX
+    </a>
+
+    <!-- TABS -->
+    <div class="r-tabs" id="tabs" style="display:none">
+      <button class="r-tab on" id="tab_in" onclick="showTab('in')">Sign in</button>
+      <button class="r-tab" id="tab_up" onclick="showTab('up')">Create account</button>
+    </div>
+
+    <!-- SIGN IN FORM -->
+    <div id="form_in">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Welcome back</div>
+        <div style="font-size:14px;color:var(--w3)">Sign in to access your seasonal intelligence platform.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="si_email">Email address</label>
+        <input class="r-input" type="email" id="si_email" placeholder="you@example.com" autocomplete="email">
+        <div class="r-hint" id="si_email_hint"></div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="si_pw">Password</label>
+        <input class="r-input" type="password" id="si_pw" placeholder="Your password" autocomplete="current-password">
+        <button class="r-toggle" onclick="togglePw('si_pw',this)" type="button">show</button>
+        <div class="r-hint" id="si_pw_hint"></div>
+      </div>
+      <div class="r-forgot">
+        <span class="r-link" onclick="showForgot()">Forgot password?</span>
+      </div>
+      <button class="r-btn" id="si_btn" onclick="signIn()">
+        <span id="si_btn_txt">Sign in</span>
+      </button>
+      <div class="r-hint" id="si_err" style="text-align:center;margin-top:12px"></div>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span style="font-size:14px;color:var(--w3)">Don&apos;t have an account? </span>
+        <span class="r-link" onclick="showTab('up')">Create one free</span>
+      </div>
+    </div>
+
+    <!-- SIGN UP FORM -->
+    <div id="form_up" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Create your account</div>
+        <div style="font-size:14px;color:var(--w3)">Free forever &mdash; no credit card needed to get started.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="su_email">Email address</label>
+        <input class="r-input" type="email" id="su_email" placeholder="you@example.com" autocomplete="email" oninput="validateEmail(this,'su_email_hint')">
+        <div class="r-hint" id="su_email_hint"></div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="su_pw">Password</label>
+        <input class="r-input" type="password" id="su_pw" placeholder="Minimum 8 characters" autocomplete="new-password" oninput="updateStrength(this.value)">
+        <button class="r-toggle" onclick="togglePw('su_pw',this)" type="button">show</button>
+        <div class="r-strength" id="strength_bars">
+          <div class="r-str-bar" id="sb1"></div>
+          <div class="r-str-bar" id="sb2"></div>
+          <div class="r-str-bar" id="sb3"></div>
+          <div class="r-str-bar" id="sb4"></div>
+        </div>
+        <div class="r-str-label" id="str_label"></div>
+      </div>
+      <button class="r-btn" id="su_btn" onclick="signUp()">
+        <span id="su_btn_txt">Create free account</span>
+      </button>
+      <div class="r-hint" id="su_err" style="text-align:center;margin-top:12px"></div>
+      <div class="r-small" style="margin-top:14px">By creating an account you agree to our <a href="/terms-of-service.html">Terms of Service</a> and <a href="/privacy-policy.html">Privacy Policy</a></div>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span style="font-size:14px;color:var(--w3)">Already have an account? </span>
+        <span class="r-link" onclick="showTab('in')">Sign in</span>
+      </div>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div id="form_forgot" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Reset password</div>
+        <div style="font-size:14px;color:var(--w3)">Enter your email and we&apos;ll send a reset link.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="fp_email">Email address</label>
+        <input class="r-input" type="email" id="fp_email" placeholder="you@example.com">
+        <div class="r-hint" id="fp_hint"></div>
+      </div>
+      <button class="r-btn" id="fp_btn" onclick="sendReset()">
+        <span id="fp_btn_txt">Send reset link</span>
+      </button>
+      <div class="r-div">or</div>
+      <div style="text-align:center">
+        <span class="r-link" onclick="showTab('in')">Back to sign in</span>
+      </div>
+    </div>
+
+    <!-- SET NEW PASSWORD (after clicking email reset link) -->
+    <div id="form_newpw" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Set a new password</div>
+        <div style="font-size:14px;color:var(--w3)">Choose a new password for your account.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="newpw_pw">New password</label>
+        <input class="r-input" type="password" id="newpw_pw" placeholder="At least 8 characters">
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="newpw_pw2">Confirm new password</label>
+        <input class="r-input" type="password" id="newpw_pw2" placeholder="Re-enter your new password">
+        <div class="r-hint" id="newpw_err"></div>
+      </div>
+      <button class="r-btn" id="newpw_btn" onclick="updatePassword()">
+        <span id="newpw_btn_txt">Update password</span>
+      </button>
+    </div>
+
+    <!-- EMAIL CONFIRM STATE -->
+    <div id="form_confirm" style="display:none">
+      <div class="r-success">
+        <div class="r-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="#00C97E" stroke-width="1.5" fill="none"/><path d="M2 6l10 7 10-7" stroke="#00C97E" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="r-success-h">Check your email</div>
+        <p class="r-success-p">We sent a confirmation link to <strong id="confirm_email" style="color:var(--amber2)"></strong>. Click it to activate your account and start exploring TimingAX.</p>
+        <div class="r-success-note">Didn&apos;t get it? Check your spam folder. Links expire after 24 hours.</div>
+      </div>
+    </div>
+
+    <!-- RESET SENT STATE -->
+    <div id="form_reset_sent" style="display:none">
+      <div class="r-success">
+        <div class="r-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#00C97E" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#00C97E" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="r-success-h">Reset link sent</div>
+        <p class="r-success-p">Check your inbox for a password reset link. It will expire in 1 hour.</p>
+        <div style="margin-top:20px"><span class="r-link" onclick="showTab('in')">Back to sign in</span></div>
+      </div>
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div class="r-trust">
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        SSL secured
+      </div>
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Supabase auth
+      </div>
+      <div class="r-trust-item">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(0,201,126,.15)"/><path d="M3 6l2 2 4-4" stroke="#00C97E" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        No spam ever
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
+var sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+// ── REFERRAL CAPTURE ──────────────────────────────────
+// If arriving via someone's referral link (?ref=<their user id>), remember
+// it in localStorage so it survives the email-confirmation redirect to
+// dashboard.html, where the actual referral record gets created on first login.
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var ref = params.get('ref');
+  if (ref && /^[0-9a-f-]{36}$/i.test(ref)) {
+    try { localStorage.setItem('sx_ref_code', ref); } catch (e) {}
+  }
+})();
+
+// ── PASSWORD RECOVERY ─────────────────────────────────
+// Clicking a "reset password" email link logs the user in automatically
+// (Supabase creates a temporary recovery session) and lands here with
+// #access_token=...&type=recovery (or ?...&type=recovery) in the URL.
+// If we let the normal "already logged in -> dashboard" redirect run,
+// the user would be bounced straight to the dashboard with their OLD
+// password still set, never getting a chance to choose a new one.
+// So: detect this case first and show the "set new password" form instead.
+var isRecoveryLink = window.location.hash.indexOf('type=recovery') !== -1 ||
+  new URLSearchParams(window.location.search).get('type') === 'recovery';
+
+if (isRecoveryLink) {
+  showTab('newpw');
+  document.getElementById('tabs').style.display = 'none';
+} else {
+  // Check if already logged in
+  sb.auth.getSession().then(function(r) {
+    if (r.data && r.data.session) {
+      window.location.href = '/dashboard.html';
+    } else {
+      // Check URL for tab param
+      var hash = window.location.hash;
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('tab') === 'up' || hash === '#signup' || params.get('ref')) {
+        showTab('up');
+      } else {
+        showTab('in');
+      }
+      // Pre-fill email if passed
+      var email = params.get('email');
+      if (email) {
+        var el = document.getElementById('su_email');
+        if (el) { el.value = decodeURIComponent(email); showTab('up'); }
+      }
+      document.getElementById('tabs').style.display = 'flex';
+    }
+  });
+}
+
+// ── Update password (after clicking email reset link) ─────
+async function updatePassword() {
+  var pw = document.getElementById('newpw_pw').value;
+  var pw2 = document.getElementById('newpw_pw2').value;
+  var err = document.getElementById('newpw_err');
+  err.className = 'r-hint';
+  err.textContent = '';
+  if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; return; }
+  if (pw !== pw2) { err.textContent = 'Passwords do not match.'; return; }
+  setLoading('newpw_btn','newpw_btn_txt',true);
+  try {
+    var r = await sb.auth.updateUser({ password: pw });
+    if (r.error) throw r.error;
+    window.location.href = '/dashboard.html?pwreset=success';
+  } catch (e) {
+    err.textContent = (e.message && e.message.indexOf('session') !== -1)
+      ? 'This reset link has expired. Please request a new one.'
+      : (e.message || 'Could not update password. Please try again.');
+    setLoading('newpw_btn','newpw_btn_txt',false);
+    document.getElementById('newpw_btn_txt').textContent = 'Update password';
+    document.getElementById('newpw_btn').disabled = false;
+  }
+}
+
+// ── Tab switching ─────────────────────────────────────
+function showTab(t) {
+  var forms = ['in','up','forgot','confirm','reset_sent','newpw'];
+  forms.forEach(function(f){ var el=document.getElementById('form_'+f); if(el) el.style.display='none'; });
+  var el = document.getElementById('form_'+t);
+  if (el) el.style.display = 'block';
+  var tabs = document.getElementById('tabs');
+  if (tabs) {
+    var ti = document.getElementById('tab_in');
+    var tu = document.getElementById('tab_up');
+    if (ti) ti.classList.toggle('on', t==='in');
+    if (tu) tu.classList.toggle('on', t==='up');
+    tabs.style.display = (t==='in'||t==='up') ? 'flex' : 'none';
+  }
+}
+
+function showForgot() {
+  showTab('forgot');
+}
+
+// ── Helpers ───────────────────────────────────────────
+function setLoading(btnId, txtId, loading) {
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(txtId);
+  if (!btn || !txt) return;
+  btn.disabled = loading;
+  txt.innerHTML = loading ? '<div class="spinner"></div>' : txt.getAttribute('data-label') || txt.textContent;
+}
+
+function togglePw(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'hide'; }
+  else { inp.type = 'password'; btn.textContent = 'show'; }
+}
+
+function validateEmail(inp, hintId) {
+  var hint = document.getElementById(hintId);
+  if (!hint) return;
+  var v = inp.value.trim();
+  if (!v) { hint.textContent=''; inp.className='r-input'; return; }
+  var ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+  hint.textContent = ok ? '' : 'Please enter a valid email address';
+  hint.className = ok ? 'r-hint ok' : 'r-hint';
+  inp.className = ok ? 'r-input ok' : 'r-input err';
+}
+
+// ── Password strength ─────────────────────────────────
+function updateStrength(pw) {
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  var cols = ['','#F04050','#E89318','#F5A52F','#00C97E'];
+  var labels = ['','Weak','Fair','Good','Strong'];
+  for (var i = 1; i <= 4; i++) {
+    var bar = document.getElementById('sb'+i);
+    if (bar) bar.style.background = i <= score ? cols[score] : 'var(--b2)';
+  }
+  var lbl = document.getElementById('str_label');
+  if (lbl) { lbl.textContent = pw.length ? labels[score] : ''; lbl.style.color = cols[score] || 'var(--w4)'; }
+}
+
+// ── Sign In ───────────────────────────────────────────
+async function signIn() {
+  var email = (document.getElementById('si_email').value||'').trim();
+  var pw = document.getElementById('si_pw').value;
+  var err = document.getElementById('si_err');
+  err.textContent = '';
+  if (!email || !pw) { err.textContent = 'Please enter your email and password.'; err.className='r-hint'; return; }
+  setLoading('si_btn','si_btn_txt',true);
+  try {
+    var r = await sb.auth.signInWithPassword({ email: email, password: pw });
+    if (r.error) throw r.error;
+    window.location.href = '/dashboard.html';
+  } catch(e) {
+    err.className = 'r-hint';
+    err.textContent = e.message.includes('Invalid') ? 'Incorrect email or password.' : (e.message || 'Sign in failed. Please try again.');
+    setLoading('si_btn','si_btn_txt',false);
+    document.getElementById('si_btn_txt').textContent = 'Sign in';
+    document.getElementById('si_btn').disabled = false;
+  }
+}
+
+// ── Sign Up ───────────────────────────────────────────
+async function signUp() {
+  var email = (document.getElementById('su_email').value||'').trim();
+  var pw = document.getElementById('su_pw').value;
+  var err = document.getElementById('su_err');
+  err.textContent = '';
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent='Please enter a valid email address.'; err.className='r-hint'; return; }
+  if (pw.length < 8) { err.textContent='Password must be at least 8 characters.'; err.className='r-hint'; return; }
+  setLoading('su_btn','su_btn_txt',true);
+  try {
+    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://timingax.co.uk/dashboard.html' } });
+    if (r.error) throw r.error;
+    document.getElementById('confirm_email').textContent = email;
+    showTab('confirm');
+    document.getElementById('tabs').style.display = 'none';
+  } catch(e) {
+    err.className = 'r-hint';
+    err.textContent = e.message.includes('already') ? 'An account with this email already exists. Try signing in.' : (e.message || 'Sign up failed. Please try again.');
+    setLoading('su_btn','su_btn_txt',false);
+    document.getElementById('su_btn_txt').textContent = 'Create free account';
+    document.getElementById('su_btn').disabled = false;
+  }
+}
+
+// ── Password Reset ────────────────────────────────────
+async function sendReset() {
+  var email = (document.getElementById('fp_email').value||'').trim();
+  var hint = document.getElementById('fp_hint');
+  hint.textContent = '';
+  if (!email) { hint.textContent='Please enter your email address.'; hint.className='r-hint'; return; }
+  setLoading('fp_btn','fp_btn_txt',true);
+  try {
+    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://timingax.co.uk/auth.html' });
+    if (r.error) throw r.error;
+    showTab('reset_sent');
+    document.getElementById('tabs').style.display = 'none';
+  } catch(e) {
+    hint.textContent = e.message || 'Failed to send reset email.';
+    hint.className = 'r-hint';
+    setLoading('fp_btn','fp_btn_txt',false);
+    document.getElementById('fp_btn_txt').textContent = 'Send reset link';
+    document.getElementById('fp_btn').disabled = false;
+  }
+}
+
+// Enter key support
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var fi = document.getElementById('form_in');
+  var fu = document.getElementById('form_up');
+  var ff = document.getElementById('form_forgot');
+  if (fi && fi.style.display !== 'none') signIn();
+  else if (fu && fu.style.display !== 'none') signUp();
+  else if (ff && ff.style.display !== 'none') sendReset();
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

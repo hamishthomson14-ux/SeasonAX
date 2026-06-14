@@ -453,7 +453,7 @@ body.is-pro .mode-divider{display:none}
       <button class="btn-so" onclick="signOut()">Sign out</button>
     </div>
     <div id="loginPrompt" style="display:none">
-      <a href="/seasonax-auth.html"><button class="btn-si">Sign in</button></a>
+      <a href="/auth.html"><button class="btn-si">Sign in</button></a>
     </div>
   </div>
 </nav>
@@ -771,7 +771,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
     <div class="pw-title" id="pwTitle">You&rsquo;ve used your 3 free analyses</div>
     <div class="pw-sub" id="pwSub">Create a free account to get 3 analyses per month, or upgrade to Pro (&pound;19.99/mo) for unlimited access to all 430+ assets.</div>
     <div class="pw-btns">
-      <a href="/seasonax-auth.html" class="pw-primary">Create free account</a>
+      <a href="/auth.html" class="pw-primary">Create free account</a>
       <a href="/index.html#pricing" class="pw-ghost">View plans from £19.99/mo</a>
       <button class="pw-skip" onclick="document.getElementById('paywallOverlay').style.display='none'">Maybe later</button>
     </div>
@@ -2362,7 +2362,7 @@ function toggleAlert() {
   var btn = document.getElementById('alertBtn');
   if (!CUR_ITEM) return;
   if (!currentUser) {
-    window.location.href = '/seasonax-auth.html';
+    window.location.href = '/auth.html';
     return;
   }
   btn.disabled = true;
@@ -2480,7 +2480,7 @@ async function loadUsageCount(){
 
 async function signOut(){
   await sb.auth.signOut();
-  window.location.href = '/seasonax-auth.html';
+  window.location.href = '/auth.html';
 }
 
 function trackAnalysis(){
