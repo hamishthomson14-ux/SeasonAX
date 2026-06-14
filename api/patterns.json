@@ -1,0 +1,964 @@
+{
+ "techGrowth": [
+  {
+   "m": "Jan",
+   "avg": 2.4,
+   "win": 66,
+   "note": "January effect strongest in mega-cap tech"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.6,
+   "win": 55,
+   "note": "Earnings reports drive mixed results"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.1,
+   "win": 61,
+   "note": "End of quarter tech rebalancing"
+  },
+  {
+   "m": "Apr",
+   "avg": 2.0,
+   "win": 67,
+   "note": "Earnings season catalyst"
+  },
+  {
+   "m": "May",
+   "avg": 0.3,
+   "win": 54,
+   "note": "Rotation trade begins; gains fade"
+  },
+  {
+   "m": "Jun",
+   "avg": -0.3,
+   "win": 47,
+   "note": "Rate concerns weigh on growth"
+  },
+  {
+   "m": "Jul",
+   "avg": 2.3,
+   "win": 68,
+   "note": "Strong Q2 earnings month"
+  },
+  {
+   "m": "Aug",
+   "avg": 0.7,
+   "win": 56,
+   "note": "Slight strength on AI/tech momentum"
+  },
+  {
+   "m": "Sep",
+   "avg": -1.4,
+   "win": 39,
+   "note": "Worst month; risk-off selling"
+  },
+  {
+   "m": "Oct",
+   "avg": 0.9,
+   "win": 58,
+   "note": "Q3 earnings recover losses"
+  },
+  {
+   "m": "Nov",
+   "avg": 2.5,
+   "win": 73,
+   "note": "Strongest month; holiday + tech rally"
+  },
+  {
+   "m": "Dec",
+   "avg": 1.9,
+   "win": 71,
+   "note": "Year-end tech positioning"
+  }
+ ],
+ "broadIndex": [
+  {
+   "m": "Jan",
+   "avg": 1.1,
+   "win": 62,
+   "note": "January effect; new year positioning"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.1,
+   "win": 52,
+   "note": "Often flat; earnings season winds down"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.2,
+   "win": 65,
+   "note": "Q1 end window-dressing lifts prices"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.5,
+   "win": 68,
+   "note": "Historically strongest spring month"
+  },
+  {
+   "m": "May",
+   "avg": 0.3,
+   "win": 57,
+   "note": "Sell in May effect moderates gains"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.1,
+   "win": 52,
+   "note": "Summer doldrums; low conviction"
+  },
+  {
+   "m": "Jul",
+   "avg": 1.4,
+   "win": 64,
+   "note": "Mid-year rally; Q2 earnings"
+  },
+  {
+   "m": "Aug",
+   "avg": -0.2,
+   "win": 47,
+   "note": "Low volume; pullback risk"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.7,
+   "win": 42,
+   "note": "Historically worst month of the year"
+  },
+  {
+   "m": "Oct",
+   "avg": 0.9,
+   "win": 59,
+   "note": "Bear killer; volatile but recovers"
+  },
+  {
+   "m": "Nov",
+   "avg": 1.7,
+   "win": 70,
+   "note": "Post-election & holiday rally"
+  },
+  {
+   "m": "Dec",
+   "avg": 1.5,
+   "win": 72,
+   "note": "Santa Claus rally; year-end dressing"
+  }
+ ],
+ "evGrowth": [
+  {
+   "m": "Jan",
+   "avg": 5.2,
+   "win": 68,
+   "note": "New year growth optimism surge"
+  },
+  {
+   "m": "Feb",
+   "avg": 2.1,
+   "win": 57,
+   "note": "Delivery numbers drive volatility"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.4,
+   "win": 54,
+   "note": "Q1 production updates move shares"
+  },
+  {
+   "m": "Apr",
+   "avg": 3.8,
+   "win": 62,
+   "note": "Q1 delivery beats historically"
+  },
+  {
+   "m": "May",
+   "avg": -3.1,
+   "win": 42,
+   "note": "Risk-off rotation hits growth hard"
+  },
+  {
+   "m": "Jun",
+   "avg": -2.4,
+   "win": 40,
+   "note": "Summer selloff in speculative names"
+  },
+  {
+   "m": "Jul",
+   "avg": 4.1,
+   "win": 63,
+   "note": "Delivery numbers + earnings catalyst"
+  },
+  {
+   "m": "Aug",
+   "avg": 1.8,
+   "win": 55,
+   "note": "Battery/tech announcements move shares"
+  },
+  {
+   "m": "Sep",
+   "avg": -3.7,
+   "win": 36,
+   "note": "Worst month; macro headwinds"
+  },
+  {
+   "m": "Oct",
+   "avg": 2.2,
+   "win": 57,
+   "note": "Q3 earnings catalyst"
+  },
+  {
+   "m": "Nov",
+   "avg": 5.8,
+   "win": 70,
+   "note": "Strong seasonality; momentum stocks surge"
+  },
+  {
+   "m": "Dec",
+   "avg": 3.1,
+   "win": 63,
+   "note": "Year-end rebalancing into growth"
+  }
+ ],
+ "financials": [
+  {
+   "m": "Jan",
+   "avg": 1.8,
+   "win": 64,
+   "note": "New year positioning in cyclicals"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.6,
+   "win": 55,
+   "note": "Q4 earnings reports; dividend focus"
+  },
+  {
+   "m": "Mar",
+   "avg": 0.4,
+   "win": 54,
+   "note": "Rate expectations drive bank stocks"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.9,
+   "win": 66,
+   "note": "Q1 earnings season; loan growth data"
+  },
+  {
+   "m": "May",
+   "avg": 0.2,
+   "win": 52,
+   "note": "Mixed; rate curve sensitivity"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.5,
+   "win": 54,
+   "note": "Fed meeting outcomes drive moves"
+  },
+  {
+   "m": "Jul",
+   "avg": 1.6,
+   "win": 63,
+   "note": "Q2 earnings; net interest margin focus"
+  },
+  {
+   "m": "Aug",
+   "avg": -0.3,
+   "win": 48,
+   "note": "Summer lull in financial trading"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.8,
+   "win": 43,
+   "note": "Risk-off hurts financials"
+  },
+  {
+   "m": "Oct",
+   "avg": 1.4,
+   "win": 62,
+   "note": "Q3 earnings beat expectations historically"
+  },
+  {
+   "m": "Nov",
+   "avg": 2.2,
+   "win": 70,
+   "note": "Strong month; rate expectations lift banks"
+  },
+  {
+   "m": "Dec",
+   "avg": 1.1,
+   "win": 64,
+   "note": "Year-end tax-loss reversal"
+  }
+ ],
+ "energy": [
+  {
+   "m": "Jan",
+   "avg": 2.1,
+   "win": 63,
+   "note": "Heating demand & cold weather premium"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.8,
+   "win": 55,
+   "note": "OPEC meeting season; supply news"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.5,
+   "win": 61,
+   "note": "Spring driving season demand builds"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.2,
+   "win": 59,
+   "note": "Gasoline demand peak approaches"
+  },
+  {
+   "m": "May",
+   "avg": 0.9,
+   "win": 57,
+   "note": "Summer driving season pricing"
+  },
+  {
+   "m": "Jun",
+   "avg": -0.4,
+   "win": 47,
+   "note": "Refinery maintenance; mixed supply"
+  },
+  {
+   "m": "Jul",
+   "avg": 0.3,
+   "win": 52,
+   "note": "Peak summer demand; price plateau"
+  },
+  {
+   "m": "Aug",
+   "avg": -0.7,
+   "win": 45,
+   "note": "Demand concerns emerge; weak month"
+  },
+  {
+   "m": "Sep",
+   "avg": -1.2,
+   "win": 41,
+   "note": "End of driving season; demand falls"
+  },
+  {
+   "m": "Oct",
+   "avg": 0.6,
+   "win": 54,
+   "note": "Heating oil demand builds"
+  },
+  {
+   "m": "Nov",
+   "avg": 1.4,
+   "win": 61,
+   "note": "OPEC cuts; winter demand premium"
+  },
+  {
+   "m": "Dec",
+   "avg": 0.8,
+   "win": 56,
+   "note": "Year-end energy demand; cold snap risk"
+  }
+ ],
+ "consumer": [
+  {
+   "m": "Jan",
+   "avg": 0.4,
+   "win": 54,
+   "note": "Post-holiday hangover; returns season"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.9,
+   "win": 58,
+   "note": "Valentine's & Presidents Day sales"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.3,
+   "win": 62,
+   "note": "Spring refresh drives consumer spending"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.6,
+   "win": 65,
+   "note": "Easter, spring break; strong sales"
+  },
+  {
+   "m": "May",
+   "avg": 0.7,
+   "win": 57,
+   "note": "Mother's Day; mid-spring spending"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.2,
+   "win": 52,
+   "note": "Summer slump in retail begins"
+  },
+  {
+   "m": "Jul",
+   "avg": 1.1,
+   "win": 60,
+   "note": "Amazon Prime Day; summer sales surge"
+  },
+  {
+   "m": "Aug",
+   "avg": 1.3,
+   "win": 62,
+   "note": "Back-to-school; strong retail month"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.3,
+   "win": 48,
+   "note": "Post back-to-school lull"
+  },
+  {
+   "m": "Oct",
+   "avg": 0.8,
+   "win": 57,
+   "note": "Halloween; early holiday prep"
+  },
+  {
+   "m": "Nov",
+   "avg": 2.4,
+   "win": 73,
+   "note": "Black Friday / Cyber Monday surge"
+  },
+  {
+   "m": "Dec",
+   "avg": 2.1,
+   "win": 75,
+   "note": "Strongest month; holiday shopping peak"
+  }
+ ],
+ "healthcare": [
+  {
+   "m": "Jan",
+   "avg": 1.2,
+   "win": 62,
+   "note": "New year health insurance renewals"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.8,
+   "win": 57,
+   "note": "Q4 pharma earnings; pipeline updates"
+  },
+  {
+   "m": "Mar",
+   "avg": 0.6,
+   "win": 55,
+   "note": "FDA approval cycles; mixed results"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.0,
+   "win": 59,
+   "note": "Q1 earnings; drug pricing news"
+  },
+  {
+   "m": "May",
+   "avg": 0.5,
+   "win": 54,
+   "note": "ASCO conference; oncology catalysts"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.3,
+   "win": 52,
+   "note": "Summer clinical trial data"
+  },
+  {
+   "m": "Jul",
+   "avg": 0.9,
+   "win": 58,
+   "note": "Q2 earnings; hospital utilization data"
+  },
+  {
+   "m": "Aug",
+   "avg": 0.4,
+   "win": 53,
+   "note": "Historically defensive; modest gains"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.2,
+   "win": 48,
+   "note": "Slight weakness; political drug pricing"
+  },
+  {
+   "m": "Oct",
+   "avg": 1.1,
+   "win": 61,
+   "note": "Q3 earnings; insurance enrollment"
+  },
+  {
+   "m": "Nov",
+   "avg": 1.6,
+   "win": 68,
+   "note": "Strong defensives amid equity rally"
+  },
+  {
+   "m": "Dec",
+   "avg": 1.3,
+   "win": 65,
+   "note": "Year-end defensive positioning"
+  }
+ ],
+ "speculative": [
+  {
+   "m": "Jan",
+   "avg": 8.4,
+   "win": 68,
+   "note": "Speculative January surge; retail FOMO"
+  },
+  {
+   "m": "Feb",
+   "avg": 4.2,
+   "win": 57,
+   "note": "Momentum names carry January gains"
+  },
+  {
+   "m": "Mar",
+   "avg": -2.1,
+   "win": 43,
+   "note": "Profit-taking after early gains"
+  },
+  {
+   "m": "Apr",
+   "avg": 3.1,
+   "win": 56,
+   "note": "Earnings season hype for growth names"
+  },
+  {
+   "m": "May",
+   "avg": -4.8,
+   "win": 38,
+   "note": "Brutal May selloff in speculative names"
+  },
+  {
+   "m": "Jun",
+   "avg": -5.2,
+   "win": 35,
+   "note": "Worst month; risk-off hits hardest here"
+  },
+  {
+   "m": "Jul",
+   "avg": 5.1,
+   "win": 61,
+   "note": "Relief rally; FOMO re-entry"
+  },
+  {
+   "m": "Aug",
+   "avg": 2.3,
+   "win": 54,
+   "note": "Retail trader activity boosts names"
+  },
+  {
+   "m": "Sep",
+   "avg": -6.1,
+   "win": 33,
+   "note": "Worst seasonal month for speculative"
+  },
+  {
+   "m": "Oct",
+   "avg": 4.2,
+   "win": 59,
+   "note": "Crypto / AI hype cycles often restart"
+  },
+  {
+   "m": "Nov",
+   "avg": 9.8,
+   "win": 71,
+   "note": "Strongest month; momentum stocks surge"
+  },
+  {
+   "m": "Dec",
+   "avg": 3.4,
+   "win": 58,
+   "note": "Year-end chase for high-beta names"
+  }
+ ],
+ "gold": [
+  {
+   "m": "Jan",
+   "avg": 1.8,
+   "win": 64,
+   "note": "New year safe-haven & jewelry demand"
+  },
+  {
+   "m": "Feb",
+   "avg": 1.2,
+   "win": 61,
+   "note": "Valentine's season jewelry demand"
+  },
+  {
+   "m": "Mar",
+   "avg": -0.5,
+   "win": 46,
+   "note": "Profit-taking after Q1 strength"
+  },
+  {
+   "m": "Apr",
+   "avg": 0.8,
+   "win": 57,
+   "note": "Indian wedding season demand"
+  },
+  {
+   "m": "May",
+   "avg": 0.5,
+   "win": 54,
+   "note": "Modest gains as equities weaken"
+  },
+  {
+   "m": "Jun",
+   "avg": -0.7,
+   "win": 44,
+   "note": "Weakest month; equity strength reduces safe-haven"
+  },
+  {
+   "m": "Jul",
+   "avg": 0.3,
+   "win": 52,
+   "note": "Flat to slight gains in summer"
+  },
+  {
+   "m": "Aug",
+   "avg": 1.5,
+   "win": 63,
+   "note": "Historically strong; geopolitical risk"
+  },
+  {
+   "m": "Sep",
+   "avg": 1.2,
+   "win": 60,
+   "note": "Festival demand from India & China"
+  },
+  {
+   "m": "Oct",
+   "avg": 0.6,
+   "win": 55,
+   "note": "Diwali demand; mixed signals"
+  },
+  {
+   "m": "Nov",
+   "avg": 0.2,
+   "win": 51,
+   "note": "Often flat as equities rally"
+  },
+  {
+   "m": "Dec",
+   "avg": -0.3,
+   "win": 47,
+   "note": "Year-end profit-taking by funds"
+  }
+ ],
+ "crypto": [
+  {
+   "m": "Jan",
+   "avg": 14.2,
+   "win": 70,
+   "note": "Strong new year rally historically"
+  },
+  {
+   "m": "Feb",
+   "avg": 9.8,
+   "win": 65,
+   "note": "Momentum continues post-January"
+  },
+  {
+   "m": "Mar",
+   "avg": 8.5,
+   "win": 63,
+   "note": "Spring bull runs common"
+  },
+  {
+   "m": "Apr",
+   "avg": 12.1,
+   "win": 68,
+   "note": "Historically one of the best months"
+  },
+  {
+   "m": "May",
+   "avg": -5.2,
+   "win": 40,
+   "note": "'Sell in May' extreme in crypto"
+  },
+  {
+   "m": "Jun",
+   "avg": -8.7,
+   "win": 35,
+   "note": "Worst month; summer selloffs"
+  },
+  {
+   "m": "Jul",
+   "avg": 8.3,
+   "win": 62,
+   "note": "Mid-year recovery after June lows"
+  },
+  {
+   "m": "Aug",
+   "avg": 3.1,
+   "win": 55,
+   "note": "Modest summer gains"
+  },
+  {
+   "m": "Sep",
+   "avg": -5.8,
+   "win": 38,
+   "note": "Crypto follows equity weakness"
+  },
+  {
+   "m": "Oct",
+   "avg": 21.4,
+   "win": 75,
+   "note": "'Uptober' \u2014 historically best month"
+  },
+  {
+   "m": "Nov",
+   "avg": 18.6,
+   "win": 72,
+   "note": "Bull runs peak; halving cycles"
+  },
+  {
+   "m": "Dec",
+   "avg": 5.2,
+   "win": 58,
+   "note": "Mixed; profit-taking vs Santa rally"
+  }
+ ],
+ "bonds": [
+  {
+   "m": "Jan",
+   "avg": 0.8,
+   "win": 60,
+   "note": "Flight to safety in new year"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.3,
+   "win": 53,
+   "note": "Modest gains as equities peak"
+  },
+  {
+   "m": "Mar",
+   "avg": -0.6,
+   "win": 44,
+   "note": "Rate hike fears weigh on bonds"
+  },
+  {
+   "m": "Apr",
+   "avg": -0.4,
+   "win": 46,
+   "note": "Equity strength reduces bond demand"
+  },
+  {
+   "m": "May",
+   "avg": 0.9,
+   "win": 61,
+   "note": "Bonds rally as equities weaken"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.5,
+   "win": 55,
+   "note": "Summer safety trade begins"
+  },
+  {
+   "m": "Jul",
+   "avg": 0.2,
+   "win": 52,
+   "note": "Mixed; Fed meeting outcomes"
+  },
+  {
+   "m": "Aug",
+   "avg": 1.1,
+   "win": 62,
+   "note": "Summer safety demand"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.3,
+   "win": 47,
+   "note": "Equity weakness doesn't always help"
+  },
+  {
+   "m": "Oct",
+   "avg": -0.5,
+   "win": 44,
+   "note": "Risk-on October hurts bonds"
+  },
+  {
+   "m": "Nov",
+   "avg": -0.8,
+   "win": 41,
+   "note": "Equity rally pressures treasuries"
+  },
+  {
+   "m": "Dec",
+   "avg": 0.4,
+   "win": 54,
+   "note": "Year-end safe-haven demand"
+  }
+ ],
+ "defense": [
+  {
+   "m": "Jan",
+   "avg": 1.4,
+   "win": 62,
+   "note": "Budget cycle; new year defense spending"
+  },
+  {
+   "m": "Feb",
+   "avg": 0.9,
+   "win": 58,
+   "note": "Q4 earnings; contract announcements"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.1,
+   "win": 60,
+   "note": "Geopolitical risk premium builds"
+  },
+  {
+   "m": "Apr",
+   "avg": 1.0,
+   "win": 59,
+   "note": "Q1 earnings; backlog growth focus"
+  },
+  {
+   "m": "May",
+   "avg": 0.7,
+   "win": 56,
+   "note": "Relatively defensive in May selloff"
+  },
+  {
+   "m": "Jun",
+   "avg": 0.5,
+   "win": 54,
+   "note": "Congressional budget season"
+  },
+  {
+   "m": "Jul",
+   "avg": 0.8,
+   "win": 57,
+   "note": "Q2 earnings; program updates"
+  },
+  {
+   "m": "Aug",
+   "avg": 0.6,
+   "win": 55,
+   "note": "Holds up well in summer doldrums"
+  },
+  {
+   "m": "Sep",
+   "avg": -0.4,
+   "win": 47,
+   "note": "Slight weakness with broader market"
+  },
+  {
+   "m": "Oct",
+   "avg": 1.2,
+   "win": 62,
+   "note": "Q3 earnings; geopolitical catalysts"
+  },
+  {
+   "m": "Nov",
+   "avg": 1.8,
+   "win": 68,
+   "note": "Defense spending optimism; strong month"
+  },
+  {
+   "m": "Dec",
+   "avg": 1.4,
+   "win": 65,
+   "note": "Year-end defense contract awards"
+  }
+ ],
+ "semis": [
+  {
+   "m": "Jan",
+   "avg": 3.1,
+   "win": 67,
+   "note": "CES & AI chip demand drives January"
+  },
+  {
+   "m": "Feb",
+   "avg": 1.2,
+   "win": 58,
+   "note": "Q4 fab utilization reports"
+  },
+  {
+   "m": "Mar",
+   "avg": 1.8,
+   "win": 63,
+   "note": "PC/server refresh cycle begins"
+  },
+  {
+   "m": "Apr",
+   "avg": 2.4,
+   "win": 66,
+   "note": "Q1 earnings; data center demand"
+  },
+  {
+   "m": "May",
+   "avg": -0.8,
+   "win": 46,
+   "note": "Supply chain concerns resurface"
+  },
+  {
+   "m": "Jun",
+   "avg": -1.1,
+   "win": 43,
+   "note": "Inventory correction fears"
+  },
+  {
+   "m": "Jul",
+   "avg": 2.8,
+   "win": 67,
+   "note": "Q2 earnings; AI GPU demand"
+  },
+  {
+   "m": "Aug",
+   "avg": 1.4,
+   "win": 60,
+   "note": "Chip demand forecasts; Nvidia effect"
+  },
+  {
+   "m": "Sep",
+   "avg": -1.8,
+   "win": 38,
+   "note": "Worst month; inventory cycle fears"
+  },
+  {
+   "m": "Oct",
+   "avg": 1.5,
+   "win": 62,
+   "note": "Q3 earnings; forward guidance"
+  },
+  {
+   "m": "Nov",
+   "avg": 3.2,
+   "win": 72,
+   "note": "Strongest month; AI capex spend"
+  },
+  {
+   "m": "Dec",
+   "avg": 2.1,
+   "win": 68,
+   "note": "Year-end tech spending; chip orders"
+  }
+ ]
+}
