@@ -127,10 +127,16 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                user_metadata: { subscription: status, stripe_customer: obj.customer },
+                app_metadata: { subscription: status, stripe_customer: obj.customer },
               }),
             });
             console.log(`Updated ${customerEmail} -> ${status}`);
+
+            // Referral reward: if this user was referred and this is their
+            // first time becoming Pro/Lifetime, credit both accounts.
+            if (status === 'pro' || status === 'lifetime') {
+              await processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, userId, obj.customer);
+            }
           } else {
             console.log(`No Supabase user found for ${customerEmail}`);
           }

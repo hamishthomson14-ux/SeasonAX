@@ -68,7 +68,7 @@ export default async function handler(req, res) {
     let free = 0, pro = 0, lifetime = 0, last7 = 0, last30 = 0;
 
     for (const u of allUsers) {
-      const sub = (u.user_metadata && u.user_metadata.subscription) || 'free';
+      const sub = (u.app_metadata && u.app_metadata.subscription) || 'free';
       if (sub === 'lifetime') lifetime++;
       else if (sub === 'pro') pro++;
       else free++;
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
         email: u.email,
         created_at: u.created_at,
         last_sign_in_at: u.last_sign_in_at,
-        subscription: (u.user_metadata && u.user_metadata.subscription) || 'free',
+        subscription: (u.app_metadata && u.app_metadata.subscription) || 'free',
       }));
 
     // Helper: fetch recent rows + exact count from a table

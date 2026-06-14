@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimingAX — Dashboard</title>
+<meta property="og:title" content="TimingAX — Dashboard">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timingax.co.uk/dashboard.html">
+<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;--bg4:#0F1728;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--sans)}
+.topbar{height:56px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.98);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;gap:16px}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo{display:flex;align-items:center;gap:8px}
+.tb-word{font:800 16px/1 var(--disp);letter-spacing:-.02em}
+.tb-word b{color:var(--amber2);font-weight:800}
+.tb-divider{width:1px;height:18px;background:var(--b2);margin:0 6px}
+.tb-label{font:500 11px/1 var(--mono);color:var(--w4);letter-spacing:.08em;text-transform:uppercase}
+.tb-center{display:flex;align-items:center;gap:20px;flex:1;justify-content:center}
+.tb-clock{font:500 13px/1 var(--mono);color:var(--w3)}
+.tb-clock span{color:var(--w)}
+.market-status{display:flex;align-items:center;gap:6px;font:500 11px/1 var(--mono);padding:4px 12px;border-radius:20px}
+.market-status.open{background:rgba(0,201,126,.08);border:1px solid rgba(0,201,126,.2);color:var(--green)}
+.market-status.closed{background:var(--s1);border:1px solid var(--b2);color:var(--w4)}
+.market-status.pre{background:rgba(232,147,24,.08);border:1px solid rgba(232,147,24,.2);color:var(--amber2)}
+.ms-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:mspulse 2s infinite}
+@keyframes mspulse{0%,100%{opacity:1}50%{opacity:.3}}
+.tb-right{display:flex;align-items:center;gap:10px}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--s1);border:1px solid var(--b2);border-radius:7px;padding:5px 12px;font:400 12px/1 var(--mono);color:var(--w3)}
+.user-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.btn-so{background:none;border:1px solid var(--b2);color:var(--w4);padding:5px 12px;border-radius:6px;font:400 11px/1 var(--mono);transition:all .18s}
+.btn-so:hover{border-color:var(--amber2);color:var(--amber2)}
+.page{max-width:1400px;margin:0 auto;padding:32px 32px 80px}
+.welcome{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;gap:20px;flex-wrap:wrap}
+.wl-greeting{font:800 36px/1.1 var(--disp);letter-spacing:-.04em;margin-bottom:8px}
+.wl-greeting em{font-style:normal;color:var(--amber2)}
+.wl-sub{font-size:14px;color:var(--w3);line-height:1.6}
+.wl-right{display:flex;gap:10px;flex-wrap:wrap}
+.wl-btn{padding:9px 18px;border-radius:7px;font:600 13px/1 var(--sans);transition:all .18s;display:flex;align-items:center;gap:6px;white-space:nowrap;border:none}
+.wl-btn.primary{background:var(--amber);color:var(--bg)}
+.wl-btn.primary:hover{background:var(--amber2)}
+.wl-btn.ghost{background:none;border:1px solid var(--b2);color:var(--w3)}
+.wl-btn.ghost:hover{border-color:var(--amber2);color:var(--w)}
+.sec-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:"";width:14px;height:1px;background:var(--amber2);opacity:.5}
+.overview{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px;overflow:hidden;margin-bottom:28px}
+.ov-cell{background:var(--bg2);padding:18px 20px;transition:background .18s}
+.ov-cell:hover{background:var(--s1)}
+.ov-label{font:400 9px/1 var(--mono);letter-spacing:.12em;color:var(--w4);text-transform:uppercase;margin-bottom:8px}
+.ov-val{font:600 22px/1 var(--mono);letter-spacing:-.02em;margin-bottom:4px}
+.ov-val.g{color:var(--green)}.ov-val.r{color:var(--red)}.ov-val.a{color:var(--amber2)}.ov-val.w{color:var(--w)}
+.ov-sub{font:400 10px/1 var(--mono);color:var(--w5)}
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.tool-card{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:22px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;display:flex;flex-direction:column;text-decoration:none}
+.tool-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .2s}
+.tool-card:hover{background:var(--s1);border-color:var(--b3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tool-card:hover::before,.tool-card.featured::before{background:var(--amber2)}
+.tool-card.featured{background:rgba(232,147,24,.04);border-color:rgba(232,147,24,.25)}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.tc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.tc-num{font:600 10px/1 var(--mono);color:var(--w5);letter-spacing:.08em}
+.tc-badge{font:600 8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;display:block;margin-top:4px}
+.tc-badge.new{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
+.tc-badge.hot{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
+.tc-name{font:700 15px/1.2 var(--disp);letter-spacing:-.02em;color:var(--w);margin-bottom:7px}
+.tc-desc{font-size:12px;color:var(--w3);line-height:1.6;flex:1;margin-bottom:16px}
+.tc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.tc-stat{font:500 11px/1 var(--mono);color:var(--w4)}
+.tc-arr{color:var(--w5);font-size:16px;transition:all .2s}
+.tool-card:hover .tc-arr{color:var(--amber2);transform:translate(3px,-3px)}
+.sidebar-col{display:flex;flex-direction:column;gap:16px}
+.spotlight,.cal-widget,.quick-access,.referral-widget{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;overflow:hidden}
+.ref-body{padding:14px 18px}
+.ref-copy{font-size:12px;color:var(--w3);line-height:1.6;margin-bottom:12px}
+.ref-link-row{display:flex;gap:8px;margin-bottom:14px}
+.ref-link-input{flex:1;min-width:0;background:var(--s1);border:1px solid var(--b2);color:var(--w3);font:400 11px/1 var(--mono);padding:9px 10px;border-radius:6px}
+.ref-copy-btn{background:var(--amber);color:var(--bg);border:none;padding:9px 14px;border-radius:6px;font:600 12px/1 var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
+.ref-copy-btn:hover{background:var(--amber2)}
+.ref-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
+.ref-stat-v{font:700 18px/1 var(--disp);color:var(--w)}
+.ref-stat-l{font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--w4);margin-top:4px}
+.sp-head,.cw-head,.qa-head{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.sp-title,.cw-title,.qa-title{font:600 12px/1 var(--sans);color:var(--w2)}
+.sp-sub{font:400 10px/1 var(--mono);color:var(--w4)}
+.sp-item{padding:13px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;transition:background .15s;cursor:pointer}
+.sp-item:last-child{border-bottom:none}
+.sp-item:hover{background:var(--s1)}
+.sp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-right:10px}
+.sp-item.bull .sp-dot{background:var(--green)}.sp-item.bear .sp-dot{background:var(--red)}
+.sp-left{display:flex;align-items:center;flex:1;min-width:0}
+.sp-ticker{font:600 11px/1 var(--mono);color:var(--amber2);margin-bottom:2px}
+.sp-name{font-size:11px;color:var(--w3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-val{font:600 13px/1 var(--mono);white-space:nowrap}
+.sp-val.g{color:var(--green)}.sp-val.r{color:var(--red)}
+.cw-item{padding:12px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:12px;transition:background .15s}
+.cw-item:last-child{border-bottom:none}
+.cw-item:hover{background:var(--s1)}
+.cw-date{background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:5px 8px;text-align:center;min-width:40px;flex-shrink:0}
+.cw-mo{font:600 7px/1 var(--mono);letter-spacing:.1em;color:var(--amber2);text-transform:uppercase}
+.cw-day{font:700 14px/1.2 var(--mono);color:var(--w)}
+.cw-name{font-size:12px;color:var(--w2);font-weight:500;margin-bottom:2px}
+.cw-days{font:400 10px/1 var(--mono);color:var(--w4)}
+.cw-type{font:600 8px/1 var(--mono);letter-spacing:.08em;padding:2px 7px;border-radius:3px;flex-shrink:0;margin-left:auto}
+.cw-type.fed{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
+.cw-type.data{background:rgba(77,163,255,.08);color:#4DA3FF;border:1px solid rgba(77,163,255,.2)}
+.cw-type.earn{background:rgba(155,127,255,.08);color:#9B7FFF;border:1px solid rgba(155,127,255,.2)}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px}
+.qa-btn{background:var(--s1);border:1px solid var(--b2);border-radius:8px;padding:11px 12px;font-size:12px;color:var(--w3);transition:all .18s;text-align:left;display:flex;flex-direction:column;gap:5px;cursor:pointer}
+.qa-btn:hover{border-color:var(--amber2);color:var(--w);background:var(--s2)}
+.qa-btn-icon{font-size:16px}
+.qa-btn-label{font:500 11px/1 var(--sans)}
+@media(max-width:1100px){.main-grid{grid-template-columns:1fr}.tools-grid{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:repeat(3,1fr)}.ov-cell:nth-child(4),.ov-cell:nth-child(5){display:none}}
+@media(max-width:700px){.page{padding:20px 16px 60px}.topbar{padding:0 16px}.tb-center{display:none}.tools-grid{grid-template-columns:1fr}.overview{grid-template-columns:1fr 1fr}}
+
+/* ── ONBOARDING MODAL ── */
+.ob-overlay{position:fixed;inset:0;background:rgba(4,7,15,.82);backdrop-filter:blur(6px);z-index:9500;display:flex;align-items:center;justify-content:center;padding:24px;animation:obFade .25s ease}
+@keyframes obFade{from{opacity:0}to{opacity:1}}
+.ob-modal{background:var(--bg2);border:1px solid var(--b2);border-radius:16px;max-width:560px;width:100%;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.6);animation:obSlide .3s cubic-bezier(.4,0,.2,1)}
+@keyframes obSlide{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ob-header{padding:28px 32px 0}
+.ob-progress{display:flex;gap:6px;margin-bottom:24px}
+.ob-dot{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.ob-dot.active{background:var(--amber)}
+.ob-dot.done{background:rgba(232,147,24,.4)}
+.ob-body{padding:0 32px 32px}
+.ob-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.ob-title{font:800 28px/1.15 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.ob-title em{font-style:normal;color:var(--amber2)}
+.ob-text{font-size:14px;color:var(--w3);line-height:1.7;margin-bottom:22px}
+.ob-text strong{color:var(--w2);font-weight:500}
+.ob-preview{background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:16px 18px;margin-bottom:24px}
+.ob-pv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ob-pv-cell{text-align:center}
+.ob-pv-val{font:600 18px/1 var(--mono);margin-bottom:4px}
+.ob-pv-val.g{color:var(--green)}.ob-pv-val.r{color:var(--red)}.ob-pv-val.a{color:var(--amber2)}
+.ob-pv-lbl{font:400 9px/1.4 var(--mono);color:var(--w4)}
+.ob-tools{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.ob-tool{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:10px 14px}
+.ob-tool-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ob-tool-name{font:600 12px/1 var(--sans);color:var(--w2)}
+.ob-tool-desc{font:400 10px/1.4 var(--mono);color:var(--w4);margin-top:2px}
+.ob-tier{display:flex;gap:10px;margin-bottom:24px}
+.ob-tier-card{flex:1;background:var(--bg3);border:1px solid var(--b2);border-radius:10px;padding:14px;text-align:center}
+.ob-tier-card.highlight{border-color:rgba(232,147,24,.3);background:rgba(232,147,24,.04)}
+.ob-tier-name{font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber2);margin-bottom:6px}
+.ob-tier-price{font:700 18px/1 var(--mono);color:var(--w);margin-bottom:6px}
+.ob-tier-desc{font:400 10px/1.5 var(--mono);color:var(--w4)}
+.ob-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ob-skip{font:500 12px/1 var(--mono);color:var(--w4);background:none;border:none;cursor:pointer;transition:color .15s;padding:8px 0}
+.ob-skip:hover{color:var(--w2)}
+.ob-actions{display:flex;gap:10px}
+.ob-btn{padding:10px 22px;border-radius:7px;font:600 13px/1 var(--sans);transition:all .18s;border:none;cursor:pointer}
+.ob-btn.ghost{background:none;border:1px solid var(--b2);color:var(--w3)}
+.ob-btn.ghost:hover{border-color:var(--b3);color:var(--w)}
+.ob-btn.primary{background:var(--amber);color:var(--bg)}
+.ob-btn.primary:hover{background:var(--amber2)}
+@media(max-width:560px){.ob-pv-grid{grid-template-columns:1fr 1fr 1fr}.ob-header,.ob-body{padding-left:22px;padding-right:22px}.ob-title{font-size:24px}}
+
+.tc-lock{font:700 9px/1 var(--mono);letter-spacing:.12em;color:var(--amber2);background:rgba(232,147,24,.12);border:1px solid rgba(232,147,24,.35);padding:4px 9px;border-radius:4px;margin-top:6px;display:inline-flex;align-items:center;gap:4px}
+body.is-pro .tc-lock{display:none}
+.tool-card.pro-locked{opacity:.7}
+body.is-pro .tool-card.pro-locked{opacity:1}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">
+      <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
+      <div class="tb-word">Timing<b>AX</b></div>
+    </div>
+    <div class="tb-divider"></div>
+    <div class="tb-label">Dashboard</div>
+  </div>
+  <div class="tb-center">
+    <div class="tb-clock" id="tbClock"></div>
+    <div class="market-status" id="mktStatus"></div>
+  </div>
+  <div class="tb-right">
+    <div class="user-pill" id="userPill">Loading...</div>
+    <button class="btn-so" onclick="signOut()">Sign out</button>
+  </div>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="ob-overlay" id="obOverlay" style="display:none">
+  <div class="ob-modal">
+    <div class="ob-header">
+      <div class="ob-progress">
+        <div class="ob-dot active" id="obDot0"></div>
+        <div class="ob-dot" id="obDot1"></div>
+        <div class="ob-dot" id="obDot2"></div>
+        <div class="ob-dot" id="obDot3"></div>
+      </div>
+    </div>
+    <div class="ob-body" id="obBody"></div>
+  </div>
+</div>
+<div class="page">
+  <div class="welcome">
+    <div class="wl-left">
+      <div class="wl-greeting" id="greeting">Good morning. <em>Ready to trade the calendar?</em></div>
+      <div class="wl-sub">Here&#8217;s your seasonal intelligence for <span id="monthName"></span>. Choose a tool to begin.</div>
+    </div>
+    <div class="wl-right">
+      <button class="wl-btn ghost" id="manageSubBtn" style="display:none" onclick="openBillingPortal()">Manage Subscription</button>
+      <a href="/market-seasonality.html"><button class="wl-btn primary">&#9654; Open Analyzer</button></a>
+      <a href="/index.html"><button class="wl-btn ghost">&#8592; Home</button></a>
+    </div>
+  </div>
+  <div class="sec-label">This Month &#8212; <span id="ovMonthLabel"></span></div>
+  <div class="overview">
+    <div class="ov-cell"><div class="ov-label">S&amp;P 500 avg</div><div class="ov-val" id="ov1">&#8212;</div><div class="ov-sub" id="ov1s"></div></div>
+    <div class="ov-cell"><div class="ov-label">NASDAQ avg</div><div class="ov-val" id="ov2">&#8212;</div><div class="ov-sub" id="ov2s"></div></div>
+    <div class="ov-cell"><div class="ov-label">Bitcoin avg</div><div class="ov-val" id="ov3">&#8212;</div><div class="ov-sub" id="ov3s"></div></div>
+    <div class="ov-cell"><div class="ov-label">Best pattern</div><div class="ov-val g" id="ov4">&#8212;</div><div class="ov-sub" id="ov4s"></div></div>
+    <div class="ov-cell"><div class="ov-label">Seasonal signal</div><div class="ov-val a" id="ov5">&#8212;</div><div class="ov-sub" id="ov5s"></div></div>
+  </div>
+  <div class="main-grid">
+    <div>
+      
+      <div id="upgradeBanner" style="display:none;background:rgba(232,147,24,.06);border:1px solid rgba(232,147,24,.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 10 tools &amp; 430+ global assets</div>
+          <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 3 analyses/month &middot; indices &amp; ETFs only</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Upgrade &mdash; &pound;19.99/mo</button>
+          <button onclick="stripeCheckout('price_1ThF5A2MZ73Stw01PfOUuDNl','payment')" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Lifetime &pound;299</button>
+        </div>
+      </div>
+      <div class="sec-label">Research Tools &#8212; choose where to go</div>
+      <div class="tools-grid">
+        <a href="/market-seasonality.html" class="tool-card featured" onclick="lsSet('analyzer')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="#E89318" stroke-width="1.7"/><path d="M3 9h18" stroke="#E89318" stroke-width="1.7"/><path d="M8 2.8v3.4M16 2.8v3.4" stroke="#E89318" stroke-width="1.7"/><path d="M7 16.5l3-3 2.2 1.8 4-4.3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">01</div><span class="tc-badge hot">Most used</span></div></div>
+          <div class="tc-name">Seasonal Analyzer</div>
+          <div class="tc-desc">Pick any of 430+ global assets and see its complete 15-year seasonal calendar. Heatmap, win rates, calendar wheel and full AI written analysis.</div>
+          <div class="tc-footer"><span class="tc-stat">US &#183; UK &#183; Germany &#183; Asia</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('backtest')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="8" stroke="#4DA3FF" stroke-width="1.7"/><path d="M12.5 8v4.5l3 2" stroke="#4DA3FF" stroke-width="1.7"/><path d="M4.5 5.5v3.2h3.2" stroke="#E89318" stroke-width="1.7"/><path d="M4.7 8.5A8 8 0 0 1 8 5.1" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">02</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">Strategy Backtest</div>
+          <div class="tc-desc">Build a seasonal entry/exit strategy and test it across 25 years. Equity curve, CAGR, win rate vs buy-and-hold.</div>
+          <div class="tc-footer"><span class="tc-stat">2000 &#8212; 2025</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('events')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">03</div><span class="tc-badge new">19 events</span></div></div>
+          <div class="tc-name">Event Studies</div>
+          <div class="tc-desc">Fed decisions, elections, halvings, crashes &#8212; COVID, GFC, 2025 tariff shock. Deep historical playbooks for every major market event.</div>
+          <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('earnings')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M7.5 14.8l3-3.4 2.4 2 3.6-4.4" stroke="#00C97E" stroke-width="1.7"/><path d="M14 9h2.5v2.5" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">04</div><span class="tc-badge new">26 reports</span><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">Earnings Analysis</div>
+          <div class="tc-desc">Post-earnings drift tracker. Day 1, +1 week, +2 weeks, +1 month data. Beat vs miss scenario framework with win rates.</div>
+          <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('screener')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">05</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">Seasonal Screener</div>
+          <div class="tc-desc">Which assets are entering their strongest seasonal window right now? Ranked by current month performance, all 430 assets.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc5stat">430+ assets</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('watchlist')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">06</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">My Watchlist</div>
+          <div class="tc-desc">Your personal seasonal dashboard. Track up to 10 assets &#8212; see this month and next month&#8217;s outlook for everything you hold.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc6stat">Set up watchlist</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('month')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h10M7 20.5h10" stroke="#4DA3FF" stroke-width="1.7"/><path d="M8 3.5c0 4 3 5.5 4 8.5-1 3-4 4.5-4 8.5M16 3.5c0 4-3 5.5-4 8.5 1 3 4 4.5 4 8.5" stroke="#4DA3FF" stroke-width="1.7"/><path d="M10.2 18.5h3.6" stroke="#E89318" stroke-width="1.7"/></svg></div><div class="tc-num">07</div></div>
+          <div class="tc-name">This Month in History</div>
+          <div class="tc-desc">The crashes, rallies and legends that shaped every calendar month. Market history written as a research essay with live pattern data.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc7stat">12 months</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('pairs')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="3" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="17.5" cy="17" r="3" stroke="#E89318" stroke-width="1.7"/><path d="M8.8 9.2l6.4 5.6" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">08</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">Seasonal Correlations</div>
+          <div class="tc-desc">Compare any two assets&#8217; yearly rhythms. Find pairs that move together &#8212; and pairs that hedge each other&#8217;s weakest months.</div>
+          <div class="tc-footer"><span class="tc-stat">Pearson analysis</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('calendar')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="14" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M3 9h14M7 2.8v3.4M13 2.8v3.4" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="16.5" r="4.5" stroke="#E89318" stroke-width="1.7" fill="#04070F"/><path d="M17.5 14.4v2.1l1.5 1" stroke="#E89318" stroke-width="1.5"/></svg></div><div class="tc-num">09</div></div>
+          <div class="tc-name">Economic Calendar</div>
+          <div class="tc-desc">Every FOMC, CPI, jobs report and earnings date counted down live &#8212; each linked to its full historical event playbook.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc9stat">Next event loading...</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+      </div>
+    </div>
+    <div class="sidebar-col">
+      <div class="spotlight">
+        <div class="sp-head"><div class="sp-title" id="spTitle">This Month&#8217;s Spotlight</div><div class="sp-sub">Top patterns right now</div></div>
+        <div id="spList"></div>
+      </div>
+      <div class="cal-widget">
+        <div class="cw-head"><div class="cw-title">Upcoming Catalysts</div></div>
+        <div id="cwList"></div>
+      </div>
+      <div class="quick-access">
+        <div class="qa-head"><div class="qa-title">Quick Research</div></div>
+        <div class="qa-grid">
+          <button class="qa-btn" onclick="quickGo('sp500')"><span class="qa-btn-icon">&#128202;</span><span class="qa-btn-label">S&amp;P 500</span></button>
+          <button class="qa-btn" onclick="quickGo('btc')"><span class="qa-btn-icon">&#8383;</span><span class="qa-btn-label">Bitcoin</span></button>
+          <button class="qa-btn" onclick="quickGo('nvda')"><span class="qa-btn-icon">&#128187;</span><span class="qa-btn-label">Nvidia</span></button>
+          <button class="qa-btn" onclick="quickGo('gld')"><span class="qa-btn-icon">&#127775;</span><span class="qa-btn-label">Gold</span></button>
+          <button class="qa-btn" onclick="quickGo('qqq')"><span class="qa-btn-icon">&#9654;</span><span class="qa-btn-label">NASDAQ-100</span></button>
+          <button class="qa-btn" onclick="quickGo('tsla')"><span class="qa-btn-icon">&#9889;</span><span class="qa-btn-label">Tesla</span></button>
+        </div>
+      </div>
+      <div class="referral-widget">
+        <div class="qa-head">
+          <div class="qa-title">Refer a friend</div>
+        </div>
+        <div class="ref-body">
+          <p class="ref-copy">Give a free month, get a free month. When someone signs up with your link and goes Pro, you <strong>both</strong> get a month free.</p>
+          <div class="ref-link-row">
+            <input type="text" id="referralLink" class="ref-link-input" readonly onclick="this.select()">
+            <button class="ref-copy-btn" id="refCopyBtn" onclick="copyReferralLink()">Copy</button>
+          </div>
+          <div class="ref-stats">
+            <div class="ref-stat"><div class="ref-stat-v" id="refTotal">0</div><div class="ref-stat-l">Referred</div></div>
+            <div class="ref-stat"><div class="ref-stat-v" id="refPending">0</div><div class="ref-stat-l">Pending</div></div>
+            <div class="ref-stat"><div class="ref-stat-v" id="refRewarded" style="color:var(--green)">0</div><div class="ref-stat-l">Rewarded</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+<script>
+var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44');
+
+async function initAuth() {
+  var r = await sb.auth.getSession();
+  if (!r.data || !r.data.session) { window.location.href = '/auth.html'; return; }
+  // Refresh the session so Pro/Lifetime status (app_metadata, set server-side by
+  // the Stripe webhook) is up to date even if this token was issued before payment.
+  try {
+    var refreshed = await sb.auth.refreshSession();
+    if (refreshed.data && refreshed.data.session) r = refreshed;
+  } catch (e) {}
+  var user = r.data.session.user;
+  var name = (user.user_metadata && user.user_metadata.full_name)
+    ? user.user_metadata.full_name.split(' ')[0]
+    : user.email.split('@')[0];
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+  document.getElementById('userPill').textContent = name;
+  var h = new Date().getHours();
+  var tod = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  document.getElementById('greeting').innerHTML = 'Good ' + tod + ', ' + name + '. <em>Ready to trade the calendar?</em>';
+
+  // Subscription tier — hide PRO locks and upgrade banner for Pro/Lifetime users
+  var sub = user.app_metadata && user.app_metadata.subscription;
+  var isPro = sub === 'pro' || sub === 'lifetime';
+  document.body.classList.toggle('is-pro', isPro);
+  if (isPro) {
+    var banner = document.getElementById('upgradeBanner');
+    if (banner) banner.style.display = 'none';
+    // Only show Manage Subscription for active paid subscriptions, not Lifetime (no recurring billing to manage)
+    // but Lifetime customers may still want receipts/portal access for their one-time payment
+    var msb = document.getElementById('manageSubBtn');
+    if (msb) {
+      msb.style.display = 'inline-flex';
+      msb.dataset.userId = user.id;
+    }
+  } else {
+    var banner2 = document.getElementById('upgradeBanner');
+    if (banner2) banner2.style.display = 'flex';
+  }
+
+  recordReferralIfNew(user);
+  renderReferralWidget(user);
+}
+
+// ── REFERRAL PROGRAM ──────────────────────────────────
+// If this user arrived via a referral link AND their account was created
+// recently (within 24h), record the referral relationship once. The 24h
+// window prevents an existing user from generating bogus referrals just by
+// clicking someone else's link while already signed in.
+async function recordReferralIfNew(user) {
+  var refCode;
+  try { refCode = localStorage.getItem('sx_ref_code'); } catch (e) { return; }
+  if (!refCode) return;
+  try { localStorage.removeItem('sx_ref_code'); } catch (e) {}
+
+  if (refCode === user.id) return; // can't refer yourself
+  var ageMs = Date.now() - new Date(user.created_at).getTime();
+  if (ageMs > 24 * 60 * 60 * 1000) return; // not a new account — ignore
+
+  try {
+    await sb.from('referrals').upsert({
+      referrer_id: refCode,
+      referred_id: user.id,
+      referred_email: user.email,
+      status: 'pending'
+    }, { onConflict: 'referred_id', ignoreDuplicates: true });
+  } catch (e) { /* ignore — e.g. invalid ref code that doesn't pass RLS */ }
+}
+
+async function renderReferralWidget(user) {
+  var box = document.getElementById('referralBox');
+  if (!box) return;
+  var link = 'https://timingax.co.uk/auth.html?ref=' + user.id + '&tab=up';
+  document.getElementById('referralLink').value = link;
+
+  var res = await sb.from('referrals').select('status').eq('referrer_id', user.id);
+  var rows = (res && res.data) || [];
+  var total = rows.length;
+  var rewarded = rows.filter(function(r){ return r.status === 'rewarded'; }).length;
+  var pending = total - rewarded;
+  document.getElementById('refTotal').textContent = total;
+  document.getElementById('refRewarded').textContent = rewarded;
+  document.getElementById('refPending').textContent = pending;
+}
+
+function copyReferralLink() {
+  var input = document.getElementById('referralLink');
+  input.select();
+  document.execCommand('copy');
+  var btn = document.getElementById('refCopyBtn');
+  var orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(function(){ btn.textContent = orig; }, 1500);
+}
+
+async function openBillingPortal() {
+  var btn = document.getElementById('manageSubBtn');
+  var userId = btn.dataset.userId;
+  var orig = btn.textContent;
+  btn.textContent = 'Loading...';
+  btn.disabled = true;
+  try {
+    var res = await fetch('/api/create-portal-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: userId })
+    });
+    var data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(data.error || 'Could not open billing portal. Please try again or contact support.');
+      btn.textContent = orig;
+      btn.disabled = false;
+    }
+  } catch (e) {
+    alert('Something went wrong. Please try again.');
+    btn.textContent = orig;
+    btn.disabled = false;
+  }
+}
+async function signOut() { await sb.auth.signOut(); window.location.href = '/auth.html'; }
+initAuth();
+
+function updateClock() {
+  var now = new Date();
+  document.getElementById('tbClock').innerHTML = '<span>' + now.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'America/New_York'}) + ' ET</span>';
+  var ms = document.getElementById('mktStatus');
+  var day = now.toLocaleString('en-US',{weekday:'short',timeZone:'America/New_York'});
+  var h = parseInt(now.toLocaleString('en-US',{hour:'2-digit',hour12:false,timeZone:'America/New_York'}));
+  var m2 = parseInt(now.toLocaleString('en-US',{minute:'2-digit',timeZone:'America/New_York'}));
+  var mins = h*60+m2;
+  var isWknd = day==='Sat'||day==='Sun';
+  if(isWknd||mins<570||mins>=960){ms.className='market-status closed';ms.innerHTML='<span class="ms-dot"></span>US Market Closed';}
+  else if(mins<630){ms.className='market-status pre';ms.innerHTML='<span class="ms-dot"></span>Pre-Market';}
+  else{ms.className='market-status open';ms.innerHTML='<span class="ms-dot"></span>Market Open';}
+}
+updateClock();setInterval(updateClock,30000);
+
+function lsSet(mode){ localStorage.setItem('sax_mode', mode); }
+function quickGo(id){ localStorage.setItem('sax_mode','analyzer'); localStorage.setItem('sax_preselect',id); window.location.href='/market-seasonality.html'; }
+
+const PATTERNS = {
+  // Large-cap tech growth
+  techGrowth: [
+    {m:"Jan",avg:2.4,win:66,note:"January effect strongest in mega-cap tech"},
+    {m:"Feb",avg:0.6,win:55,note:"Earnings reports drive mixed results"},
+    {m:"Mar",avg:1.1,win:61,note:"End of quarter tech rebalancing"},
+    {m:"Apr",avg:2.0,win:67,note:"Earnings season catalyst"},
+    {m:"May",avg:0.3,win:54,note:"Rotation trade begins; gains fade"},
+    {m:"Jun",avg:-0.3,win:47,note:"Rate concerns weigh on growth"},
+    {m:"Jul",avg:2.3,win:68,note:"Strong Q2 earnings month"},
+    {m:"Aug",avg:0.7,win:56,note:"Slight strength on AI/tech momentum"},
+    {m:"Sep",avg:-1.4,win:39,note:"Worst month; risk-off selling"},
+    {m:"Oct",avg:0.9,win:58,note:"Q3 earnings recover losses"},
+    {m:"Nov",avg:2.5,win:73,note:"Strongest month; holiday + tech rally"},
+    {m:"Dec",avg:1.9,win:71,note:"Year-end tech positioning"}
+  ],
+  // Broad market index
+  broadIndex: [
+    {m:"Jan",avg:1.1,win:62,note:"January effect; new year positioning"},
+    {m:"Feb",avg:0.1,win:52,note:"Often flat; earnings season winds down"},
+    {m:"Mar",avg:1.2,win:65,note:"Q1 end window-dressing lifts prices"},
+    {m:"Apr",avg:1.5,win:68,note:"Historically strongest spring month"},
+    {m:"May",avg:0.3,win:57,note:"Sell in May effect moderates gains"},
+    {m:"Jun",avg:0.1,win:52,note:"Summer doldrums; low conviction"},
+    {m:"Jul",avg:1.4,win:64,note:"Mid-year rally; Q2 earnings"},
+    {m:"Aug",avg:-0.2,win:47,note:"Low volume; pullback risk"},
+    {m:"Sep",avg:-0.7,win:42,note:"Historically worst month of the year"},
+    {m:"Oct",avg:0.9,win:59,note:"Bear killer; volatile but recovers"},
+    {m:"Nov",avg:1.7,win:70,note:"Post-election & holiday rally"},
+    {m:"Dec",avg:1.5,win:72,note:"Santa Claus rally; year-end dressing"}
+  ],
+  // EV / high-volatility growth
+  evGrowth: [
+    {m:"Jan",avg:5.2,win:68,note:"New year growth optimism surge"},
+    {m:"Feb",avg:2.1,win:57,note:"Delivery numbers drive volatility"},
+    {m:"Mar",avg:1.4,win:54,note:"Q1 production updates move shares"},
+    {m:"Apr",avg:3.8,win:62,note:"Q1 delivery beats historically"},
+    {m:"May",avg:-3.1,win:42,note:"Risk-off rotation hits growth hard"},
+    {m:"Jun",avg:-2.4,win:40,note:"Summer selloff in speculative names"},
+    {m:"Jul",avg:4.1,win:63,note:"Delivery numbers + earnings catalyst"},
+    {m:"Aug",avg:1.8,win:55,note:"Battery/tech announcements move shares"},
+    {m:"Sep",avg:-3.7,win:36,note:"Worst month; macro headwinds"},
+    {m:"Oct",avg:2.2,win:57,note:"Q3 earnings catalyst"},
+    {m:"Nov",avg:5.8,win:70,note:"Strong seasonality; momentum stocks surge"},
+    {m:"Dec",avg:3.1,win:63,note:"Year-end rebalancing into growth"}
+  ],
+  // Financials / banks
+  financials: [
+    {m:"Jan",avg:1.8,win:64,note:"New year positioning in cyclicals"},
+    {m:"Feb",avg:0.6,win:55,note:"Q4 earnings reports; dividend focus"},
+    {m:"Mar",avg:0.4,win:54,note:"Rate expectations drive bank stocks"},
+    {m:"Apr",avg:1.9,win:66,note:"Q1 earnings season; loan growth data"},
+    {m:"May",avg:0.2,win:52,note:"Mixed; rate curve sensitivity"},
+    {m:"Jun",avg:0.5,win:54,note:"Fed meeting outcomes drive moves"},
+    {m:"Jul",avg:1.6,win:63,note:"Q2 earnings; net interest margin focus"},
+    {m:"Aug",avg:-0.3,win:48,note:"Summer lull in financial trading"},
+    {m:"Sep",avg:-0.8,win:43,note:"Risk-off hurts financials"},
+    {m:"Oct",avg:1.4,win:62,note:"Q3 earnings beat expectations historically"},
+    {m:"Nov",avg:2.2,win:70,note:"Strong month; rate expectations lift banks"},
+    {m:"Dec",avg:1.1,win:64,note:"Year-end tax-loss reversal"}
+  ],
+  // Energy / oil
+  energy: [
+    {m:"Jan",avg:2.1,win:63,note:"Heating demand & cold weather premium"},
+    {m:"Feb",avg:0.8,win:55,note:"OPEC meeting season; supply news"},
+    {m:"Mar",avg:1.5,win:61,note:"Spring driving season demand builds"},
+    {m:"Apr",avg:1.2,win:59,note:"Gasoline demand peak approaches"},
+    {m:"May",avg:0.9,win:57,note:"Summer driving season pricing"},
+    {m:"Jun",avg:-0.4,win:47,note:"Refinery maintenance; mixed supply"},
+    {m:"Jul",avg:0.3,win:52,note:"Peak summer demand; price plateau"},
+    {m:"Aug",avg:-0.7,win:45,note:"Demand concerns emerge; weak month"},
+    {m:"Sep",avg:-1.2,win:41,note:"End of driving season; demand falls"},
+    {m:"Oct",avg:0.6,win:54,note:"Heating oil demand builds"},
+    {m:"Nov",avg:1.4,win:61,note:"OPEC cuts; winter demand premium"},
+    {m:"Dec",avg:0.8,win:56,note:"Year-end energy demand; cold snap risk"}
+  ],
+  // Consumer / retail
+  consumer: [
+    {m:"Jan",avg:0.4,win:54,note:"Post-holiday hangover; returns season"},
+    {m:"Feb",avg:0.9,win:58,note:"Valentine's & Presidents Day sales"},
+    {m:"Mar",avg:1.3,win:62,note:"Spring refresh drives consumer spending"},
+    {m:"Apr",avg:1.6,win:65,note:"Easter, spring break; strong sales"},
+    {m:"May",avg:0.7,win:57,note:"Mother's Day; mid-spring spending"},
+    {m:"Jun",avg:0.2,win:52,note:"Summer slump in retail begins"},
+    {m:"Jul",avg:1.1,win:60,note:"Amazon Prime Day; summer sales surge"},
+    {m:"Aug",avg:1.3,win:62,note:"Back-to-school; strong retail month"},
+    {m:"Sep",avg:-0.3,win:48,note:"Post back-to-school lull"},
+    {m:"Oct",avg:0.8,win:57,note:"Halloween; early holiday prep"},
+    {m:"Nov",avg:2.4,win:73,note:"Black Friday / Cyber Monday surge"},
+    {m:"Dec",avg:2.1,win:75,note:"Strongest month; holiday shopping peak"}
+  ],
+  // Healthcare / pharma
+  healthcare: [
+    {m:"Jan",avg:1.2,win:62,note:"New year health insurance renewals"},
+    {m:"Feb",avg:0.8,win:57,note:"Q4 pharma earnings; pipeline updates"},
+    {m:"Mar",avg:0.6,win:55,note:"FDA approval cycles; mixed results"},
+    {m:"Apr",avg:1.0,win:59,note:"Q1 earnings; drug pricing news"},
+    {m:"May",avg:0.5,win:54,note:"ASCO conference; oncology catalysts"},
+    {m:"Jun",avg:0.3,win:52,note:"Summer clinical trial data"},
+    {m:"Jul",avg:0.9,win:58,note:"Q2 earnings; hospital utilization data"},
+    {m:"Aug",avg:0.4,win:53,note:"Historically defensive; modest gains"},
+    {m:"Sep",avg:-0.2,win:48,note:"Slight weakness; political drug pricing"},
+    {m:"Oct",avg:1.1,win:61,note:"Q3 earnings; insurance enrollment"},
+    {m:"Nov",avg:1.6,win:68,note:"Strong defensives amid equity rally"},
+    {m:"Dec",avg:1.3,win:65,note:"Year-end defensive positioning"}
+  ],
+  // Small-cap speculative (AI, crypto miners, SPACs)
+  speculative: [
+    {m:"Jan",avg:8.4,win:68,note:"Speculative January surge; retail FOMO"},
+    {m:"Feb",avg:4.2,win:57,note:"Momentum names carry January gains"},
+    {m:"Mar",avg:-2.1,win:43,note:"Profit-taking after early gains"},
+    {m:"Apr",avg:3.1,win:56,note:"Earnings season hype for growth names"},
+    {m:"May",avg:-4.8,win:38,note:"Brutal May selloff in speculative names"},
+    {m:"Jun",avg:-5.2,win:35,note:"Worst month; risk-off hits hardest here"},
+    {m:"Jul",avg:5.1,win:61,note:"Relief rally; FOMO re-entry"},
+    {m:"Aug",avg:2.3,win:54,note:"Retail trader activity boosts names"},
+    {m:"Sep",avg:-6.1,win:33,note:"Worst seasonal month for speculative"},
+    {m:"Oct",avg:4.2,win:59,note:"Crypto / AI hype cycles often restart"},
+    {m:"Nov",avg:9.8,win:71,note:"Strongest month; momentum stocks surge"},
+    {m:"Dec",avg:3.4,win:58,note:"Year-end chase for high-beta names"}
+  ],
+  // Gold / commodities
+  gold: [
+    {m:"Jan",avg:1.8,win:64,note:"New year safe-haven & jewelry demand"},
+    {m:"Feb",avg:1.2,win:61,note:"Valentine's season jewelry demand"},
+    {m:"Mar",avg:-0.5,win:46,note:"Profit-taking after Q1 strength"},
+    {m:"Apr",avg:0.8,win:57,note:"Indian wedding season demand"},
+    {m:"May",avg:0.5,win:54,note:"Modest gains as equities weaken"},
+    {m:"Jun",avg:-0.7,win:44,note:"Weakest month; equity strength reduces safe-haven"},
+    {m:"Jul",avg:0.3,win:52,note:"Flat to slight gains in summer"},
+    {m:"Aug",avg:1.5,win:63,note:"Historically strong; geopolitical risk"},
+    {m:"Sep",avg:1.2,win:60,note:"Festival demand from India & China"},
+    {m:"Oct",avg:0.6,win:55,note:"Diwali demand; mixed signals"},
+    {m:"Nov",avg:0.2,win:51,note:"Often flat as equities rally"},
+    {m:"Dec",avg:-0.3,win:47,note:"Year-end profit-taking by funds"}
+  ],
+  // Crypto
+  crypto: [
+    {m:"Jan",avg:14.2,win:70,note:"Strong new year rally historically"},
+    {m:"Feb",avg:9.8,win:65,note:"Momentum continues post-January"},
+    {m:"Mar",avg:8.5,win:63,note:"Spring bull runs common"},
+    {m:"Apr",avg:12.1,win:68,note:"Historically one of the best months"},
+    {m:"May",avg:-5.2,win:40,note:"'Sell in May' extreme in crypto"},
+    {m:"Jun",avg:-8.7,win:35,note:"Worst month; summer selloffs"},
+    {m:"Jul",avg:8.3,win:62,note:"Mid-year recovery after June lows"},
+    {m:"Aug",avg:3.1,win:55,note:"Modest summer gains"},
+    {m:"Sep",avg:-5.8,win:38,note:"Crypto follows equity weakness"},
+    {m:"Oct",avg:21.4,win:75,note:"'Uptober' — historically best month"},
+    {m:"Nov",avg:18.6,win:72,note:"Bull runs peak; halving cycles"},
+    {m:"Dec",avg:5.2,win:58,note:"Mixed; profit-taking vs Santa rally"}
+  ],
+  // Bonds / treasuries
+  bonds: [
+    {m:"Jan",avg:0.8,win:60,note:"Flight to safety in new year"},
+    {m:"Feb",avg:0.3,win:53,note:"Modest gains as equities peak"},
+    {m:"Mar",avg:-0.6,win:44,note:"Rate hike fears weigh on bonds"},
+    {m:"Apr",avg:-0.4,win:46,note:"Equity strength reduces bond demand"},
+    {m:"May",avg:0.9,win:61,note:"Bonds rally as equities weaken"},
+    {m:"Jun",avg:0.5,win:55,note:"Summer safety trade begins"},
+    {m:"Jul",avg:0.2,win:52,note:"Mixed; Fed meeting outcomes"},
+    {m:"Aug",avg:1.1,win:62,note:"Summer safety demand"},
+    {m:"Sep",avg:-0.3,win:47,note:"Equity weakness doesn't always help"},
+    {m:"Oct",avg:-0.5,win:44,note:"Risk-on October hurts bonds"},
+    {m:"Nov",avg:-0.8,win:41,note:"Equity rally pressures treasuries"},
+    {m:"Dec",avg:0.4,win:54,note:"Year-end safe-haven demand"}
+  ],
+  // Defense / industrials
+  defense: [
+    {m:"Jan",avg:1.4,win:62,note:"Budget cycle; new year defense spending"},
+    {m:"Feb",avg:0.9,win:58,note:"Q4 earnings; contract announcements"},
+    {m:"Mar",avg:1.1,win:60,note:"Geopolitical risk premium builds"},
+    {m:"Apr",avg:1.0,win:59,note:"Q1 earnings; backlog growth focus"},
+    {m:"May",avg:0.7,win:56,note:"Relatively defensive in May selloff"},
+    {m:"Jun",avg:0.5,win:54,note:"Congressional budget season"},
+    {m:"Jul",avg:0.8,win:57,note:"Q2 earnings; program updates"},
+    {m:"Aug",avg:0.6,win:55,note:"Holds up well in summer doldrums"},
+    {m:"Sep",avg:-0.4,win:47,note:"Slight weakness with broader market"},
+    {m:"Oct",avg:1.2,win:62,note:"Q3 earnings; geopolitical catalysts"},
+    {m:"Nov",avg:1.8,win:68,note:"Defense spending optimism; strong month"},
+    {m:"Dec",avg:1.4,win:65,note:"Year-end defense contract awards"}
+  ],
+  // Semiconductors
+  semis: [
+    {m:"Jan",avg:3.1,win:67,note:"CES & AI chip demand drives January"},
+    {m:"Feb",avg:1.2,win:58,note:"Q4 fab utilization reports"},
+    {m:"Mar",avg:1.8,win:63,note:"PC/server refresh cycle begins"},
+    {m:"Apr",avg:2.4,win:66,note:"Q1 earnings; data center demand"},
+    {m:"May",avg:-0.8,win:46,note:"Supply chain concerns resurface"},
+    {m:"Jun",avg:-1.1,win:43,note:"Inventory correction fears"},
+    {m:"Jul",avg:2.8,win:67,note:"Q2 earnings; AI GPU demand"},
+    {m:"Aug",avg:1.4,win:60,note:"Chip demand forecasts; Nvidia effect"},
+    {m:"Sep",avg:-1.8,win:38,note:"Worst month; inventory cycle fears"},
+    {m:"Oct",avg:1.5,win:62,note:"Q3 earnings; forward guidance"},
+    {m:"Nov",avg:3.2,win:72,note:"Strongest month; AI capex spend"},
+    {m:"Dec",avg:2.1,win:68,note:"Year-end tech spending; chip orders"}
+  ]
+};
+var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var MF_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+var MO_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MO_AB=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+
+// ============================================================
+// ONBOARDING MODAL — first-visit walkthrough
+// ============================================================
+var OB_KEY = 'sax_onboarded';
+var obStep = 0;
+var OB_STEPS = [
+  {
+    icon: '&#128075;', iconBg: 'rgba(232,147,24,.1)',
+    title: 'Welcome to <em>TimingAX.</em>',
+    body: 'Here&#8217;s the idea in one sentence: <strong>some months have historically been much better for certain assets than others</strong> &mdash; and now you can see exactly which, for any of 430+ global assets.',
+    preview: true
+  },
+  {
+    icon: '&#129520;', iconBg: 'rgba(77,163,255,.1)',
+    title: 'Nine tools. <em>One platform.</em>',
+    body: 'Your dashboard gives you direct access to all nine research tools. Here are the ones most people start with:',
+    tools: [
+      {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
+      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
+      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering strength this month'},
+    ]
+  },
+  {
+    icon: '&#128202;', iconBg: 'rgba(155,127,255,.1)',
+    title: 'Plus event &amp; earnings <em>intelligence.</em>',
+    body: 'Beyond seasonality, TimingAX gives you historical playbooks for major market events and a post-earnings drift tracker:',
+    tools: [
+      {icon:'&#128202;', bg:'rgba(155,127,255,.1)', name:'Event Studies', desc:'19 events: Fed decisions, crashes, halvings &mdash; with playbooks'},
+      {icon:'&#128200;', bg:'rgba(0,201,126,.1)', name:'Earnings Analysis', desc:'What happens 1 week, 1 month after companies report'},
+      {icon:'&#128467;', bg:'rgba(232,147,24,.1)', name:'Economic Calendar', desc:'Every FOMC, CPI and jobs date counted down'},
+    ]
+  },
+  {
+    icon: '&#127942;', iconBg: 'rgba(0,201,126,.1)',
+    title: 'Your <em>free tier.</em>',
+    body: 'You’re on the Free plan: <strong>3 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Upgrade anytime for unlimited access to all 430+ assets and every tool.',
+    tiers: true,
+    final: true
+  }
+];
+
+function obRender() {
+  var s = OB_STEPS[obStep];
+  var body = document.getElementById('obBody');
+
+  // Progress dots
+  for (var i = 0; i < 4; i++) {
+    var dot = document.getElementById('obDot' + i);
+    dot.className = 'ob-dot' + (i === obStep ? ' active' : i < obStep ? ' done' : '');
+  }
+
+  var html = '<div class="ob-icon" style="background:' + s.iconBg + '">' + s.icon + '</div>';
+  html += '<div class="ob-title">' + s.title + '</div>';
+  html += '<div class="ob-text">' + s.body + '</div>';
+
+  if (s.preview) {
+    var mi = new Date().getMonth();
+    var sp = PATTERNS.broadIndex[mi], cr = PATTERNS.crypto[mi];
+    function c(v){return v>=0?'g':'r';}
+    function f(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
+    html += '<div class="ob-preview"><div class="ob-pv-grid">' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(sp.avg) + '">' + f(sp.avg) + '</div><div class="ob-pv-lbl">S&amp;P 500 this month</div></div>' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val a">' + sp.win + '%</div><div class="ob-pv-lbl">Win rate</div></div>' +
+      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(cr.avg) + '">' + f(cr.avg) + '</div><div class="ob-pv-lbl">Bitcoin this month</div></div>' +
+    '</div></div>';
+  }
+
+  if (s.tools) {
+    html += '<div class="ob-tools">';
+    s.tools.forEach(function(t) {
+      html += '<div class="ob-tool"><div class="ob-tool-icon" style="background:' + t.bg + '">' + t.icon + '</div><div><div class="ob-tool-name">' + t.name + '</div><div class="ob-tool-desc">' + t.desc + '</div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  if (s.tiers) {
+    html += '<div class="ob-tier">' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Free</div><div class="ob-tier-price">&pound;0</div><div class="ob-tier-desc">3/month<br>Indices &amp; ETFs</div></div>' +
+      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">Unlimited<br>All 430+ assets</div></div>' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Lifetime</div><div class="ob-tier-price">&pound;299</div><div class="ob-tier-desc">Pay once<br>Forever</div></div>' +
+    '</div>';
+  }
+
+  html += '<div class="ob-footer">';
+  html += '<button class="ob-skip" onclick="obClose()">Skip tour</button>';
+  html += '<div class="ob-actions">';
+  if (obStep > 0) html += '<button class="ob-btn ghost" onclick="obPrev()">Back</button>';
+  if (s.final) {
+    html += '<button class="ob-btn primary" onclick="obClose()">Get started &rarr;</button>';
+  } else {
+    html += '<button class="ob-btn primary" onclick="obNext()">Next</button>';
+  }
+  html += '</div></div>';
+
+  body.innerHTML = html;
+}
+
+function obNext() { if (obStep < OB_STEPS.length - 1) { obStep++; obRender(); } }
+function obPrev() { if (obStep > 0) { obStep--; obRender(); } }
+function obClose() {
+  document.getElementById('obOverlay').style.display = 'none';
+  localStorage.setItem(OB_KEY, '1');
+}
+
+function obMaybeShow() {
+  if (!localStorage.getItem(OB_KEY)) {
+    document.getElementById('obOverlay').style.display = 'flex';
+    obStep = 0;
+    obRender();
+  }
+}
+
+function sgn(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
+function col(v){return v>=0?'g':'r';}
+
+function buildDashboard(){
+  var mi=new Date().getMonth();
+  var mn=MO_NAMES[mi];
+  document.getElementById('monthName').textContent=mn;
+  document.getElementById('ovMonthLabel').textContent=mn+' historical averages';
+  document.getElementById('tc7stat').textContent=mn+' edition';
+
+  var sp=PATTERNS.broadIndex[mi], tg=PATTERNS.techGrowth[mi], cr=PATTERNS.crypto[mi];
+  function setOv(id,sid,v,win){
+    var e=document.getElementById(id); e.textContent=sgn(v); e.className='ov-val '+col(v);
+    document.getElementById(sid).textContent=win+'% win rate';
+  }
+  setOv('ov1','ov1s',sp.avg,sp.win);
+  setOv('ov2','ov2s',tg.avg,tg.win);
+  setOv('ov3','ov3s',cr.avg,cr.win);
+
+  var patKeys=Object.keys(PATTERNS), best=patKeys[0];
+  patKeys.forEach(function(k){if(PATTERNS[k][mi].avg>PATTERNS[best][mi].avg)best=k;});
+  var patL={broadIndex:'Broad Market',techGrowth:'Tech Growth',crypto:'Crypto',gold:'Gold',energy:'Energy',
+    healthcare:'Healthcare',consumer:'Consumer',defense:'Defense',semis:'Semis',bonds:'Bonds',
+    speculative:'Speculative',evGrowth:'EV/Clean Energy',ukMarket:'UK Market',ukMining:'UK Mining',
+    germanMarket:'German Market',germanAuto:'German Auto',japanExport:'Japan Export',
+    chinaInternet:'China Internet',koreanTech:'Korean Tech',germanChemical:'German Chemical'};
+  document.getElementById('ov4').textContent=sgn(PATTERNS[best][mi].avg);
+  document.getElementById('ov4s').textContent=(patL[best]||best)+' pattern';
+  var sig=sp.avg>=0.8?'BULLISH':sp.avg<=-0.3?'BEARISH':'NEUTRAL';
+  var sc=sp.avg>=0.8?'g':sp.avg<=-0.3?'r':'a';
+  document.getElementById('ov5').textContent=sig; document.getElementById('ov5').className='ov-val '+sc;
+  document.getElementById('ov5s').textContent=sp.note;
+  document.getElementById('tc5stat').textContent=mn+' leaders ranked';
+
+  try{var wl=JSON.parse(localStorage.getItem('sx_watchlist')||'[]');
+    document.getElementById('tc6stat').textContent=wl.length>0?wl.length+'/10 assets tracked':'Set up watchlist';}catch(e){}
+
+  // Spotlight
+  var spot=[
+    {t:'S&P 500',n:'Broad market',p:PATTERNS.broadIndex[mi]},
+    {t:'NASDAQ',n:'Tech growth',p:PATTERNS.techGrowth[mi]},
+    {t:'Bitcoin',n:'Crypto',p:PATTERNS.crypto[mi]},
+    {t:'Gold',n:'Safe haven',p:PATTERNS.gold[mi]},
+    {t:'Semis',n:'Semiconductors',p:PATTERNS.semis[mi]},
+    {t:'Energy',n:'Energy sector',p:PATTERNS.energy[mi]},
+    {t:'Healthcare',n:'Defensive',p:PATTERNS.healthcare[mi]},
+  ];
+  spot.sort(function(a,b){return b.p.avg-a.p.avg;});
+  document.getElementById('spTitle').textContent=mn+' Spotlight';
+  document.getElementById('spList').innerHTML=spot.slice(0,5).map(function(s){
+    var b=s.p.avg>=0;
+    var cls=b?'bull':'bear'; var vcls=b?'g':'r';
+    return '<div class="sp-item '+cls+'" onclick="window.location=/market-seasonality.html">'+
+      '<div class="sp-left"><div class="sp-dot"></div><div>'+
+      '<div class="sp-ticker">'+s.t+'</div>'+
+      '<div class="sp-name">'+s.n+' · '+s.p.win+'% win</div>'+
+      '</div></div>'+
+      '<div class="sp-val '+vcls+'">'+sgn(s.p.avg)+'</div></div>';
+  }).join('');
+
+  // Calendar
+  var now=new Date();
+  var evts=[
+    {d:new Date('2026-06-17T19:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2026-07-03T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2026-07-15T12:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2026-07-22T20:00:00Z'),n:'Tesla Q2 Earnings',t:'earn'},
+    {d:new Date('2026-07-29T19:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2026-08-26T20:00:00Z'),n:'Nvidia Q2 Earnings',t:'earn'},
+  ].filter(function(e){return e.d>now;}).slice(0,5);
+  document.getElementById('cwList').innerHTML=evts.map(function(e){
+    var a=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var b=new Date(e.d.getFullYear(),e.d.getMonth(),e.d.getDate());
+    var days=Math.max(0,Math.round((b-a)/86400000));
+    var dstr=days===0?'Today':'in '+days+' days';
+    return '<div class="cw-item">'+
+      '<div class="cw-date"><div class="cw-mo">'+MO_AB[e.d.getMonth()]+'</div><div class="cw-day">'+e.d.getDate()+'</div></div>'+
+      '<div style="flex:1"><div class="cw-name">'+e.n+'</div><div class="cw-days">'+dstr+'</div></div>'+
+      '<div class="cw-type '+e.t+'">'+e.t.toUpperCase()+'</div></div>';
+  }).join('');
+  if(evts.length>0){var na=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var nb=new Date(evts[0].d.getFullYear(),evts[0].d.getMonth(),evts[0].d.getDate());
+    var nd=Math.max(0,Math.round((nb-na)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
+}
+buildDashboard();
+obMaybeShow();
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+async function stripeCheckout(priceId, mode) {
+  var btn = event.target;
+  btn.disabled = true;
+  var orig = btn.textContent;
+  btn.textContent = 'Loading...';
+  try {
+    var res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ priceId: priceId, mode: mode })
+    });
+    var data = await res.json();
+    if (data.url) { window.location.href = data.url; }
+    else { alert('Checkout error: ' + (data.error || 'Try again')); btn.disabled = false; btn.textContent = orig; }
+  } catch(e) { btn.disabled = false; btn.textContent = orig; }
+}
+</script>
+</body>
+</html>

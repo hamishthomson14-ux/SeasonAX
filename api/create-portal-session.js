@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   const { userId } = req.body;
   if (!userId) return res.status(400).json({ error: 'Missing userId' });
 
-  const origin = req.headers.origin || 'https://season-ax.vercel.app';
+  const origin = req.headers.origin || 'https://timingax.co.uk';
 
   try {
     // Look up the user's stripe_customer ID from Supabase metadata
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       },
     });
     const userData = await userRes.json();
-    const customerId = userData.user_metadata && userData.user_metadata.stripe_customer;
+    const customerId = userData.app_metadata && userData.app_metadata.stripe_customer;
 
     if (!customerId) {
       return res.status(404).json({ error: 'No Stripe customer found for this account. If you just subscribed, please wait a moment and try again, or contact support.' });
