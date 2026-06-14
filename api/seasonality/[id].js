@@ -193,7 +193,7 @@ footer a{color:var(--amber2)}
 <body>
 <nav>
   <div class="n-word">Timing<b>AX</b></div>
-  <a href="/seasonax-auth.html"><button class="btn-cta">Start free &rarr;</button></a>
+  <a href="/auth.html"><button class="btn-cta">Start free &rarr;</button></a>
 </nav>
 <div class="wrap">
   <div class="eyebrow">Seasonality Snapshot</div>
