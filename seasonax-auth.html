@@ -173,7 +173,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
   <div class="l-hero">
     <div class="l-tag">Professional Seasonal Intelligence</div>
     <h1 class="l-h">The market runs<br>on a <em>calendar.</em><br>Now you do too.</h1>
-    <p class="l-sub">460+ global assets. 9 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
+    <p class="l-sub">430+ global assets. 9 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
 
     <div class="l-stats">
       <div class="l-stat">
@@ -356,6 +356,18 @@ var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
 var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
 var sb = window.supabase.createClient(SB_URL, SB_KEY);
 
+// ── REFERRAL CAPTURE ──────────────────────────────────
+// If arriving via someone's referral link (?ref=<their user id>), remember
+// it in localStorage so it survives the email-confirmation redirect to
+// dashboard.html, where the actual referral record gets created on first login.
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var ref = params.get('ref');
+  if (ref && /^[0-9a-f-]{36}$/i.test(ref)) {
+    try { localStorage.setItem('sx_ref_code', ref); } catch (e) {}
+  }
+})();
+
 // Check if already logged in
 sb.auth.getSession().then(function(r) {
   if (r.data && r.data.session) {
@@ -364,7 +376,7 @@ sb.auth.getSession().then(function(r) {
     // Check URL for tab param
     var hash = window.location.hash;
     var params = new URLSearchParams(window.location.search);
-    if (params.get('tab') === 'up' || hash === '#signup') {
+    if (params.get('tab') === 'up' || hash === '#signup' || params.get('ref')) {
       showTab('up');
     } else {
       showTab('in');
@@ -520,6 +532,7 @@ document.addEventListener('keydown', function(e) {
   else if (ff && ff.style.display !== 'none') sendReset();
 });
 </script>
+<script src="/cookie-consent.js"></script>
 <script src="/chat-widget.js"></script>
 </body>
 </html>

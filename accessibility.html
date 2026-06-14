@@ -9,14 +9,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="shortcut icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Changelog — TimingAX</title>
-<meta property="og:title" content="Changelog — TimingAX">
+<title>Accessibility Statement | TimingAX</title>
+<meta property="og:title" content="Accessibility Statement | TimingAX">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://timingax.co.uk/changelog.html">
+<meta property="og:url" content="https://timingax.co.uk/accessibility.html">
 <meta property="og:image" content="https://timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
-<meta name="description" content="What's new on TimingAX — a running log of features, data improvements, and fixes.">
+<meta name="description" content="TimingAX’s accessibility statement: our commitment to WCAG 2.1 AA, current known limitations, and how to report accessibility issues.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -146,24 +146,25 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
   .nav{padding:0 24px}
 }
 
-/* ── CHANGELOG ── */
-.cl-entry{display:flex;gap:28px;padding-bottom:40px;margin-bottom:40px;border-bottom:1px solid var(--b1)}
-.cl-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.cl-date{flex-shrink:0;width:64px;text-align:center}
-.cl-d{font:800 28px/1 var(--disp);color:var(--w);letter-spacing:-.02em}
-.cl-m{font:500 10px/1 var(--mono);color:var(--w4);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-.cl-body{flex:1}
-.cl-tags{display:flex;gap:7px;margin-bottom:10px}
-.cl-tag{font:700 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:4px;background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
-.cl-tag.major{background:rgba(232,147,24,.1);color:var(--amber2);border-color:rgba(232,147,24,.3)}
-.cl-tag.new{background:rgba(0,201,126,.1);color:var(--green);border-color:rgba(0,201,126,.3)}
-.cl-h{font:700 19px/1.3 var(--disp);letter-spacing:-.01em;margin-bottom:10px;color:var(--w)}
-.cl-body p{font-size:14px;color:var(--w3);line-height:1.75}
-.data-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:inline-block}
-.data-badge.real{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
-.data-badge.model{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
-@media(max-width:560px){.cl-entry{gap:18px}.cl-date{width:48px}.cl-d{font-size:22px}}
-
+.acc-hero{padding:64px 24px 32px;border-bottom:1px solid var(--b1)}
+.acc-wrap{max-width:680px;margin:0 auto}
+.acc-hero h1{font:800 38px/1.18 var(--disp);letter-spacing:-.03em;margin-bottom:14px}
+.acc-hero h1 em{font-style:normal;color:var(--amber2)}
+.acc-hero p{color:var(--w3);font-size:14px}
+.acc-body{max-width:680px;margin:0 auto;padding:40px 24px 60px}
+.acc-body p{font-size:15px;color:var(--w2);line-height:1.85;margin-bottom:18px}
+.acc-body h2{font:700 22px/1.3 var(--disp);letter-spacing:-.02em;margin:36px 0 14px;color:var(--w)}
+.acc-body ul{padding-left:22px;margin-bottom:18px}
+.acc-body li{font-size:14px;color:var(--w2);line-height:1.8;margin-bottom:8px}
+.acc-body strong{color:var(--w);font-weight:600}
+.acc-body a{color:var(--amber2)}
+.status-pill-acc{display:inline-flex;align-items:center;gap:6px;font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:4px;margin-bottom:4px}
+.status-pill-acc.good{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
+.status-pill-acc.partial{background:rgba(245,165,47,.1);color:var(--amber2);border:1px solid rgba(245,165,47,.3)}
+.acc-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+.acc-table th{text-align:left;padding:8px 10px;font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);border-bottom:2px solid var(--b1)}
+.acc-table td{padding:10px 10px;border-bottom:1px solid var(--b1);color:var(--w2);vertical-align:top}
+.disc-foot{font-size:11px;color:var(--w4);margin-top:32px;line-height:1.7;padding-top:24px;border-top:1px solid var(--b1)}
 </style>
 </head>
 
@@ -185,188 +186,51 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
   <a href="/seasonax-auth.html"><button class="btn-cta">Start free &rarr;</button></a>
 </nav>
 
-<!-- HERO -->
-<div class="about-hero">
-  <div class="ah-dg" aria-hidden="true"></div>
-  <div class="ah-glow" aria-hidden="true"></div>
-  <div class="ah-inner">
-    <div class="ah-eyebrow">Changelog</div>
-    <h1 class="ah-h">Built in the open,<br>shipped <em>continuously.</em></h1>
-    <p class="ah-sub">TimingAX is actively developed by a single founder. Here's a running log of what's changed &mdash; new features, real data, and fixes.</p>
+<div class="acc-hero">
+  <div class="acc-wrap">
+    <h1>Accessibility <em>Statement</em></h1>
+    <p>Last updated: June 2026</p>
   </div>
 </div>
 
-<!-- CHANGELOG -->
-<div class="story" style="max-width:780px">
+<div class="acc-body">
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">14</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag new">New</span></div>
-      <h3 class="cl-h">Referral program: give a month, get a month</h3>
-      <p>Pro and Lifetime users now get a personal referral link from their dashboard. When someone signs up with your link and goes Pro, you <strong>both</strong> get a free month &mdash; tracked automatically and applied as account credit.</p>
-    </div>
-  </div>
+<p>TimingAX is built and maintained by a single independent developer. We want the site and app to be usable by as many people as possible, including people using screen readers, keyboard navigation, browser zoom, or other assistive technology. This page describes where things currently stand, honestly — including what isn’t fully there yet.</p>
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">14</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag new">New</span></div>
-      <h3 class="cl-h">Unique share previews for every asset, plus a privacy notice &amp; accessibility statement</h3>
-      <p>Every one of our 430+ asset pages now generates its own social share image on the fly &mdash; no more generic preview when a link gets shared. We've also added a one-time privacy notice covering our (minimal, tracking-free) use of cookies and local storage, and published an honest <a href="/accessibility.html" style="color:var(--amber2)">accessibility statement</a> covering what works well today and where we still have work to do.</p>
-    </div>
-  </div>
+<h2>Our standard</h2>
+<p>We aim to meet <strong>WCAG 2.1 Level AA</strong> across the site. This is an ongoing goal we’re actively working toward, not a claim that every page fully conforms today.</p>
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">14</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag new">New</span></div>
-      <h3 class="cl-h">The Academy: 6 new guides to seasonality</h3>
-      <p>A new <a href="/academy.html" style="color:var(--amber2)">Academy</a> section covers the fundamentals &mdash; what seasonality is (and isn't), the September Effect, the Santa Claus Rally, detrending explained, the presidential cycle, and how to use seasonal patterns responsibly. Plain-language, honest about limitations, and linked from every asset page.</p>
-    </div>
-  </div>
+<h2>What works well today</h2>
+<div class="status-pill-acc good">GOOD SUPPORT</div>
+<ul>
+<li>All marketing pages (Home, About, Blog, Academy, Methodology, Changelog, Contact) use semantic HTML headings, are navigable by keyboard, and maintain a consistent dark colour scheme designed for strong text contrast.</li>
+<li>The site respects your operating system’s <strong>reduced motion</strong> preference — scroll animations and transitions are minimised if you have this enabled.</li>
+<li>Text throughout the site is resizable via your browser’s zoom controls without breaking layout.</li>
+<li>Forms (contact, newsletter, sign-up) use labelled fields and show clear error and success states.</li>
+</ul>
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">14</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag new">New</span></div>
-      <h3 class="cl-h">430+ new asset pages &amp; a browsable directory</h3>
-      <p>Every asset in our catalogue now has its own seasonality snapshot page &mdash; chart, best/worst months, full 12-month table, and a VERIFIED/MODELLED badge &mdash; plus a new <a href="/seasonality.html" style="color:var(--amber2)">Browse Assets</a> directory grouped by market and sector.</p>
-    </div>
-  </div>
+<h2>Where we know we have work to do</h2>
+<div class="status-pill-acc partial">PARTIAL SUPPORT</div>
+<table class="acc-table">
+  <tr><th>Area</th><th>Current state</th></tr>
+  <tr><td><strong>Interactive charts</strong> (seasonal calendar wheel, bar charts)</td><td>These are visual SVG/HTML elements. Screen readers can access the underlying numbers via the data tables and cards displayed alongside each chart, but the charts themselves don’t yet have full ARIA descriptions.</td></tr>
+  <tr><td><strong>Colour as the only signal</strong></td><td>Green/red is used to indicate positive/negative seasonal returns. This is paired with +/&minus; signs and text labels (e.g. "Best Month", "Worst Month") so the information isn’t conveyed by colour alone, but we haven’t formally audited colour contrast ratios against WCAG AA across every chart state.</td></tr>
+  <tr><td><strong>Complex tool interfaces</strong> (Backtest, Screener, Portfolio builder)</td><td>These multi-step tools are keyboard-operable but haven’t had a full assistive-technology walkthrough yet.</td></tr>
+  <tr><td><strong>AI chat widget</strong></td><td>Operable by keyboard and screen reader, but live-region announcements for new messages are still being refined.</td></tr>
+</table>
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">14</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag major">Major</span></div>
-      <h3 class="cl-h">10th tool: Portfolio Seasonality, plus detrending, presidential-cycle filters &amp; seasonal alerts</h3>
-      <p>See your <strong>whole portfolio's</strong> combined seasonal exposure by entering your holdings and weights &mdash; a weighted blend of each asset's own pattern, with a holding-by-holding breakdown. Every chart now supports a <strong>Detrend</strong> toggle (see relative seasonal strength independent of an asset's overall trend &mdash; especially useful for crypto and high-growth stocks) and <strong>presidential-cycle filtering</strong> (election / pre-election / post-election / midterm years). You can also set up <strong>seasonal email alerts</strong> to get notified before an asset's historically strongest month begins.</p>
-    </div>
-  </div>
+<h2>How to report an accessibility issue</h2>
+<p>If you encounter a barrier using TimingAX — whether you use a screen reader, keyboard navigation, voice control, or any other assistive technology — please <a href="/contact.html">get in touch via our contact form</a>. We read every message personally, and accessibility issues are treated as a priority. Please let us know:</p>
+<ul>
+<li>The page or tool where you encountered the issue</li>
+<li>What assistive technology and browser you were using</li>
+<li>What you expected to happen, and what happened instead</li>
+</ul>
 
+<h2>Technical approach</h2>
+<p>The site is built with semantic HTML, standard form controls, and CSS that respects browser and OS-level preferences (reduced motion, font scaling). As new features are added, accessibility is considered as part of the build — not retrofitted afterward — though as a small independently-run project, some areas (noted above) are still catching up.</p>
 
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">13</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag major">Major</span></div>
-      <h3 class="cl-h">All 9 tools now run on real price data</h3>
-      <p>The Backtest, Screener, Watchlist, and Correlations tools now compute from real historical monthly prices &mdash; joining the Analyzer, which already did. Every analysis shows a <span class="data-badge real" style="vertical-align:middle">&#10003; VERIFIED</span> or <span class="data-badge model" style="vertical-align:middle">MODELLED</span> badge so you always know which you're looking at. Added a full <a href="/methodology.html" style="color:var(--amber2)">Data &amp; Methodology</a> page explaining exactly how.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">12</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag major">Major</span><span class="cl-tag">Design</span></div>
-      <h3 class="cl-h">Live interactive demo, real ticker, and a new icon set</h3>
-      <p>The homepage hero is now a working mini-analyzer &mdash; pick an asset and watch real seasonal data render and animate in. The price ticker now pulls live quotes. All emoji icons across the site were replaced with a custom-drawn icon set, and scroll-triggered motion was added throughout.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">12</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag">Fix</span><span class="cl-tag">Trust</span></div>
-      <h3 class="cl-h">Real contact form &amp; newsletter signup</h3>
-      <p>The contact form and blog newsletter signup now genuinely store submissions &mdash; messages reach a real inbox and subscribers are saved. No more simulated "success" messages.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">12</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag">Billing</span></div>
-      <h3 class="cl-h">Self-service subscription management</h3>
-      <p>Pro and Lifetime members can now manage their subscription &mdash; update payment details, view invoices, or cancel &mdash; directly from the dashboard via a secure Stripe-hosted portal. No emailing support required.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">12</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag">Access</span></div>
-      <h3 class="cl-h">Free tier properly enforced</h3>
-      <p>Free accounts are now limited to 3 analyses per month and indices/ETFs only, with Backtest, Earnings, Screener, Watchlist, and Correlations clearly marked as Pro features. Previously, logged-in free accounts had unrestricted access &mdash; this is now fixed across the board.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">11</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag major">Major</span></div>
-      <h3 class="cl-h">Live payments are go</h3>
-      <p>Stripe is live &mdash; Pro Monthly (&pound;19.99), Pro Annual (&pound;149), and Lifetime (&pound;299) plans are all purchasable. Subscriptions activate instantly via webhook, updating account access in real time.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">11</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag">Onboarding</span><span class="cl-tag">Polish</span></div>
-      <h3 class="cl-h">New user walkthrough, favicon &amp; social previews</h3>
-      <p>First-time dashboard visitors now get a short interactive walkthrough of the 9 tools and plans. Added a proper site icon (visible in browser tabs and bookmarks) and a branded preview image for links shared on social media.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">10</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag">AI</span></div>
-      <h3 class="cl-h">AI chat assistant launched</h3>
-      <p>Every page now has a chat assistant in the bottom-right corner &mdash; ask about pricing, how a tool works, or specific seasonal patterns, and get an instant answer.</p>
-    </div>
-  </div>
-
-  <div class="cl-entry">
-    <div class="cl-date">
-      <div class="cl-d">9</div>
-      <div class="cl-m">Jun 2026</div>
-    </div>
-    <div class="cl-body">
-      <div class="cl-tags"><span class="cl-tag major">Launch</span></div>
-      <h3 class="cl-h">TimingAX launches</h3>
-      <p>Initial launch: 9 seasonal analysis tools covering 460+ global assets across US, UK, German, and Asian markets &mdash; Seasonal Analyzer, Strategy Backtest, Event Studies, Earnings Analysis, Seasonal Screener, Watchlist, This Month in History, Correlations, and an Economic Calendar.</p>
-    </div>
-  </div>
+<div class="disc-foot">This statement reflects our current understanding and will be updated as improvements are made. It is not a legal certification of conformance.</div>
 
 </div>
 
@@ -377,10 +241,10 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
   </div>
   <div class="ft-links">
     <a href="/index.html">Home</a>
-    <a href="/market-seasonality.html">App</a>
+    <a href="/academy.html">Academy</a>
     <a href="/methodology.html">Methodology</a>
-    <a href="/terms-of-service.html">Terms</a>
     <a href="/privacy-policy.html">Privacy</a>
+    <a href="/terms-of-service.html">Terms</a>
   </div>
   <div style="font:400 10px/1.6 var(--mono);color:var(--w5);max-width:520px;margin-bottom:10px;opacity:.7">TimingAX is an independently operated service. Not a registered investment adviser. Data is for informational purposes only and is not financial advice.</div>
   <div class="ft-copy">&copy; 2026 TimingAX</div>

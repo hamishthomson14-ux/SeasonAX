@@ -95,7 +95,16 @@ button{cursor:pointer;font-family:var(--sans)}
 .tc-arr{color:var(--w5);font-size:16px;transition:all .2s}
 .tool-card:hover .tc-arr{color:var(--amber2);transform:translate(3px,-3px)}
 .sidebar-col{display:flex;flex-direction:column;gap:16px}
-.spotlight,.cal-widget,.quick-access{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;overflow:hidden}
+.spotlight,.cal-widget,.quick-access,.referral-widget{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;overflow:hidden}
+.ref-body{padding:14px 18px}
+.ref-copy{font-size:12px;color:var(--w3);line-height:1.6;margin-bottom:12px}
+.ref-link-row{display:flex;gap:8px;margin-bottom:14px}
+.ref-link-input{flex:1;min-width:0;background:var(--s1);border:1px solid var(--b2);color:var(--w3);font:400 11px/1 var(--mono);padding:9px 10px;border-radius:6px}
+.ref-copy-btn{background:var(--amber);color:var(--bg);border:none;padding:9px 14px;border-radius:6px;font:600 12px/1 var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
+.ref-copy-btn:hover{background:var(--amber2)}
+.ref-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
+.ref-stat-v{font:700 18px/1 var(--disp);color:var(--w)}
+.ref-stat-l{font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--w4);margin-top:4px}
 .sp-head,.cw-head,.qa-head{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
 .sp-title,.cw-title,.qa-title{font:600 12px/1 var(--sans);color:var(--w2)}
 .sp-sub{font:400 10px/1 var(--mono);color:var(--w4)}
@@ -238,7 +247,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       
       <div id="upgradeBanner" style="display:none;background:rgba(232,147,24,.06);border:1px solid rgba(232,147,24,.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <div>
-          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 9 tools &amp; 460+ global assets</div>
+          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 10 tools &amp; 430+ global assets</div>
           <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 3 analyses/month &middot; indices &amp; ETFs only</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -251,7 +260,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
         <a href="/market-seasonality.html" class="tool-card featured" onclick="lsSet('analyzer')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="#E89318" stroke-width="1.7"/><path d="M3 9h18" stroke="#E89318" stroke-width="1.7"/><path d="M8 2.8v3.4M16 2.8v3.4" stroke="#E89318" stroke-width="1.7"/><path d="M7 16.5l3-3 2.2 1.8 4-4.3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">01</div><span class="tc-badge hot">Most used</span></div></div>
           <div class="tc-name">Seasonal Analyzer</div>
-          <div class="tc-desc">Pick any of 460+ global assets and see its complete 15-year seasonal calendar. Heatmap, win rates, calendar wheel and full AI written analysis.</div>
+          <div class="tc-desc">Pick any of 430+ global assets and see its complete 15-year seasonal calendar. Heatmap, win rates, calendar wheel and full AI written analysis.</div>
           <div class="tc-footer"><span class="tc-stat">US &#183; UK &#183; Germany &#183; Asia</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('backtest')">
@@ -275,8 +284,8 @@ body.is-pro .tool-card.pro-locked{opacity:1}
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('screener')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">05</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Seasonal Screener</div>
-          <div class="tc-desc">Which assets are entering their strongest seasonal window right now? Ranked by current month performance, all 460 assets.</div>
-          <div class="tc-footer"><span class="tc-stat" id="tc5stat">460+ assets</span><span class="tc-arr">&#8599;</span></div>
+          <div class="tc-desc">Which assets are entering their strongest seasonal window right now? Ranked by current month performance, all 430 assets.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc5stat">430+ assets</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('watchlist')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">06</div><span class="tc-lock">&#128274; PRO</span></div></div>
@@ -324,9 +333,27 @@ body.is-pro .tool-card.pro-locked{opacity:1}
           <button class="qa-btn" onclick="quickGo('tsla')"><span class="qa-btn-icon">&#9889;</span><span class="qa-btn-label">Tesla</span></button>
         </div>
       </div>
+      <div class="referral-widget">
+        <div class="qa-head">
+          <div class="qa-title">Refer a friend</div>
+        </div>
+        <div class="ref-body">
+          <p class="ref-copy">Give a free month, get a free month. When someone signs up with your link and goes Pro, you <strong>both</strong> get a month free.</p>
+          <div class="ref-link-row">
+            <input type="text" id="referralLink" class="ref-link-input" readonly onclick="this.select()">
+            <button class="ref-copy-btn" id="refCopyBtn" onclick="copyReferralLink()">Copy</button>
+          </div>
+          <div class="ref-stats">
+            <div class="ref-stat"><div class="ref-stat-v" id="refTotal">0</div><div class="ref-stat-l">Referred</div></div>
+            <div class="ref-stat"><div class="ref-stat-v" id="refPending">0</div><div class="ref-stat-l">Pending</div></div>
+            <div class="ref-stat"><div class="ref-stat-v" id="refRewarded" style="color:var(--green)">0</div><div class="ref-stat-l">Rewarded</div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<script src="/cookie-consent.js"></script>
 <script src="/chat-widget.js"></script>
 <script>
 var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44');
@@ -362,6 +389,60 @@ async function initAuth() {
     var banner2 = document.getElementById('upgradeBanner');
     if (banner2) banner2.style.display = 'flex';
   }
+
+  recordReferralIfNew(user);
+  renderReferralWidget(user);
+}
+
+// ── REFERRAL PROGRAM ──────────────────────────────────
+// If this user arrived via a referral link AND their account was created
+// recently (within 24h), record the referral relationship once. The 24h
+// window prevents an existing user from generating bogus referrals just by
+// clicking someone else's link while already signed in.
+async function recordReferralIfNew(user) {
+  var refCode;
+  try { refCode = localStorage.getItem('sx_ref_code'); } catch (e) { return; }
+  if (!refCode) return;
+  try { localStorage.removeItem('sx_ref_code'); } catch (e) {}
+
+  if (refCode === user.id) return; // can't refer yourself
+  var ageMs = Date.now() - new Date(user.created_at).getTime();
+  if (ageMs > 24 * 60 * 60 * 1000) return; // not a new account — ignore
+
+  try {
+    await sb.from('referrals').upsert({
+      referrer_id: refCode,
+      referred_id: user.id,
+      referred_email: user.email,
+      status: 'pending'
+    }, { onConflict: 'referred_id', ignoreDuplicates: true });
+  } catch (e) { /* ignore — e.g. invalid ref code that doesn't pass RLS */ }
+}
+
+async function renderReferralWidget(user) {
+  var box = document.getElementById('referralBox');
+  if (!box) return;
+  var link = 'https://timingax.co.uk/seasonax-auth.html?ref=' + user.id + '&tab=up';
+  document.getElementById('referralLink').value = link;
+
+  var res = await sb.from('referrals').select('status').eq('referrer_id', user.id);
+  var rows = (res && res.data) || [];
+  var total = rows.length;
+  var rewarded = rows.filter(function(r){ return r.status === 'rewarded'; }).length;
+  var pending = total - rewarded;
+  document.getElementById('refTotal').textContent = total;
+  document.getElementById('refRewarded').textContent = rewarded;
+  document.getElementById('refPending').textContent = pending;
+}
+
+function copyReferralLink() {
+  var input = document.getElementById('referralLink');
+  input.select();
+  document.execCommand('copy');
+  var btn = document.getElementById('refCopyBtn');
+  var orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(function(){ btn.textContent = orig; }, 1500);
 }
 
 async function openBillingPortal() {
@@ -624,7 +705,7 @@ var OB_STEPS = [
   {
     icon: '&#128075;', iconBg: 'rgba(232,147,24,.1)',
     title: 'Welcome to <em>TimingAX.</em>',
-    body: 'Here&#8217;s the idea in one sentence: <strong>some months have historically been much better for certain assets than others</strong> &mdash; and now you can see exactly which, for any of 460+ global assets.',
+    body: 'Here&#8217;s the idea in one sentence: <strong>some months have historically been much better for certain assets than others</strong> &mdash; and now you can see exactly which, for any of 430+ global assets.',
     preview: true
   },
   {
@@ -634,7 +715,7 @@ var OB_STEPS = [
     tools: [
       {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
       {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
-      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what\u2019s entering strength this month'},
+      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering strength this month'},
     ]
   },
   {
@@ -650,7 +731,7 @@ var OB_STEPS = [
   {
     icon: '&#127942;', iconBg: 'rgba(0,201,126,.1)',
     title: 'Your <em>free tier.</em>',
-    body: 'You\u2019re on the Free plan: <strong>3 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Upgrade anytime for unlimited access to all 460+ assets and every tool.',
+    body: 'You’re on the Free plan: <strong>3 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Upgrade anytime for unlimited access to all 430+ assets and every tool.',
     tiers: true,
     final: true
   }
@@ -693,7 +774,7 @@ function obRender() {
   if (s.tiers) {
     html += '<div class="ob-tier">' +
       '<div class="ob-tier-card"><div class="ob-tier-name">Free</div><div class="ob-tier-price">&pound;0</div><div class="ob-tier-desc">3/month<br>Indices &amp; ETFs</div></div>' +
-      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">Unlimited<br>All 460+ assets</div></div>' +
+      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">Unlimited<br>All 430+ assets</div></div>' +
       '<div class="ob-tier-card"><div class="ob-tier-name">Lifetime</div><div class="ob-tier-price">&pound;299</div><div class="ob-tier-desc">Pay once<br>Forever</div></div>' +
     '</div>';
   }
