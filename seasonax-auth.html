@@ -173,7 +173,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
   <div class="l-hero">
     <div class="l-tag">Professional Seasonal Intelligence</div>
     <h1 class="l-h">The market runs<br>on a <em>calendar.</em><br>Now you do too.</h1>
-    <p class="l-sub">430+ global assets. 9 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
+    <p class="l-sub">430+ global assets. 10 analytical tools. 15 years of seasonal data. Know which months win &mdash; before they happen.</p>
 
     <div class="l-stats">
       <div class="l-stat">
@@ -308,6 +308,26 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       </div>
     </div>
 
+    <!-- SET NEW PASSWORD (after clicking email reset link) -->
+    <div id="form_newpw" style="display:none">
+      <div style="margin-bottom:28px">
+        <div style="font:800 28px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:6px">Set a new password</div>
+        <div style="font-size:14px;color:var(--w3)">Choose a new password for your account.</div>
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="newpw_pw">New password</label>
+        <input class="r-input" type="password" id="newpw_pw" placeholder="At least 8 characters">
+      </div>
+      <div class="r-group">
+        <label class="r-label" for="newpw_pw2">Confirm new password</label>
+        <input class="r-input" type="password" id="newpw_pw2" placeholder="Re-enter your new password">
+        <div class="r-hint" id="newpw_err"></div>
+      </div>
+      <button class="r-btn" id="newpw_btn" onclick="updatePassword()">
+        <span id="newpw_btn_txt">Update password</span>
+      </button>
+    </div>
+
     <!-- EMAIL CONFIRM STATE -->
     <div id="form_confirm" style="display:none">
       <div class="r-success">
@@ -368,32 +388,72 @@ var sb = window.supabase.createClient(SB_URL, SB_KEY);
   }
 })();
 
-// Check if already logged in
-sb.auth.getSession().then(function(r) {
-  if (r.data && r.data.session) {
-    window.location.href = '/dashboard.html';
-  } else {
-    // Check URL for tab param
-    var hash = window.location.hash;
-    var params = new URLSearchParams(window.location.search);
-    if (params.get('tab') === 'up' || hash === '#signup' || params.get('ref')) {
-      showTab('up');
+// ── PASSWORD RECOVERY ─────────────────────────────────
+// Clicking a "reset password" email link logs the user in automatically
+// (Supabase creates a temporary recovery session) and lands here with
+// #access_token=...&type=recovery (or ?...&type=recovery) in the URL.
+// If we let the normal "already logged in -> dashboard" redirect run,
+// the user would be bounced straight to the dashboard with their OLD
+// password still set, never getting a chance to choose a new one.
+// So: detect this case first and show the "set new password" form instead.
+var isRecoveryLink = window.location.hash.indexOf('type=recovery') !== -1 ||
+  new URLSearchParams(window.location.search).get('type') === 'recovery';
+
+if (isRecoveryLink) {
+  showTab('newpw');
+  document.getElementById('tabs').style.display = 'none';
+} else {
+  // Check if already logged in
+  sb.auth.getSession().then(function(r) {
+    if (r.data && r.data.session) {
+      window.location.href = '/dashboard.html';
     } else {
-      showTab('in');
+      // Check URL for tab param
+      var hash = window.location.hash;
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('tab') === 'up' || hash === '#signup' || params.get('ref')) {
+        showTab('up');
+      } else {
+        showTab('in');
+      }
+      // Pre-fill email if passed
+      var email = params.get('email');
+      if (email) {
+        var el = document.getElementById('su_email');
+        if (el) { el.value = decodeURIComponent(email); showTab('up'); }
+      }
+      document.getElementById('tabs').style.display = 'flex';
     }
-    // Pre-fill email if passed
-    var email = params.get('email');
-    if (email) {
-      var el = document.getElementById('su_email');
-      if (el) { el.value = decodeURIComponent(email); showTab('up'); }
-    }
-    document.getElementById('tabs').style.display = 'flex';
+  });
+}
+
+// ── Update password (after clicking email reset link) ─────
+async function updatePassword() {
+  var pw = document.getElementById('newpw_pw').value;
+  var pw2 = document.getElementById('newpw_pw2').value;
+  var err = document.getElementById('newpw_err');
+  err.className = 'r-hint';
+  err.textContent = '';
+  if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; return; }
+  if (pw !== pw2) { err.textContent = 'Passwords do not match.'; return; }
+  setLoading('newpw_btn','newpw_btn_txt',true);
+  try {
+    var r = await sb.auth.updateUser({ password: pw });
+    if (r.error) throw r.error;
+    window.location.href = '/dashboard.html?pwreset=success';
+  } catch (e) {
+    err.textContent = (e.message && e.message.indexOf('session') !== -1)
+      ? 'This reset link has expired. Please request a new one.'
+      : (e.message || 'Could not update password. Please try again.');
+    setLoading('newpw_btn','newpw_btn_txt',false);
+    document.getElementById('newpw_btn_txt').textContent = 'Update password';
+    document.getElementById('newpw_btn').disabled = false;
   }
-});
+}
 
 // ── Tab switching ─────────────────────────────────────
 function showTab(t) {
-  var forms = ['in','up','forgot','confirm','reset_sent'];
+  var forms = ['in','up','forgot','confirm','reset_sent','newpw'];
   forms.forEach(function(f){ var el=document.getElementById('form_'+f); if(el) el.style.display='none'; });
   var el = document.getElementById('form_'+t);
   if (el) el.style.display = 'block';
