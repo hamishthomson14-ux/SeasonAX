@@ -17,6 +17,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -2316,6 +2317,7 @@ function paintAnalysis(item, monthsIn, source, years) {
             '<span class="ai-badge">Intelligence Briefing</span>'+
             '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Analysis'+(detrend?' &middot; Detrended':'')+'</span>'+
             '<button class="alert-btn" id="alertBtn" onclick="toggleAlert()">&#128276; Notify me</button>'+
+            '<button class="alert-btn" id="pdfBtn" onclick="downloadPdfReport()">&#128196; Download PDF<span class="mt-lock">&#128274; PRO</span></button>'+
           '</div>'+
           '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years, detrend)+'</div>'+
         '</div>';
@@ -2356,6 +2358,223 @@ function refreshAlertButton() {
     if (exists) { btn.textContent = '\u{1F514} Alert set \u2713'; btn.classList.add('active'); }
     else { btn.textContent = '\u{1F514} Notify me'; btn.classList.remove('active'); }
   });
+}
+
+// ── PDF Report Export (Pro feature) ────────────────────────
+function downloadPdfReport() {
+  if (!isPro()) {
+    showPaywall('feature', 'PDF report export');
+    return;
+  }
+  if (!CUR_ITEM || !CUR_MONTHS) return;
+
+  var jsPDFlib = window.jspdf && window.jspdf.jsPDF;
+  if (!jsPDFlib) { alert('PDF library failed to load. Please refresh and try again.'); return; }
+
+  var detrend = document.getElementById('detrendChk') && document.getElementById('detrendChk').checked;
+  var months = detrend ? detrendMonths(CUR_MONTHS) : CUR_MONTHS;
+  var sfx = detrend ? 'pp' : '%';
+  var item = CUR_ITEM;
+  var name = item.name || item.ticker;
+
+  var doc = new jsPDFlib({ unit: 'pt', format: 'a4' });
+  var pageW = doc.internal.pageSize.getWidth();
+  var margin = 48;
+  var y = margin;
+
+  // Colors
+  var navy = [15, 23, 40];      // headings
+  var gray = [110, 125, 145];   // secondary text
+  var green = [0, 161, 102];
+  var red = [212, 48, 64];
+  var amber = [201, 122, 16];
+  var lineCol = [225, 230, 238];
+
+  function setColor(c) { doc.setTextColor(c[0], c[1], c[2]); }
+
+  // ── Header ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  setColor(navy);
+  doc.text('TimingAX', margin, y);
+  doc.setFontSize(9);
+  setColor(amber);
+  doc.text('SEASONAL ANALYSIS REPORT', margin + 78, y, { baseline: 'alphabetic' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  setColor(gray);
+  var genDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  doc.text('Generated ' + genDate, pageW - margin, y, { align: 'right' });
+
+  y += 10;
+  doc.setDrawColor(lineCol[0], lineCol[1], lineCol[2]);
+  doc.line(margin, y, pageW - margin, y);
+  y += 28;
+
+  // ── Asset title ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  setColor(navy);
+  doc.text(name, margin, y);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  setColor(gray);
+  var subParts = [];
+  if (item.ticker) subParts.push(item.ticker);
+  if (item.sector) subParts.push(item.sector);
+  if (item.region) subParts.push(item.region);
+  doc.text(subParts.join('  \u00b7  '), pageW - margin, y, { align: 'right' });
+  y += 22;
+
+  // Data quality badge
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  if (CUR_SOURCE === 'real') {
+    setColor(green);
+    doc.text('\u2713 VERIFIED \u00b7 REAL PRICE DATA' + (CUR_YEARS ? ' \u00b7 ' + CUR_YEARS + ' YEARS' : ''), margin, y);
+  } else {
+    setColor(gray);
+    doc.text('MODELLED \u00b7 PATTERN-BASED ESTIMATE', margin, y);
+  }
+  if (detrend) {
+    setColor(amber);
+    doc.text('DETRENDED VIEW', pageW - margin, y, { align: 'right' });
+  }
+  y += 28;
+
+  // ── Summary stats ──
+  var sorted = months.slice().sort(function(a, b) { return b.avg - a.avg; });
+  var best = sorted[0], worst = sorted[11];
+  var posCount = months.filter(function(m) { return m.avg > 0; }).length;
+  var statW = (pageW - margin * 2) / 3;
+  var stats = [
+    { label: 'BEST MONTH' + (detrend ? ' (RELATIVE)' : ''), val: best.m + '  ' + (best.avg >= 0 ? '+' : '') + best.avg.toFixed(2) + sfx, col: green },
+    { label: 'WORST MONTH' + (detrend ? ' (RELATIVE)' : ''), val: worst.m + '  ' + worst.avg.toFixed(2) + sfx, col: red },
+    { label: (detrend ? 'ABOVE-AVERAGE MONTHS' : 'POSITIVE MONTHS'), val: posCount + ' / 12', col: amber },
+  ];
+  stats.forEach(function(s, i) {
+    var x = margin + i * statW;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    setColor(gray);
+    doc.text(s.label, x, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    setColor(s.col);
+    doc.text(s.val, x, y + 18);
+  });
+  y += 42;
+  doc.setDrawColor(lineCol[0], lineCol[1], lineCol[2]);
+  doc.line(margin, y, pageW - margin, y);
+  y += 24;
+
+  // ── 12-month table ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  setColor(navy);
+  doc.text('Month-by-Month Seasonal Averages', margin, y);
+  y += 18;
+
+  var colX = { month: margin, avg: margin + 120, win: margin + 220, note: margin + 320 };
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  setColor(gray);
+  doc.text('MONTH', colX.month, y);
+  doc.text('AVG RETURN', colX.avg, y);
+  doc.text('WIN RATE', colX.win, y);
+  doc.text('NOTE', colX.note, y);
+  y += 8;
+  doc.line(margin, y, pageW - margin, y);
+  y += 14;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  CUR_MONTHS.map(function(_, i) { return months[i]; }).forEach(function(m, i) {
+    var idx = MO.indexOf(m.m);
+    setColor(navy);
+    doc.text(idx >= 0 ? MF_LONG[idx] : m.m, colX.month, y);
+    setColor(m.avg >= 0 ? green : red);
+    doc.text((m.avg >= 0 ? '+' : '') + m.avg.toFixed(2) + sfx, colX.avg, y);
+    setColor(navy);
+    doc.text(m.win + '%', colX.win, y);
+    setColor(gray);
+    var note = String(m.note || '');
+    if (note.length > 38) note = note.slice(0, 37) + '\u2026';
+    doc.setFontSize(8.5);
+    doc.text(note, colX.note, y);
+    doc.setFontSize(10);
+    y += 19;
+  });
+
+  y += 14;
+  doc.setDrawColor(lineCol[0], lineCol[1], lineCol[2]);
+  doc.line(margin, y, pageW - margin, y);
+  y += 24;
+
+  // ── Intelligence briefing ──
+  var briefEl = document.getElementById('aiTxt');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  setColor(navy);
+  doc.text('Intelligence Briefing', margin, y);
+  y += 8;
+
+  if (briefEl) {
+    var verdictLabel = briefEl.querySelector('.brief-verdict-label');
+    var verdictVal = briefEl.querySelector('.brief-verdict-val');
+    if (verdictLabel && verdictVal) {
+      y += 16;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      setColor(gray);
+      doc.text(verdictLabel.textContent, margin, y);
+      y += 15;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      setColor(amber);
+      doc.text(verdictVal.textContent, margin, y);
+      y += 22;
+    } else {
+      y += 16;
+    }
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    setColor([60, 72, 92]);
+    var maxW = pageW - margin * 2;
+    var paragraphs = Array.prototype.slice.call(briefEl.querySelectorAll('p'));
+    paragraphs.forEach(function(p) {
+      var lines = doc.splitTextToSize(p.textContent.trim(), maxW);
+      lines.forEach(function(line) {
+        if (y > 770) { doc.addPage(); y = margin; }
+        doc.text(line, margin, y);
+        y += 14;
+      });
+      y += 6;
+    });
+  }
+
+  // ── Footer disclaimer ──
+  var pageCount = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= pageCount; p++) {
+    doc.setPage(p);
+    var footY = 810;
+    doc.setDrawColor(lineCol[0], lineCol[1], lineCol[2]);
+    doc.line(margin, footY - 14, pageW - margin, footY - 14);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    setColor(gray);
+    doc.text(
+      'Seasonality reflects historical tendencies, not guarantees. For informational purposes only \u2014 not financial advice. ' +
+      'Generated by timingax.co.uk \u00b7 Page ' + p + ' of ' + pageCount,
+      margin, footY
+    );
+  }
+
+  var fname = 'TimingAX-' + (item.ticker || name).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '') + (detrend ? '-detrended' : '') + '.pdf';
+  doc.save(fname);
 }
 
 function toggleAlert() {
@@ -2522,6 +2741,9 @@ function showPaywall(reason, toolName){
   } else if(reason === 'tool'){
     if(title) title.textContent = (toolName || 'This tool') + ' is a Pro feature';
     if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 430+ assets and every other tool.';
+  } else if(reason === 'feature'){
+    if(title) title.textContent = (toolName || 'This feature') + ' is a Pro feature';
+    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 430+ assets and every other tool.';
   } else {
     if(title) title.textContent = 'You\u2019ve used your 3 free analyses';
     if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 430+ assets.';
