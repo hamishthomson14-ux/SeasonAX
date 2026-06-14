@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse All Assets — Seasonality Directory | TimingAX</title>
+<meta property="og:title" content="Browse All Assets — Seasonality Directory | TimingAX">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timingax.co.uk/seasonality.html">
+<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="description" content="Browse seasonal performance data for 430+ stocks, indices, ETFs, and crypto across US, UK, German, and Asian markets. Free seasonal charts on TimingAX.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
+  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
+  --amber:#E89318;--amber2:#F5A52F;
+  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;
+  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
+  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
+  --mono:"IBM Plex Mono",monospace;
+  --disp:"Syne",sans-serif;
+  --sans:"Inter",sans-serif;
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--sans)}
+
+/* NAV */
+.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+.n-logo{display:flex;align-items:center;gap:9px}
+.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
+.n-word b{color:var(--amber2);font-weight:800}
+.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;transition:all .18s}
+.btn-cta:hover{background:var(--amber2)}
+
+/* HERO */
+.about-hero{position:relative;padding:100px 48px 80px;text-align:center;overflow:hidden;border-bottom:1px solid var(--b1)}
+.ah-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black,transparent);pointer-events:none;opacity:.35}
+.ah-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
+.ah-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.ah-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+.ah-eyebrow::before,.ah-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
+.ah-h{font:800 64px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:24px}
+.ah-h em{font-style:normal;color:var(--amber2)}
+.ah-sub{font-size:20px;color:var(--w2);line-height:1.65;max-width:580px;margin:0 auto}
+
+/* STORY */
+.story{max-width:760px;margin:0 auto;padding:80px 48px}
+.s-section{margin-bottom:72px}
+.s-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.s-label::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
+.s-h{font:800 36px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:20px}
+.s-h em{font-style:normal;color:var(--amber2)}
+.s-body{font-size:16px;color:var(--w3);line-height:1.82}
+.s-body p{margin-bottom:20px}
+.s-body p:last-child{margin-bottom:0}
+.s-body strong{color:var(--w2);font-weight:500}
+
+/* Pull quote */
+.pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:20px 0 20px 28px}
+.pq-text{font:700 22px/1.4 var(--disp);letter-spacing:-.02em;color:var(--w);margin-bottom:10px}
+.pq-attr{font:400 11px/1 var(--mono);color:var(--w4);letter-spacing:.06em}
+
+/* Stat highlight inline */
+.s-stat{display:inline-flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:4px 12px 4px 8px;font:600 14px/1 var(--mono);vertical-align:middle;margin:0 4px}
+.s-stat em{font-style:normal;font-size:20px;font-weight:700;margin-right:2px}
+.s-stat.g em{color:var(--green)}
+.s-stat.r em{color:var(--red)}
+.s-stat.a em{color:var(--amber2)}
+
+/* Timeline */
+.timeline{position:relative;margin:0 0 72px;padding-left:28px}
+.timeline::before{content:"";position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(var(--b2),transparent)}
+.tl-item{position:relative;padding-bottom:36px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-34px;top:5px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--amber2);background:var(--bg)}
+.tl-dot.filled{background:var(--amber2)}
+.tl-date{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--amber2);text-transform:uppercase;margin-bottom:8px}
+.tl-h{font:600 16px/1.3 var(--sans);color:var(--w2);margin-bottom:6px;letter-spacing:-.01em}
+.tl-p{font-size:14px;color:var(--w4);line-height:1.65}
+
+/* Data sources grid */
+.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
+.src-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;transition:border-color .2s}
+.src-card:hover{border-color:var(--b3)}
+.src-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.src-name{font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
+.src-desc{font:400 11px/1.5 var(--mono);color:var(--w4)}
+
+/* Principles */
+.principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.principle{display:flex;gap:16px;align-items:flex-start;background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px 22px;transition:border-color .2s}
+.principle:hover{border-color:var(--b3)}
+.pr-n{width:32px;height:32px;border-radius:7px;background:rgba(232,147,24,.1);border:1px solid rgba(232,147,24,.2);color:var(--amber2);font:700 13px/1 var(--mono);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pr-t{font:600 14px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
+.pr-d{font-size:13px;color:var(--w4);line-height:1.6}
+
+/* What we are not */
+.not-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.not-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;position:relative;overflow:hidden}
+.not-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.not-card.is::before{background:var(--green)}
+.not-card.not::before{background:var(--red)}
+.nc-label{font:600 8px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:12px}
+.nc-label.is{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
+.nc-label.not{background:rgba(240,64,80,.08);color:var(--red);border:1px solid rgba(240,64,80,.2)}
+.nc-items{list-style:none;display:flex;flex-direction:column;gap:7px}
+.nc-items li{font-size:13px;color:var(--w3);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
+.nc-items li span{flex-shrink:0;margin-top:1px}
+
+/* CTA */
+.about-cta{background:var(--bg2);border-top:1px solid var(--b1);padding:80px 48px;text-align:center}
+.ac-in{max-width:520px;margin:0 auto}
+.ac-h{font:800 40px/1.1 var(--disp);letter-spacing:-.04em;margin-bottom:16px}
+.ac-h em{font-style:normal;color:var(--amber2)}
+.ac-p{font-size:16px;color:var(--w3);line-height:1.7;margin-bottom:36px}
+.btn-hero{background:var(--amber);color:var(--bg);border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;margin-right:10px}
+.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,147,24,.3)}
+.btn-ghost-l{background:none;border:1px solid var(--s3);color:var(--w2);padding:14px 26px;border-radius:8px;font-size:15px;transition:all .2s;display:inline-flex;align-items:center}
+.btn-ghost-l:hover{border-color:var(--amber2);color:var(--w)}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
+.ft-links a:hover{color:var(--amber2)}
+.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
+
+@media(max-width:900px){
+  .ah-h{font-size:40px}
+  .about-hero,.story,.about-cta,footer{padding-left:24px;padding-right:24px}
+  .sources-grid{grid-template-columns:1fr}
+  .not-grid{grid-template-columns:1fr}
+  .nav{padding:0 24px}
+}
+
+.dir-hero{padding:64px 24px 32px;text-align:center;border-bottom:1px solid var(--b1)}
+.dir-hero h1{font:800 36px/1.15 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.dir-hero h1 em{font-style:normal;color:var(--amber2)}
+.dir-hero p{color:var(--w3);font-size:14px;max-width:560px;margin:0 auto}
+.cat-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:20px 24px;max-width:1000px;margin:0 auto;border-bottom:1px solid var(--b1)}
+.cat-link{font-size:11px;color:var(--w3);background:var(--bg2);border:1px solid var(--b2);border-radius:6px;padding:6px 11px;transition:all .15s}
+.cat-link:hover{color:var(--amber2);border-color:rgba(232,147,24,.35)}
+.dir-wrap{max-width:1000px;margin:0 auto;padding:32px 24px 80px}
+.cat-section{margin-bottom:36px}
+.cat-section h2{font:700 18px/1.3 var(--disp);letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.cat-section h2 .count{font:600 10px/1 var(--mono);color:var(--w4);background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:3px 8px}
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+.asset-chip{font-size:12.5px;color:var(--w2);background:var(--bg2);border:1px solid var(--b2);border-radius:6px;padding:7px 12px;transition:all .15s}
+.asset-chip:hover{border-color:rgba(232,147,24,.4);color:var(--amber2)}
+.asset-chip span{color:var(--w4)}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="n-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="26" rx="6" fill="#0F1728"/>
+      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
+      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
+      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
+      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
+    </svg>
+    <a href="/index.html"><div class="n-word">Timing<b>AX</b></div></a>
+  </div>
+  <a href="/seasonax-auth.html"><button class="btn-cta">Start free &rarr;</button></a>
+</nav>
+
+<div class="dir-hero">
+  <h1>Browse <em>430+ assets.</em></h1>
+  <p>Free seasonal performance data for every stock, index, ETF, and crypto asset in our catalogue — grouped by market and sector. Click any asset for its full seasonality snapshot.</p>
+</div>
+
+<div class="cat-nav"><a href="#index-funds-etfs" class="cat-link">Index Funds &amp; ETFs</a><a href="#us-technology" class="cat-link">US Technology</a><a href="#us-finance-banking" class="cat-link">US Finance &amp; Banking</a><a href="#us-healthcare-biotech" class="cat-link">US Healthcare &amp; Biotech</a><a href="#us-consumer-retail" class="cat-link">US Consumer &amp; Retail</a><a href="#us-energy" class="cat-link">US Energy</a><a href="#us-defense-industrials" class="cat-link">US Defense &amp; Industrials</a><a href="#us-communications-media" class="cat-link">US Communications &amp; Media</a><a href="#us-ev-emerging-tech" class="cat-link">US EV &amp; Emerging Tech</a><a href="#uk-indices" class="cat-link">UK Indices</a><a href="#uk-banking-finance" class="cat-link">UK Banking &amp; Finance</a><a href="#uk-energy-mining" class="cat-link">UK Energy &amp; Mining</a><a href="#uk-pharma-health" class="cat-link">UK Pharma &amp; Health</a><a href="#uk-consumer-retail" class="cat-link">UK Consumer &amp; Retail</a><a href="#uk-technology" class="cat-link">UK Technology</a><a href="#uk-industrials-defense" class="cat-link">UK Industrials &amp; Defense</a><a href="#uk-telecoms-property" class="cat-link">UK Telecoms &amp; Property</a><a href="#german-indices" class="cat-link">German Indices</a><a href="#german-technology" class="cat-link">German Technology</a><a href="#german-automotive" class="cat-link">German Automotive</a><a href="#german-industrials-chemicals" class="cat-link">German Industrials &amp; Chemicals</a><a href="#german-finance-insurance" class="cat-link">German Finance &amp; Insurance</a><a href="#german-consumer-retail" class="cat-link">German Consumer &amp; Retail</a><a href="#german-energy-telecom" class="cat-link">German Energy &amp; Telecom</a><a href="#japan" class="cat-link">Japan</a><a href="#china-hong-kong" class="cat-link">China &amp; Hong Kong</a><a href="#south-korea" class="cat-link">South Korea</a><a href="#taiwan" class="cat-link">Taiwan</a><a href="#india" class="cat-link">India</a><a href="#singapore-australia" class="cat-link">Singapore &amp; Australia</a></div>
+
+<div class="dir-wrap">
+
+  <section id="index-funds-etfs" class="cat-section">
+    <h2>Index Funds &amp; ETFs <span class="count">20</span></h2>
+    <div class="chip-grid"><a href="/seasonality/sp500" class="asset-chip">S&amp;P 500</a><a href="/seasonality/nasdaq" class="asset-chip">NASDAQ Composite</a><a href="/seasonality/dow" class="asset-chip">Dow Jones Ind. Avg.</a><a href="/seasonality/russell" class="asset-chip">Russell 2000</a><a href="/seasonality/spy" class="asset-chip">SPY <span>SPDR S&amp;P 500 ETF</span></a><a href="/seasonality/qqq" class="asset-chip">QQQ <span>Invesco NASDAQ-100</span></a><a href="/seasonality/iwm" class="asset-chip">IWM <span>iShares Russell 2000</span></a><a href="/seasonality/dia" class="asset-chip">DIA <span>SPDR Dow Jones ETF</span></a><a href="/seasonality/voo" class="asset-chip">VOO <span>Vanguard S&amp;P 500</span></a><a href="/seasonality/vti" class="asset-chip">VTI <span>Vanguard Total Market</span></a><a href="/seasonality/xlk" class="asset-chip">XLK <span>Technology SPDR</span></a><a href="/seasonality/xlf" class="asset-chip">XLF <span>Financial SPDR</span></a><a href="/seasonality/xle" class="asset-chip">XLE <span>Energy SPDR</span></a><a href="/seasonality/xlv" class="asset-chip">XLV <span>Health Care SPDR</span></a><a href="/seasonality/xlre" class="asset-chip">XLRE <span>Real Estate SPDR</span></a><a href="/seasonality/xly" class="asset-chip">XLY <span>Consumer Discret. SPDR</span></a><a href="/seasonality/gld" class="asset-chip">GLD <span>SPDR Gold Shares</span></a><a href="/seasonality/slv" class="asset-chip">SLV <span>iShares Silver</span></a><a href="/seasonality/tlt" class="asset-chip">TLT <span>iShares 20yr Treasury</span></a><a href="/seasonality/hyg" class="asset-chip">HYG <span>iShares High Yield</span></a></div>
+  </section>
+  <section id="us-technology" class="cat-section">
+    <h2>US Technology <span class="count">48</span></h2>
+    <div class="chip-grid"><a href="/seasonality/aapl" class="asset-chip">AAPL <span>Apple</span></a><a href="/seasonality/msft" class="asset-chip">MSFT <span>Microsoft</span></a><a href="/seasonality/nvda" class="asset-chip">NVDA <span>Nvidia</span></a><a href="/seasonality/googl" class="asset-chip">GOOGL <span>Alphabet</span></a><a href="/seasonality/meta" class="asset-chip">META <span>Meta Platforms</span></a><a href="/seasonality/amzn" class="asset-chip">AMZN <span>Amazon</span></a><a href="/seasonality/tsla" class="asset-chip">TSLA <span>Tesla</span></a><a href="/seasonality/avgo" class="asset-chip">AVGO <span>Broadcom</span></a><a href="/seasonality/orcl" class="asset-chip">ORCL <span>Oracle</span></a><a href="/seasonality/crm" class="asset-chip">CRM <span>Salesforce</span></a><a href="/seasonality/amd" class="asset-chip">AMD</a><a href="/seasonality/intc" class="asset-chip">INTC <span>Intel</span></a><a href="/seasonality/qcom" class="asset-chip">QCOM <span>Qualcomm</span></a><a href="/seasonality/adbe" class="asset-chip">ADBE <span>Adobe</span></a><a href="/seasonality/now" class="asset-chip">NOW <span>ServiceNow</span></a><a href="/seasonality/shop" class="asset-chip">SHOP <span>Shopify</span></a><a href="/seasonality/pltr" class="asset-chip">PLTR <span>Palantir</span></a><a href="/seasonality/snow" class="asset-chip">SNOW <span>Snowflake</span></a><a href="/seasonality/uber" class="asset-chip">UBER <span>Uber</span></a><a href="/seasonality/nflx" class="asset-chip">NFLX <span>Netflix</span></a><a href="/seasonality/spot" class="asset-chip">SPOT <span>Spotify</span></a><a href="/seasonality/net" class="asset-chip">NET <span>Cloudflare</span></a><a href="/seasonality/ddog" class="asset-chip">DDOG <span>Datadog</span></a><a href="/seasonality/mdb" class="asset-chip">MDB <span>MongoDB</span></a><a href="/seasonality/twlo" class="asset-chip">TWLO <span>Twilio</span></a><a href="/seasonality/zm" class="asset-chip">ZM <span>Zoom Video</span></a><a href="/seasonality/team" class="asset-chip">TEAM <span>Atlassian</span></a><a href="/seasonality/rblx" class="asset-chip">RBLX <span>Roblox</span></a><a href="/seasonality/u_game" class="asset-chip">U <span>Unity Software</span></a><a href="/seasonality/smci" class="asset-chip">SMCI <span>Super Micro</span></a><a href="/seasonality/arm" class="asset-chip">ARM <span>Arm Holdings</span></a><a href="/seasonality/amat" class="asset-chip">AMAT <span>Applied Materials</span></a><a href="/seasonality/lrcx" class="asset-chip">LRCX <span>Lam Research</span></a><a href="/seasonality/klac" class="asset-chip">KLAC <span>KLA Corp</span></a><a href="/seasonality/txn" class="asset-chip">TXN <span>Texas Instruments</span></a><a href="/seasonality/mrvl" class="asset-chip">MRVL <span>Marvell Technology</span></a><a href="/seasonality/mu" class="asset-chip">MU <span>Micron Technology</span></a><a href="/seasonality/wdc" class="asset-chip">WDC <span>Western Digital</span></a><a href="/seasonality/hp_us" class="asset-chip">HPE <span>HP Enterprise</span></a><a href="/seasonality/ibm" class="asset-chip">IBM</a><a href="/seasonality/csco" class="asset-chip">CSCO <span>Cisco Systems</span></a><a href="/seasonality/acn" class="asset-chip">ACN <span>Accenture</span></a><a href="/seasonality/ftnt" class="asset-chip">FTNT <span>Fortinet</span></a><a href="/seasonality/panw" class="asset-chip">PANW <span>Palo Alto Networks</span></a><a href="/seasonality/crwd" class="asset-chip">CRWD <span>CrowdStrike</span></a><a href="/seasonality/s_ai" class="asset-chip">AI <span>C3.ai</span></a><a href="/seasonality/soun" class="asset-chip">SOUN <span>SoundHound AI</span></a><a href="/seasonality/ionq" class="asset-chip">IONQ <span>IonQ</span></a></div>
+  </section>
+  <section id="us-finance-banking" class="cat-section">
+    <h2>US Finance &amp; Banking <span class="count">26</span></h2>
+    <div class="chip-grid"><a href="/seasonality/jpm" class="asset-chip">JPM <span>JPMorgan Chase</span></a><a href="/seasonality/bac" class="asset-chip">BAC <span>Bank of America</span></a><a href="/seasonality/gs" class="asset-chip">GS <span>Goldman Sachs</span></a><a href="/seasonality/ms" class="asset-chip">MS <span>Morgan Stanley</span></a><a href="/seasonality/wfc" class="asset-chip">WFC <span>Wells Fargo</span></a><a href="/seasonality/c_us" class="asset-chip">C <span>Citigroup</span></a><a href="/seasonality/usb" class="asset-chip">USB <span>US Bancorp</span></a><a href="/seasonality/pnc" class="asset-chip">PNC <span>PNC Financial</span></a><a href="/seasonality/v" class="asset-chip">V <span>Visa</span></a><a href="/seasonality/ma" class="asset-chip">MA <span>Mastercard</span></a><a href="/seasonality/pypl" class="asset-chip">PYPL <span>PayPal</span></a><a href="/seasonality/sq" class="asset-chip">SQ <span>Block (Square)</span></a><a href="/seasonality/afrm" class="asset-chip">AFRM <span>Affirm</span></a><a href="/seasonality/hood" class="asset-chip">HOOD <span>Robinhood</span></a><a href="/seasonality/schw" class="asset-chip">SCHW <span>Charles Schwab</span></a><a href="/seasonality/blk" class="asset-chip">BLK <span>BlackRock</span></a><a href="/seasonality/bx" class="asset-chip">BX <span>Blackstone</span></a><a href="/seasonality/kkr" class="asset-chip">KKR</a><a href="/seasonality/aig" class="asset-chip">AIG</a><a href="/seasonality/met" class="asset-chip">MET <span>MetLife</span></a><a href="/seasonality/coin" class="asset-chip">COIN <span>Coinbase</span></a><a href="/seasonality/mstr" class="asset-chip">MSTR <span>MicroStrategy</span></a><a href="/seasonality/mara" class="asset-chip">MARA <span>Marathon Digital</span></a><a href="/seasonality/riot" class="asset-chip">RIOT <span>Riot Platforms</span></a><a href="/seasonality/btc" class="asset-chip">BTC <span>Bitcoin</span></a><a href="/seasonality/eth" class="asset-chip">ETH <span>Ethereum</span></a></div>
+  </section>
+  <section id="us-healthcare-biotech" class="cat-section">
+    <h2>US Healthcare &amp; Biotech <span class="count">20</span></h2>
+    <div class="chip-grid"><a href="/seasonality/unh" class="asset-chip">UNH <span>UnitedHealth</span></a><a href="/seasonality/jnj" class="asset-chip">JNJ <span>Johnson &amp; Johnson</span></a><a href="/seasonality/abbv" class="asset-chip">ABBV <span>AbbVie</span></a><a href="/seasonality/lly" class="asset-chip">LLY <span>Eli Lilly</span></a><a href="/seasonality/mrk" class="asset-chip">MRK <span>Merck</span></a><a href="/seasonality/pfe" class="asset-chip">PFE <span>Pfizer</span></a><a href="/seasonality/mrna" class="asset-chip">MRNA <span>Moderna</span></a><a href="/seasonality/bntx" class="asset-chip">BNTX <span>BioNTech</span></a><a href="/seasonality/amgn" class="asset-chip">AMGN <span>Amgen</span></a><a href="/seasonality/isrg" class="asset-chip">ISRG <span>Intuitive Surgical</span></a><a href="/seasonality/bsx" class="asset-chip">BSX <span>Boston Scientific</span></a><a href="/seasonality/syk" class="asset-chip">SYK <span>Stryker</span></a><a href="/seasonality/mdv" class="asset-chip">MDT <span>Medtronic</span></a><a href="/seasonality/cvs" class="asset-chip">CVS <span>CVS Health</span></a><a href="/seasonality/ci" class="asset-chip">CI <span>Cigna</span></a><a href="/seasonality/hum" class="asset-chip">HUM <span>Humana</span></a><a href="/seasonality/vrtx" class="asset-chip">VRTX <span>Vertex Pharma</span></a><a href="/seasonality/regn" class="asset-chip">REGN <span>Regeneron</span></a><a href="/seasonality/gild" class="asset-chip">GILD <span>Gilead Sciences</span></a><a href="/seasonality/biib" class="asset-chip">BIIB <span>Biogen</span></a></div>
+  </section>
+  <section id="us-consumer-retail" class="cat-section">
+    <h2>US Consumer &amp; Retail <span class="count">20</span></h2>
+    <div class="chip-grid"><a href="/seasonality/wmt" class="asset-chip">WMT <span>Walmart</span></a><a href="/seasonality/tgt" class="asset-chip">TGT <span>Target</span></a><a href="/seasonality/cost" class="asset-chip">COST <span>Costco</span></a><a href="/seasonality/mcd" class="asset-chip">MCD <span>McDonald's</span></a><a href="/seasonality/sbux" class="asset-chip">SBUX <span>Starbucks</span></a><a href="/seasonality/nke" class="asset-chip">NKE <span>Nike</span></a><a href="/seasonality/lulu" class="asset-chip">LULU <span>Lululemon</span></a><a href="/seasonality/abnb" class="asset-chip">ABNB <span>Airbnb</span></a><a href="/seasonality/bkng" class="asset-chip">BKNG <span>Booking Holdings</span></a><a href="/seasonality/lyft" class="asset-chip">LYFT <span>Lyft</span></a><a href="/seasonality/dkng" class="asset-chip">DKNG <span>DraftKings</span></a><a href="/seasonality/mgm" class="asset-chip">MGM <span>MGM Resorts</span></a><a href="/seasonality/czr" class="asset-chip">CZR <span>Caesars</span></a><a href="/seasonality/hlt" class="asset-chip">HLT <span>Hilton</span></a><a href="/seasonality/mar" class="asset-chip">MAR <span>Marriott</span></a><a href="/seasonality/dri" class="asset-chip">DRI <span>Darden Restaurants</span></a><a href="/seasonality/yum" class="asset-chip">YUM <span>Yum! Brands</span></a><a href="/seasonality/cmg" class="asset-chip">CMG <span>Chipotle</span></a><a href="/seasonality/ebay" class="asset-chip">EBAY <span>eBay</span></a><a href="/seasonality/etsy" class="asset-chip">ETSY <span>Etsy</span></a></div>
+  </section>
+  <section id="us-energy" class="cat-section">
+    <h2>US Energy <span class="count">10</span></h2>
+    <div class="chip-grid"><a href="/seasonality/xom" class="asset-chip">XOM <span>ExxonMobil</span></a><a href="/seasonality/cvx" class="asset-chip">CVX <span>Chevron</span></a><a href="/seasonality/cop" class="asset-chip">COP <span>ConocoPhillips</span></a><a href="/seasonality/slb" class="asset-chip">SLB <span>Schlumberger</span></a><a href="/seasonality/hal" class="asset-chip">HAL <span>Halliburton</span></a><a href="/seasonality/oxyx" class="asset-chip">OXY <span>Occidental Petrol.</span></a><a href="/seasonality/enph" class="asset-chip">ENPH <span>Enphase Energy</span></a><a href="/seasonality/plug" class="asset-chip">PLUG <span>Plug Power</span></a><a href="/seasonality/fslr" class="asset-chip">FSLR <span>First Solar</span></a><a href="/seasonality/bep" class="asset-chip">BEP <span>Brookfield Renewable</span></a></div>
+  </section>
+  <section id="us-defense-industrials" class="cat-section">
+    <h2>US Defense &amp; Industrials <span class="count">14</span></h2>
+    <div class="chip-grid"><a href="/seasonality/ba" class="asset-chip">BA <span>Boeing</span></a><a href="/seasonality/lmt" class="asset-chip">LMT <span>Lockheed Martin</span></a><a href="/seasonality/rtx" class="asset-chip">RTX <span>RTX (Raytheon)</span></a><a href="/seasonality/noc" class="asset-chip">NOC <span>Northrop Grumman</span></a><a href="/seasonality/ge" class="asset-chip">GE <span>GE Aerospace</span></a><a href="/seasonality/cat" class="asset-chip">CAT <span>Caterpillar</span></a><a href="/seasonality/de" class="asset-chip">DE <span>Deere &amp; Co.</span></a><a href="/seasonality/ups" class="asset-chip">UPS</a><a href="/seasonality/fdx" class="asset-chip">FDX <span>FedEx</span></a><a href="/seasonality/hon" class="asset-chip">HON <span>Honeywell</span></a><a href="/seasonality/mmm" class="asset-chip">MMM <span>3M</span></a><a href="/seasonality/emr" class="asset-chip">EMR <span>Emerson Electric</span></a><a href="/seasonality/pgh" class="asset-chip">PH <span>Parker Hannifin</span></a><a href="/seasonality/carr" class="asset-chip">CARR <span>Carrier Global</span></a></div>
+  </section>
+  <section id="us-communications-media" class="cat-section">
+    <h2>US Communications &amp; Media <span class="count">11</span></h2>
+    <div class="chip-grid"><a href="/seasonality/dis" class="asset-chip">DIS <span>Walt Disney</span></a><a href="/seasonality/nflx2" class="asset-chip">NFLX <span>Netflix</span></a><a href="/seasonality/wbd" class="asset-chip">WBD <span>Warner Bros.</span></a><a href="/seasonality/t_us" class="asset-chip">T <span>AT&amp;T</span></a><a href="/seasonality/vz" class="asset-chip">VZ <span>Verizon</span></a><a href="/seasonality/tmus" class="asset-chip">TMUS <span>T-Mobile</span></a><a href="/seasonality/snap" class="asset-chip">SNAP <span>Snap</span></a><a href="/seasonality/pins" class="asset-chip">PINS <span>Pinterest</span></a><a href="/seasonality/rddt" class="asset-chip">RDDT <span>Reddit</span></a><a href="/seasonality/ttd" class="asset-chip">TTD <span>The Trade Desk</span></a><a href="/seasonality/iaci" class="asset-chip">IAC</a></div>
+  </section>
+  <section id="us-ev-emerging-tech" class="cat-section">
+    <h2>US EV &amp; Emerging Tech <span class="count">8</span></h2>
+    <div class="chip-grid"><a href="/seasonality/rivn" class="asset-chip">RIVN <span>Rivian</span></a><a href="/seasonality/lcid" class="asset-chip">LCID <span>Lucid Motors</span></a><a href="/seasonality/spce" class="asset-chip">SPCE <span>Virgin Galactic</span></a><a href="/seasonality/rkt" class="asset-chip">RKT <span>Rocket Companies</span></a><a href="/seasonality/sofi" class="asset-chip">SOFI <span>SoFi Technologies</span></a><a href="/seasonality/nu" class="asset-chip">NU <span>Nu Holdings</span></a><a href="/seasonality/bbai" class="asset-chip">BBAI <span>BigBear.ai</span></a><a href="/seasonality/rgti" class="asset-chip">RGTI <span>Rigetti Computing</span></a></div>
+  </section>
+  <section id="uk-indices" class="cat-section">
+    <h2>UK Indices <span class="count">2</span></h2>
+    <div class="chip-grid"><a href="/seasonality/ftse100" class="asset-chip">FTSE 100</a><a href="/seasonality/ftse250" class="asset-chip">FTSE 250</a></div>
+  </section>
+  <section id="uk-banking-finance" class="cat-section">
+    <h2>UK Banking &amp; Finance <span class="count">15</span></h2>
+    <div class="chip-grid"><a href="/seasonality/hsba" class="asset-chip">HSBA.L <span>HSBC Holdings</span></a><a href="/seasonality/lloy" class="asset-chip">LLOY.L <span>Lloyds Banking</span></a><a href="/seasonality/barc" class="asset-chip">BARC.L <span>Barclays</span></a><a href="/seasonality/natw" class="asset-chip">NWG.L <span>NatWest Group</span></a><a href="/seasonality/stan" class="asset-chip">STAN.L <span>Standard Chartered</span></a><a href="/seasonality/avia" class="asset-chip">AV.L <span>Aviva</span></a><a href="/seasonality/lgen" class="asset-chip">LGEN.L <span>Legal &amp; General</span></a><a href="/seasonality/pru" class="asset-chip">PRU.L <span>Prudential</span></a><a href="/seasonality/shro" class="asset-chip">SDR.L <span>Schroders</span></a><a href="/seasonality/lsl" class="asset-chip">LSE.L <span>London Stock Exchange</span></a><a href="/seasonality/halma" class="asset-chip">HLMA.L <span>Halma</span></a><a href="/seasonality/intv" class="asset-chip">IG.L <span>IG Group</span></a><a href="/seasonality/mng" class="asset-chip">MNG.L <span>Man Group</span></a><a href="/seasonality/ajb" class="asset-chip">AJB.L <span>AJ Bell</span></a><a href="/seasonality/harg" class="asset-chip">HL.L <span>Hargreaves Lansdown</span></a></div>
+  </section>
+  <section id="uk-energy-mining" class="cat-section">
+    <h2>UK Energy &amp; Mining <span class="count">12</span></h2>
+    <div class="chip-grid"><a href="/seasonality/bp_uk" class="asset-chip">BP.L <span>BP</span></a><a href="/seasonality/shel" class="asset-chip">SHEL.L <span>Shell</span></a><a href="/seasonality/rdsb" class="asset-chip">EXPN.L <span>Experian</span></a><a href="/seasonality/riouk" class="asset-chip">RIO.L <span>Rio Tinto</span></a><a href="/seasonality/anto" class="asset-chip">ANTO.L <span>Antofagasta</span></a><a href="/seasonality/aau" class="asset-chip">AAL.L <span>Anglo American</span></a><a href="/seasonality/glen" class="asset-chip">GLEN.L <span>Glencore</span></a><a href="/seasonality/bhp" class="asset-chip">BHP.L <span>BHP Group</span></a><a href="/seasonality/cenm" class="asset-chip">CNA.L <span>Centrica</span></a><a href="/seasonality/ngt" class="asset-chip">NG.L <span>National Grid</span></a><a href="/seasonality/sso" class="asset-chip">SSE.L <span>SSE</span></a><a href="/seasonality/drax" class="asset-chip">DRX.L <span>Drax Group</span></a></div>
+  </section>
+  <section id="uk-pharma-health" class="cat-section">
+    <h2>UK Pharma &amp; Health <span class="count">8</span></h2>
+    <div class="chip-grid"><a href="/seasonality/azn" class="asset-chip">AZN.L <span>AstraZeneca</span></a><a href="/seasonality/gsk" class="asset-chip">GSK.L <span>GSK</span></a><a href="/seasonality/hikm" class="asset-chip">HIK.L <span>Hikma Pharma</span></a><a href="/seasonality/decm" class="asset-chip">DXRX.L <span>Benchmark Holdings</span></a><a href="/seasonality/smi" class="asset-chip">SMT.L <span>Scottish Mortgage</span></a><a href="/seasonality/ipx" class="asset-chip">IPX.L <span>Ipsen</span></a><a href="/seasonality/evolv" class="asset-chip">EVO.L <span>Evolution Gaming</span></a><a href="/seasonality/ncyt" class="asset-chip">NCYT.L <span>Novacyt</span></a></div>
+  </section>
+  <section id="uk-consumer-retail" class="cat-section">
+    <h2>UK Consumer &amp; Retail <span class="count">14</span></h2>
+    <div class="chip-grid"><a href="/seasonality/uniluk" class="asset-chip">ULVR.L <span>Unilever</span></a><a href="/seasonality/diageo" class="asset-chip">DGE.L <span>Diageo</span></a><a href="/seasonality/reckitt" class="asset-chip">RKT.L <span>Reckitt</span></a><a href="/seasonality/nxt" class="asset-chip">NXT.L <span>Next</span></a><a href="/seasonality/mks" class="asset-chip">MKS.L <span>Marks &amp; Spencer</span></a><a href="/seasonality/jds" class="asset-chip">JD.L <span>JD Sports</span></a><a href="/seasonality/bts" class="asset-chip">BATS.L <span>British American Tobacco</span></a><a href="/seasonality/imp" class="asset-chip">IMB.L <span>Imperial Brands</span></a><a href="/seasonality/flts" class="asset-chip">FLTX.L <span>Flutter Entertainment</span></a><a href="/seasonality/bpt" class="asset-chip">BPT.L <span>BrightPoint</span></a><a href="/seasonality/wpp" class="asset-chip">WPP.L <span>WPP</span></a><a href="/seasonality/pub" class="asset-chip">PUB.L <span>Pub Group</span></a><a href="/seasonality/gregg" class="asset-chip">GRG.L <span>Greggs</span></a><a href="/seasonality/sspg" class="asset-chip">SSPG.L <span>SSP Group</span></a></div>
+  </section>
+  <section id="uk-technology" class="cat-section">
+    <h2>UK Technology <span class="count">9</span></h2>
+    <div class="chip-grid"><a href="/seasonality/sage" class="asset-chip">SGE.L <span>Sage Group</span></a><a href="/seasonality/avsuk" class="asset-chip">AVS.L <span>Avast</span></a><a href="/seasonality/darkt" class="asset-chip">DARK.L <span>Darktrace</span></a><a href="/seasonality/aveva" class="asset-chip">AVV.L <span>AVEVA</span></a><a href="/seasonality/autocad" class="asset-chip">ATC.L <span>Auto Trader</span></a><a href="/seasonality/rightm" class="asset-chip">RMV.L <span>Rightmove</span></a><a href="/seasonality/iptv" class="asset-chip">ITV.L <span>ITV</span></a><a href="/seasonality/relx" class="asset-chip">REL.L <span>RELX</span></a><a href="/seasonality/informa" class="asset-chip">INF.L <span>Informa</span></a></div>
+  </section>
+  <section id="uk-industrials-defense" class="cat-section">
+    <h2>UK Industrials &amp; Defense <span class="count">11</span></h2>
+    <div class="chip-grid"><a href="/seasonality/bae" class="asset-chip">BA.L <span>BAE Systems</span></a><a href="/seasonality/rr_uk" class="asset-chip">RR.L <span>Rolls-Royce</span></a><a href="/seasonality/qinetic" class="asset-chip">QQ.L <span>QinetiQ</span></a><a href="/seasonality/megg" class="asset-chip">MGGT.L <span>Meggitt</span></a><a href="/seasonality/spmk" class="asset-chip">SMDS.L <span>Smith &amp; Nephew</span></a><a href="/seasonality/croda" class="asset-chip">CRDA.L <span>Croda International</span></a><a href="/seasonality/jmats" class="asset-chip">JMAT.L <span>Johnson Matthey</span></a><a href="/seasonality/ferv" class="asset-chip">FERG.L <span>Ferguson</span></a><a href="/seasonality/imi" class="asset-chip">IMI.L <span>IMI</span></a><a href="/seasonality/sxs" class="asset-chip">SXS.L <span>Spectris</span></a><a href="/seasonality/smw" class="asset-chip">SMW.L <span>Smiths Group</span></a></div>
+  </section>
+  <section id="uk-telecoms-property" class="cat-section">
+    <h2>UK Telecoms &amp; Property <span class="count">6</span></h2>
+    <div class="chip-grid"><a href="/seasonality/voduk" class="asset-chip">VOD.L <span>Vodafone</span></a><a href="/seasonality/btem" class="asset-chip">BT.A.L <span>BT Group</span></a><a href="/seasonality/blnd" class="asset-chip">BLND.L <span>British Land</span></a><a href="/seasonality/land" class="asset-chip">LAND.L <span>Land Securities</span></a><a href="/seasonality/segro" class="asset-chip">SGRO.L <span>Segro</span></a><a href="/seasonality/lxb" class="asset-chip">LXB.L <span>LXi REIT</span></a></div>
+  </section>
+  <section id="german-indices" class="cat-section">
+    <h2>German Indices <span class="count">2</span></h2>
+    <div class="chip-grid"><a href="/seasonality/dax" class="asset-chip">DAX 40</a><a href="/seasonality/mdax" class="asset-chip">MDAX</a></div>
+  </section>
+  <section id="german-technology" class="cat-section">
+    <h2>German Technology <span class="count">12</span></h2>
+    <div class="chip-grid"><a href="/seasonality/sap" class="asset-chip">SAP.DE <span>SAP</span></a><a href="/seasonality/ifx" class="asset-chip">IFX.DE <span>Infineon</span></a><a href="/seasonality/1u1" class="asset-chip">1U1.DE <span>1&amp;1</span></a><a href="/seasonality/aixa" class="asset-chip">AIXA.DE <span>Aixtron</span></a><a href="/seasonality/wmk" class="asset-chip">WMK.DE <span>Wirecard (hist.)</span></a><a href="/seasonality/teamv" class="asset-chip">TMV.DE <span>TeamViewer</span></a><a href="/seasonality/sul" class="asset-chip">S92.DE <span>SMA Solar</span></a><a href="/seasonality/enr" class="asset-chip">ENR.DE <span>Siemens Energy</span></a><a href="/seasonality/sfq" class="asset-chip">SFQ.DE <span>Software AG</span></a><a href="/seasonality/hhm" class="asset-chip">HHFA.DE <span>Hawesko</span></a><a href="/seasonality/demde" class="asset-chip">DHER.DE <span>Delivery Hero</span></a><a href="/seasonality/zal" class="asset-chip">ZAL.DE <span>Zalando</span></a></div>
+  </section>
+  <section id="german-automotive" class="cat-section">
+    <h2>German Automotive <span class="count">10</span></h2>
+    <div class="chip-grid"><a href="/seasonality/bmw" class="asset-chip">BMW.DE <span>BMW</span></a><a href="/seasonality/mbg" class="asset-chip">MBG.DE <span>Mercedes-Benz</span></a><a href="/seasonality/vow3" class="asset-chip">VOW3.DE <span>Volkswagen</span></a><a href="/seasonality/pah3" class="asset-chip">PAH3.DE <span>Porsche AG</span></a><a href="/seasonality/audi" class="asset-chip">NSU.DE <span>Audi (via VW)</span></a><a href="/seasonality/con" class="asset-chip">CON.DE <span>Continental</span></a><a href="/seasonality/shaf" class="asset-chip">SHA.DE <span>Schaeffler</span></a><a href="/seasonality/ht1" class="asset-chip">HEN3.DE <span>Hella</span></a><a href="/seasonality/knebv" class="asset-chip">KBX.DE <span>Knorr-Bremse</span></a><a href="/seasonality/elring" class="asset-chip">ZIL2.DE <span>ElringKlinger</span></a></div>
+  </section>
+  <section id="german-industrials-chemicals" class="cat-section">
+    <h2>German Industrials &amp; Chemicals <span class="count">16</span></h2>
+    <div class="chip-grid"><a href="/seasonality/sie" class="asset-chip">SIE.DE <span>Siemens</span></a><a href="/seasonality/bas" class="asset-chip">BAS.DE <span>BASF</span></a><a href="/seasonality/bayer" class="asset-chip">BAYN.DE <span>Bayer</span></a><a href="/seasonality/merck" class="asset-chip">MRK.DE <span>Merck KGaA</span></a><a href="/seasonality/lin" class="asset-chip">LIN.DE <span>Linde</span></a><a href="/seasonality/eve" class="asset-chip">EVK.DE <span>Evonik</span></a><a href="/seasonality/frk" class="asset-chip">FRE.DE <span>Fresenius</span></a><a href="/seasonality/fms" class="asset-chip">FMS.DE <span>Fresenius Medical</span></a><a href="/seasonality/thys" class="asset-chip">TKA.DE <span>ThyssenKrupp</span></a><a href="/seasonality/mtu" class="asset-chip">MTX.DE <span>MTU Aero Engines</span></a><a href="/seasonality/air" class="asset-chip">AIR.DE <span>Airbus</span></a><a href="/seasonality/rhm" class="asset-chip">RHM.DE <span>Rheinmetall</span></a><a href="/seasonality/hei" class="asset-chip">HEI.DE <span>HeidelbergMat.</span></a><a href="/seasonality/siko" class="asset-chip">SIK.DE <span>Sika AG</span></a><a href="/seasonality/kion" class="asset-chip">KGX.DE <span>KION Group</span></a><a href="/seasonality/wacker" class="asset-chip">WCH.DE <span>Wacker Chemie</span></a></div>
+  </section>
+  <section id="german-finance-insurance" class="cat-section">
+    <h2>German Finance &amp; Insurance <span class="count">8</span></h2>
+    <div class="chip-grid"><a href="/seasonality/db" class="asset-chip">DBK.DE <span>Deutsche Bank</span></a><a href="/seasonality/cbk" class="asset-chip">CBK.DE <span>Commerzbank</span></a><a href="/seasonality/alv" class="asset-chip">ALV.DE <span>Allianz</span></a><a href="/seasonality/mun" class="asset-chip">MUV2.DE <span>Munich Re</span></a><a href="/seasonality/hanover" class="asset-chip">HNR1.DE <span>Hannover Re</span></a><a href="/seasonality/dws" class="asset-chip">DWS.DE <span>DWS Group</span></a><a href="/seasonality/hex" class="asset-chip">H24.DE <span>Hypoport</span></a><a href="/seasonality/fb2" class="asset-chip">FB2A.DE <span>Flatex DeGiro</span></a></div>
+  </section>
+  <section id="german-consumer-retail" class="cat-section">
+    <h2>German Consumer &amp; Retail <span class="count">11</span></h2>
+    <div class="chip-grid"><a href="/seasonality/ads" class="asset-chip">ADS.DE <span>Adidas</span></a><a href="/seasonality/puma" class="asset-chip">PUM.DE <span>Puma</span></a><a href="/seasonality/hugo" class="asset-chip">BOSS.DE <span>Hugo Boss</span></a><a href="/seasonality/henk" class="asset-chip">HEN3.DE <span>Henkel</span></a><a href="/seasonality/beisd" class="asset-chip">BEI.DE <span>Beiersdorf</span></a><a href="/seasonality/dfv" class="asset-chip">DFV.DE <span>Deutsche Familienversicherung</span></a><a href="/seasonality/rhkg" class="asset-chip">RHKG.DE <span>Rewe Group</span></a><a href="/seasonality/obi" class="asset-chip">OBI.DE <span>OBI</span></a><a href="/seasonality/metro" class="asset-chip">B4B.DE <span>Metro AG</span></a><a href="/seasonality/pro7" class="asset-chip">P7S1.DE <span>ProSiebenSat.1</span></a><a href="/seasonality/mbc" class="asset-chip">MBB.DE <span>MBB SE</span></a></div>
+  </section>
+  <section id="german-energy-telecom" class="cat-section">
+    <h2>German Energy &amp; Telecom <span class="count">6</span></h2>
+    <div class="chip-grid"><a href="/seasonality/dte" class="asset-chip">DTE.DE <span>Deutsche Telekom</span></a><a href="/seasonality/rwe" class="asset-chip">RWE.DE <span>RWE</span></a><a href="/seasonality/eon" class="asset-chip">EOAN.DE <span>E.ON</span></a><a href="/seasonality/unp" class="asset-chip">UN01.DE <span>Uniper</span></a><a href="/seasonality/orsted" class="asset-chip">ORSTED.DE <span>Orsted</span></a><a href="/seasonality/nordex" class="asset-chip">NDX1.DE <span>Nordex</span></a></div>
+  </section>
+  <section id="japan" class="cat-section">
+    <h2>Japan <span class="count">36</span></h2>
+    <div class="chip-grid"><a href="/seasonality/nikkei" class="asset-chip">Nikkei 225</a><a href="/seasonality/toyota" class="asset-chip">7203.T <span>Toyota</span></a><a href="/seasonality/sony" class="asset-chip">6758.T <span>Sony</span></a><a href="/seasonality/softbk" class="asset-chip">9984.T <span>SoftBank</span></a><a href="/seasonality/keyence" class="asset-chip">6861.T <span>Keyence</span></a><a href="/seasonality/fanuc" class="asset-chip">6954.T <span>Fanuc</span></a><a href="/seasonality/fast" class="asset-chip">9983.T <span>Fast Retailing (Uniqlo)</span></a><a href="/seasonality/nintend" class="asset-chip">7974.T <span>Nintendo</span></a><a href="/seasonality/honda" class="asset-chip">7267.T <span>Honda</span></a><a href="/seasonality/nissan" class="asset-chip">7201.T <span>Nissan</span></a><a href="/seasonality/mitsu" class="asset-chip">8058.T <span>Mitsubishi Corp.</span></a><a href="/seasonality/mitsub" class="asset-chip">7011.T <span>Mitsubishi Heavy</span></a><a href="/seasonality/hitach" class="asset-chip">6501.T <span>Hitachi</span></a><a href="/seasonality/panaso" class="asset-chip">6752.T <span>Panasonic</span></a><a href="/seasonality/canon" class="asset-chip">7751.T <span>Canon</span></a><a href="/seasonality/fujifl" class="asset-chip">4901.T <span>Fujifilm</span></a><a href="/seasonality/daikin" class="asset-chip">6367.T <span>Daikin</span></a><a href="/seasonality/shin" class="asset-chip">4063.T <span>Shin-Etsu Chemical</span></a><a href="/seasonality/tdk" class="asset-chip">6762.T <span>TDK</span></a><a href="/seasonality/murata" class="asset-chip">6981.T <span>Murata Manufacturing</span></a><a href="/seasonality/renesas" class="asset-chip">6723.T <span>Renesas</span></a><a href="/seasonality/recruit" class="asset-chip">6098.T <span>Recruit Holdings</span></a><a href="/seasonality/softbk2" class="asset-chip">9434.T <span>SoftBank Corp.</span></a><a href="/seasonality/ntt" class="asset-chip">9432.T <span>NTT</span></a><a href="/seasonality/kddi" class="asset-chip">9433.T <span>KDDI</span></a><a href="/seasonality/mufg" class="asset-chip">8306.T <span>MUFG</span></a><a href="/seasonality/smfg" class="asset-chip">8316.T <span>Sumitomo Mitsui</span></a><a href="/seasonality/mizuho" class="asset-chip">8411.T <span>Mizuho Financial</span></a><a href="/seasonality/tokmar" class="asset-chip">8766.T <span>Tokio Marine</span></a><a href="/seasonality/nomura" class="asset-chip">8604.T <span>Nomura Holdings</span></a><a href="/seasonality/olympus" class="asset-chip">7733.T <span>Olympus</span></a><a href="/seasonality/takeda" class="asset-chip">4502.T <span>Takeda Pharma</span></a><a href="/seasonality/astellas" class="asset-chip">4503.T <span>Astellas Pharma</span></a><a href="/seasonality/otsuka" class="asset-chip">4578.T <span>Otsuka Holdings</span></a><a href="/seasonality/kubota" class="asset-chip">6326.T <span>Kubota</span></a><a href="/seasonality/komatsu" class="asset-chip">6301.T <span>Komatsu</span></a></div>
+  </section>
+  <section id="china-hong-kong" class="cat-section">
+    <h2>China &amp; Hong Kong <span class="count">28</span></h2>
+    <div class="chip-grid"><a href="/seasonality/hsi" class="asset-chip">Hang Seng Index</a><a href="/seasonality/alibaba" class="asset-chip">9988.HK <span>Alibaba</span></a><a href="/seasonality/tencent" class="asset-chip">0700.HK <span>Tencent</span></a><a href="/seasonality/meituan" class="asset-chip">3690.HK <span>Meituan</span></a><a href="/seasonality/jd" class="asset-chip">9618.HK <span>JD.com</span></a><a href="/seasonality/pinduoduo" class="asset-chip">PDD <span>PDD Holdings</span></a><a href="/seasonality/bidu" class="asset-chip">BIDU <span>Baidu</span></a><a href="/seasonality/neteas" class="asset-chip">9999.HK <span>NetEase</span></a><a href="/seasonality/byd" class="asset-chip">1211.HK <span>BYD</span></a><a href="/seasonality/xiaomi" class="asset-chip">1810.HK <span>Xiaomi</span></a><a href="/seasonality/smic" class="asset-chip">0981.HK <span>SMIC</span></a><a href="/seasonality/lenovo" class="asset-chip">0992.HK <span>Lenovo</span></a><a href="/seasonality/geely" class="asset-chip">0175.HK <span>Geely Auto</span></a><a href="/seasonality/sands" class="asset-chip">1928.HK <span>Sands China</span></a><a href="/seasonality/galaxy" class="asset-chip">0027.HK <span>Galaxy Entertainment</span></a><a href="/seasonality/cnooc" class="asset-chip">0883.HK <span>CNOOC</span></a><a href="/seasonality/petro" class="asset-chip">0857.HK <span>PetroChina</span></a><a href="/seasonality/icbc" class="asset-chip">1398.HK <span>ICBC</span></a><a href="/seasonality/ccb" class="asset-chip">0939.HK <span>China Construction Bank</span></a><a href="/seasonality/abc_cn" class="asset-chip">1288.HK <span>Agric. Bank of China</span></a><a href="/seasonality/boc" class="asset-chip">3988.HK <span>Bank of China</span></a><a href="/seasonality/pingan" class="asset-chip">2318.HK <span>Ping An Insurance</span></a><a href="/seasonality/aia" class="asset-chip">1299.HK <span>AIA Group</span></a><a href="/seasonality/shenwan" class="asset-chip">6060.HK <span>360 Security</span></a><a href="/seasonality/ntes" class="asset-chip">NTES <span>NetEase (US ADR)</span></a><a href="/seasonality/li_auto" class="asset-chip">2015.HK <span>Li Auto</span></a><a href="/seasonality/nio" class="asset-chip">NIO</a><a href="/seasonality/xpeng" class="asset-chip">9868.HK <span>XPeng</span></a></div>
+  </section>
+  <section id="south-korea" class="cat-section">
+    <h2>South Korea <span class="count">14</span></h2>
+    <div class="chip-grid"><a href="/seasonality/kospi" class="asset-chip">KOSPI Index</a><a href="/seasonality/samsung" class="asset-chip">005930.KS <span>Samsung Electronics</span></a><a href="/seasonality/skhynix" class="asset-chip">000660.KS <span>SK Hynix</span></a><a href="/seasonality/hyundai" class="asset-chip">005380.KS <span>Hyundai Motor</span></a><a href="/seasonality/kia" class="asset-chip">000270.KS <span>Kia</span></a><a href="/seasonality/lg_chem" class="asset-chip">051910.KS <span>LG Chem</span></a><a href="/seasonality/kakao" class="asset-chip">035720.KS <span>Kakao</span></a><a href="/seasonality/naver" class="asset-chip">035420.KS <span>Naver</span></a><a href="/seasonality/posco" class="asset-chip">005490.KS <span>POSCO</span></a><a href="/seasonality/sk_tel" class="asset-chip">017670.KS <span>SK Telecom</span></a><a href="/seasonality/kb_fin" class="asset-chip">105560.KS <span>KB Financial</span></a><a href="/seasonality/shinhan" class="asset-chip">055550.KS <span>Shinhan Financial</span></a><a href="/seasonality/hanwha" class="asset-chip">000880.KS <span>Hanwha</span></a><a href="/seasonality/celtrion" class="asset-chip">068270.KS <span>Celltrion</span></a></div>
+  </section>
+  <section id="taiwan" class="cat-section">
+    <h2>Taiwan <span class="count">6</span></h2>
+    <div class="chip-grid"><a href="/seasonality/tsmc" class="asset-chip">TSM <span>TSMC</span></a><a href="/seasonality/meditek" class="asset-chip">2454.TW <span>MediaTek</span></a><a href="/seasonality/foxconn" class="asset-chip">2317.TW <span>Foxconn</span></a><a href="/seasonality/ase" class="asset-chip">ASX <span>ASE Technology</span></a><a href="/seasonality/delta_tw" class="asset-chip">2308.TW <span>Delta Electronics</span></a><a href="/seasonality/htc_tw" class="asset-chip">2498.TW <span>HTC</span></a></div>
+  </section>
+  <section id="india" class="cat-section">
+    <h2>India <span class="count">15</span></h2>
+    <div class="chip-grid"><a href="/seasonality/sensex" class="asset-chip">BSE Sensex</a><a href="/seasonality/tcs" class="asset-chip">TCS.NS <span>Tata Consultancy</span></a><a href="/seasonality/infosys" class="asset-chip">INFY <span>Infosys</span></a><a href="/seasonality/wipro" class="asset-chip">WIT <span>Wipro</span></a><a href="/seasonality/hdfc" class="asset-chip">HDB <span>HDFC Bank</span></a><a href="/seasonality/reliance" class="asset-chip">RELI.NS <span>Reliance Industries</span></a><a href="/seasonality/hclt" class="asset-chip">HCLTECH.NS <span>HCL Technologies</span></a><a href="/seasonality/icici" class="asset-chip">IBN <span>ICICI Bank</span></a><a href="/seasonality/bajfin" class="asset-chip">BAJFINANCE.NS <span>Bajaj Finance</span></a><a href="/seasonality/titan" class="asset-chip">TITAN.NS <span>Titan Company</span></a><a href="/seasonality/maruti" class="asset-chip">MARUTI.NS <span>Maruti Suzuki</span></a><a href="/seasonality/ltim" class="asset-chip">LTIM.NS <span>LTIMindtree</span></a><a href="/seasonality/sunph" class="asset-chip">SUNPHARMA.NS <span>Sun Pharma</span></a><a href="/seasonality/drreddy" class="asset-chip">RDY <span>Dr. Reddy's Labs</span></a><a href="/seasonality/kotak" class="asset-chip">KOTAKBANK.NS <span>Kotak Bank</span></a></div>
+  </section>
+  <section id="singapore-australia" class="cat-section">
+    <h2>Singapore &amp; Australia <span class="count">15</span></h2>
+    <div class="chip-grid"><a href="/seasonality/dbs" class="asset-chip">D05.SI <span>DBS Group</span></a><a href="/seasonality/ocbc" class="asset-chip">O39.SI <span>OCBC</span></a><a href="/seasonality/uob" class="asset-chip">U11.SI <span>UOB</span></a><a href="/seasonality/sia" class="asset-chip">C6L.SI <span>Singapore Airlines</span></a><a href="/seasonality/comb" class="asset-chip">CBA.AX <span>Commonwealth Bank</span></a><a href="/seasonality/nab" class="asset-chip">NAB.AX <span>NAB</span></a><a href="/seasonality/anz" class="asset-chip">ANZ.AX <span>ANZ Bank</span></a><a href="/seasonality/westpac" class="asset-chip">WBC.AX <span>Westpac</span></a><a href="/seasonality/macq" class="asset-chip">MQG.AX <span>Macquarie Group</span></a><a href="/seasonality/csl" class="asset-chip">CSL.AX <span>CSL Limited</span></a><a href="/seasonality/bhpau" class="asset-chip">BHP.AX <span>BHP</span></a><a href="/seasonality/rioto" class="asset-chip">RIO.AX <span>Rio Tinto (AU)</span></a><a href="/seasonality/wesfarm" class="asset-chip">WES.AX <span>Wesfarmers</span></a><a href="/seasonality/wool" class="asset-chip">WOW.AX <span>Woolworths</span></a><a href="/seasonality/fortesc" class="asset-chip">FMG.AX <span>Fortescue Metals</span></a></div>
+  </section>
+</div>
+
+<footer>
+  <div class="n-logo">
+    <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
+    <div class="n-word">Timing<b>AX</b></div>
+  </div>
+  <div class="ft-links">
+    <a href="/index.html">Home</a>
+    <a href="/market-seasonality.html">App</a>
+    <a href="/academy.html">Academy</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/accessibility.html">Accessibility</a>
+    <a href="/changelog.html">Changelog</a>
+  </div>
+  <div style="font:400 10px/1.6 var(--mono);color:var(--w5);max-width:520px;margin-bottom:10px;opacity:.7">TimingAX is an independently operated service. Not a registered investment adviser. Data is for informational purposes only and is not financial advice.</div>
+  <div class="ft-copy">&copy; 2026 TimingAX</div>
+</footer>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>
