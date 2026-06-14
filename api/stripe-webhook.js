@@ -52,6 +52,91 @@ function verifyStripeSignature(rawBody, sigHeader, secret) {
   return true;
 }
 
+// Applies a one-month Pro credit (£19.99) to a Stripe customer's balance.
+// A negative "amount" on the customer balance is a credit: it reduces what
+// they owe on their next invoice by this amount.
+const REFERRAL_CREDIT_PENCE = 1999; // £19.99 = one month of Pro
+
+async function applyStripeCredit(secretKey, customerId, amountPence, description) {
+  const params = new URLSearchParams();
+  params.append('amount', String(-amountPence)); // negative = credit
+  params.append('currency', 'gbp');
+  if (description) params.append('description', description);
+
+  const r = await fetch(`https://api.stripe.com/v1/customers/${customerId}/balance_transactions`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params.toString(),
+  });
+  if (!r.ok) {
+    throw new Error(`Stripe balance credit failed for ${customerId}: ${await r.text()}`);
+  }
+  return r.json();
+}
+
+// If the user who just became Pro/Lifetime was referred by someone else,
+// credit BOTH accounts one free month and mark the referral as rewarded.
+// Safe to call on every payment-success event: if there's no pending
+// referral for this user (not referred, or already rewarded), it's a no-op.
+async function processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, referredUserId, referredCustomerId) {
+  const svcHeaders = { apikey: supabaseServiceKey, Authorization: `Bearer ${supabaseServiceKey}` };
+
+  // Look up a pending referral for this user
+  const refRes = await fetch(
+    `${supabaseUrl}/rest/v1/referrals?referred_id=eq.${referredUserId}&status=eq.pending&select=*`,
+    { headers: svcHeaders }
+  );
+  if (!refRes.ok) {
+    console.error('Referral lookup failed:', await refRes.text());
+    return;
+  }
+  const rows = await refRes.json();
+  if (!rows || rows.length === 0) return; // not referred, or already rewarded
+  const referral = rows[0];
+
+  // Look up the referrer's Stripe customer ID
+  const referrerRes = await fetch(`${supabaseUrl}/auth/v1/admin/users/${referral.referrer_id}`, {
+    headers: svcHeaders,
+  });
+  if (!referrerRes.ok) {
+    console.error('Referrer lookup failed:', await referrerRes.text());
+    return;
+  }
+  const referrer = await referrerRes.json();
+  const referrerCustomerId = referrer.app_metadata && referrer.app_metadata.stripe_customer;
+
+  // Credit both sides on Stripe (whichever have a customer ID)
+  try {
+    if (referredCustomerId) {
+      await applyStripeCredit(secretKey, referredCustomerId, REFERRAL_CREDIT_PENCE,
+        'Referral reward: thanks for joining via a friend\u2019s link');
+    }
+    if (referrerCustomerId) {
+      await applyStripeCredit(secretKey, referrerCustomerId, REFERRAL_CREDIT_PENCE,
+        'Referral reward: a friend joined TimingAX using your link');
+    }
+  } catch (e) {
+    console.error('Referral credit error:', e.message);
+    return; // leave status as 'pending' so it can be investigated/retried
+  }
+
+  // Mark the referral as rewarded so this never runs twice
+  await fetch(`${supabaseUrl}/rest/v1/referrals?id=eq.${referral.id}`, {
+    method: 'PATCH',
+    headers: { ...svcHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify({
+      status: 'rewarded',
+      converted_at: new Date().toISOString(),
+      rewarded_at: new Date().toISOString(),
+    }),
+  });
+
+  console.log(`Referral reward processed for referral ${referral.id}`);
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
