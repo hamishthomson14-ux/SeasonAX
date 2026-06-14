@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
@@ -29,7 +29,7 @@ html,body{height:100%;-webkit-font-smoothing:antialiased}
   --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
   --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
   --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--sans:"Inter",sans-serif;
+  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -57,7 +57,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .btn-so:hover{border-color:var(--amber2);color:var(--amber2)}
 .page{max-width:1400px;margin:0 auto;padding:32px 32px 80px}
 .welcome{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;gap:20px;flex-wrap:wrap}
-.wl-greeting{font:800 36px/1.1 var(--disp);letter-spacing:-.04em;margin-bottom:8px}
+.wl-greeting{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:8px}
 .wl-greeting em{font-style:normal;color:var(--amber2)}
 .wl-sub{font-size:14px;color:var(--w3);line-height:1.6}
 .wl-right{display:flex;gap:10px;flex-wrap:wrap}
@@ -88,7 +88,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .tc-badge{font:600 8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;display:block;margin-top:4px}
 .tc-badge.new{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
 .tc-badge.hot{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
-.tc-name{font:700 15px/1.2 var(--disp);letter-spacing:-.02em;color:var(--w);margin-bottom:7px}
+.tc-name{font:700 15px/1.2 var(--disp-serif);letter-spacing:0em;color:var(--w);margin-bottom:7px}
 .tc-desc{font-size:12px;color:var(--w3);line-height:1.6;flex:1;margin-bottom:16px}
 .tc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
 .tc-stat{font:500 11px/1 var(--mono);color:var(--w4)}
@@ -103,7 +103,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .ref-copy-btn{background:var(--amber);color:var(--bg);border:none;padding:9px 14px;border-radius:6px;font:600 12px/1 var(--sans);cursor:pointer;white-space:nowrap;transition:background .15s}
 .ref-copy-btn:hover{background:var(--amber2)}
 .ref-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
-.ref-stat-v{font:700 18px/1 var(--disp);color:var(--w)}
+.ref-stat-v{font:700 18px/1 var(--disp-serif);color:var(--w)}
 .ref-stat-l{font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--w4);margin-top:4px}
 .sp-head,.cw-head,.qa-head{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
 .sp-title,.cw-title,.qa-title{font:600 12px/1 var(--sans);color:var(--w2)}
@@ -150,7 +150,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .ob-dot.done{background:rgba(232,147,24,.4)}
 .ob-body{padding:0 32px 32px}
 .ob-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
-.ob-title{font:800 28px/1.15 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.ob-title{font:800 28px/1.15 var(--disp-serif);letter-spacing:-.01em;margin-bottom:10px}
 .ob-title em{font-style:normal;color:var(--amber2)}
 .ob-text{font-size:14px;color:var(--w3);line-height:1.7;margin-bottom:22px}
 .ob-text strong{color:var(--w2);font-weight:500}

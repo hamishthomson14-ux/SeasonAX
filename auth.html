@@ -19,7 +19,7 @@
 <meta name="description" content="Sign in to TimingAX. Professional seasonal market intelligence for serious investors.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
@@ -31,7 +31,7 @@ html,body{height:100%;-webkit-font-smoothing:antialiased}
   --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
   --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
   --mono:"IBM Plex Mono",monospace;
-  --disp:"Syne",sans-serif;
+  --disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;
   --sans:"Inter",sans-serif;
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
@@ -49,7 +49,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 .l-hero{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;padding:48px 0}
 .l-tag{font:500 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .l-tag::before{content:"";width:16px;height:1px;background:var(--amber2)}
-.l-h{font:800 48px/1.0 var(--disp);letter-spacing:-.04em;margin-bottom:16px;color:var(--w)}
+.l-h{font:800 48px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px;color:var(--w)}
 .l-h em{font-style:normal;color:var(--amber2)}
 .l-sub{font-size:16px;color:var(--w3);line-height:1.72;max-width:380px;margin-bottom:48px}
 
@@ -121,7 +121,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 /* Success / Email check state */
 .r-success{text-align:center;padding:12px 0}
 .r-success-icon{width:60px;height:60px;background:rgba(0,201,126,.08);border:1px solid rgba(0,201,126,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:26px}
-.r-success-h{font:800 22px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:10px}
+.r-success-h{font:800 22px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:10px}
 .r-success-p{font-size:14px;color:var(--w3);line-height:1.7;max-width:300px;margin:0 auto 24px}
 .r-success-note{font:400 11px/1 var(--mono);color:var(--w5)}
 

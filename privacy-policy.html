@@ -17,10 +17,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#04070F;--bg2:#070C18;--amber:#E89318;--amber2:#F5A52F;--w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--b1:#0F1E30;--b2:#162540;--mono:'IBM Plex Mono',monospace;--disp:'Syne',sans-serif;--sans:'Inter',sans-serif}
+:root{--bg:#04070F;--bg2:#070C18;--amber:#E89318;--amber2:#F5A52F;--w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--b1:#0F1E30;--b2:#162540;--mono:'IBM Plex Mono',monospace;--disp:'Syne',sans-serif;--disp-serif:'Fraunces',serif;--sans:'Inter',sans-serif}
 html{-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.7}
 a{color:var(--amber2);text-decoration:none}
@@ -29,10 +29,10 @@ a:hover{text-decoration:underline}
 .n-word{font:800 16px/1 var(--disp);letter-spacing:-.02em}
 .n-word b{color:var(--amber2);font-weight:800}
 .wrap{max-width:760px;margin:0 auto;padding:64px 24px 100px}
-.doc-h{font:800 42px/1.1 var(--disp);letter-spacing:-.03em;margin-bottom:8px}
+.doc-h{font:800 42px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:8px}
 .doc-h em{font-style:normal;color:var(--amber2)}
 .doc-meta{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--b1)}
-h2{font:700 20px/1.3 var(--disp);letter-spacing:-.02em;margin:40px 0 12px;color:var(--amber2)}
+h2{font:700 20px/1.3 var(--disp-serif);letter-spacing:0em;margin:40px 0 12px;color:var(--amber2)}
 h3{font:600 16px/1.3 var(--sans);margin:24px 0 8px;color:var(--w2)}
 p{font-size:15px;color:var(--w3);margin-bottom:14px;line-height:1.78}
 ul{padding-left:20px;margin-bottom:14px}
@@ -70,7 +70,8 @@ tr:last-child td{border-bottom:none}
     <tr><td><strong>Payment data</strong></td><td>Processed entirely by Stripe &mdash; we never see or store card numbers</td><td>Contract performance</td></tr>
     <tr><td><strong>Subscription status</strong></td><td>Determining your access level (free / Pro / Lifetime)</td><td>Contract performance</td></tr>
     <tr><td><strong>IP address &amp; browser</strong></td><td>Security, fraud prevention, basic analytics via Vercel</td><td>Legitimate interests</td></tr>
-    <tr><td><strong>Watchlist assets</strong></td><td>Storing your personal watchlist between sessions</td><td>Contract performance</td></tr>
+    <tr><td><strong>Watchlist &amp; portfolio holdings</strong></td><td>Storing your personal watchlist and portfolio between sessions</td><td>Contract performance</td></tr>
+    <tr><td><strong>Seasonal alert preferences</strong></td><td>Sending you an email reminder before an asset's strongest seasonal month, if you opt in</td><td>Consent</td></tr>
   </table>
   <p>We do <strong>not</strong> collect: trading account details, brokerage credentials, financial position data, or any sensitive personal data. We do not use advertising trackers.</p>
 
@@ -112,13 +113,13 @@ tr:last-child td{border-bottom:none}
   </ul>
   <p>To exercise any of these rights, contact us from your registered email address. We will respond within 30 days. You also have the right to lodge a complaint with the UK Information Commissioner&apos;s Office (ICO) at ico.org.uk, or your national supervisory authority if you are in the EU.</p>
 
-  <h2>7. Cookies and Local Storage</h2>
+  <h2 id="cookies">7. Cookies and Local Storage</h2>
   <p>TimingAX uses:</p>
   <ul>
     <li><strong>Authentication cookie</strong> &mdash; set by Supabase to keep you logged in (strictly necessary)</li>
-    <li><strong>localStorage</strong> &mdash; used locally in your browser to store your watchlist and free-tier usage count. This data never leaves your device unless you are logged in</li>
+    <li><strong>localStorage</strong> &mdash; used locally in your browser to store your watchlist, portfolio holdings, and free-tier usage count. This data never leaves your device unless you are logged in</li>
   </ul>
-  <p>We do not use advertising cookies, third-party tracking cookies, or Google Analytics. You can clear localStorage and cookies at any time in your browser settings.</p>
+  <p>We do not use advertising cookies, third-party tracking cookies, or Google Analytics. You can clear localStorage and cookies at any time in your browser settings. Because nothing here is non-essential, we show a one-time informational notice rather than a cookie consent gate \u2014 if that changes in future, this policy and the notice will be updated first.</p>
 
   <h2>8. Children</h2>
   <p>TimingAX is not intended for users under 18 years of age. We do not knowingly collect personal data from children. If we discover we have inadvertently collected data from a minor, we will delete it promptly.</p>
@@ -139,6 +140,7 @@ tr:last-child td{border-bottom:none}
     <p><strong>Summary:</strong> We collect your email and usage data to run the service. We don&apos;t sell it, don&apos;t track you with ads, use reputable infrastructure (Supabase, Stripe, Vercel), and you can delete everything at any time.</p>
   </div>
 </div>
+<script src="/cookie-consent.js"></script>
 <script src="/chat-widget.js"></script>
 </body>
 </html>
