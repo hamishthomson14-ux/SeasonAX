@@ -10,9 +10,17 @@ const HIST_TTL = 1000 * 60 * 60 * 12; // 12h for history
 const QUOTE_TTL = 1000 * 60 * 5;      // 5min for quotes
 
 async function fetchText(url) {
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (SeasonAX)' } });
+  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (TimingAX)' } });
   if (!r.ok) throw new Error('Upstream ' + r.status);
   return r.text();
+}
+
+// Like fetchText, but never throws and reports the upstream status/body so
+// failures can be diagnosed via ?debug=1 instead of just "No data".
+async function fetchRaw(url) {
+  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (TimingAX)' } });
+  const text = await r.text();
+  return { ok: r.ok, status: r.status, text };
 }
 
 function cacheGet(key, ttl) {
@@ -57,9 +65,14 @@ export default async function handler(req, res) {
     const key = 'h:' + sym;
     let rows = cacheGet(key, HIST_TTL);
     if (!rows) {
-      const csv = await fetchText('https://stooq.com/q/d/l/?s=' + encodeURIComponent(sym) + '&i=m');
+      const upstreamUrl = 'https://stooq.com/q/d/l/?s=' + encodeURIComponent(sym) + '&i=m';
+      const { ok, status, text: csv } = await fetchRaw(upstreamUrl);
       if (!csv || csv.length < 30 || csv.indexOf('Date') === -1) {
-        return res.status(404).json({ error: 'No data for symbol', symbol: sym });
+        const body = { error: 'No data for symbol', symbol: sym };
+        if (req.query.debug) {
+          body.debug = { upstreamUrl, upstreamOk: ok, upstreamStatus: status, length: csv.length, preview: csv.slice(0, 300) };
+        }
+        return res.status(404).json(body);
       }
       rows = csv.trim().split('\n').slice(1).map(line => {
         const p = line.split(',');
