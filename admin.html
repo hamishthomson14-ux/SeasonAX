@@ -87,6 +87,22 @@ tr:last-child td{border-bottom:none}
 .state-box p{color:var(--w3);font-size:14px;line-height:1.6}
 .spin{width:28px;height:28px;border:3px solid var(--b2);border-top-color:var(--amber2);border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+.btn-run{background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 12px/1 var(--sans);cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.btn-run:disabled{opacity:.5;cursor:default}
+.dca-intro{color:var(--w4);font-size:12px;line-height:1.6;margin-bottom:14px;max-width:640px}
+.dca-bar-track{height:6px;background:var(--b1);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.dca-bar-fill{height:100%;background:var(--amber2);width:0%;transition:width .2s}
+.dca-progress-label{font:400 11px/1 var(--mono);color:var(--w4)}
+.dca-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:10px;overflow:hidden;margin:18px 0}
+.dca-cell{background:var(--bg2);padding:16px 18px}
+.dca-region{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--b1);font-size:13px}
+.dca-region:last-child{border-bottom:none}
+.dca-region-name{min-width:200px;color:var(--w3)}
+.dca-region-bar-track{flex:1;height:5px;background:var(--b1);border-radius:3px;margin:0 14px;overflow:hidden}
+.dca-region-bar-fill{height:100%;background:var(--green)}
+.dca-region-frac{font:600 12px/1 var(--mono);min-width:60px;text-align:right;color:var(--w2)}
+@media(max-width:900px){.dca-summary{grid-template-columns:repeat(2,1fr)}.dca-region-name{min-width:120px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -154,6 +170,30 @@ tr:last-child td{border-bottom:none}
       <div class="card">
         <div class="card-head"><div class="card-title">Mailing lists</div></div>
         <div class="simple-stats" id="listStats"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:28px">
+      <div class="card-head">
+        <div class="card-title">Data Coverage Audit</div>
+        <button class="btn-run" id="dcaRunBtn" onclick="runDataCoverageAudit()">Run Audit</button>
+      </div>
+      <div style="padding:18px">
+        <p class="dca-intro">Checks all 433 catalogue assets against live Stooq price data and reports how many show real <strong style="color:var(--green)">VERIFIED</strong> history vs. a <strong style="color:var(--amber2)">MODELLED</strong> pattern. Takes roughly a minute &mdash; keep this tab open while it runs.</p>
+        <div id="dcaProgress" style="display:none">
+          <div class="dca-bar-track"><div class="dca-bar-fill" id="dcaBarFill"></div></div>
+          <div class="dca-progress-label" id="dcaProgressLabel"></div>
+        </div>
+        <div id="dcaResults" style="display:none">
+          <div class="dca-summary" id="dcaSummary"></div>
+          <div class="sec-label" style="margin-top:6px">Coverage by section</div>
+          <div id="dcaRegions"></div>
+          <div class="sec-label" style="margin-top:20px">Still modelled (<span id="dcaModelledCount"></span>)</div>
+          <table>
+            <tr><th>Asset</th><th>Ticker</th><th>Region</th><th>Section</th><th>Symbol tried</th><th>Reason</th></tr>
+            <tbody id="dcaModelledBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -242,6 +282,166 @@ function render(data) {
 }
 
 async function signOut() { await sb.auth.signOut(); window.location.href = '/auth.html'; }
+
+// ── Data Coverage Audit ─────────────────────────────────────
+// Mirrors the real-data resolution logic used on the live site
+// (market-seasonality.html / api/_lib/seasonal.js) so the audit
+// reflects exactly what visitors see.
+var STOOQ_MAP = {
+  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
+  'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
+  'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
+  'btc':'btcusd','eth':'ethusd',
+  'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
+  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us',
+  'xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
+  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
+  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
+};
+var EXCHANGE_SUFFIX_MAP = { 'l':'uk','t':'jp','de':'de','hk':'hk','ax':'au','si':'sg','ks':'kr','tw':'tw','ns':'in' };
+
+function stooqSymbol(item) {
+  if (!item) return null;
+  if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
+  var t = (item.ticker || '').toLowerCase();
+  if (!t || t.charAt(0) === '^') return null;
+  var m = t.match(/\.([a-z]+)$/);
+  if (m) {
+    var stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
+    if (!stooqSuf) return null;
+    return t.slice(0, t.length - m[1].length) + stooqSuf;
+  }
+  if (item.region === 'US') return t + '.us';
+  return null;
+}
+
+// Returns true if every calendar month has >= minObs observations within
+// the last `yearsWanted` years \u2014 same gate as computeRealMonths().
+function hasFullMonthlyCoverage(rows, yearsWanted, minObs) {
+  var byMonth = [[],[],[],[],[],[],[],[],[],[],[],[]];
+  var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
+  for (var i = 1; i < rows.length; i++) {
+    var prev = rows[i-1], cur = rows[i];
+    var dt = new Date(cur.d);
+    if (dt.getFullYear() < cutoffYear) continue;
+    if (!isFinite(prev.c) || prev.c <= 0) continue;
+    var ret = ((cur.c - prev.c) / prev.c) * 100;
+    if (!isFinite(ret) || Math.abs(ret) > 95) continue;
+    byMonth[dt.getMonth()].push(ret);
+  }
+  for (var m = 0; m < 12; m++) { if (byMonth[m].length < (minObs || 5)) return false; }
+  return true;
+}
+
+var DCA_REASON_LABEL = {
+  'no-symbol': 'No symbol mapping',
+  'no-data': 'Stooq has no data',
+  'insufficient-history': 'Less than 3yrs history',
+  'insufficient-coverage': 'Gaps in monthly data',
+  'error': 'Fetch error'
+};
+
+async function checkAsset(item) {
+  var sym = stooqSymbol(item);
+  if (!sym) return { status: 'no-symbol', sym: null };
+  try {
+    var r = await fetch('/api/prices?s=' + encodeURIComponent(sym));
+    if (!r.ok) return { status: 'no-data', sym: sym };
+    var data = await r.json();
+    if (!data || !data.monthly || data.monthly.length < 36) return { status: 'insufficient-history', sym: sym };
+    if (!hasFullMonthlyCoverage(data.monthly, 15, 5)) return { status: 'insufficient-coverage', sym: sym };
+    return { status: 'verified', sym: sym };
+  } catch (e) {
+    return { status: 'error', sym: sym };
+  }
+}
+
+async function runDataCoverageAudit() {
+  var btn = document.getElementById('dcaRunBtn');
+  btn.disabled = true;
+  btn.textContent = 'Running\u2026';
+  document.getElementById('dcaProgress').style.display = 'block';
+  document.getElementById('dcaResults').style.display = 'none';
+  document.getElementById('dcaBarFill').style.width = '0%';
+
+  var catalogue = await (await fetch('/api/catalogue')).json();
+  var items = catalogue.filter(function(it) { return it.id; });
+
+  var results = new Array(items.length);
+  var done = 0;
+  var idx = 0;
+  var CONCURRENCY = 6;
+
+  function updateProgress() {
+    var pct = Math.round((done / items.length) * 100);
+    document.getElementById('dcaBarFill').style.width = pct + '%';
+    document.getElementById('dcaProgressLabel').textContent = done + ' / ' + items.length + ' checked (' + pct + '%)';
+  }
+
+  async function worker() {
+    while (idx < items.length) {
+      var myIdx = idx++;
+      results[myIdx] = await checkAsset(items[myIdx]);
+      done++;
+      updateProgress();
+    }
+  }
+
+  updateProgress();
+  var workers = [];
+  for (var w = 0; w < CONCURRENCY; w++) workers.push(worker());
+  await Promise.all(workers);
+
+  renderDcaResults(items, results);
+  btn.disabled = false;
+  btn.textContent = 'Run Audit Again';
+}
+
+function renderDcaResults(items, results) {
+  var verified = 0, modelled = 0;
+  var bySection = {};
+  var modelledRows = [];
+
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i], res = results[i];
+    var sec = it.catSection || it.region || 'Other';
+    if (!bySection[sec]) bySection[sec] = { verified: 0, total: 0 };
+    bySection[sec].total++;
+    if (res.status === 'verified') {
+      verified++;
+      bySection[sec].verified++;
+    } else {
+      modelled++;
+      modelledRows.push({ item: it, res: res });
+    }
+  }
+
+  document.getElementById('dcaSummary').innerHTML =
+    '<div class="dca-cell"><div class="ov-label">Total Assets</div><div class="ov-val w">' + items.length + '</div></div>' +
+    '<div class="dca-cell"><div class="ov-label">Verified (Real Data)</div><div class="ov-val g">' + verified + '</div></div>' +
+    '<div class="dca-cell"><div class="ov-label">Modelled</div><div class="ov-val a">' + modelled + '</div></div>' +
+    '<div class="dca-cell"><div class="ov-label">Coverage</div><div class="ov-val w">' + Math.round(verified / items.length * 100) + '%</div></div>';
+
+  var regionsHtml = Object.keys(bySection).sort().map(function(sec) {
+    var d = bySection[sec];
+    var pct = Math.round(d.verified / d.total * 100);
+    return '<div class="dca-region"><div class="dca-region-name">' + esc(sec) + '</div>' +
+      '<div class="dca-region-bar-track"><div class="dca-region-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="dca-region-frac">' + d.verified + ' / ' + d.total + '</div></div>';
+  }).join('');
+  document.getElementById('dcaRegions').innerHTML = regionsHtml;
+
+  document.getElementById('dcaModelledCount').textContent = modelled;
+  document.getElementById('dcaModelledBody').innerHTML = modelledRows.length ? modelledRows.map(function(r) {
+    return '<tr><td>' + esc(r.item.name) + '</td><td style="font-family:var(--mono)">' + esc(r.item.ticker) + '</td><td>' + esc(r.item.region) + '</td><td>' + esc(r.item.catSection) + '</td>' +
+      '<td style="font-family:var(--mono);color:var(--w4)">' + esc(r.res.sym || '\u2014') + '</td>' +
+      '<td><span class="tag pending">' + esc(DCA_REASON_LABEL[r.res.status] || r.res.status) + '</span></td></tr>';
+  }).join('') : '<tr><td colspan="6" class="empty-row">All assets verified \ud83c\udf89</td></tr>';
+
+  document.getElementById('dcaProgress').style.display = 'none';
+  document.getElementById('dcaResults').style.display = 'block';
+}
+
 init();
 </script>
 </body>
