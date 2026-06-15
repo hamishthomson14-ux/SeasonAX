@@ -1,26 +1,46 @@
 // api/prices.js
-// Keyless real-price proxy. Sources monthly OHLC history and live quotes
-// from Stooq's public CSV endpoints. No API key required.
+// Keyless real-price proxy. Sources monthly price history and live quotes
+// from Yahoo Finance's public chart API. No API key required.
+//
+// NOTE: previously sourced from Stooq's CSV endpoints, but Stooq now
+// serves a JavaScript bot-verification challenge page to server-side /
+// datacenter requests (confirmed via ?debug=1), so it no longer returns
+// usable data from a serverless function. Yahoo's v8 chart endpoint is
+// the same one used by countless open-source tools (yfinance, etc.) and
+// doesn't impose that kind of check.
+//
 // Modes:
-//   /api/prices?s=aapl.us            -> monthly history CSV -> JSON
-//   /api/prices?quotes=^spx,aapl.us  -> latest quotes for ticker tape
+//   /api/prices?s=AAPL                -> monthly history -> {symbol, monthly:[{d,c}]}
+//   /api/prices?s=AAPL&debug=1        -> on failure, include upstream debug info
+//   /api/prices?quotes=^GSPC,AAPL     -> latest quotes for ticker tape
 
 const CACHE = new Map(); // simple warm-instance cache
 const HIST_TTL = 1000 * 60 * 60 * 12; // 12h for history
 const QUOTE_TTL = 1000 * 60 * 5;      // 5min for quotes
 
-async function fetchText(url) {
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (TimingAX)' } });
-  if (!r.ok) throw new Error('Upstream ' + r.status);
-  return r.text();
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+
+async function fetchJson(url) {
+  const r = await fetch(url, { headers: { 'User-Agent': UA, 'Accept': 'application/json' } });
+  const text = await r.text();
+  let json = null;
+  try { json = JSON.parse(text); } catch (e) { /* leave json null */ }
+  return { ok: r.ok, status: r.status, text, json };
 }
 
-// Like fetchText, but never throws and reports the upstream status/body so
-// failures can be diagnosed via ?debug=1 instead of just "No data".
-async function fetchRaw(url) {
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (TimingAX)' } });
-  const text = await r.text();
-  return { ok: r.ok, status: r.status, text };
+// Tries query1 then query2. Returns the chart "result" object plus debug
+// info from the last attempt (for ?debug=1 reporting on total failure).
+async function fetchChart(sym, range, interval) {
+  let last = null;
+  for (const host of HOSTS) {
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=' + range + '&interval=' + interval;
+    const r = await fetchJson(url);
+    last = { url: url, ok: r.ok, status: r.status, text: r.text };
+    const result = r.json && r.json.chart && r.json.chart.result && r.json.chart.result[0];
+    if (result && result.timestamp) return { result: result, debug: last };
+  }
+  return { result: null, debug: last };
 }
 
 function cacheGet(key, ttl) {
@@ -39,21 +59,20 @@ export default async function handler(req, res) {
   try {
     // ── LIVE QUOTES MODE ─────────────────────────────
     if (quotes) {
-      const syms = String(quotes).split(',').slice(0, 25).join('+');
-      const key = 'q:' + syms;
+      const syms = String(quotes).split(',').map(x => x.trim()).filter(Boolean).slice(0, 25);
+      const key = 'q:' + syms.join(',');
       let out = cacheGet(key, QUOTE_TTL);
       if (!out) {
-        const csv = await fetchText(
-          'https://stooq.com/q/l/?s=' + encodeURIComponent(syms) + '&f=sd2t2ohlcv&h&e=csv'
-        );
-        const lines = csv.trim().split('\n').slice(1);
-        out = lines.map(line => {
-          const p = line.split(',');
-          const close = parseFloat(p[6]);
-          const open = parseFloat(p[3]);
-          const chg = (open && close) ? ((close - open) / open) * 100 : null;
-          return { symbol: p[0], close: isFinite(close) ? close : null, changePct: isFinite(chg) ? +chg.toFixed(2) : null };
-        }).filter(q => q.close !== null);
+        out = [];
+        for (const sym of syms) {
+          const { result } = await fetchChart(sym, '5d', '1d');
+          if (!result || !result.meta) continue;
+          const price = result.meta.regularMarketPrice;
+          const prevClose = result.meta.chartPreviousClose != null ? result.meta.chartPreviousClose : result.meta.previousClose;
+          if (!isFinite(price)) continue;
+          const chg = (isFinite(prevClose) && prevClose) ? ((price - prevClose) / prevClose) * 100 : null;
+          out.push({ symbol: sym, close: price, changePct: isFinite(chg) ? +chg.toFixed(2) : null });
+        }
         cacheSet(key, out);
       }
       return res.status(200).json({ quotes: out });
@@ -61,23 +80,27 @@ export default async function handler(req, res) {
 
     // ── MONTHLY HISTORY MODE ─────────────────────────
     if (!s) return res.status(400).json({ error: 'Missing symbol' });
-    const sym = String(s).toLowerCase().replace(/[^a-z0-9.^-]/g, '').slice(0, 20);
+    const sym = String(s).replace(/[^A-Za-z0-9.^-]/g, '').slice(0, 20);
     const key = 'h:' + sym;
     let rows = cacheGet(key, HIST_TTL);
     if (!rows) {
-      const upstreamUrl = 'https://stooq.com/q/d/l/?s=' + encodeURIComponent(sym) + '&i=m';
-      const { ok, status, text: csv } = await fetchRaw(upstreamUrl);
-      if (!csv || csv.length < 30 || csv.indexOf('Date') === -1) {
+      const { result, debug } = await fetchChart(sym, '20y', '1mo');
+      const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
+      if (!result || !result.timestamp || !quote) {
         const body = { error: 'No data for symbol', symbol: sym };
         if (req.query.debug) {
-          body.debug = { upstreamUrl, upstreamOk: ok, upstreamStatus: status, length: csv.length, preview: csv.slice(0, 300) };
+          body.debug = { upstreamUrl: debug && debug.url, upstreamOk: debug && debug.ok, upstreamStatus: debug && debug.status, length: (debug && debug.text || '').length, preview: (debug && debug.text || '').slice(0, 300) };
         }
         return res.status(404).json(body);
       }
-      rows = csv.trim().split('\n').slice(1).map(line => {
-        const p = line.split(',');
-        return { d: p[0], c: parseFloat(p[4]) };
-      }).filter(r => r.d && isFinite(r.c));
+      const ts = result.timestamp;
+      const closes = quote.close;
+      rows = [];
+      for (let i = 0; i < ts.length; i++) {
+        const c = closes[i];
+        if (c == null || !isFinite(c)) continue;
+        rows.push({ d: new Date(ts[i] * 1000).toISOString().slice(0, 10), c: c });
+      }
       if (rows.length < 24) {
         return res.status(404).json({ error: 'Insufficient history', symbol: sym, rows: rows.length });
       }
