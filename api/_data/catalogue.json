@@ -1,3899 +1,5240 @@
 [
- {
-  "id": "sp500",
-  "ticker": "^GSPC",
-  "name": "S&P 500",
-  "sector": "Index",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "nasdaq",
-  "ticker": "^IXIC",
-  "name": "NASDAQ Composite",
-  "sector": "Index",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "dow",
-  "ticker": "^DJI",
-  "name": "Dow Jones Ind. Avg.",
-  "sector": "Index",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "russell",
-  "ticker": "^RUT",
-  "name": "Russell 2000",
-  "sector": "Index",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "spy",
-  "ticker": "SPY",
-  "name": "SPDR S&P 500 ETF",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "qqq",
-  "ticker": "QQQ",
-  "name": "Invesco NASDAQ-100",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "iwm",
-  "ticker": "IWM",
-  "name": "iShares Russell 2000",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "dia",
-  "ticker": "DIA",
-  "name": "SPDR Dow Jones ETF",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "voo",
-  "ticker": "VOO",
-  "name": "Vanguard S&P 500",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "vti",
-  "ticker": "VTI",
-  "name": "Vanguard Total Market",
-  "sector": "ETF",
-  "region": "US",
-  "pattern": "broadIndex",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xlk",
-  "ticker": "XLK",
-  "name": "Technology SPDR",
-  "sector": "Tech ETF",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xlf",
-  "ticker": "XLF",
-  "name": "Financial SPDR",
-  "sector": "Finance ETF",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xle",
-  "ticker": "XLE",
-  "name": "Energy SPDR",
-  "sector": "Energy ETF",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xlv",
-  "ticker": "XLV",
-  "name": "Health Care SPDR",
-  "sector": "Health ETF",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xlre",
-  "ticker": "XLRE",
-  "name": "Real Estate SPDR",
-  "sector": "REIT ETF",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "xly",
-  "ticker": "XLY",
-  "name": "Consumer Discret. SPDR",
-  "sector": "Consumer ETF",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "gld",
-  "ticker": "GLD",
-  "name": "SPDR Gold Shares",
-  "sector": "Gold ETF",
-  "region": "US",
-  "pattern": "gold",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "slv",
-  "ticker": "SLV",
-  "name": "iShares Silver",
-  "sector": "Silver ETF",
-  "region": "US",
-  "pattern": "gold",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "tlt",
-  "ticker": "TLT",
-  "name": "iShares 20yr Treasury",
-  "sector": "Bond ETF",
-  "region": "US",
-  "pattern": "bonds",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "hyg",
-  "ticker": "HYG",
-  "name": "iShares High Yield",
-  "sector": "Bond ETF",
-  "region": "US",
-  "pattern": "bonds",
-  "catSection": "Index Funds & ETFs"
- },
- {
-  "id": "aapl",
-  "ticker": "AAPL",
-  "name": "Apple",
-  "sector": "Consumer Tech",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "msft",
-  "ticker": "MSFT",
-  "name": "Microsoft",
-  "sector": "Cloud/Software",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "nvda",
-  "ticker": "NVDA",
-  "name": "Nvidia",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "googl",
-  "ticker": "GOOGL",
-  "name": "Alphabet",
-  "sector": "Internet/Ads",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "meta",
-  "ticker": "META",
-  "name": "Meta Platforms",
-  "sector": "Social Media",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "amzn",
-  "ticker": "AMZN",
-  "name": "Amazon",
-  "sector": "E-commerce/Cloud",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "tsla",
-  "ticker": "TSLA",
-  "name": "Tesla",
-  "sector": "EV/Energy",
-  "region": "US",
-  "pattern": "evGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "avgo",
-  "ticker": "AVGO",
-  "name": "Broadcom",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "orcl",
-  "ticker": "ORCL",
-  "name": "Oracle",
-  "sector": "Enterprise SW",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "crm",
-  "ticker": "CRM",
-  "name": "Salesforce",
-  "sector": "CRM Software",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "amd",
-  "ticker": "AMD",
-  "name": "AMD",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "intc",
-  "ticker": "INTC",
-  "name": "Intel",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "qcom",
-  "ticker": "QCOM",
-  "name": "Qualcomm",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "adbe",
-  "ticker": "ADBE",
-  "name": "Adobe",
-  "sector": "Creative SW",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "now",
-  "ticker": "NOW",
-  "name": "ServiceNow",
-  "sector": "Enterprise SaaS",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "shop",
-  "ticker": "SHOP",
-  "name": "Shopify",
-  "sector": "E-commerce",
-  "region": "US",
-  "pattern": "evGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "pltr",
-  "ticker": "PLTR",
-  "name": "Palantir",
-  "sector": "Data/AI",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "snow",
-  "ticker": "SNOW",
-  "name": "Snowflake",
-  "sector": "Cloud Data",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "uber",
-  "ticker": "UBER",
-  "name": "Uber",
-  "sector": "Rideshare",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Technology"
- },
- {
-  "id": "nflx",
-  "ticker": "NFLX",
-  "name": "Netflix",
-  "sector": "Streaming",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "spot",
-  "ticker": "SPOT",
-  "name": "Spotify",
-  "sector": "Music Streaming",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "net",
-  "ticker": "NET",
-  "name": "Cloudflare",
-  "sector": "Network Security",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "ddog",
-  "ticker": "DDOG",
-  "name": "Datadog",
-  "sector": "Observability",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "mdb",
-  "ticker": "MDB",
-  "name": "MongoDB",
-  "sector": "Database",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "twlo",
-  "ticker": "TWLO",
-  "name": "Twilio",
-  "sector": "Comms API",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "zm",
-  "ticker": "ZM",
-  "name": "Zoom Video",
-  "sector": "Video Comms",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "team",
-  "ticker": "TEAM",
-  "name": "Atlassian",
-  "sector": "Dev Tools",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "rblx",
-  "ticker": "RBLX",
-  "name": "Roblox",
-  "sector": "Gaming",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "u_game",
-  "ticker": "U",
-  "name": "Unity Software",
-  "sector": "Game Engine",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "smci",
-  "ticker": "SMCI",
-  "name": "Super Micro",
-  "sector": "AI Servers",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "arm",
-  "ticker": "ARM",
-  "name": "Arm Holdings",
-  "sector": "Chip Architecture",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "amat",
-  "ticker": "AMAT",
-  "name": "Applied Materials",
-  "sector": "Semiconductor Eq",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "lrcx",
-  "ticker": "LRCX",
-  "name": "Lam Research",
-  "sector": "Semiconductor Eq",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "klac",
-  "ticker": "KLAC",
-  "name": "KLA Corp",
-  "sector": "Semiconductor Eq",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "txn",
-  "ticker": "TXN",
-  "name": "Texas Instruments",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "mrvl",
-  "ticker": "MRVL",
-  "name": "Marvell Technology",
-  "sector": "Semiconductors",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "mu",
-  "ticker": "MU",
-  "name": "Micron Technology",
-  "sector": "Memory Chips",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "wdc",
-  "ticker": "WDC",
-  "name": "Western Digital",
-  "sector": "Storage",
-  "region": "US",
-  "pattern": "semis",
-  "catSection": "US Technology"
- },
- {
-  "id": "hp_us",
-  "ticker": "HPE",
-  "name": "HP Enterprise",
-  "sector": "IT Infrastructure",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "ibm",
-  "ticker": "IBM",
-  "name": "IBM",
-  "sector": "IT Services",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "csco",
-  "ticker": "CSCO",
-  "name": "Cisco Systems",
-  "sector": "Networking",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "acn",
-  "ticker": "ACN",
-  "name": "Accenture",
-  "sector": "IT Consulting",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "ftnt",
-  "ticker": "FTNT",
-  "name": "Fortinet",
-  "sector": "Cybersecurity",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "panw",
-  "ticker": "PANW",
-  "name": "Palo Alto Networks",
-  "sector": "Cybersecurity",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "crwd",
-  "ticker": "CRWD",
-  "name": "CrowdStrike",
-  "sector": "Cybersecurity",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Technology"
- },
- {
-  "id": "s_ai",
-  "ticker": "AI",
-  "name": "C3.ai",
-  "sector": "Enterprise AI",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "soun",
-  "ticker": "SOUN",
-  "name": "SoundHound AI",
-  "sector": "Voice AI",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "ionq",
-  "ticker": "IONQ",
-  "name": "IonQ",
-  "sector": "Quantum Computing",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Technology"
- },
- {
-  "id": "jpm",
-  "ticker": "JPM",
-  "name": "JPMorgan Chase",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "bac",
-  "ticker": "BAC",
-  "name": "Bank of America",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "gs",
-  "ticker": "GS",
-  "name": "Goldman Sachs",
-  "sector": "Investment Bank",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "ms",
-  "ticker": "MS",
-  "name": "Morgan Stanley",
-  "sector": "Investment Bank",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "wfc",
-  "ticker": "WFC",
-  "name": "Wells Fargo",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "c_us",
-  "ticker": "C",
-  "name": "Citigroup",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "usb",
-  "ticker": "USB",
-  "name": "US Bancorp",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "pnc",
-  "ticker": "PNC",
-  "name": "PNC Financial",
-  "sector": "Banking",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "v",
-  "ticker": "V",
-  "name": "Visa",
-  "sector": "Payments",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "ma",
-  "ticker": "MA",
-  "name": "Mastercard",
-  "sector": "Payments",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "pypl",
-  "ticker": "PYPL",
-  "name": "PayPal",
-  "sector": "Fintech",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "sq",
-  "ticker": "SQ",
-  "name": "Block (Square)",
-  "sector": "Fintech",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "afrm",
-  "ticker": "AFRM",
-  "name": "Affirm",
-  "sector": "BNPL Fintech",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "hood",
-  "ticker": "HOOD",
-  "name": "Robinhood",
-  "sector": "Retail Trading",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "schw",
-  "ticker": "SCHW",
-  "name": "Charles Schwab",
-  "sector": "Brokerage",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "blk",
-  "ticker": "BLK",
-  "name": "BlackRock",
-  "sector": "Asset Management",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "bx",
-  "ticker": "BX",
-  "name": "Blackstone",
-  "sector": "Private Equity",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "kkr",
-  "ticker": "KKR",
-  "name": "KKR",
-  "sector": "Private Equity",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "aig",
-  "ticker": "AIG",
-  "name": "AIG",
-  "sector": "Insurance",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "met",
-  "ticker": "MET",
-  "name": "MetLife",
-  "sector": "Insurance",
-  "region": "US",
-  "pattern": "financials",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "coin",
-  "ticker": "COIN",
-  "name": "Coinbase",
-  "sector": "Crypto Exchange",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "mstr",
-  "ticker": "MSTR",
-  "name": "MicroStrategy",
-  "sector": "Bitcoin Proxy",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "mara",
-  "ticker": "MARA",
-  "name": "Marathon Digital",
-  "sector": "Bitcoin Mining",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "riot",
-  "ticker": "RIOT",
-  "name": "Riot Platforms",
-  "sector": "Bitcoin Mining",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "btc",
-  "ticker": "BTC",
-  "name": "Bitcoin",
-  "sector": "Cryptocurrency",
-  "region": "US",
-  "pattern": "crypto",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "eth",
-  "ticker": "ETH",
-  "name": "Ethereum",
-  "sector": "Cryptocurrency",
-  "region": "US",
-  "pattern": "crypto",
-  "catSection": "US Finance & Banking"
- },
- {
-  "id": "unh",
-  "ticker": "UNH",
-  "name": "UnitedHealth",
-  "sector": "Health Insurance",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "jnj",
-  "ticker": "JNJ",
-  "name": "Johnson & Johnson",
-  "sector": "Pharma/Medical",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "abbv",
-  "ticker": "ABBV",
-  "name": "AbbVie",
-  "sector": "Biopharma",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "lly",
-  "ticker": "LLY",
-  "name": "Eli Lilly",
-  "sector": "Pharmaceuticals",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "mrk",
-  "ticker": "MRK",
-  "name": "Merck",
-  "sector": "Pharmaceuticals",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "pfe",
-  "ticker": "PFE",
-  "name": "Pfizer",
-  "sector": "Pharmaceuticals",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "mrna",
-  "ticker": "MRNA",
-  "name": "Moderna",
-  "sector": "mRNA Biotech",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "bntx",
-  "ticker": "BNTX",
-  "name": "BioNTech",
-  "sector": "mRNA Biotech",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "amgn",
-  "ticker": "AMGN",
-  "name": "Amgen",
-  "sector": "Biotechnology",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "isrg",
-  "ticker": "ISRG",
-  "name": "Intuitive Surgical",
-  "sector": "Medical Devices",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "bsx",
-  "ticker": "BSX",
-  "name": "Boston Scientific",
-  "sector": "Medical Devices",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "syk",
-  "ticker": "SYK",
-  "name": "Stryker",
-  "sector": "Medical Devices",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "mdv",
-  "ticker": "MDT",
-  "name": "Medtronic",
-  "sector": "Medical Devices",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "cvs",
-  "ticker": "CVS",
-  "name": "CVS Health",
-  "sector": "Pharmacy Retail",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "ci",
-  "ticker": "CI",
-  "name": "Cigna",
-  "sector": "Health Insurance",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "hum",
-  "ticker": "HUM",
-  "name": "Humana",
-  "sector": "Health Insurance",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "vrtx",
-  "ticker": "VRTX",
-  "name": "Vertex Pharma",
-  "sector": "Biotech",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "regn",
-  "ticker": "REGN",
-  "name": "Regeneron",
-  "sector": "Biotech",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "gild",
-  "ticker": "GILD",
-  "name": "Gilead Sciences",
-  "sector": "Antiviral Biotech",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "biib",
-  "ticker": "BIIB",
-  "name": "Biogen",
-  "sector": "Neuroscience",
-  "region": "US",
-  "pattern": "healthcare",
-  "catSection": "US Healthcare & Biotech"
- },
- {
-  "id": "wmt",
-  "ticker": "WMT",
-  "name": "Walmart",
-  "sector": "Retail",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "tgt",
-  "ticker": "TGT",
-  "name": "Target",
-  "sector": "Retail",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "cost",
-  "ticker": "COST",
-  "name": "Costco",
-  "sector": "Wholesale Retail",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "mcd",
-  "ticker": "MCD",
-  "name": "McDonald's",
-  "sector": "Fast Food",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "sbux",
-  "ticker": "SBUX",
-  "name": "Starbucks",
-  "sector": "Coffee",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "nke",
-  "ticker": "NKE",
-  "name": "Nike",
-  "sector": "Sportswear",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "lulu",
-  "ticker": "LULU",
-  "name": "Lululemon",
-  "sector": "Apparel",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "abnb",
-  "ticker": "ABNB",
-  "name": "Airbnb",
-  "sector": "Travel",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "bkng",
-  "ticker": "BKNG",
-  "name": "Booking Holdings",
-  "sector": "Travel",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "lyft",
-  "ticker": "LYFT",
-  "name": "Lyft",
-  "sector": "Rideshare",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "dkng",
-  "ticker": "DKNG",
-  "name": "DraftKings",
-  "sector": "Sports Betting",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "mgm",
-  "ticker": "MGM",
-  "name": "MGM Resorts",
-  "sector": "Casinos",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "czr",
-  "ticker": "CZR",
-  "name": "Caesars",
-  "sector": "Casinos",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "hlt",
-  "ticker": "HLT",
-  "name": "Hilton",
-  "sector": "Hotels",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "mar",
-  "ticker": "MAR",
-  "name": "Marriott",
-  "sector": "Hotels",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "dri",
-  "ticker": "DRI",
-  "name": "Darden Restaurants",
-  "sector": "Restaurants",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "yum",
-  "ticker": "YUM",
-  "name": "Yum! Brands",
-  "sector": "Fast Food",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "cmg",
-  "ticker": "CMG",
-  "name": "Chipotle",
-  "sector": "Fast Casual",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "ebay",
-  "ticker": "EBAY",
-  "name": "eBay",
-  "sector": "E-commerce",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "etsy",
-  "ticker": "ETSY",
-  "name": "Etsy",
-  "sector": "Marketplace",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Consumer & Retail"
- },
- {
-  "id": "xom",
-  "ticker": "XOM",
-  "name": "ExxonMobil",
-  "sector": "Oil & Gas",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "cvx",
-  "ticker": "CVX",
-  "name": "Chevron",
-  "sector": "Oil & Gas",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "cop",
-  "ticker": "COP",
-  "name": "ConocoPhillips",
-  "sector": "Oil & Gas",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "slb",
-  "ticker": "SLB",
-  "name": "Schlumberger",
-  "sector": "Oil Services",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "hal",
-  "ticker": "HAL",
-  "name": "Halliburton",
-  "sector": "Oil Services",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "oxyx",
-  "ticker": "OXY",
-  "name": "Occidental Petrol.",
-  "sector": "Oil & Gas",
-  "region": "US",
-  "pattern": "energy",
-  "catSection": "US Energy"
- },
- {
-  "id": "enph",
-  "ticker": "ENPH",
-  "name": "Enphase Energy",
-  "sector": "Solar",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Energy"
- },
- {
-  "id": "plug",
-  "ticker": "PLUG",
-  "name": "Plug Power",
-  "sector": "Hydrogen",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Energy"
- },
- {
-  "id": "fslr",
-  "ticker": "FSLR",
-  "name": "First Solar",
-  "sector": "Solar Panels",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Energy"
- },
- {
-  "id": "bep",
-  "ticker": "BEP",
-  "name": "Brookfield Renewable",
-  "sector": "Clean Energy",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Energy"
- },
- {
-  "id": "ba",
-  "ticker": "BA",
-  "name": "Boeing",
-  "sector": "Aerospace",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "lmt",
-  "ticker": "LMT",
-  "name": "Lockheed Martin",
-  "sector": "Defense",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "rtx",
-  "ticker": "RTX",
-  "name": "RTX (Raytheon)",
-  "sector": "Defense",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "noc",
-  "ticker": "NOC",
-  "name": "Northrop Grumman",
-  "sector": "Defense",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "ge",
-  "ticker": "GE",
-  "name": "GE Aerospace",
-  "sector": "Jet Engines",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "cat",
-  "ticker": "CAT",
-  "name": "Caterpillar",
-  "sector": "Heavy Machinery",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "de",
-  "ticker": "DE",
-  "name": "Deere & Co.",
-  "sector": "Agriculture",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "ups",
-  "ticker": "UPS",
-  "name": "UPS",
-  "sector": "Logistics",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "fdx",
-  "ticker": "FDX",
-  "name": "FedEx",
-  "sector": "Logistics",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "hon",
-  "ticker": "HON",
-  "name": "Honeywell",
-  "sector": "Industrials",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "mmm",
-  "ticker": "MMM",
-  "name": "3M",
-  "sector": "Diversified Ind.",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "emr",
-  "ticker": "EMR",
-  "name": "Emerson Electric",
-  "sector": "Automation",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "pgh",
-  "ticker": "PH",
-  "name": "Parker Hannifin",
-  "sector": "Hydraulics",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "carr",
-  "ticker": "CARR",
-  "name": "Carrier Global",
-  "sector": "HVAC",
-  "region": "US",
-  "pattern": "defense",
-  "catSection": "US Defense & Industrials"
- },
- {
-  "id": "dis",
-  "ticker": "DIS",
-  "name": "Walt Disney",
-  "sector": "Entertainment",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "nflx2",
-  "ticker": "NFLX",
-  "name": "Netflix",
-  "sector": "Streaming",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "wbd",
-  "ticker": "WBD",
-  "name": "Warner Bros.",
-  "sector": "Media",
-  "region": "US",
-  "pattern": "consumer",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "t_us",
-  "ticker": "T",
-  "name": "AT&T",
-  "sector": "Telecom",
-  "region": "US",
-  "pattern": "bonds",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "vz",
-  "ticker": "VZ",
-  "name": "Verizon",
-  "sector": "Telecom",
-  "region": "US",
-  "pattern": "bonds",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "tmus",
-  "ticker": "TMUS",
-  "name": "T-Mobile",
-  "sector": "Telecom",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "snap",
-  "ticker": "SNAP",
-  "name": "Snap",
-  "sector": "Social Media",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "pins",
-  "ticker": "PINS",
-  "name": "Pinterest",
-  "sector": "Social Media",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "rddt",
-  "ticker": "RDDT",
-  "name": "Reddit",
-  "sector": "Social Media",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "ttd",
-  "ticker": "TTD",
-  "name": "The Trade Desk",
-  "sector": "Ad Tech",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "iaci",
-  "ticker": "IAC",
-  "name": "IAC",
-  "sector": "Internet Media",
-  "region": "US",
-  "pattern": "techGrowth",
-  "catSection": "US Communications & Media"
- },
- {
-  "id": "rivn",
-  "ticker": "RIVN",
-  "name": "Rivian",
-  "sector": "EV Trucks",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "lcid",
-  "ticker": "LCID",
-  "name": "Lucid Motors",
-  "sector": "EV Luxury",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "spce",
-  "ticker": "SPCE",
-  "name": "Virgin Galactic",
-  "sector": "Space Tourism",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "rkt",
-  "ticker": "RKT",
-  "name": "Rocket Companies",
-  "sector": "Mortgage Tech",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "sofi",
-  "ticker": "SOFI",
-  "name": "SoFi Technologies",
-  "sector": "Neobank",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "nu",
-  "ticker": "NU",
-  "name": "Nu Holdings",
-  "sector": "Digital Banking",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "bbai",
-  "ticker": "BBAI",
-  "name": "BigBear.ai",
-  "sector": "AI Analytics",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "rgti",
-  "ticker": "RGTI",
-  "name": "Rigetti Computing",
-  "sector": "Quantum",
-  "region": "US",
-  "pattern": "speculative",
-  "catSection": "US EV & Emerging Tech"
- },
- {
-  "id": "ftse100",
-  "ticker": "^FTSE",
-  "name": "FTSE 100",
-  "sector": "Index",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Indices"
- },
- {
-  "id": "ftse250",
-  "ticker": "^FTMC",
-  "name": "FTSE 250",
-  "sector": "Index",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Indices"
- },
- {
-  "id": "hsba",
-  "ticker": "HSBA.L",
-  "name": "HSBC Holdings",
-  "sector": "Global Banking",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "lloy",
-  "ticker": "LLOY.L",
-  "name": "Lloyds Banking",
-  "sector": "UK Banking",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "barc",
-  "ticker": "BARC.L",
-  "name": "Barclays",
-  "sector": "Investment Bank",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "natw",
-  "ticker": "NWG.L",
-  "name": "NatWest Group",
-  "sector": "UK Banking",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "stan",
-  "ticker": "STAN.L",
-  "name": "Standard Chartered",
-  "sector": "Emerging Mkts",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "avia",
-  "ticker": "AV.L",
-  "name": "Aviva",
-  "sector": "Insurance",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "lgen",
-  "ticker": "LGEN.L",
-  "name": "Legal & General",
-  "sector": "Insurance",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "pru",
-  "ticker": "PRU.L",
-  "name": "Prudential",
-  "sector": "Insurance",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "shro",
-  "ticker": "SDR.L",
-  "name": "Schroders",
-  "sector": "Asset Mgmt",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "lsl",
-  "ticker": "LSE.L",
-  "name": "London Stock Exchange",
-  "sector": "Exchange",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "halma",
-  "ticker": "HLMA.L",
-  "name": "Halma",
-  "sector": "Safety Tech",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "intv",
-  "ticker": "IG.L",
-  "name": "IG Group",
-  "sector": "Trading Platform",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "mng",
-  "ticker": "MNG.L",
-  "name": "Man Group",
-  "sector": "Hedge Fund",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "ajb",
-  "ticker": "AJB.L",
-  "name": "AJ Bell",
-  "sector": "Retail Invest.",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "harg",
-  "ticker": "HL.L",
-  "name": "Hargreaves Lansdown",
-  "sector": "Wealth Mgmt",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Banking & Finance"
- },
- {
-  "id": "bp_uk",
-  "ticker": "BP.L",
-  "name": "BP",
-  "sector": "Oil & Gas",
-  "region": "UK",
-  "pattern": "energy",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "shel",
-  "ticker": "SHEL.L",
-  "name": "Shell",
-  "sector": "Oil & Gas",
-  "region": "UK",
-  "pattern": "energy",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "rdsb",
-  "ticker": "EXPN.L",
-  "name": "Experian",
-  "sector": "Data Analytics",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "riouk",
-  "ticker": "RIO.L",
-  "name": "Rio Tinto",
-  "sector": "Mining",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "anto",
-  "ticker": "ANTO.L",
-  "name": "Antofagasta",
-  "sector": "Copper Mining",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "aau",
-  "ticker": "AAL.L",
-  "name": "Anglo American",
-  "sector": "Diversified Mining",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "glen",
-  "ticker": "GLEN.L",
-  "name": "Glencore",
-  "sector": "Commodities",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "bhp",
-  "ticker": "BHP.L",
-  "name": "BHP Group",
-  "sector": "Mining",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "cenm",
-  "ticker": "CNA.L",
-  "name": "Centrica",
-  "sector": "Utilities",
-  "region": "UK",
-  "pattern": "energy",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "ngt",
-  "ticker": "NG.L",
-  "name": "National Grid",
-  "sector": "Utilities",
-  "region": "UK",
-  "pattern": "bonds",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "sso",
-  "ticker": "SSE.L",
-  "name": "SSE",
-  "sector": "Energy/Utilities",
-  "region": "UK",
-  "pattern": "bonds",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "drax",
-  "ticker": "DRX.L",
-  "name": "Drax Group",
-  "sector": "Power Generation",
-  "region": "UK",
-  "pattern": "energy",
-  "catSection": "UK Energy & Mining"
- },
- {
-  "id": "azn",
-  "ticker": "AZN.L",
-  "name": "AstraZeneca",
-  "sector": "Pharmaceuticals",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "gsk",
-  "ticker": "GSK.L",
-  "name": "GSK",
-  "sector": "Pharmaceuticals",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "hikm",
-  "ticker": "HIK.L",
-  "name": "Hikma Pharma",
-  "sector": "Generics",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "decm",
-  "ticker": "DXRX.L",
-  "name": "Benchmark Holdings",
-  "sector": "Biotech",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "smi",
-  "ticker": "SMT.L",
-  "name": "Scottish Mortgage",
-  "sector": "Investment Trust",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "ipx",
-  "ticker": "IPX.L",
-  "name": "Ipsen",
-  "sector": "Specialty Pharma",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "evolv",
-  "ticker": "EVO.L",
-  "name": "Evolution Gaming",
-  "sector": "Online Gaming",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "ncyt",
-  "ticker": "NCYT.L",
-  "name": "Novacyt",
-  "sector": "Diagnostics",
-  "region": "UK",
-  "pattern": "speculative",
-  "catSection": "UK Pharma & Health"
- },
- {
-  "id": "uniluk",
-  "ticker": "ULVR.L",
-  "name": "Unilever",
-  "sector": "Consumer Goods",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "diageo",
-  "ticker": "DGE.L",
-  "name": "Diageo",
-  "sector": "Spirits/Beverages",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "reckitt",
-  "ticker": "RKT.L",
-  "name": "Reckitt",
-  "sector": "Household Goods",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "nxt",
-  "ticker": "NXT.L",
-  "name": "Next",
-  "sector": "Fashion Retail",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "mks",
-  "ticker": "MKS.L",
-  "name": "Marks & Spencer",
-  "sector": "Retail",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "jds",
-  "ticker": "JD.L",
-  "name": "JD Sports",
-  "sector": "Sportswear",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "bts",
-  "ticker": "BATS.L",
-  "name": "British American Tobacco",
-  "sector": "Tobacco",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "imp",
-  "ticker": "IMB.L",
-  "name": "Imperial Brands",
-  "sector": "Tobacco",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "flts",
-  "ticker": "FLTX.L",
-  "name": "Flutter Entertainment",
-  "sector": "Betting",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "bpt",
-  "ticker": "BPT.L",
-  "name": "BrightPoint",
-  "sector": "Distribution",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "wpp",
-  "ticker": "WPP.L",
-  "name": "WPP",
-  "sector": "Advertising",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "pub",
-  "ticker": "PUB.L",
-  "name": "Pub Group",
-  "sector": "Hospitality",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "gregg",
-  "ticker": "GRG.L",
-  "name": "Greggs",
-  "sector": "Food Retail",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "sspg",
-  "ticker": "SSPG.L",
-  "name": "SSP Group",
-  "sector": "Travel Food",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Consumer & Retail"
- },
- {
-  "id": "sage",
-  "ticker": "SGE.L",
-  "name": "Sage Group",
-  "sector": "Accounting SW",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Technology"
- },
- {
-  "id": "avsuk",
-  "ticker": "AVS.L",
-  "name": "Avast",
-  "sector": "Cybersecurity",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Technology"
- },
- {
-  "id": "darkt",
-  "ticker": "DARK.L",
-  "name": "Darktrace",
-  "sector": "AI Security",
-  "region": "UK",
-  "pattern": "speculative",
-  "catSection": "UK Technology"
- },
- {
-  "id": "aveva",
-  "ticker": "AVV.L",
-  "name": "AVEVA",
-  "sector": "Industrial SW",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Technology"
- },
- {
-  "id": "autocad",
-  "ticker": "ATC.L",
-  "name": "Auto Trader",
-  "sector": "Online Auto",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Technology"
- },
- {
-  "id": "rightm",
-  "ticker": "RMV.L",
-  "name": "Rightmove",
-  "sector": "Property Portal",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Technology"
- },
- {
-  "id": "iptv",
-  "ticker": "ITV.L",
-  "name": "ITV",
-  "sector": "Broadcasting",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Technology"
- },
- {
-  "id": "relx",
-  "ticker": "REL.L",
-  "name": "RELX",
-  "sector": "Info Services",
-  "region": "UK",
-  "pattern": "techGrowth",
-  "catSection": "UK Technology"
- },
- {
-  "id": "informa",
-  "ticker": "INF.L",
-  "name": "Informa",
-  "sector": "Publishing",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Technology"
- },
- {
-  "id": "bae",
-  "ticker": "BA.L",
-  "name": "BAE Systems",
-  "sector": "Defense",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "rr_uk",
-  "ticker": "RR.L",
-  "name": "Rolls-Royce",
-  "sector": "Jet Engines",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "qinetic",
-  "ticker": "QQ.L",
-  "name": "QinetiQ",
-  "sector": "Defense Tech",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "megg",
-  "ticker": "MGGT.L",
-  "name": "Meggitt",
-  "sector": "Aerospace",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "spmk",
-  "ticker": "SMDS.L",
-  "name": "Smith & Nephew",
-  "sector": "Medical Devices",
-  "region": "UK",
-  "pattern": "healthcare",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "croda",
-  "ticker": "CRDA.L",
-  "name": "Croda International",
-  "sector": "Specialty Chem",
-  "region": "UK",
-  "pattern": "ukMarket",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "jmats",
-  "ticker": "JMAT.L",
-  "name": "Johnson Matthey",
-  "sector": "Catalysts",
-  "region": "UK",
-  "pattern": "ukMining",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "ferv",
-  "ticker": "FERG.L",
-  "name": "Ferguson",
-  "sector": "Plumbing/HVAC",
-  "region": "UK",
-  "pattern": "consumer",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "imi",
-  "ticker": "IMI.L",
-  "name": "IMI",
-  "sector": "Engineering",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "sxs",
-  "ticker": "SXS.L",
-  "name": "Spectris",
-  "sector": "Precision Inst.",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "smw",
-  "ticker": "SMW.L",
-  "name": "Smiths Group",
-  "sector": "Diversified Ind.",
-  "region": "UK",
-  "pattern": "defense",
-  "catSection": "UK Industrials & Defense"
- },
- {
-  "id": "voduk",
-  "ticker": "VOD.L",
-  "name": "Vodafone",
-  "sector": "Telecom",
-  "region": "UK",
-  "pattern": "bonds",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "btem",
-  "ticker": "BT.A.L",
-  "name": "BT Group",
-  "sector": "Telecom",
-  "region": "UK",
-  "pattern": "bonds",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "blnd",
-  "ticker": "BLND.L",
-  "name": "British Land",
-  "sector": "REIT",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "land",
-  "ticker": "LAND.L",
-  "name": "Land Securities",
-  "sector": "REIT",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "segro",
-  "ticker": "SGRO.L",
-  "name": "Segro",
-  "sector": "Logistics REIT",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "lxb",
-  "ticker": "LXB.L",
-  "name": "LXi REIT",
-  "sector": "REIT",
-  "region": "UK",
-  "pattern": "financials",
-  "catSection": "UK Telecoms & Property"
- },
- {
-  "id": "dax",
-  "ticker": "^GDAXI",
-  "name": "DAX 40",
-  "sector": "Index",
-  "region": "Germany",
-  "pattern": "germanMarket",
-  "catSection": "German Indices"
- },
- {
-  "id": "mdax",
-  "ticker": "^MDAXI",
-  "name": "MDAX",
-  "sector": "Index",
-  "region": "Germany",
-  "pattern": "germanMarket",
-  "catSection": "German Indices"
- },
- {
-  "id": "sap",
-  "ticker": "SAP.DE",
-  "name": "SAP",
-  "sector": "Enterprise SW",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "ifx",
-  "ticker": "IFX.DE",
-  "name": "Infineon",
-  "sector": "Semiconductors",
-  "region": "Germany",
-  "pattern": "semis",
-  "catSection": "German Technology"
- },
- {
-  "id": "1u1",
-  "ticker": "1U1.DE",
-  "name": "1&1",
-  "sector": "Telecom/Internet",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "aixa",
-  "ticker": "AIXA.DE",
-  "name": "Aixtron",
-  "sector": "Chip Equipment",
-  "region": "Germany",
-  "pattern": "semis",
-  "catSection": "German Technology"
- },
- {
-  "id": "wmk",
-  "ticker": "WMK.DE",
-  "name": "Wirecard (hist.)",
-  "sector": "Fintech",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Technology"
- },
- {
-  "id": "teamv",
-  "ticker": "TMV.DE",
-  "name": "TeamViewer",
-  "sector": "Remote Access SW",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "sul",
-  "ticker": "S92.DE",
-  "name": "SMA Solar",
-  "sector": "Solar Technology",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Technology"
- },
- {
-  "id": "enr",
-  "ticker": "ENR.DE",
-  "name": "Siemens Energy",
-  "sector": "Energy Tech",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "sfq",
-  "ticker": "SFQ.DE",
-  "name": "Software AG",
-  "sector": "Enterprise SW",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "hhm",
-  "ticker": "HHFA.DE",
-  "name": "Hawesko",
-  "sector": "Wine/Beverages",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Technology"
- },
- {
-  "id": "demde",
-  "ticker": "DHER.DE",
-  "name": "Delivery Hero",
-  "sector": "Food Delivery",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Technology"
- },
- {
-  "id": "zal",
-  "ticker": "ZAL.DE",
-  "name": "Zalando",
-  "sector": "Fashion E-comm",
-  "region": "Germany",
-  "pattern": "evGrowth",
-  "catSection": "German Technology"
- },
- {
-  "id": "bmw",
-  "ticker": "BMW.DE",
-  "name": "BMW",
-  "sector": "Luxury Autos",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "mbg",
-  "ticker": "MBG.DE",
-  "name": "Mercedes-Benz",
-  "sector": "Luxury Autos",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "vow3",
-  "ticker": "VOW3.DE",
-  "name": "Volkswagen",
-  "sector": "Mass Market Auto",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "pah3",
-  "ticker": "PAH3.DE",
-  "name": "Porsche AG",
-  "sector": "Sports Cars",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "audi",
-  "ticker": "NSU.DE",
-  "name": "Audi (via VW)",
-  "sector": "Premium Autos",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "con",
-  "ticker": "CON.DE",
-  "name": "Continental",
-  "sector": "Auto Parts",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "shaf",
-  "ticker": "SHA.DE",
-  "name": "Schaeffler",
-  "sector": "Auto Components",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "ht1",
-  "ticker": "HEN3.DE",
-  "name": "Hella",
-  "sector": "Auto Lighting",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Automotive"
- },
- {
-  "id": "knebv",
-  "ticker": "KBX.DE",
-  "name": "Knorr-Bremse",
-  "sector": "Rail/Truck Brakes",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Automotive"
- },
- {
-  "id": "elring",
-  "ticker": "ZIL2.DE",
-  "name": "ElringKlinger",
-  "sector": "Auto Sealing",
-  "region": "Germany",
-  "pattern": "germanAuto",
-  "catSection": "German Automotive"
- },
- {
-  "id": "sie",
-  "ticker": "SIE.DE",
-  "name": "Siemens",
-  "sector": "Industrials",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "bas",
-  "ticker": "BAS.DE",
-  "name": "BASF",
-  "sector": "Chemicals",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "bayer",
-  "ticker": "BAYN.DE",
-  "name": "Bayer",
-  "sector": "Pharma/Chem",
-  "region": "Germany",
-  "pattern": "healthcare",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "merck",
-  "ticker": "MRK.DE",
-  "name": "Merck KGaA",
-  "sector": "Pharma/Chem",
-  "region": "Germany",
-  "pattern": "healthcare",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "lin",
-  "ticker": "LIN.DE",
-  "name": "Linde",
-  "sector": "Industrial Gas",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "eve",
-  "ticker": "EVK.DE",
-  "name": "Evonik",
-  "sector": "Specialty Chem",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "frk",
-  "ticker": "FRE.DE",
-  "name": "Fresenius",
-  "sector": "Healthcare Svc",
-  "region": "Germany",
-  "pattern": "healthcare",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "fms",
-  "ticker": "FMS.DE",
-  "name": "Fresenius Medical",
-  "sector": "Dialysis",
-  "region": "Germany",
-  "pattern": "healthcare",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "thys",
-  "ticker": "TKA.DE",
-  "name": "ThyssenKrupp",
-  "sector": "Steel/Ind.",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "mtu",
-  "ticker": "MTX.DE",
-  "name": "MTU Aero Engines",
-  "sector": "Jet Engines",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "air",
-  "ticker": "AIR.DE",
-  "name": "Airbus",
-  "sector": "Aerospace",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "rhm",
-  "ticker": "RHM.DE",
-  "name": "Rheinmetall",
-  "sector": "Defense",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "hei",
-  "ticker": "HEI.DE",
-  "name": "HeidelbergMat.",
-  "sector": "Building Matl.",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "siko",
-  "ticker": "SIK.DE",
-  "name": "Sika AG",
-  "sector": "Construction Chem",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "kion",
-  "ticker": "KGX.DE",
-  "name": "KION Group",
-  "sector": "Forklift/Logistics",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "wacker",
-  "ticker": "WCH.DE",
-  "name": "Wacker Chemie",
-  "sector": "Polysilicon",
-  "region": "Germany",
-  "pattern": "germanChemical",
-  "catSection": "German Industrials & Chemicals"
- },
- {
-  "id": "db",
-  "ticker": "DBK.DE",
-  "name": "Deutsche Bank",
-  "sector": "Investment Bank",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "cbk",
-  "ticker": "CBK.DE",
-  "name": "Commerzbank",
-  "sector": "Retail Banking",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "alv",
-  "ticker": "ALV.DE",
-  "name": "Allianz",
-  "sector": "Insurance",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "mun",
-  "ticker": "MUV2.DE",
-  "name": "Munich Re",
-  "sector": "Reinsurance",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "hanover",
-  "ticker": "HNR1.DE",
-  "name": "Hannover Re",
-  "sector": "Reinsurance",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "dws",
-  "ticker": "DWS.DE",
-  "name": "DWS Group",
-  "sector": "Asset Management",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "hex",
-  "ticker": "H24.DE",
-  "name": "Hypoport",
-  "sector": "Mortgage Platform",
-  "region": "Germany",
-  "pattern": "financials",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "fb2",
-  "ticker": "FB2A.DE",
-  "name": "Flatex DeGiro",
-  "sector": "Online Broker",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Finance & Insurance"
- },
- {
-  "id": "ads",
-  "ticker": "ADS.DE",
-  "name": "Adidas",
-  "sector": "Sportswear",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "puma",
-  "ticker": "PUM.DE",
-  "name": "Puma",
-  "sector": "Sportswear",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "hugo",
-  "ticker": "BOSS.DE",
-  "name": "Hugo Boss",
-  "sector": "Luxury Fashion",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "henk",
-  "ticker": "HEN3.DE",
-  "name": "Henkel",
-  "sector": "Consumer Goods",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "beisd",
-  "ticker": "BEI.DE",
-  "name": "Beiersdorf",
-  "sector": "Skin Care",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "dfv",
-  "ticker": "DFV.DE",
-  "name": "Deutsche Familienversicherung",
-  "sector": "Insurtech",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "rhkg",
-  "ticker": "RHKG.DE",
-  "name": "Rewe Group",
-  "sector": "Supermarkets",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "obi",
-  "ticker": "OBI.DE",
-  "name": "OBI",
-  "sector": "Home Improvement",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "metro",
-  "ticker": "B4B.DE",
-  "name": "Metro AG",
-  "sector": "Wholesale",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "pro7",
-  "ticker": "P7S1.DE",
-  "name": "ProSiebenSat.1",
-  "sector": "Broadcasting",
-  "region": "Germany",
-  "pattern": "consumer",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "mbc",
-  "ticker": "MBB.DE",
-  "name": "MBB SE",
-  "sector": "Industrial Hold.",
-  "region": "Germany",
-  "pattern": "defense",
-  "catSection": "German Consumer & Retail"
- },
- {
-  "id": "dte",
-  "ticker": "DTE.DE",
-  "name": "Deutsche Telekom",
-  "sector": "Telecom",
-  "region": "Germany",
-  "pattern": "bonds",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "rwe",
-  "ticker": "RWE.DE",
-  "name": "RWE",
-  "sector": "Utilities/Power",
-  "region": "Germany",
-  "pattern": "energy",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "eon",
-  "ticker": "EOAN.DE",
-  "name": "E.ON",
-  "sector": "Utilities",
-  "region": "Germany",
-  "pattern": "bonds",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "unp",
-  "ticker": "UN01.DE",
-  "name": "Uniper",
-  "sector": "Gas/Power",
-  "region": "Germany",
-  "pattern": "energy",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "orsted",
-  "ticker": "ORSTED.DE",
-  "name": "Orsted",
-  "sector": "Offshore Wind",
-  "region": "Germany",
-  "pattern": "techGrowth",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "nordex",
-  "ticker": "NDX1.DE",
-  "name": "Nordex",
-  "sector": "Wind Turbines",
-  "region": "Germany",
-  "pattern": "speculative",
-  "catSection": "German Energy & Telecom"
- },
- {
-  "id": "nikkei",
-  "ticker": "^N225",
-  "name": "Nikkei 225",
-  "sector": "Index",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "toyota",
-  "ticker": "7203.T",
-  "name": "Toyota",
-  "sector": "Auto",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "sony",
-  "ticker": "6758.T",
-  "name": "Sony",
-  "sector": "Consumer Electronics",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "softbk",
-  "ticker": "9984.T",
-  "name": "SoftBank",
-  "sector": "Telecom/VC",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "Japan"
- },
- {
-  "id": "keyence",
-  "ticker": "6861.T",
-  "name": "Keyence",
-  "sector": "Automation",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "fanuc",
-  "ticker": "6954.T",
-  "name": "Fanuc",
-  "sector": "Industrial Robot",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "fast",
-  "ticker": "9983.T",
-  "name": "Fast Retailing (Uniqlo)",
-  "sector": "Fashion",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "Japan"
- },
- {
-  "id": "nintend",
-  "ticker": "7974.T",
-  "name": "Nintendo",
-  "sector": "Gaming",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "Japan"
- },
- {
-  "id": "honda",
-  "ticker": "7267.T",
-  "name": "Honda",
-  "sector": "Auto/Motorcycle",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "nissan",
-  "ticker": "7201.T",
-  "name": "Nissan",
-  "sector": "Auto",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "mitsu",
-  "ticker": "8058.T",
-  "name": "Mitsubishi Corp.",
-  "sector": "Trading Co.",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "mitsub",
-  "ticker": "7011.T",
-  "name": "Mitsubishi Heavy",
-  "sector": "Defense/Ind.",
-  "region": "Asia",
-  "pattern": "defense",
-  "catSection": "Japan"
- },
- {
-  "id": "hitach",
-  "ticker": "6501.T",
-  "name": "Hitachi",
-  "sector": "IT/Infrastructure",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "Japan"
- },
- {
-  "id": "panaso",
-  "ticker": "6752.T",
-  "name": "Panasonic",
-  "sector": "Electronics",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "canon",
-  "ticker": "7751.T",
-  "name": "Canon",
-  "sector": "Imaging",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "fujifl",
-  "ticker": "4901.T",
-  "name": "Fujifilm",
-  "sector": "Healthcare/Photo",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Japan"
- },
- {
-  "id": "daikin",
-  "ticker": "6367.T",
-  "name": "Daikin",
-  "sector": "HVAC",
-  "region": "Asia",
-  "pattern": "japanExport",
-  "catSection": "Japan"
- },
- {
-  "id": "shin",
-  "ticker": "4063.T",
-  "name": "Shin-Etsu Chemical",
-  "sector": "Chemicals",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Japan"
- },
- {
-  "id": "tdk",
-  "ticker": "6762.T",
-  "name": "TDK",
-  "sector": "Electronic Comp.",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Japan"
- },
- {
-  "id": "murata",
-  "ticker": "6981.T",
-  "name": "Murata Manufacturing",
-  "sector": "Components",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Japan"
- },
- {
-  "id": "renesas",
-  "ticker": "6723.T",
-  "name": "Renesas",
-  "sector": "Microcontrollers",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Japan"
- },
- {
-  "id": "recruit",
-  "ticker": "6098.T",
-  "name": "Recruit Holdings",
-  "sector": "HR/Job Portal",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "Japan"
- },
- {
-  "id": "softbk2",
-  "ticker": "9434.T",
-  "name": "SoftBank Corp.",
-  "sector": "Telecom",
-  "region": "Asia",
-  "pattern": "bonds",
-  "catSection": "Japan"
- },
- {
-  "id": "ntt",
-  "ticker": "9432.T",
-  "name": "NTT",
-  "sector": "Telecom",
-  "region": "Asia",
-  "pattern": "bonds",
-  "catSection": "Japan"
- },
- {
-  "id": "kddi",
-  "ticker": "9433.T",
-  "name": "KDDI",
-  "sector": "Telecom",
-  "region": "Asia",
-  "pattern": "bonds",
-  "catSection": "Japan"
- },
- {
-  "id": "mufg",
-  "ticker": "8306.T",
-  "name": "MUFG",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Japan"
- },
- {
-  "id": "smfg",
-  "ticker": "8316.T",
-  "name": "Sumitomo Mitsui",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Japan"
- },
- {
-  "id": "mizuho",
-  "ticker": "8411.T",
-  "name": "Mizuho Financial",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Japan"
- },
- {
-  "id": "tokmar",
-  "ticker": "8766.T",
-  "name": "Tokio Marine",
-  "sector": "Insurance",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Japan"
- },
- {
-  "id": "nomura",
-  "ticker": "8604.T",
-  "name": "Nomura Holdings",
-  "sector": "Investment Bank",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Japan"
- },
- {
-  "id": "olympus",
-  "ticker": "7733.T",
-  "name": "Olympus",
-  "sector": "Medical Devices",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Japan"
- },
- {
-  "id": "takeda",
-  "ticker": "4502.T",
-  "name": "Takeda Pharma",
-  "sector": "Pharmaceuticals",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Japan"
- },
- {
-  "id": "astellas",
-  "ticker": "4503.T",
-  "name": "Astellas Pharma",
-  "sector": "Pharmaceuticals",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Japan"
- },
- {
-  "id": "otsuka",
-  "ticker": "4578.T",
-  "name": "Otsuka Holdings",
-  "sector": "Pharma/Beverages",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Japan"
- },
- {
-  "id": "kubota",
-  "ticker": "6326.T",
-  "name": "Kubota",
-  "sector": "Agriculture Mach.",
-  "region": "Asia",
-  "pattern": "defense",
-  "catSection": "Japan"
- },
- {
-  "id": "komatsu",
-  "ticker": "6301.T",
-  "name": "Komatsu",
-  "sector": "Construction Eq.",
-  "region": "Asia",
-  "pattern": "defense",
-  "catSection": "Japan"
- },
- {
-  "id": "hsi",
-  "ticker": "^HSI",
-  "name": "Hang Seng Index",
-  "sector": "Index",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "alibaba",
-  "ticker": "9988.HK",
-  "name": "Alibaba",
-  "sector": "E-commerce/Cloud",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "tencent",
-  "ticker": "0700.HK",
-  "name": "Tencent",
-  "sector": "Internet/Gaming",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "meituan",
-  "ticker": "3690.HK",
-  "name": "Meituan",
-  "sector": "Food Delivery",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "jd",
-  "ticker": "9618.HK",
-  "name": "JD.com",
-  "sector": "E-commerce",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "pinduoduo",
-  "ticker": "PDD",
-  "name": "PDD Holdings",
-  "sector": "Social Commerce",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "bidu",
-  "ticker": "BIDU",
-  "name": "Baidu",
-  "sector": "Search/AI",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "neteas",
-  "ticker": "9999.HK",
-  "name": "NetEase",
-  "sector": "Gaming",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "byd",
-  "ticker": "1211.HK",
-  "name": "BYD",
-  "sector": "EV",
-  "region": "Asia",
-  "pattern": "evGrowth",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "xiaomi",
-  "ticker": "1810.HK",
-  "name": "Xiaomi",
-  "sector": "Smartphones",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "smic",
-  "ticker": "0981.HK",
-  "name": "SMIC",
-  "sector": "Foundry",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "lenovo",
-  "ticker": "0992.HK",
-  "name": "Lenovo",
-  "sector": "PC/Servers",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "geely",
-  "ticker": "0175.HK",
-  "name": "Geely Auto",
-  "sector": "Autos",
-  "region": "Asia",
-  "pattern": "germanAuto",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "sands",
-  "ticker": "1928.HK",
-  "name": "Sands China",
-  "sector": "Casino/Macau",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "galaxy",
-  "ticker": "0027.HK",
-  "name": "Galaxy Entertainment",
-  "sector": "Casino",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "cnooc",
-  "ticker": "0883.HK",
-  "name": "CNOOC",
-  "sector": "Oil & Gas",
-  "region": "Asia",
-  "pattern": "energy",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "petro",
-  "ticker": "0857.HK",
-  "name": "PetroChina",
-  "sector": "Oil & Gas",
-  "region": "Asia",
-  "pattern": "energy",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "icbc",
-  "ticker": "1398.HK",
-  "name": "ICBC",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "ccb",
-  "ticker": "0939.HK",
-  "name": "China Construction Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "abc_cn",
-  "ticker": "1288.HK",
-  "name": "Agric. Bank of China",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "boc",
-  "ticker": "3988.HK",
-  "name": "Bank of China",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "pingan",
-  "ticker": "2318.HK",
-  "name": "Ping An Insurance",
-  "sector": "Insurance",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "aia",
-  "ticker": "1299.HK",
-  "name": "AIA Group",
-  "sector": "Insurance",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "shenwan",
-  "ticker": "6060.HK",
-  "name": "360 Security",
-  "sector": "Cybersecurity",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "ntes",
-  "ticker": "NTES",
-  "name": "NetEase (US ADR)",
-  "sector": "Gaming",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "li_auto",
-  "ticker": "2015.HK",
-  "name": "Li Auto",
-  "sector": "EV",
-  "region": "Asia",
-  "pattern": "evGrowth",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "nio",
-  "ticker": "NIO",
-  "name": "NIO",
-  "sector": "EV",
-  "region": "Asia",
-  "pattern": "evGrowth",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "xpeng",
-  "ticker": "9868.HK",
-  "name": "XPeng",
-  "sector": "EV",
-  "region": "Asia",
-  "pattern": "evGrowth",
-  "catSection": "China & Hong Kong"
- },
- {
-  "id": "kospi",
-  "ticker": "^KS11",
-  "name": "KOSPI Index",
-  "sector": "Index",
-  "region": "Asia",
-  "pattern": "koreanTech",
-  "catSection": "South Korea"
- },
- {
-  "id": "samsung",
-  "ticker": "005930.KS",
-  "name": "Samsung Electronics",
-  "sector": "Semiconductors/Phones",
-  "region": "Asia",
-  "pattern": "koreanTech",
-  "catSection": "South Korea"
- },
- {
-  "id": "skhynix",
-  "ticker": "000660.KS",
-  "name": "SK Hynix",
-  "sector": "Memory Chips",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "South Korea"
- },
- {
-  "id": "hyundai",
-  "ticker": "005380.KS",
-  "name": "Hyundai Motor",
-  "sector": "Auto",
-  "region": "Asia",
-  "pattern": "germanAuto",
-  "catSection": "South Korea"
- },
- {
-  "id": "kia",
-  "ticker": "000270.KS",
-  "name": "Kia",
-  "sector": "Auto",
-  "region": "Asia",
-  "pattern": "germanAuto",
-  "catSection": "South Korea"
- },
- {
-  "id": "lg_chem",
-  "ticker": "051910.KS",
-  "name": "LG Chem",
-  "sector": "Battery/Chem",
-  "region": "Asia",
-  "pattern": "germanChemical",
-  "catSection": "South Korea"
- },
- {
-  "id": "kakao",
-  "ticker": "035720.KS",
-  "name": "Kakao",
-  "sector": "Social/Internet",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "South Korea"
- },
- {
-  "id": "naver",
-  "ticker": "035420.KS",
-  "name": "Naver",
-  "sector": "Search/Internet",
-  "region": "Asia",
-  "pattern": "chinaInternet",
-  "catSection": "South Korea"
- },
- {
-  "id": "posco",
-  "ticker": "005490.KS",
-  "name": "POSCO",
-  "sector": "Steel",
-  "region": "Asia",
-  "pattern": "defense",
-  "catSection": "South Korea"
- },
- {
-  "id": "sk_tel",
-  "ticker": "017670.KS",
-  "name": "SK Telecom",
-  "sector": "Telecom",
-  "region": "Asia",
-  "pattern": "bonds",
-  "catSection": "South Korea"
- },
- {
-  "id": "kb_fin",
-  "ticker": "105560.KS",
-  "name": "KB Financial",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "South Korea"
- },
- {
-  "id": "shinhan",
-  "ticker": "055550.KS",
-  "name": "Shinhan Financial",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "South Korea"
- },
- {
-  "id": "hanwha",
-  "ticker": "000880.KS",
-  "name": "Hanwha",
-  "sector": "Defense/Chem",
-  "region": "Asia",
-  "pattern": "defense",
-  "catSection": "South Korea"
- },
- {
-  "id": "celtrion",
-  "ticker": "068270.KS",
-  "name": "Celltrion",
-  "sector": "Biosimilars",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "South Korea"
- },
- {
-  "id": "tsmc",
-  "ticker": "TSM",
-  "name": "TSMC",
-  "sector": "Chip Foundry",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Taiwan"
- },
- {
-  "id": "meditek",
-  "ticker": "2454.TW",
-  "name": "MediaTek",
-  "sector": "Mobile Chips",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Taiwan"
- },
- {
-  "id": "foxconn",
-  "ticker": "2317.TW",
-  "name": "Foxconn",
-  "sector": "Electronics Mfg.",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "Taiwan"
- },
- {
-  "id": "ase",
-  "ticker": "ASX",
-  "name": "ASE Technology",
-  "sector": "Chip Packaging",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Taiwan"
- },
- {
-  "id": "delta_tw",
-  "ticker": "2308.TW",
-  "name": "Delta Electronics",
-  "sector": "Power Mgmt",
-  "region": "Asia",
-  "pattern": "semis",
-  "catSection": "Taiwan"
- },
- {
-  "id": "htc_tw",
-  "ticker": "2498.TW",
-  "name": "HTC",
-  "sector": "VR/Smartphones",
-  "region": "Asia",
-  "pattern": "speculative",
-  "catSection": "Taiwan"
- },
- {
-  "id": "sensex",
-  "ticker": "^BSESN",
-  "name": "BSE Sensex",
-  "sector": "Index",
-  "region": "Asia",
-  "pattern": "broadIndex",
-  "catSection": "India"
- },
- {
-  "id": "tcs",
-  "ticker": "TCS.NS",
-  "name": "Tata Consultancy",
-  "sector": "IT Services",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "India"
- },
- {
-  "id": "infosys",
-  "ticker": "INFY",
-  "name": "Infosys",
-  "sector": "IT Services",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "India"
- },
- {
-  "id": "wipro",
-  "ticker": "WIT",
-  "name": "Wipro",
-  "sector": "IT Services",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "India"
- },
- {
-  "id": "hdfc",
-  "ticker": "HDB",
-  "name": "HDFC Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "India"
- },
- {
-  "id": "reliance",
-  "ticker": "RELI.NS",
-  "name": "Reliance Industries",
-  "sector": "Conglomerate",
-  "region": "Asia",
-  "pattern": "energy",
-  "catSection": "India"
- },
- {
-  "id": "hclt",
-  "ticker": "HCLTECH.NS",
-  "name": "HCL Technologies",
-  "sector": "IT Services",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "India"
- },
- {
-  "id": "icici",
-  "ticker": "IBN",
-  "name": "ICICI Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "India"
- },
- {
-  "id": "bajfin",
-  "ticker": "BAJFINANCE.NS",
-  "name": "Bajaj Finance",
-  "sector": "NBFC",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "India"
- },
- {
-  "id": "titan",
-  "ticker": "TITAN.NS",
-  "name": "Titan Company",
-  "sector": "Jewelry/Watches",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "India"
- },
- {
-  "id": "maruti",
-  "ticker": "MARUTI.NS",
-  "name": "Maruti Suzuki",
-  "sector": "Auto",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "India"
- },
- {
-  "id": "ltim",
-  "ticker": "LTIM.NS",
-  "name": "LTIMindtree",
-  "sector": "IT Services",
-  "region": "Asia",
-  "pattern": "techGrowth",
-  "catSection": "India"
- },
- {
-  "id": "sunph",
-  "ticker": "SUNPHARMA.NS",
-  "name": "Sun Pharma",
-  "sector": "Pharmaceuticals",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "India"
- },
- {
-  "id": "drreddy",
-  "ticker": "RDY",
-  "name": "Dr. Reddy's Labs",
-  "sector": "Generics",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "India"
- },
- {
-  "id": "kotak",
-  "ticker": "KOTAKBANK.NS",
-  "name": "Kotak Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "India"
- },
- {
-  "id": "dbs",
-  "ticker": "D05.SI",
-  "name": "DBS Group",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "ocbc",
-  "ticker": "O39.SI",
-  "name": "OCBC",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "uob",
-  "ticker": "U11.SI",
-  "name": "UOB",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "sia",
-  "ticker": "C6L.SI",
-  "name": "Singapore Airlines",
-  "sector": "Aviation",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "comb",
-  "ticker": "CBA.AX",
-  "name": "Commonwealth Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "nab",
-  "ticker": "NAB.AX",
-  "name": "NAB",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "anz",
-  "ticker": "ANZ.AX",
-  "name": "ANZ Bank",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "westpac",
-  "ticker": "WBC.AX",
-  "name": "Westpac",
-  "sector": "Banking",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "macq",
-  "ticker": "MQG.AX",
-  "name": "Macquarie Group",
-  "sector": "Investment Bank",
-  "region": "Asia",
-  "pattern": "financials",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "csl",
-  "ticker": "CSL.AX",
-  "name": "CSL Limited",
-  "sector": "Biotech",
-  "region": "Asia",
-  "pattern": "healthcare",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "bhpau",
-  "ticker": "BHP.AX",
-  "name": "BHP",
-  "sector": "Mining",
-  "region": "Asia",
-  "pattern": "ukMining",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "rioto",
-  "ticker": "RIO.AX",
-  "name": "Rio Tinto (AU)",
-  "sector": "Mining",
-  "region": "Asia",
-  "pattern": "ukMining",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "wesfarm",
-  "ticker": "WES.AX",
-  "name": "Wesfarmers",
-  "sector": "Retail",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "wool",
-  "ticker": "WOW.AX",
-  "name": "Woolworths",
-  "sector": "Supermarkets",
-  "region": "Asia",
-  "pattern": "consumer",
-  "catSection": "Singapore & Australia"
- },
- {
-  "id": "fortesc",
-  "ticker": "FMG.AX",
-  "name": "Fortescue Metals",
-  "sector": "Iron Ore",
-  "region": "Asia",
-  "pattern": "ukMining",
-  "catSection": "Singapore & Australia"
- }
+  {
+    "id": "sp500",
+    "ticker": "^GSPC",
+    "name": "S&P 500",
+    "sector": "Index",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "nasdaq",
+    "ticker": "^IXIC",
+    "name": "NASDAQ Composite",
+    "sector": "Index",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "dow",
+    "ticker": "^DJI",
+    "name": "Dow Jones Ind. Avg.",
+    "sector": "Index",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "russell",
+    "ticker": "^RUT",
+    "name": "Russell 2000",
+    "sector": "Index",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "spy",
+    "ticker": "SPY",
+    "name": "SPDR S&P 500 ETF",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "qqq",
+    "ticker": "QQQ",
+    "name": "Invesco NASDAQ-100",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "iwm",
+    "ticker": "IWM",
+    "name": "iShares Russell 2000",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "dia",
+    "ticker": "DIA",
+    "name": "SPDR Dow Jones ETF",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "voo",
+    "ticker": "VOO",
+    "name": "Vanguard S&P 500",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "vti",
+    "ticker": "VTI",
+    "name": "Vanguard Total Market",
+    "sector": "ETF",
+    "region": "US",
+    "pattern": "broadIndex",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xlk",
+    "ticker": "XLK",
+    "name": "Technology SPDR",
+    "sector": "Tech ETF",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xlf",
+    "ticker": "XLF",
+    "name": "Financial SPDR",
+    "sector": "Finance ETF",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xle",
+    "ticker": "XLE",
+    "name": "Energy SPDR",
+    "sector": "Energy ETF",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xlv",
+    "ticker": "XLV",
+    "name": "Health Care SPDR",
+    "sector": "Health ETF",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xlre",
+    "ticker": "XLRE",
+    "name": "Real Estate SPDR",
+    "sector": "REIT ETF",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "xly",
+    "ticker": "XLY",
+    "name": "Consumer Discret. SPDR",
+    "sector": "Consumer ETF",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "gld",
+    "ticker": "GLD",
+    "name": "SPDR Gold Shares",
+    "sector": "Gold ETF",
+    "region": "US",
+    "pattern": "gold",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "slv",
+    "ticker": "SLV",
+    "name": "iShares Silver",
+    "sector": "Silver ETF",
+    "region": "US",
+    "pattern": "gold",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "tlt",
+    "ticker": "TLT",
+    "name": "iShares 20yr Treasury",
+    "sector": "Bond ETF",
+    "region": "US",
+    "pattern": "bonds",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "hyg",
+    "ticker": "HYG",
+    "name": "iShares High Yield",
+    "sector": "Bond ETF",
+    "region": "US",
+    "pattern": "bonds",
+    "catSection": "Index Funds & ETFs"
+  },
+  {
+    "id": "aapl",
+    "ticker": "AAPL",
+    "name": "Apple",
+    "sector": "Consumer Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "msft",
+    "ticker": "MSFT",
+    "name": "Microsoft",
+    "sector": "Cloud/Software",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "nvda",
+    "ticker": "NVDA",
+    "name": "Nvidia",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "googl",
+    "ticker": "GOOGL",
+    "name": "Alphabet",
+    "sector": "Internet/Ads",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "meta",
+    "ticker": "META",
+    "name": "Meta Platforms",
+    "sector": "Social Media",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "amzn",
+    "ticker": "AMZN",
+    "name": "Amazon",
+    "sector": "E-commerce/Cloud",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "tsla",
+    "ticker": "TSLA",
+    "name": "Tesla",
+    "sector": "EV/Energy",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "avgo",
+    "ticker": "AVGO",
+    "name": "Broadcom",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "orcl",
+    "ticker": "ORCL",
+    "name": "Oracle",
+    "sector": "Enterprise SW",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "crm",
+    "ticker": "CRM",
+    "name": "Salesforce",
+    "sector": "CRM Software",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "amd",
+    "ticker": "AMD",
+    "name": "AMD",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "intc",
+    "ticker": "INTC",
+    "name": "Intel",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "qcom",
+    "ticker": "QCOM",
+    "name": "Qualcomm",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "adbe",
+    "ticker": "ADBE",
+    "name": "Adobe",
+    "sector": "Creative SW",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "now",
+    "ticker": "NOW",
+    "name": "ServiceNow",
+    "sector": "Enterprise SaaS",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "shop",
+    "ticker": "SHOP",
+    "name": "Shopify",
+    "sector": "E-commerce",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "pltr",
+    "ticker": "PLTR",
+    "name": "Palantir",
+    "sector": "Data/AI",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "snow",
+    "ticker": "SNOW",
+    "name": "Snowflake",
+    "sector": "Cloud Data",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "uber",
+    "ticker": "UBER",
+    "name": "Uber",
+    "sector": "Rideshare",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "nflx",
+    "ticker": "NFLX",
+    "name": "Netflix",
+    "sector": "Streaming",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "spot",
+    "ticker": "SPOT",
+    "name": "Spotify",
+    "sector": "Music Streaming",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "net",
+    "ticker": "NET",
+    "name": "Cloudflare",
+    "sector": "Network Security",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ddog",
+    "ticker": "DDOG",
+    "name": "Datadog",
+    "sector": "Observability",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "mdb",
+    "ticker": "MDB",
+    "name": "MongoDB",
+    "sector": "Database",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "twlo",
+    "ticker": "TWLO",
+    "name": "Twilio",
+    "sector": "Comms API",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "zm",
+    "ticker": "ZM",
+    "name": "Zoom Video",
+    "sector": "Video Comms",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "team",
+    "ticker": "TEAM",
+    "name": "Atlassian",
+    "sector": "Dev Tools",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "rblx",
+    "ticker": "RBLX",
+    "name": "Roblox",
+    "sector": "Gaming",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "u_game",
+    "ticker": "U",
+    "name": "Unity Software",
+    "sector": "Game Engine",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "smci",
+    "ticker": "SMCI",
+    "name": "Super Micro",
+    "sector": "AI Servers",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "arm",
+    "ticker": "ARM",
+    "name": "Arm Holdings",
+    "sector": "Chip Architecture",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "amat",
+    "ticker": "AMAT",
+    "name": "Applied Materials",
+    "sector": "Semiconductor Eq",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "lrcx",
+    "ticker": "LRCX",
+    "name": "Lam Research",
+    "sector": "Semiconductor Eq",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "klac",
+    "ticker": "KLAC",
+    "name": "KLA Corp",
+    "sector": "Semiconductor Eq",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "txn",
+    "ticker": "TXN",
+    "name": "Texas Instruments",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "mrvl",
+    "ticker": "MRVL",
+    "name": "Marvell Technology",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "mu",
+    "ticker": "MU",
+    "name": "Micron Technology",
+    "sector": "Memory Chips",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "wdc",
+    "ticker": "WDC",
+    "name": "Western Digital",
+    "sector": "Storage",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "hp_us",
+    "ticker": "HPE",
+    "name": "HP Enterprise",
+    "sector": "IT Infrastructure",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ibm",
+    "ticker": "IBM",
+    "name": "IBM",
+    "sector": "IT Services",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "csco",
+    "ticker": "CSCO",
+    "name": "Cisco Systems",
+    "sector": "Networking",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "acn",
+    "ticker": "ACN",
+    "name": "Accenture",
+    "sector": "IT Consulting",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ftnt",
+    "ticker": "FTNT",
+    "name": "Fortinet",
+    "sector": "Cybersecurity",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "panw",
+    "ticker": "PANW",
+    "name": "Palo Alto Networks",
+    "sector": "Cybersecurity",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "crwd",
+    "ticker": "CRWD",
+    "name": "CrowdStrike",
+    "sector": "Cybersecurity",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "s_ai",
+    "ticker": "AI",
+    "name": "C3.ai",
+    "sector": "Enterprise AI",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "soun",
+    "ticker": "SOUN",
+    "name": "SoundHound AI",
+    "sector": "Voice AI",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ionq",
+    "ticker": "IONQ",
+    "name": "IonQ",
+    "sector": "Quantum Computing",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "jpm",
+    "ticker": "JPM",
+    "name": "JPMorgan Chase",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "bac",
+    "ticker": "BAC",
+    "name": "Bank of America",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "gs",
+    "ticker": "GS",
+    "name": "Goldman Sachs",
+    "sector": "Investment Bank",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "ms",
+    "ticker": "MS",
+    "name": "Morgan Stanley",
+    "sector": "Investment Bank",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "wfc",
+    "ticker": "WFC",
+    "name": "Wells Fargo",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "c_us",
+    "ticker": "C",
+    "name": "Citigroup",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "usb",
+    "ticker": "USB",
+    "name": "US Bancorp",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "pnc",
+    "ticker": "PNC",
+    "name": "PNC Financial",
+    "sector": "Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "v",
+    "ticker": "V",
+    "name": "Visa",
+    "sector": "Payments",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "ma",
+    "ticker": "MA",
+    "name": "Mastercard",
+    "sector": "Payments",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "pypl",
+    "ticker": "PYPL",
+    "name": "PayPal",
+    "sector": "Fintech",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "sq",
+    "ticker": "SQ",
+    "name": "Block (Square)",
+    "sector": "Fintech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "afrm",
+    "ticker": "AFRM",
+    "name": "Affirm",
+    "sector": "BNPL Fintech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "hood",
+    "ticker": "HOOD",
+    "name": "Robinhood",
+    "sector": "Retail Trading",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "schw",
+    "ticker": "SCHW",
+    "name": "Charles Schwab",
+    "sector": "Brokerage",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "blk",
+    "ticker": "BLK",
+    "name": "BlackRock",
+    "sector": "Asset Management",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "bx",
+    "ticker": "BX",
+    "name": "Blackstone",
+    "sector": "Private Equity",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "kkr",
+    "ticker": "KKR",
+    "name": "KKR",
+    "sector": "Private Equity",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "aig",
+    "ticker": "AIG",
+    "name": "AIG",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "met",
+    "ticker": "MET",
+    "name": "MetLife",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "coin",
+    "ticker": "COIN",
+    "name": "Coinbase",
+    "sector": "Crypto Exchange",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "mstr",
+    "ticker": "MSTR",
+    "name": "MicroStrategy",
+    "sector": "Bitcoin Proxy",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "mara",
+    "ticker": "MARA",
+    "name": "Marathon Digital",
+    "sector": "Bitcoin Mining",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "riot",
+    "ticker": "RIOT",
+    "name": "Riot Platforms",
+    "sector": "Bitcoin Mining",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "btc",
+    "ticker": "BTC",
+    "name": "Bitcoin",
+    "sector": "Cryptocurrency",
+    "region": "US",
+    "pattern": "crypto",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "eth",
+    "ticker": "ETH",
+    "name": "Ethereum",
+    "sector": "Cryptocurrency",
+    "region": "US",
+    "pattern": "crypto",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "unh",
+    "ticker": "UNH",
+    "name": "UnitedHealth",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "jnj",
+    "ticker": "JNJ",
+    "name": "Johnson & Johnson",
+    "sector": "Pharma/Medical",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "abbv",
+    "ticker": "ABBV",
+    "name": "AbbVie",
+    "sector": "Biopharma",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "lly",
+    "ticker": "LLY",
+    "name": "Eli Lilly",
+    "sector": "Pharmaceuticals",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "mrk",
+    "ticker": "MRK",
+    "name": "Merck",
+    "sector": "Pharmaceuticals",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "pfe",
+    "ticker": "PFE",
+    "name": "Pfizer",
+    "sector": "Pharmaceuticals",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "mrna",
+    "ticker": "MRNA",
+    "name": "Moderna",
+    "sector": "mRNA Biotech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "bntx",
+    "ticker": "BNTX",
+    "name": "BioNTech",
+    "sector": "mRNA Biotech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "amgn",
+    "ticker": "AMGN",
+    "name": "Amgen",
+    "sector": "Biotechnology",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "isrg",
+    "ticker": "ISRG",
+    "name": "Intuitive Surgical",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "bsx",
+    "ticker": "BSX",
+    "name": "Boston Scientific",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "syk",
+    "ticker": "SYK",
+    "name": "Stryker",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "mdv",
+    "ticker": "MDT",
+    "name": "Medtronic",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "cvs",
+    "ticker": "CVS",
+    "name": "CVS Health",
+    "sector": "Pharmacy Retail",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "ci",
+    "ticker": "CI",
+    "name": "Cigna",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "hum",
+    "ticker": "HUM",
+    "name": "Humana",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "vrtx",
+    "ticker": "VRTX",
+    "name": "Vertex Pharma",
+    "sector": "Biotech",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "regn",
+    "ticker": "REGN",
+    "name": "Regeneron",
+    "sector": "Biotech",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "gild",
+    "ticker": "GILD",
+    "name": "Gilead Sciences",
+    "sector": "Antiviral Biotech",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "biib",
+    "ticker": "BIIB",
+    "name": "Biogen",
+    "sector": "Neuroscience",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "wmt",
+    "ticker": "WMT",
+    "name": "Walmart",
+    "sector": "Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "tgt",
+    "ticker": "TGT",
+    "name": "Target",
+    "sector": "Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "cost",
+    "ticker": "COST",
+    "name": "Costco",
+    "sector": "Wholesale Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "mcd",
+    "ticker": "MCD",
+    "name": "McDonald's",
+    "sector": "Fast Food",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "sbux",
+    "ticker": "SBUX",
+    "name": "Starbucks",
+    "sector": "Coffee",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "nke",
+    "ticker": "NKE",
+    "name": "Nike",
+    "sector": "Sportswear",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "lulu",
+    "ticker": "LULU",
+    "name": "Lululemon",
+    "sector": "Apparel",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "abnb",
+    "ticker": "ABNB",
+    "name": "Airbnb",
+    "sector": "Travel",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "bkng",
+    "ticker": "BKNG",
+    "name": "Booking Holdings",
+    "sector": "Travel",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "lyft",
+    "ticker": "LYFT",
+    "name": "Lyft",
+    "sector": "Rideshare",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "dkng",
+    "ticker": "DKNG",
+    "name": "DraftKings",
+    "sector": "Sports Betting",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "mgm",
+    "ticker": "MGM",
+    "name": "MGM Resorts",
+    "sector": "Casinos",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "czr",
+    "ticker": "CZR",
+    "name": "Caesars",
+    "sector": "Casinos",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "hlt",
+    "ticker": "HLT",
+    "name": "Hilton",
+    "sector": "Hotels",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "mar",
+    "ticker": "MAR",
+    "name": "Marriott",
+    "sector": "Hotels",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "dri",
+    "ticker": "DRI",
+    "name": "Darden Restaurants",
+    "sector": "Restaurants",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "yum",
+    "ticker": "YUM",
+    "name": "Yum! Brands",
+    "sector": "Fast Food",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "cmg",
+    "ticker": "CMG",
+    "name": "Chipotle",
+    "sector": "Fast Casual",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "ebay",
+    "ticker": "EBAY",
+    "name": "eBay",
+    "sector": "E-commerce",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "etsy",
+    "ticker": "ETSY",
+    "name": "Etsy",
+    "sector": "Marketplace",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "xom",
+    "ticker": "XOM",
+    "name": "ExxonMobil",
+    "sector": "Oil & Gas",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "cvx",
+    "ticker": "CVX",
+    "name": "Chevron",
+    "sector": "Oil & Gas",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "cop",
+    "ticker": "COP",
+    "name": "ConocoPhillips",
+    "sector": "Oil & Gas",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "slb",
+    "ticker": "SLB",
+    "name": "Schlumberger",
+    "sector": "Oil Services",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "hal",
+    "ticker": "HAL",
+    "name": "Halliburton",
+    "sector": "Oil Services",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "oxyx",
+    "ticker": "OXY",
+    "name": "Occidental Petrol.",
+    "sector": "Oil & Gas",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "enph",
+    "ticker": "ENPH",
+    "name": "Enphase Energy",
+    "sector": "Solar",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "plug",
+    "ticker": "PLUG",
+    "name": "Plug Power",
+    "sector": "Hydrogen",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "fslr",
+    "ticker": "FSLR",
+    "name": "First Solar",
+    "sector": "Solar Panels",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "bep",
+    "ticker": "BEP",
+    "name": "Brookfield Renewable",
+    "sector": "Clean Energy",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "ba",
+    "ticker": "BA",
+    "name": "Boeing",
+    "sector": "Aerospace",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "lmt",
+    "ticker": "LMT",
+    "name": "Lockheed Martin",
+    "sector": "Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "rtx",
+    "ticker": "RTX",
+    "name": "RTX (Raytheon)",
+    "sector": "Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "noc",
+    "ticker": "NOC",
+    "name": "Northrop Grumman",
+    "sector": "Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "ge",
+    "ticker": "GE",
+    "name": "GE Aerospace",
+    "sector": "Jet Engines",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "cat",
+    "ticker": "CAT",
+    "name": "Caterpillar",
+    "sector": "Heavy Machinery",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "de",
+    "ticker": "DE",
+    "name": "Deere & Co.",
+    "sector": "Agriculture",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "ups",
+    "ticker": "UPS",
+    "name": "UPS",
+    "sector": "Logistics",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "fdx",
+    "ticker": "FDX",
+    "name": "FedEx",
+    "sector": "Logistics",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "hon",
+    "ticker": "HON",
+    "name": "Honeywell",
+    "sector": "Industrials",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "mmm",
+    "ticker": "MMM",
+    "name": "3M",
+    "sector": "Diversified Ind.",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "emr",
+    "ticker": "EMR",
+    "name": "Emerson Electric",
+    "sector": "Automation",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "pgh",
+    "ticker": "PH",
+    "name": "Parker Hannifin",
+    "sector": "Hydraulics",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "carr",
+    "ticker": "CARR",
+    "name": "Carrier Global",
+    "sector": "HVAC",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "dis",
+    "ticker": "DIS",
+    "name": "Walt Disney",
+    "sector": "Entertainment",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "nflx2",
+    "ticker": "NFLX",
+    "name": "Netflix",
+    "sector": "Streaming",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "wbd",
+    "ticker": "WBD",
+    "name": "Warner Bros.",
+    "sector": "Media",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "t_us",
+    "ticker": "T",
+    "name": "AT&T",
+    "sector": "Telecom",
+    "region": "US",
+    "pattern": "bonds",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "vz",
+    "ticker": "VZ",
+    "name": "Verizon",
+    "sector": "Telecom",
+    "region": "US",
+    "pattern": "bonds",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "tmus",
+    "ticker": "TMUS",
+    "name": "T-Mobile",
+    "sector": "Telecom",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "snap",
+    "ticker": "SNAP",
+    "name": "Snap",
+    "sector": "Social Media",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "pins",
+    "ticker": "PINS",
+    "name": "Pinterest",
+    "sector": "Social Media",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "rddt",
+    "ticker": "RDDT",
+    "name": "Reddit",
+    "sector": "Social Media",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "ttd",
+    "ticker": "TTD",
+    "name": "The Trade Desk",
+    "sector": "Ad Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "iaci",
+    "ticker": "IAC",
+    "name": "IAC",
+    "sector": "Internet Media",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "rivn",
+    "ticker": "RIVN",
+    "name": "Rivian",
+    "sector": "EV Trucks",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "lcid",
+    "ticker": "LCID",
+    "name": "Lucid Motors",
+    "sector": "EV Luxury",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "spce",
+    "ticker": "SPCE",
+    "name": "Virgin Galactic",
+    "sector": "Space Tourism",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "rkt",
+    "ticker": "RKT",
+    "name": "Rocket Companies",
+    "sector": "Mortgage Tech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "sofi",
+    "ticker": "SOFI",
+    "name": "SoFi Technologies",
+    "sector": "Neobank",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "nu",
+    "ticker": "NU",
+    "name": "Nu Holdings",
+    "sector": "Digital Banking",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "bbai",
+    "ticker": "BBAI",
+    "name": "BigBear.ai",
+    "sector": "AI Analytics",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "rgti",
+    "ticker": "RGTI",
+    "name": "Rigetti Computing",
+    "sector": "Quantum",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "ftse100",
+    "ticker": "^FTSE",
+    "name": "FTSE 100",
+    "sector": "Index",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Indices"
+  },
+  {
+    "id": "ftse250",
+    "ticker": "^FTMC",
+    "name": "FTSE 250",
+    "sector": "Index",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Indices"
+  },
+  {
+    "id": "hsba",
+    "ticker": "HSBA.L",
+    "name": "HSBC Holdings",
+    "sector": "Global Banking",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "lloy",
+    "ticker": "LLOY.L",
+    "name": "Lloyds Banking",
+    "sector": "UK Banking",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "barc",
+    "ticker": "BARC.L",
+    "name": "Barclays",
+    "sector": "Investment Bank",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "natw",
+    "ticker": "NWG.L",
+    "name": "NatWest Group",
+    "sector": "UK Banking",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "stan",
+    "ticker": "STAN.L",
+    "name": "Standard Chartered",
+    "sector": "Emerging Mkts",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "avia",
+    "ticker": "AV.L",
+    "name": "Aviva",
+    "sector": "Insurance",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "lgen",
+    "ticker": "LGEN.L",
+    "name": "Legal & General",
+    "sector": "Insurance",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "pru",
+    "ticker": "PRU.L",
+    "name": "Prudential",
+    "sector": "Insurance",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "shro",
+    "ticker": "SDR.L",
+    "name": "Schroders",
+    "sector": "Asset Mgmt",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "lsl",
+    "ticker": "LSE.L",
+    "name": "London Stock Exchange",
+    "sector": "Exchange",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "halma",
+    "ticker": "HLMA.L",
+    "name": "Halma",
+    "sector": "Safety Tech",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "intv",
+    "ticker": "IG.L",
+    "name": "IG Group",
+    "sector": "Trading Platform",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "mng",
+    "ticker": "MNG.L",
+    "name": "Man Group",
+    "sector": "Hedge Fund",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "ajb",
+    "ticker": "AJB.L",
+    "name": "AJ Bell",
+    "sector": "Retail Invest.",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "harg",
+    "ticker": "HL.L",
+    "name": "Hargreaves Lansdown",
+    "sector": "Wealth Mgmt",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "bp_uk",
+    "ticker": "BP.L",
+    "name": "BP",
+    "sector": "Oil & Gas",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "shel",
+    "ticker": "SHEL.L",
+    "name": "Shell",
+    "sector": "Oil & Gas",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "rdsb",
+    "ticker": "EXPN.L",
+    "name": "Experian",
+    "sector": "Data Analytics",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "riouk",
+    "ticker": "RIO.L",
+    "name": "Rio Tinto",
+    "sector": "Mining",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "anto",
+    "ticker": "ANTO.L",
+    "name": "Antofagasta",
+    "sector": "Copper Mining",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "aau",
+    "ticker": "AAL.L",
+    "name": "Anglo American",
+    "sector": "Diversified Mining",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "glen",
+    "ticker": "GLEN.L",
+    "name": "Glencore",
+    "sector": "Commodities",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "bhp",
+    "ticker": "BHP.L",
+    "name": "BHP Group",
+    "sector": "Mining",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "cenm",
+    "ticker": "CNA.L",
+    "name": "Centrica",
+    "sector": "Utilities",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "ngt",
+    "ticker": "NG.L",
+    "name": "National Grid",
+    "sector": "Utilities",
+    "region": "UK",
+    "pattern": "bonds",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "sso",
+    "ticker": "SSE.L",
+    "name": "SSE",
+    "sector": "Energy/Utilities",
+    "region": "UK",
+    "pattern": "bonds",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "drax",
+    "ticker": "DRX.L",
+    "name": "Drax Group",
+    "sector": "Power Generation",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "azn",
+    "ticker": "AZN.L",
+    "name": "AstraZeneca",
+    "sector": "Pharmaceuticals",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "gsk",
+    "ticker": "GSK.L",
+    "name": "GSK",
+    "sector": "Pharmaceuticals",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "hikm",
+    "ticker": "HIK.L",
+    "name": "Hikma Pharma",
+    "sector": "Generics",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "decm",
+    "ticker": "DXRX.L",
+    "name": "Benchmark Holdings",
+    "sector": "Biotech",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "smi",
+    "ticker": "SMT.L",
+    "name": "Scottish Mortgage",
+    "sector": "Investment Trust",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "ipx",
+    "ticker": "IPX.L",
+    "name": "Ipsen",
+    "sector": "Specialty Pharma",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "evolv",
+    "ticker": "EVO.L",
+    "name": "Evolution Gaming",
+    "sector": "Online Gaming",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "ncyt",
+    "ticker": "NCYT.L",
+    "name": "Novacyt",
+    "sector": "Diagnostics",
+    "region": "UK",
+    "pattern": "speculative",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "uniluk",
+    "ticker": "ULVR.L",
+    "name": "Unilever",
+    "sector": "Consumer Goods",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "diageo",
+    "ticker": "DGE.L",
+    "name": "Diageo",
+    "sector": "Spirits/Beverages",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "reckitt",
+    "ticker": "RKT.L",
+    "name": "Reckitt",
+    "sector": "Household Goods",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "nxt",
+    "ticker": "NXT.L",
+    "name": "Next",
+    "sector": "Fashion Retail",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "mks",
+    "ticker": "MKS.L",
+    "name": "Marks & Spencer",
+    "sector": "Retail",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "jds",
+    "ticker": "JD.L",
+    "name": "JD Sports",
+    "sector": "Sportswear",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "bts",
+    "ticker": "BATS.L",
+    "name": "British American Tobacco",
+    "sector": "Tobacco",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "imp",
+    "ticker": "IMB.L",
+    "name": "Imperial Brands",
+    "sector": "Tobacco",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "flts",
+    "ticker": "FLTX.L",
+    "name": "Flutter Entertainment",
+    "sector": "Betting",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "bpt",
+    "ticker": "BPT.L",
+    "name": "BrightPoint",
+    "sector": "Distribution",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "wpp",
+    "ticker": "WPP.L",
+    "name": "WPP",
+    "sector": "Advertising",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "pub",
+    "ticker": "PUB.L",
+    "name": "Pub Group",
+    "sector": "Hospitality",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "gregg",
+    "ticker": "GRG.L",
+    "name": "Greggs",
+    "sector": "Food Retail",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "sspg",
+    "ticker": "SSPG.L",
+    "name": "SSP Group",
+    "sector": "Travel Food",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "sage",
+    "ticker": "SGE.L",
+    "name": "Sage Group",
+    "sector": "Accounting SW",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "avsuk",
+    "ticker": "AVS.L",
+    "name": "Avast",
+    "sector": "Cybersecurity",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "darkt",
+    "ticker": "DARK.L",
+    "name": "Darktrace",
+    "sector": "AI Security",
+    "region": "UK",
+    "pattern": "speculative",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "aveva",
+    "ticker": "AVV.L",
+    "name": "AVEVA",
+    "sector": "Industrial SW",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "autocad",
+    "ticker": "ATC.L",
+    "name": "Auto Trader",
+    "sector": "Online Auto",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "rightm",
+    "ticker": "RMV.L",
+    "name": "Rightmove",
+    "sector": "Property Portal",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "iptv",
+    "ticker": "ITV.L",
+    "name": "ITV",
+    "sector": "Broadcasting",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "relx",
+    "ticker": "REL.L",
+    "name": "RELX",
+    "sector": "Info Services",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "informa",
+    "ticker": "INF.L",
+    "name": "Informa",
+    "sector": "Publishing",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "bae",
+    "ticker": "BA.L",
+    "name": "BAE Systems",
+    "sector": "Defense",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "rr_uk",
+    "ticker": "RR.L",
+    "name": "Rolls-Royce",
+    "sector": "Jet Engines",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "qinetic",
+    "ticker": "QQ.L",
+    "name": "QinetiQ",
+    "sector": "Defense Tech",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "megg",
+    "ticker": "MGGT.L",
+    "name": "Meggitt",
+    "sector": "Aerospace",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "spmk",
+    "ticker": "SMDS.L",
+    "name": "Smith & Nephew",
+    "sector": "Medical Devices",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "croda",
+    "ticker": "CRDA.L",
+    "name": "Croda International",
+    "sector": "Specialty Chem",
+    "region": "UK",
+    "pattern": "ukMarket",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "jmats",
+    "ticker": "JMAT.L",
+    "name": "Johnson Matthey",
+    "sector": "Catalysts",
+    "region": "UK",
+    "pattern": "ukMining",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "ferv",
+    "ticker": "FERG.L",
+    "name": "Ferguson",
+    "sector": "Plumbing/HVAC",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "imi",
+    "ticker": "IMI.L",
+    "name": "IMI",
+    "sector": "Engineering",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "sxs",
+    "ticker": "SXS.L",
+    "name": "Spectris",
+    "sector": "Precision Inst.",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "smw",
+    "ticker": "SMW.L",
+    "name": "Smiths Group",
+    "sector": "Diversified Ind.",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "voduk",
+    "ticker": "VOD.L",
+    "name": "Vodafone",
+    "sector": "Telecom",
+    "region": "UK",
+    "pattern": "bonds",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "btem",
+    "ticker": "BT.A.L",
+    "name": "BT Group",
+    "sector": "Telecom",
+    "region": "UK",
+    "pattern": "bonds",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "blnd",
+    "ticker": "BLND.L",
+    "name": "British Land",
+    "sector": "REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "land",
+    "ticker": "LAND.L",
+    "name": "Land Securities",
+    "sector": "REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "segro",
+    "ticker": "SGRO.L",
+    "name": "Segro",
+    "sector": "Logistics REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "lxb",
+    "ticker": "LXB.L",
+    "name": "LXi REIT",
+    "sector": "REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "dax",
+    "ticker": "^GDAXI",
+    "name": "DAX 40",
+    "sector": "Index",
+    "region": "Germany",
+    "pattern": "germanMarket",
+    "catSection": "German Indices"
+  },
+  {
+    "id": "mdax",
+    "ticker": "^MDAXI",
+    "name": "MDAX",
+    "sector": "Index",
+    "region": "Germany",
+    "pattern": "germanMarket",
+    "catSection": "German Indices"
+  },
+  {
+    "id": "sap",
+    "ticker": "SAP.DE",
+    "name": "SAP",
+    "sector": "Enterprise SW",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "ifx",
+    "ticker": "IFX.DE",
+    "name": "Infineon",
+    "sector": "Semiconductors",
+    "region": "Germany",
+    "pattern": "semis",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "1u1",
+    "ticker": "1U1.DE",
+    "name": "1&1",
+    "sector": "Telecom/Internet",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "aixa",
+    "ticker": "AIXA.DE",
+    "name": "Aixtron",
+    "sector": "Chip Equipment",
+    "region": "Germany",
+    "pattern": "semis",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "wmk",
+    "ticker": "WMK.DE",
+    "name": "Wirecard (hist.)",
+    "sector": "Fintech",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "teamv",
+    "ticker": "TMV.DE",
+    "name": "TeamViewer",
+    "sector": "Remote Access SW",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "sul",
+    "ticker": "S92.DE",
+    "name": "SMA Solar",
+    "sector": "Solar Technology",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "enr",
+    "ticker": "ENR.DE",
+    "name": "Siemens Energy",
+    "sector": "Energy Tech",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "sfq",
+    "ticker": "SFQ.DE",
+    "name": "Software AG",
+    "sector": "Enterprise SW",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "hhm",
+    "ticker": "HHFA.DE",
+    "name": "Hawesko",
+    "sector": "Wine/Beverages",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "demde",
+    "ticker": "DHER.DE",
+    "name": "Delivery Hero",
+    "sector": "Food Delivery",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "zal",
+    "ticker": "ZAL.DE",
+    "name": "Zalando",
+    "sector": "Fashion E-comm",
+    "region": "Germany",
+    "pattern": "evGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "bmw",
+    "ticker": "BMW.DE",
+    "name": "BMW",
+    "sector": "Luxury Autos",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "mbg",
+    "ticker": "MBG.DE",
+    "name": "Mercedes-Benz",
+    "sector": "Luxury Autos",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "vow3",
+    "ticker": "VOW3.DE",
+    "name": "Volkswagen",
+    "sector": "Mass Market Auto",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "pah3",
+    "ticker": "PAH3.DE",
+    "name": "Porsche AG",
+    "sector": "Sports Cars",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "audi",
+    "ticker": "NSU.DE",
+    "name": "Audi (via VW)",
+    "sector": "Premium Autos",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "con",
+    "ticker": "CON.DE",
+    "name": "Continental",
+    "sector": "Auto Parts",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "shaf",
+    "ticker": "SHA.DE",
+    "name": "Schaeffler",
+    "sector": "Auto Components",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "ht1",
+    "ticker": "HEN3.DE",
+    "name": "Hella",
+    "sector": "Auto Lighting",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "knebv",
+    "ticker": "KBX.DE",
+    "name": "Knorr-Bremse",
+    "sector": "Rail/Truck Brakes",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "elring",
+    "ticker": "ZIL2.DE",
+    "name": "ElringKlinger",
+    "sector": "Auto Sealing",
+    "region": "Germany",
+    "pattern": "germanAuto",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "sie",
+    "ticker": "SIE.DE",
+    "name": "Siemens",
+    "sector": "Industrials",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "bas",
+    "ticker": "BAS.DE",
+    "name": "BASF",
+    "sector": "Chemicals",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "bayer",
+    "ticker": "BAYN.DE",
+    "name": "Bayer",
+    "sector": "Pharma/Chem",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "merck",
+    "ticker": "MRK.DE",
+    "name": "Merck KGaA",
+    "sector": "Pharma/Chem",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "lin",
+    "ticker": "LIN.DE",
+    "name": "Linde",
+    "sector": "Industrial Gas",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "eve",
+    "ticker": "EVK.DE",
+    "name": "Evonik",
+    "sector": "Specialty Chem",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "frk",
+    "ticker": "FRE.DE",
+    "name": "Fresenius",
+    "sector": "Healthcare Svc",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "fms",
+    "ticker": "FMS.DE",
+    "name": "Fresenius Medical",
+    "sector": "Dialysis",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "thys",
+    "ticker": "TKA.DE",
+    "name": "ThyssenKrupp",
+    "sector": "Steel/Ind.",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "mtu",
+    "ticker": "MTX.DE",
+    "name": "MTU Aero Engines",
+    "sector": "Jet Engines",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "air",
+    "ticker": "AIR.DE",
+    "name": "Airbus",
+    "sector": "Aerospace",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "rhm",
+    "ticker": "RHM.DE",
+    "name": "Rheinmetall",
+    "sector": "Defense",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "hei",
+    "ticker": "HEI.DE",
+    "name": "HeidelbergMat.",
+    "sector": "Building Matl.",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "siko",
+    "ticker": "SIK.DE",
+    "name": "Sika AG",
+    "sector": "Construction Chem",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "kion",
+    "ticker": "KGX.DE",
+    "name": "KION Group",
+    "sector": "Forklift/Logistics",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "wacker",
+    "ticker": "WCH.DE",
+    "name": "Wacker Chemie",
+    "sector": "Polysilicon",
+    "region": "Germany",
+    "pattern": "germanChemical",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "db",
+    "ticker": "DBK.DE",
+    "name": "Deutsche Bank",
+    "sector": "Investment Bank",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "cbk",
+    "ticker": "CBK.DE",
+    "name": "Commerzbank",
+    "sector": "Retail Banking",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "alv",
+    "ticker": "ALV.DE",
+    "name": "Allianz",
+    "sector": "Insurance",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "mun",
+    "ticker": "MUV2.DE",
+    "name": "Munich Re",
+    "sector": "Reinsurance",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "hanover",
+    "ticker": "HNR1.DE",
+    "name": "Hannover Re",
+    "sector": "Reinsurance",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "dws",
+    "ticker": "DWS.DE",
+    "name": "DWS Group",
+    "sector": "Asset Management",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "hex",
+    "ticker": "H24.DE",
+    "name": "Hypoport",
+    "sector": "Mortgage Platform",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "fb2",
+    "ticker": "FB2A.DE",
+    "name": "Flatex DeGiro",
+    "sector": "Online Broker",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "ads",
+    "ticker": "ADS.DE",
+    "name": "Adidas",
+    "sector": "Sportswear",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "puma",
+    "ticker": "PUM.DE",
+    "name": "Puma",
+    "sector": "Sportswear",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "hugo",
+    "ticker": "BOSS.DE",
+    "name": "Hugo Boss",
+    "sector": "Luxury Fashion",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "henk",
+    "ticker": "HEN3.DE",
+    "name": "Henkel",
+    "sector": "Consumer Goods",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "beisd",
+    "ticker": "BEI.DE",
+    "name": "Beiersdorf",
+    "sector": "Skin Care",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "dfv",
+    "ticker": "DFV.DE",
+    "name": "Deutsche Familienversicherung",
+    "sector": "Insurtech",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "rhkg",
+    "ticker": "RHKG.DE",
+    "name": "Rewe Group",
+    "sector": "Supermarkets",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "obi",
+    "ticker": "OBI.DE",
+    "name": "OBI",
+    "sector": "Home Improvement",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "metro",
+    "ticker": "B4B.DE",
+    "name": "Metro AG",
+    "sector": "Wholesale",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "pro7",
+    "ticker": "P7S1.DE",
+    "name": "ProSiebenSat.1",
+    "sector": "Broadcasting",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "mbc",
+    "ticker": "MBB.DE",
+    "name": "MBB SE",
+    "sector": "Industrial Hold.",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "dte",
+    "ticker": "DTE.DE",
+    "name": "Deutsche Telekom",
+    "sector": "Telecom",
+    "region": "Germany",
+    "pattern": "bonds",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "rwe",
+    "ticker": "RWE.DE",
+    "name": "RWE",
+    "sector": "Utilities/Power",
+    "region": "Germany",
+    "pattern": "energy",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "eon",
+    "ticker": "EOAN.DE",
+    "name": "E.ON",
+    "sector": "Utilities",
+    "region": "Germany",
+    "pattern": "bonds",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "unp",
+    "ticker": "UN01.DE",
+    "name": "Uniper",
+    "sector": "Gas/Power",
+    "region": "Germany",
+    "pattern": "energy",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "orsted",
+    "ticker": "ORSTED.DE",
+    "name": "Orsted",
+    "sector": "Offshore Wind",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "nordex",
+    "ticker": "NDX1.DE",
+    "name": "Nordex",
+    "sector": "Wind Turbines",
+    "region": "Germany",
+    "pattern": "speculative",
+    "catSection": "German Energy & Telecom"
+  },
+  {
+    "id": "nikkei",
+    "ticker": "^N225",
+    "name": "Nikkei 225",
+    "sector": "Index",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "toyota",
+    "ticker": "7203.T",
+    "name": "Toyota",
+    "sector": "Auto",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "sony",
+    "ticker": "6758.T",
+    "name": "Sony",
+    "sector": "Consumer Electronics",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "softbk",
+    "ticker": "9984.T",
+    "name": "SoftBank",
+    "sector": "Telecom/VC",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Japan"
+  },
+  {
+    "id": "keyence",
+    "ticker": "6861.T",
+    "name": "Keyence",
+    "sector": "Automation",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "fanuc",
+    "ticker": "6954.T",
+    "name": "Fanuc",
+    "sector": "Industrial Robot",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "fast",
+    "ticker": "9983.T",
+    "name": "Fast Retailing (Uniqlo)",
+    "sector": "Fashion",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "nintend",
+    "ticker": "7974.T",
+    "name": "Nintendo",
+    "sector": "Gaming",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "honda",
+    "ticker": "7267.T",
+    "name": "Honda",
+    "sector": "Auto/Motorcycle",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "nissan",
+    "ticker": "7201.T",
+    "name": "Nissan",
+    "sector": "Auto",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "mitsu",
+    "ticker": "8058.T",
+    "name": "Mitsubishi Corp.",
+    "sector": "Trading Co.",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "mitsub",
+    "ticker": "7011.T",
+    "name": "Mitsubishi Heavy",
+    "sector": "Defense/Ind.",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "Japan"
+  },
+  {
+    "id": "hitach",
+    "ticker": "6501.T",
+    "name": "Hitachi",
+    "sector": "IT/Infrastructure",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Japan"
+  },
+  {
+    "id": "panaso",
+    "ticker": "6752.T",
+    "name": "Panasonic",
+    "sector": "Electronics",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "canon",
+    "ticker": "7751.T",
+    "name": "Canon",
+    "sector": "Imaging",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "fujifl",
+    "ticker": "4901.T",
+    "name": "Fujifilm",
+    "sector": "Healthcare/Photo",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "daikin",
+    "ticker": "6367.T",
+    "name": "Daikin",
+    "sector": "HVAC",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "shin",
+    "ticker": "4063.T",
+    "name": "Shin-Etsu Chemical",
+    "sector": "Chemicals",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "tdk",
+    "ticker": "6762.T",
+    "name": "TDK",
+    "sector": "Electronic Comp.",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "murata",
+    "ticker": "6981.T",
+    "name": "Murata Manufacturing",
+    "sector": "Components",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "renesas",
+    "ticker": "6723.T",
+    "name": "Renesas",
+    "sector": "Microcontrollers",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "recruit",
+    "ticker": "6098.T",
+    "name": "Recruit Holdings",
+    "sector": "HR/Job Portal",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Japan"
+  },
+  {
+    "id": "softbk2",
+    "ticker": "9434.T",
+    "name": "SoftBank Corp.",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Japan"
+  },
+  {
+    "id": "ntt",
+    "ticker": "9432.T",
+    "name": "NTT",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Japan"
+  },
+  {
+    "id": "kddi",
+    "ticker": "9433.T",
+    "name": "KDDI",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Japan"
+  },
+  {
+    "id": "mufg",
+    "ticker": "8306.T",
+    "name": "MUFG",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "smfg",
+    "ticker": "8316.T",
+    "name": "Sumitomo Mitsui",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "mizuho",
+    "ticker": "8411.T",
+    "name": "Mizuho Financial",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "tokmar",
+    "ticker": "8766.T",
+    "name": "Tokio Marine",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "nomura",
+    "ticker": "8604.T",
+    "name": "Nomura Holdings",
+    "sector": "Investment Bank",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "olympus",
+    "ticker": "7733.T",
+    "name": "Olympus",
+    "sector": "Medical Devices",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "takeda",
+    "ticker": "4502.T",
+    "name": "Takeda Pharma",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "astellas",
+    "ticker": "4503.T",
+    "name": "Astellas Pharma",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "otsuka",
+    "ticker": "4578.T",
+    "name": "Otsuka Holdings",
+    "sector": "Pharma/Beverages",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "kubota",
+    "ticker": "6326.T",
+    "name": "Kubota",
+    "sector": "Agriculture Mach.",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "Japan"
+  },
+  {
+    "id": "komatsu",
+    "ticker": "6301.T",
+    "name": "Komatsu",
+    "sector": "Construction Eq.",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "Japan"
+  },
+  {
+    "id": "hsi",
+    "ticker": "^HSI",
+    "name": "Hang Seng Index",
+    "sector": "Index",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "alibaba",
+    "ticker": "9988.HK",
+    "name": "Alibaba",
+    "sector": "E-commerce/Cloud",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "tencent",
+    "ticker": "0700.HK",
+    "name": "Tencent",
+    "sector": "Internet/Gaming",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "meituan",
+    "ticker": "3690.HK",
+    "name": "Meituan",
+    "sector": "Food Delivery",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "jd",
+    "ticker": "9618.HK",
+    "name": "JD.com",
+    "sector": "E-commerce",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "pinduoduo",
+    "ticker": "PDD",
+    "name": "PDD Holdings",
+    "sector": "Social Commerce",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "bidu",
+    "ticker": "BIDU",
+    "name": "Baidu",
+    "sector": "Search/AI",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "neteas",
+    "ticker": "9999.HK",
+    "name": "NetEase",
+    "sector": "Gaming",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "byd",
+    "ticker": "1211.HK",
+    "name": "BYD",
+    "sector": "EV",
+    "region": "Asia",
+    "pattern": "evGrowth",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "xiaomi",
+    "ticker": "1810.HK",
+    "name": "Xiaomi",
+    "sector": "Smartphones",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "smic",
+    "ticker": "0981.HK",
+    "name": "SMIC",
+    "sector": "Foundry",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "lenovo",
+    "ticker": "0992.HK",
+    "name": "Lenovo",
+    "sector": "PC/Servers",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "geely",
+    "ticker": "0175.HK",
+    "name": "Geely Auto",
+    "sector": "Autos",
+    "region": "Asia",
+    "pattern": "germanAuto",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "sands",
+    "ticker": "1928.HK",
+    "name": "Sands China",
+    "sector": "Casino/Macau",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "galaxy",
+    "ticker": "0027.HK",
+    "name": "Galaxy Entertainment",
+    "sector": "Casino",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "cnooc",
+    "ticker": "0883.HK",
+    "name": "CNOOC",
+    "sector": "Oil & Gas",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "petro",
+    "ticker": "0857.HK",
+    "name": "PetroChina",
+    "sector": "Oil & Gas",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "icbc",
+    "ticker": "1398.HK",
+    "name": "ICBC",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "ccb",
+    "ticker": "0939.HK",
+    "name": "China Construction Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "abc_cn",
+    "ticker": "1288.HK",
+    "name": "Agric. Bank of China",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "boc",
+    "ticker": "3988.HK",
+    "name": "Bank of China",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "pingan",
+    "ticker": "2318.HK",
+    "name": "Ping An Insurance",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "aia",
+    "ticker": "1299.HK",
+    "name": "AIA Group",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "shenwan",
+    "ticker": "6060.HK",
+    "name": "360 Security",
+    "sector": "Cybersecurity",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "ntes",
+    "ticker": "NTES",
+    "name": "NetEase (US ADR)",
+    "sector": "Gaming",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "li_auto",
+    "ticker": "2015.HK",
+    "name": "Li Auto",
+    "sector": "EV",
+    "region": "Asia",
+    "pattern": "evGrowth",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "nio",
+    "ticker": "NIO",
+    "name": "NIO",
+    "sector": "EV",
+    "region": "Asia",
+    "pattern": "evGrowth",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "xpeng",
+    "ticker": "9868.HK",
+    "name": "XPeng",
+    "sector": "EV",
+    "region": "Asia",
+    "pattern": "evGrowth",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "kospi",
+    "ticker": "^KS11",
+    "name": "KOSPI Index",
+    "sector": "Index",
+    "region": "Asia",
+    "pattern": "koreanTech",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "samsung",
+    "ticker": "005930.KS",
+    "name": "Samsung Electronics",
+    "sector": "Semiconductors/Phones",
+    "region": "Asia",
+    "pattern": "koreanTech",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "skhynix",
+    "ticker": "000660.KS",
+    "name": "SK Hynix",
+    "sector": "Memory Chips",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "hyundai",
+    "ticker": "005380.KS",
+    "name": "Hyundai Motor",
+    "sector": "Auto",
+    "region": "Asia",
+    "pattern": "germanAuto",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "kia",
+    "ticker": "000270.KS",
+    "name": "Kia",
+    "sector": "Auto",
+    "region": "Asia",
+    "pattern": "germanAuto",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "lg_chem",
+    "ticker": "051910.KS",
+    "name": "LG Chem",
+    "sector": "Battery/Chem",
+    "region": "Asia",
+    "pattern": "germanChemical",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "kakao",
+    "ticker": "035720.KS",
+    "name": "Kakao",
+    "sector": "Social/Internet",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "naver",
+    "ticker": "035420.KS",
+    "name": "Naver",
+    "sector": "Search/Internet",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "posco",
+    "ticker": "005490.KS",
+    "name": "POSCO",
+    "sector": "Steel",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "sk_tel",
+    "ticker": "017670.KS",
+    "name": "SK Telecom",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "kb_fin",
+    "ticker": "105560.KS",
+    "name": "KB Financial",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "shinhan",
+    "ticker": "055550.KS",
+    "name": "Shinhan Financial",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "hanwha",
+    "ticker": "000880.KS",
+    "name": "Hanwha",
+    "sector": "Defense/Chem",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "celtrion",
+    "ticker": "068270.KS",
+    "name": "Celltrion",
+    "sector": "Biosimilars",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "tsmc",
+    "ticker": "TSM",
+    "name": "TSMC",
+    "sector": "Chip Foundry",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "meditek",
+    "ticker": "2454.TW",
+    "name": "MediaTek",
+    "sector": "Mobile Chips",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "foxconn",
+    "ticker": "2317.TW",
+    "name": "Foxconn",
+    "sector": "Electronics Mfg.",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "ase",
+    "ticker": "ASX",
+    "name": "ASE Technology",
+    "sector": "Chip Packaging",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "delta_tw",
+    "ticker": "2308.TW",
+    "name": "Delta Electronics",
+    "sector": "Power Mgmt",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "htc_tw",
+    "ticker": "2498.TW",
+    "name": "HTC",
+    "sector": "VR/Smartphones",
+    "region": "Asia",
+    "pattern": "speculative",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "sensex",
+    "ticker": "^BSESN",
+    "name": "BSE Sensex",
+    "sector": "Index",
+    "region": "Asia",
+    "pattern": "broadIndex",
+    "catSection": "India"
+  },
+  {
+    "id": "tcs",
+    "ticker": "TCS.NS",
+    "name": "Tata Consultancy",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "infosys",
+    "ticker": "INFY",
+    "name": "Infosys",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "wipro",
+    "ticker": "WIT",
+    "name": "Wipro",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "hdfc",
+    "ticker": "HDB",
+    "name": "HDFC Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "reliance",
+    "ticker": "RELI.NS",
+    "name": "Reliance Industries",
+    "sector": "Conglomerate",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "India"
+  },
+  {
+    "id": "hclt",
+    "ticker": "HCLTECH.NS",
+    "name": "HCL Technologies",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "icici",
+    "ticker": "IBN",
+    "name": "ICICI Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "bajfin",
+    "ticker": "BAJFINANCE.NS",
+    "name": "Bajaj Finance",
+    "sector": "NBFC",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "titan",
+    "ticker": "TITAN.NS",
+    "name": "Titan Company",
+    "sector": "Jewelry/Watches",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "India"
+  },
+  {
+    "id": "maruti",
+    "ticker": "MARUTI.NS",
+    "name": "Maruti Suzuki",
+    "sector": "Auto",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "India"
+  },
+  {
+    "id": "ltim",
+    "ticker": "LTIM.NS",
+    "name": "LTIMindtree",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "sunph",
+    "ticker": "SUNPHARMA.NS",
+    "name": "Sun Pharma",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "India"
+  },
+  {
+    "id": "drreddy",
+    "ticker": "RDY",
+    "name": "Dr. Reddy's Labs",
+    "sector": "Generics",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "India"
+  },
+  {
+    "id": "kotak",
+    "ticker": "KOTAKBANK.NS",
+    "name": "Kotak Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "dbs",
+    "ticker": "D05.SI",
+    "name": "DBS Group",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "ocbc",
+    "ticker": "O39.SI",
+    "name": "OCBC",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "uob",
+    "ticker": "U11.SI",
+    "name": "UOB",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "sia",
+    "ticker": "C6L.SI",
+    "name": "Singapore Airlines",
+    "sector": "Aviation",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "comb",
+    "ticker": "CBA.AX",
+    "name": "Commonwealth Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "nab",
+    "ticker": "NAB.AX",
+    "name": "NAB",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "anz",
+    "ticker": "ANZ.AX",
+    "name": "ANZ Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "westpac",
+    "ticker": "WBC.AX",
+    "name": "Westpac",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "macq",
+    "ticker": "MQG.AX",
+    "name": "Macquarie Group",
+    "sector": "Investment Bank",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "csl",
+    "ticker": "CSL.AX",
+    "name": "CSL Limited",
+    "sector": "Biotech",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "bhpau",
+    "ticker": "BHP.AX",
+    "name": "BHP",
+    "sector": "Mining",
+    "region": "Asia",
+    "pattern": "ukMining",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "rioto",
+    "ticker": "RIO.AX",
+    "name": "Rio Tinto (AU)",
+    "sector": "Mining",
+    "region": "Asia",
+    "pattern": "ukMining",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "wesfarm",
+    "ticker": "WES.AX",
+    "name": "Wesfarmers",
+    "sector": "Retail",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "wool",
+    "ticker": "WOW.AX",
+    "name": "Woolworths",
+    "sector": "Supermarkets",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "fortesc",
+    "ticker": "FMG.AX",
+    "name": "Fortescue Metals",
+    "sector": "Iron Ore",
+    "region": "Asia",
+    "pattern": "ukMining",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "intu",
+    "ticker": "INTU",
+    "name": "Intuit",
+    "sector": "Cloud/Software",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "adsk",
+    "ticker": "ADSK",
+    "name": "Autodesk",
+    "sector": "Design Software",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "snps",
+    "ticker": "SNPS",
+    "name": "Synopsys",
+    "sector": "Chip Design SW",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "cdns",
+    "ticker": "CDNS",
+    "name": "Cadence Design Systems",
+    "sector": "Chip Design SW",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "anss",
+    "ticker": "ANSS",
+    "name": "Ansys",
+    "sector": "Engineering SW",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "adp",
+    "ticker": "ADP",
+    "name": "Automatic Data Processing",
+    "sector": "HR/Payroll Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "payx",
+    "ticker": "PAYX",
+    "name": "Paychex",
+    "sector": "HR/Payroll Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "fi",
+    "ticker": "FI",
+    "name": "Fiserv",
+    "sector": "Fintech Infrastructure",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "gpn",
+    "ticker": "GPN",
+    "name": "Global Payments",
+    "sector": "Payments Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "hpq",
+    "ticker": "HPQ",
+    "name": "HP Inc.",
+    "sector": "PCs & Printers",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "dell",
+    "ticker": "DELL",
+    "name": "Dell Technologies",
+    "sector": "PCs & Servers",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ntap",
+    "ticker": "NTAP",
+    "name": "NetApp",
+    "sector": "Data Storage",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "jnpr",
+    "ticker": "JNPR",
+    "name": "Juniper Networks",
+    "sector": "Networking",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "mchp",
+    "ticker": "MCHP",
+    "name": "Microchip Technology",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "on",
+    "ticker": "ON",
+    "name": "ON Semiconductor",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "swks",
+    "ticker": "SWKS",
+    "name": "Skyworks Solutions",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "qrvo",
+    "ticker": "QRVO",
+    "name": "Qorvo",
+    "sector": "Semiconductors",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ter",
+    "ticker": "TER",
+    "name": "Teradyne",
+    "sector": "Chip Test Equipment",
+    "region": "US",
+    "pattern": "semis",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "anet",
+    "ticker": "ANET",
+    "name": "Arista Networks",
+    "sector": "Networking",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "stx",
+    "ticker": "STX",
+    "name": "Seagate Technology",
+    "sector": "Data Storage",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "glw",
+    "ticker": "GLW",
+    "name": "Corning",
+    "sector": "Materials/Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "aph",
+    "ticker": "APH",
+    "name": "Amphenol",
+    "sector": "Electronic Components",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "tdy",
+    "ticker": "TDY",
+    "name": "Teledyne Technologies",
+    "sector": "Instruments & Sensors",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "keys",
+    "ticker": "KEYS",
+    "name": "Keysight Technologies",
+    "sector": "Test & Measurement",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "zbra",
+    "ticker": "ZBRA",
+    "name": "Zebra Technologies",
+    "sector": "Enterprise Tech",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ea",
+    "ticker": "EA",
+    "name": "Electronic Arts",
+    "sector": "Video Games",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "ttwo",
+    "ticker": "TTWO",
+    "name": "Take-Two Interactive",
+    "sector": "Video Games",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "roku",
+    "ticker": "ROKU",
+    "name": "Roku",
+    "sector": "Streaming Devices",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Technology"
+  },
+  {
+    "id": "cmcsa",
+    "ticker": "CMCSA",
+    "name": "Comcast",
+    "sector": "Media & Cable",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "chtr",
+    "ticker": "CHTR",
+    "name": "Charter Communications",
+    "sector": "Cable & Broadband",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "foxa",
+    "ticker": "FOXA",
+    "name": "Fox Corporation",
+    "sector": "Media",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "nwsa",
+    "ticker": "NWSA",
+    "name": "News Corp",
+    "sector": "Media & Publishing",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "mtch",
+    "ticker": "MTCH",
+    "name": "Match Group",
+    "sector": "Online Dating",
+    "region": "US",
+    "pattern": "techGrowth",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "lyv",
+    "ticker": "LYV",
+    "name": "Live Nation Entertainment",
+    "sector": "Live Events",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "expe",
+    "ticker": "EXPE",
+    "name": "Expedia Group",
+    "sector": "Online Travel",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Communications & Media"
+  },
+  {
+    "id": "tmo",
+    "ticker": "TMO",
+    "name": "Thermo Fisher Scientific",
+    "sector": "Life Sciences Tools",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "dhr",
+    "ticker": "DHR",
+    "name": "Danaher",
+    "sector": "Life Sciences Tools",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "abt",
+    "ticker": "ABT",
+    "name": "Abbott Laboratories",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "elv",
+    "ticker": "ELV",
+    "name": "Elevance Health",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "cnc",
+    "ticker": "CNC",
+    "name": "Centene",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "moh",
+    "ticker": "MOH",
+    "name": "Molina Healthcare",
+    "sector": "Health Insurance",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "zts",
+    "ticker": "ZTS",
+    "name": "Zoetis",
+    "sector": "Animal Health",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "dxcm",
+    "ticker": "DXCM",
+    "name": "Dexcom",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "ew",
+    "ticker": "EW",
+    "name": "Edwards Lifesciences",
+    "sector": "Medical Devices",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "idxx",
+    "ticker": "IDXX",
+    "name": "Idexx Laboratories",
+    "sector": "Animal Diagnostics",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "a",
+    "ticker": "A",
+    "name": "Agilent Technologies",
+    "sector": "Life Sciences Tools",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "mtd",
+    "ticker": "MTD",
+    "name": "Mettler-Toledo",
+    "sector": "Lab Instruments",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "wat",
+    "ticker": "WAT",
+    "name": "Waters Corporation",
+    "sector": "Lab Instruments",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "hca",
+    "ticker": "HCA",
+    "name": "HCA Healthcare",
+    "sector": "Hospitals",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "dva",
+    "ticker": "DVA",
+    "name": "DaVita",
+    "sector": "Dialysis Services",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "incy",
+    "ticker": "INCY",
+    "name": "Incyte",
+    "sector": "Biotech",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "alny",
+    "ticker": "ALNY",
+    "name": "Alnylam Pharmaceuticals",
+    "sector": "Biotech",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "rprx",
+    "ticker": "RPRX",
+    "name": "Royalty Pharma",
+    "sector": "Pharma Royalties",
+    "region": "US",
+    "pattern": "healthcare",
+    "catSection": "US Healthcare & Biotech"
+  },
+  {
+    "id": "axp",
+    "ticker": "AXP",
+    "name": "American Express",
+    "sector": "Payments",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "cof",
+    "ticker": "COF",
+    "name": "Capital One Financial",
+    "sector": "Consumer Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "tfc",
+    "ticker": "TFC",
+    "name": "Truist Financial",
+    "sector": "Regional Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "fitb",
+    "ticker": "FITB",
+    "name": "Fifth Third Bancorp",
+    "sector": "Regional Banking",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "stt",
+    "ticker": "STT",
+    "name": "State Street Corp",
+    "sector": "Asset Servicing",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "trow",
+    "ticker": "TROW",
+    "name": "T. Rowe Price",
+    "sector": "Asset Management",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "amp",
+    "ticker": "AMP",
+    "name": "Ameriprise Financial",
+    "sector": "Asset Management",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "mco",
+    "ticker": "MCO",
+    "name": "Moody's Corporation",
+    "sector": "Credit Ratings",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "spgi",
+    "ticker": "SPGI",
+    "name": "S&P Global",
+    "sector": "Credit Ratings & Data",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "ice",
+    "ticker": "ICE",
+    "name": "Intercontinental Exchange",
+    "sector": "Exchanges",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "cme",
+    "ticker": "CME",
+    "name": "CME Group",
+    "sector": "Exchanges",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "ndaq",
+    "ticker": "NDAQ",
+    "name": "Nasdaq, Inc.",
+    "sector": "Exchanges",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "cboe",
+    "ticker": "CBOE",
+    "name": "Cboe Global Markets",
+    "sector": "Exchanges",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "all",
+    "ticker": "ALL",
+    "name": "Allstate",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "trv",
+    "ticker": "TRV",
+    "name": "Travelers Companies",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "pgr",
+    "ticker": "PGR",
+    "name": "Progressive Corp",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "hig",
+    "ticker": "HIG",
+    "name": "Hartford Financial",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "afl",
+    "ticker": "AFL",
+    "name": "Aflac",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "prufin",
+    "ticker": "PRU",
+    "name": "Prudential Financial",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "gl",
+    "ticker": "GL",
+    "name": "Globe Life",
+    "sector": "Insurance",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "bro",
+    "ticker": "BRO",
+    "name": "Brown & Brown",
+    "sector": "Insurance Brokerage",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "wtw",
+    "ticker": "WTW",
+    "name": "Willis Towers Watson",
+    "sector": "Insurance Brokerage",
+    "region": "US",
+    "pattern": "financials",
+    "catSection": "US Finance & Banking"
+  },
+  {
+    "id": "hd",
+    "ticker": "HD",
+    "name": "Home Depot",
+    "sector": "Home Improvement",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "low",
+    "ticker": "LOW",
+    "name": "Lowe's Companies",
+    "sector": "Home Improvement",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "tjx",
+    "ticker": "TJX",
+    "name": "TJX Companies",
+    "sector": "Discount Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "rost",
+    "ticker": "ROST",
+    "name": "Ross Stores",
+    "sector": "Discount Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "orly",
+    "ticker": "ORLY",
+    "name": "O'Reilly Automotive",
+    "sector": "Auto Parts Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "azo",
+    "ticker": "AZO",
+    "name": "AutoZone",
+    "sector": "Auto Parts Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "dg",
+    "ticker": "DG",
+    "name": "Dollar General",
+    "sector": "Discount Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "dltr",
+    "ticker": "DLTR",
+    "name": "Dollar Tree",
+    "sector": "Discount Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "kr",
+    "ticker": "KR",
+    "name": "Kroger",
+    "sector": "Grocery",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "syy",
+    "ticker": "SYY",
+    "name": "Sysco",
+    "sector": "Food Distribution",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "pg",
+    "ticker": "PG",
+    "name": "Procter & Gamble",
+    "sector": "Household Products",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "ko",
+    "ticker": "KO",
+    "name": "Coca-Cola",
+    "sector": "Beverages",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "pep",
+    "ticker": "PEP",
+    "name": "PepsiCo",
+    "sector": "Beverages & Snacks",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "mo",
+    "ticker": "MO",
+    "name": "Altria Group",
+    "sector": "Tobacco",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "pm",
+    "ticker": "PM",
+    "name": "Philip Morris International",
+    "sector": "Tobacco",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "mdlz",
+    "ticker": "MDLZ",
+    "name": "Mondelez International",
+    "sector": "Snacks",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "khc",
+    "ticker": "KHC",
+    "name": "Kraft Heinz",
+    "sector": "Packaged Foods",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "cl",
+    "ticker": "CL",
+    "name": "Colgate-Palmolive",
+    "sector": "Household Products",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "kmb",
+    "ticker": "KMB",
+    "name": "Kimberly-Clark",
+    "sector": "Household Products",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "clx",
+    "ticker": "CLX",
+    "name": "Clorox",
+    "sector": "Household Products",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "hsy",
+    "ticker": "HSY",
+    "name": "Hershey",
+    "sector": "Confectionery",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "stz",
+    "ticker": "STZ",
+    "name": "Constellation Brands",
+    "sector": "Beverages",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "tap",
+    "ticker": "TAP",
+    "name": "Molson Coors Beverage",
+    "sector": "Beverages",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "el",
+    "ticker": "EL",
+    "name": "Estee Lauder",
+    "sector": "Cosmetics",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "tpr",
+    "ticker": "TPR",
+    "name": "Tapestry",
+    "sector": "Luxury Goods",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "deck",
+    "ticker": "DECK",
+    "name": "Deckers Brands",
+    "sector": "Footwear",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "crox",
+    "ticker": "CROX",
+    "name": "Crocs",
+    "sector": "Footwear",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "ulta",
+    "ticker": "ULTA",
+    "name": "Ulta Beauty",
+    "sector": "Beauty Retail",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "gm",
+    "ticker": "GM",
+    "name": "General Motors",
+    "sector": "Automakers",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "f",
+    "ticker": "F",
+    "name": "Ford Motor Company",
+    "sector": "Automakers",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Consumer & Retail"
+  },
+  {
+    "id": "gd",
+    "ticker": "GD",
+    "name": "General Dynamics",
+    "sector": "Aerospace & Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "lhx",
+    "ticker": "LHX",
+    "name": "L3Harris Technologies",
+    "sector": "Aerospace & Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "txt",
+    "ticker": "TXT",
+    "name": "Textron",
+    "sector": "Aerospace & Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "hii",
+    "ticker": "HII",
+    "name": "Huntington Ingalls Industries",
+    "sector": "Shipbuilding/Defense",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "tdg",
+    "ticker": "TDG",
+    "name": "TransDigm Group",
+    "sector": "Aerospace Components",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "axon",
+    "ticker": "AXON",
+    "name": "Axon Enterprise",
+    "sector": "Public Safety Tech",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "itw",
+    "ticker": "ITW",
+    "name": "Illinois Tool Works",
+    "sector": "Diversified Industrials",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "dov",
+    "ticker": "DOV",
+    "name": "Dover Corporation",
+    "sector": "Diversified Industrials",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "rok",
+    "ticker": "ROK",
+    "name": "Rockwell Automation",
+    "sector": "Industrial Automation",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "ame",
+    "ticker": "AME",
+    "name": "AMETEK",
+    "sector": "Instruments & Controls",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "xyl",
+    "ticker": "XYL",
+    "name": "Xylem",
+    "sector": "Water Technology",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "pnr",
+    "ticker": "PNR",
+    "name": "Pentair",
+    "sector": "Water Technology",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "swk",
+    "ticker": "SWK",
+    "name": "Stanley Black & Decker",
+    "sector": "Tools & Hardware",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "gww",
+    "ticker": "GWW",
+    "name": "W.W. Grainger",
+    "sector": "Industrial Distribution",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "fastenal",
+    "ticker": "FAST",
+    "name": "Fastenal",
+    "sector": "Industrial Distribution",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "cmi",
+    "ticker": "CMI",
+    "name": "Cummins",
+    "sector": "Engines & Power",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "pcar",
+    "ticker": "PCAR",
+    "name": "PACCAR",
+    "sector": "Trucks & Engines",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "wab",
+    "ticker": "WAB",
+    "name": "Wabtec",
+    "sector": "Rail Equipment",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "uri",
+    "ticker": "URI",
+    "name": "United Rentals",
+    "sector": "Equipment Rental",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "csx",
+    "ticker": "CSX",
+    "name": "CSX Corporation",
+    "sector": "Railroads",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "unionpac",
+    "ticker": "UNP",
+    "name": "Union Pacific",
+    "sector": "Railroads",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "nsc",
+    "ticker": "NSC",
+    "name": "Norfolk Southern",
+    "sector": "Railroads",
+    "region": "US",
+    "pattern": "defense",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "aptv",
+    "ticker": "APTV",
+    "name": "Aptiv",
+    "sector": "Auto Technology",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "bwa",
+    "ticker": "BWA",
+    "name": "BorgWarner",
+    "sector": "Auto Parts",
+    "region": "US",
+    "pattern": "evGrowth",
+    "catSection": "US Defense & Industrials"
+  },
+  {
+    "id": "wmb",
+    "ticker": "WMB",
+    "name": "Williams Companies",
+    "sector": "Pipelines/Midstream",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "kmi",
+    "ticker": "KMI",
+    "name": "Kinder Morgan",
+    "sector": "Pipelines/Midstream",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "oke",
+    "ticker": "OKE",
+    "name": "Oneok",
+    "sector": "Pipelines/Midstream",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "eog",
+    "ticker": "EOG",
+    "name": "EOG Resources",
+    "sector": "Oil & Gas E&P",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "dvn",
+    "ticker": "DVN",
+    "name": "Devon Energy",
+    "sector": "Oil & Gas E&P",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "mpc",
+    "ticker": "MPC",
+    "name": "Marathon Petroleum",
+    "sector": "Refining",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "vlo",
+    "ticker": "VLO",
+    "name": "Valero Energy",
+    "sector": "Refining",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "psx",
+    "ticker": "PSX",
+    "name": "Phillips 66",
+    "sector": "Refining",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "bkr",
+    "ticker": "BKR",
+    "name": "Baker Hughes",
+    "sector": "Oilfield Services",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "fang",
+    "ticker": "FANG",
+    "name": "Diamondback Energy",
+    "sector": "Oil & Gas E&P",
+    "region": "US",
+    "pattern": "energy",
+    "catSection": "US Energy"
+  },
+  {
+    "id": "cvna",
+    "ticker": "CVNA",
+    "name": "Carvana",
+    "sector": "Online Auto Retail",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "upst",
+    "ticker": "UPST",
+    "name": "Upstart Holdings",
+    "sector": "AI Lending",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "path",
+    "ticker": "PATH",
+    "name": "UiPath",
+    "sector": "Automation Software",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "dash",
+    "ticker": "DASH",
+    "name": "DoorDash",
+    "sector": "Food Delivery",
+    "region": "US",
+    "pattern": "consumer",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "w",
+    "ticker": "W",
+    "name": "Wayfair",
+    "sector": "Online Furniture",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "joby",
+    "ticker": "JOBY",
+    "name": "Joby Aviation",
+    "sector": "Electric Air Taxis",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "achr",
+    "ticker": "ACHR",
+    "name": "Archer Aviation",
+    "sector": "Electric Air Taxis",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "qs",
+    "ticker": "QS",
+    "name": "QuantumScape",
+    "sector": "EV Batteries",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "chpt",
+    "ticker": "CHPT",
+    "name": "ChargePoint Holdings",
+    "sector": "EV Charging",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "envx",
+    "ticker": "ENVX",
+    "name": "Enovix",
+    "sector": "EV Batteries",
+    "region": "US",
+    "pattern": "speculative",
+    "catSection": "US EV & Emerging Tech"
+  }
 ]
