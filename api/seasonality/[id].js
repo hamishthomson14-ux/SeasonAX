@@ -1,13 +1,13 @@
 // api/seasonality/[id].js
 // Server-rendered, indexable seasonality snapshot page for one asset.
 // Route: /seasonality/:id  (rewritten from /api/seasonality/:id via vercel.json)
-// Uses real price data where available (Stooq), falls back to the modelled
+// Uses real price data where available (Yahoo Finance), falls back to the modelled
 // sector pattern, and is always labelled honestly.
 
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { stooqSymbol, computeMonths, fetchMonthly, getModelMonths, bestWorst, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import { yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst, fetchMonthly, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
@@ -18,7 +18,7 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 function pct(v) { return (v >= 0 ? '+' : '') + v.toFixed(2) + '%'; }
-// Index tickers (e.g. ^GSPC) use Stooq's internal notation \u2014 not user-facing.
+// Index tickers (e.g. ^GSPC) use Yahoo's notation directly \u2014 not user-facing.
 // Show the asset name instead in titles/headings for those.
 function dispTicker(item) { return item.ticker.startsWith('^') ? item.name : item.ticker; }
 
@@ -63,14 +63,14 @@ export default async function handler(req, res) {
   }
 
   // Try real price data; fall back to modelled pattern.
-  let months = null, source = 'model';
+  let months = null, source = 'model', realYears = null;
   try {
-    const sym = stooqSymbol(item);
+    const sym = yahooSymbol(item);
     if (sym) {
       const rows = await fetchMonthly(sym);
       if (rows) {
-        const real = computeMonths(rows, 15, 5);
-        if (real) { months = real; source = 'real'; }
+        const real = computeAdaptiveMonths(rows, 15);
+        if (real) { months = real.months; source = 'real'; realYears = real.years; }
       }
     }
   } catch (e) { /* fall through to model */ }
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   const now = new Date();
   const cm = now.getMonth();
   const cur = months[cm];
-  const years = source === 'real' ? (months[0].n || 15) : null;
+  const years = source === 'real' ? realYears : null;
 
   const title = `${dispTicker(item)} Seasonality: ${MONTH_NAMES[best.i]} vs ${MONTH_NAMES[worst.i]} | TimingAX`;
   const tickerSuffix = dispTicker(item) !== item.name ? ` (${dispTicker(item)})` : '';
