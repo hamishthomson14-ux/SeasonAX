@@ -2,42 +2,19 @@
 // Shared helpers for computing seasonal statistics from real price history,
 // with a modelled-pattern fallback. Used by the per-asset SEO pages.
 
-const STOOQ_MAP = {
-  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
-  'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
-  'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
-  'btc':'btcusd','eth':'ethusd',
-  'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
-  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us',
-  'xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
-  // Asia-listed companies whose primary/most liquid listing is a US ADR
-  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
-  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
-};
-
-// Maps a ticker's exchange suffix (as used in our catalogue) to the suffix
-// Stooq expects for that exchange. If Stooq doesn't have data for a given
-// symbol, the caller falls back to the modelled pattern automatically.
-const EXCHANGE_SUFFIX_MAP = {
-  'l':'uk', 't':'jp', 'de':'de', 'hk':'hk', 'ax':'au', 'si':'sg', 'ks':'kr', 'tw':'tw', 'ns':'in'
-};
+// Yahoo Finance uses ticker symbols natively in the same format our
+// catalogue already stores them (e.g. HSBA.L, SAP.DE, 7203.T, 0700.HK,
+// ^GSPC) \u2014 so almost everything just passes through as-is. The only
+// exception is crypto, which needs a "-USD" suffix.
 
 export const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 export const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-export function stooqSymbol(item) {
+export function yahooSymbol(item) {
   if (!item) return null;
-  if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
-  const t = (item.ticker || '').toLowerCase();
-  if (!t || t.charAt(0) === '^') return null;
-  const m = t.match(/\.([a-z]+)$/);
-  if (m) {
-    const stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
-    if (!stooqSuf) return null;
-    return t.slice(0, t.length - m[1].length) + stooqSuf;
-  }
-  if (item.region === 'US') return t + '.us';
-  return null;
+  if (item.id === 'btc') return 'BTC-USD';
+  if (item.id === 'eth') return 'ETH-USD';
+  return item.ticker || null;
 }
 
 // Compute per-calendar-month seasonal stats from monthly close-price rows.
@@ -65,19 +42,55 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5) {
   return months;
 }
 
-// Fetch monthly close history from Stooq's public CSV endpoint. No API key.
+// Adaptive resolution: try the requested window first, then progressively
+// shorter windows for assets that don't have that much history yet (e.g.
+// a stock that IPO'd 4 years ago can never satisfy a 15yr/5-obs check, but
+// genuinely has real data). minObs scales down with the window. Returns
+// {months, years} where `years` reflects the asset's actual data span
+// (not just the cutoff window), or null if even a 2yr window fails.
+export function computeAdaptiveMonths(rows, yearsWanted = 15) {
+  const base = yearsWanted || 15;
+  const candidates = [base, 10, 7, 5, 3, 2].filter((y, i, arr) => y <= base && arr.indexOf(y) === i);
+  const firstYear = rows.length ? new Date(rows[0].d).getFullYear() : null;
+  const lastYear = rows.length ? new Date(rows[rows.length - 1].d).getFullYear() : null;
+  const actualYears = (firstYear && lastYear) ? Math.max(1, lastYear - firstYear + 1) : base;
+  for (const y of candidates) {
+    const minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
+    const months = computeMonths(rows, y, minObs);
+    if (months) return { months, years: Math.min(y, actualYears) };
+  }
+  return null;
+}
+
+// Fetch monthly close history from Yahoo Finance's public chart API.
+// No API key. (Previously used Stooq's CSV endpoint, but Stooq now blocks
+// server-side/datacenter requests with a JS challenge page.)
+const YAHOO_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+
 export async function fetchMonthly(sym) {
-  const url = 'https://stooq.com/q/d/l/?s=' + encodeURIComponent(sym) + '&i=m';
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (TimingAX)' } });
-  if (!r.ok) throw new Error('Upstream ' + r.status);
-  const csv = await r.text();
-  if (!csv || csv.length < 30 || csv.indexOf('Date') === -1) return null;
-  const rows = csv.trim().split('\n').slice(1).map(line => {
-    const p = line.split(',');
-    return { d: p[0], c: parseFloat(p[4]) };
-  }).filter(r => r.d && isFinite(r.c));
-  if (rows.length < 24) return null;
-  return rows;
+  for (const host of YAHOO_HOSTS) {
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1mo';
+    let json = null;
+    try {
+      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
+      json = await r.json();
+    } catch (e) {
+      continue;
+    }
+    const result = json && json.chart && json.chart.result && json.chart.result[0];
+    const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
+    if (!result || !result.timestamp || !quote) continue;
+    const rows = [];
+    for (let i = 0; i < result.timestamp.length; i++) {
+      const c = quote.close[i];
+      if (c == null || !isFinite(c)) continue;
+      rows.push({ d: new Date(result.timestamp[i] * 1000).toISOString().slice(0, 10), c });
+    }
+    if (rows.length < 24) return null;
+    return rows;
+  }
+  return null;
 }
 
 // Modelled fallback: returns a 12-month array shaped like computeMonths' output,
