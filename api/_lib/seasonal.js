@@ -3,13 +3,23 @@
 // with a modelled-pattern fallback. Used by the per-asset SEO pages.
 
 const STOOQ_MAP = {
-  'sp500':'^spx','nasdaq':'^ndq','dowjones':'^dji','russell2000':'^rut',
+  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
   'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
   'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
   'btc':'btcusd','eth':'ethusd',
   'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
   'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us',
-  'xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us'
+  'xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
+  // Asia-listed companies whose primary/most liquid listing is a US ADR
+  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
+  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
+};
+
+// Maps a ticker's exchange suffix (as used in our catalogue) to the suffix
+// Stooq expects for that exchange. If Stooq doesn't have data for a given
+// symbol, the caller falls back to the modelled pattern automatically.
+const EXCHANGE_SUFFIX_MAP = {
+  'l':'uk', 't':'jp', 'de':'de', 'hk':'hk', 'ax':'au', 'si':'sg', 'ks':'kr', 'tw':'tw', 'ns':'in'
 };
 
 export const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -20,8 +30,12 @@ export function stooqSymbol(item) {
   if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
   const t = (item.ticker || '').toLowerCase();
   if (!t || t.charAt(0) === '^') return null;
-  if (t.indexOf('.l') !== -1) return t.replace('.l', '.uk');
-  if (t.indexOf('.de') !== -1) return t;
+  const m = t.match(/\.([a-z]+)$/);
+  if (m) {
+    const stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
+    if (!stooqSuf) return null;
+    return t.slice(0, t.length - m[1].length) + stooqSuf;
+  }
   if (item.region === 'US') return t + '.us';
   return null;
 }
