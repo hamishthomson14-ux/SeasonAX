@@ -179,13 +179,14 @@ tr:last-child td{border-bottom:none}
         <button class="btn-run" id="dcaRunBtn" onclick="runDataCoverageAudit()">Run Audit</button>
       </div>
       <div style="padding:18px">
-        <p class="dca-intro">Checks all 433 catalogue assets against live Stooq price data and reports how many show real <strong style="color:var(--green)">VERIFIED</strong> history vs. a <strong style="color:var(--amber2)">MODELLED</strong> pattern. Takes roughly a minute &mdash; keep this tab open while it runs.</p>
+        <p class="dca-intro">Checks all 433 catalogue assets against live Yahoo Finance price data and reports how many show real <strong style="color:var(--green)">VERIFIED</strong> history vs. a <strong style="color:var(--amber2)">MODELLED</strong> pattern. Takes roughly a minute &mdash; keep this tab open while it runs.</p>
         <div id="dcaProgress" style="display:none">
           <div class="dca-bar-track"><div class="dca-bar-fill" id="dcaBarFill"></div></div>
           <div class="dca-progress-label" id="dcaProgressLabel"></div>
         </div>
         <div id="dcaResults" style="display:none">
           <div class="dca-summary" id="dcaSummary"></div>
+          <div id="dcaYearsBreakdown"></div>
           <div class="sec-label" style="margin-top:6px">Coverage by section</div>
           <div id="dcaRegions"></div>
           <div class="sec-label" style="margin-top:20px">Still modelled (<span id="dcaModelledCount"></span>)</div>
@@ -286,38 +287,20 @@ async function signOut() { await sb.auth.signOut(); window.location.href = '/aut
 // ── Data Coverage Audit ─────────────────────────────────────
 // Mirrors the real-data resolution logic used on the live site
 // (market-seasonality.html / api/_lib/seasonal.js) so the audit
-// reflects exactly what visitors see.
-var STOOQ_MAP = {
-  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
-  'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
-  'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
-  'btc':'btcusd','eth':'ethusd',
-  'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
-  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us',
-  'xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
-  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
-  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
-};
-var EXCHANGE_SUFFIX_MAP = { 'l':'uk','t':'jp','de':'de','hk':'hk','ax':'au','si':'sg','ks':'kr','tw':'tw','ns':'in' };
-
-function stooqSymbol(item) {
+// reflects exactly what visitors see. Yahoo Finance uses ticker symbols
+// natively in the same format our catalogue already stores them (e.g.
+// HSBA.L, SAP.DE, 7203.T, 0700.HK, ^GSPC) \u2014 so almost everything just
+// passes through as-is. The only exception is crypto ("-USD" suffix).
+function yahooSymbol(item) {
   if (!item) return null;
-  if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
-  var t = (item.ticker || '').toLowerCase();
-  if (!t || t.charAt(0) === '^') return null;
-  var m = t.match(/\.([a-z]+)$/);
-  if (m) {
-    var stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
-    if (!stooqSuf) return null;
-    return t.slice(0, t.length - m[1].length) + stooqSuf;
-  }
-  if (item.region === 'US') return t + '.us';
-  return null;
+  if (item.id === 'btc') return 'BTC-USD';
+  if (item.id === 'eth') return 'ETH-USD';
+  return item.ticker || null;
 }
 
-// Returns true if every calendar month has >= minObs observations within
-// the last `yearsWanted` years \u2014 same gate as computeRealMonths().
-function hasFullMonthlyCoverage(rows, yearsWanted, minObs) {
+// Mirrors computeRealMonths() \u2014 returns true if every calendar month has
+// >= minObs observations within the last `yearsWanted` years.
+function hasMonthlyCoverage(rows, yearsWanted, minObs) {
   var byMonth = [[],[],[],[],[],[],[],[],[],[],[],[]];
   var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
   for (var i = 1; i < rows.length; i++) {
@@ -333,24 +316,41 @@ function hasFullMonthlyCoverage(rows, yearsWanted, minObs) {
   return true;
 }
 
+// Mirrors computeAdaptiveRealMonths() in market-seasonality.html \u2014 tries
+// progressively shorter windows (with correspondingly lower minObs) so
+// assets with real-but-shorter history still count as VERIFIED.
+function resolveAdaptiveYears(rows, yearsWanted) {
+  var base = yearsWanted || 15;
+  var candidates = [base, 10, 7, 5, 3, 2].filter(function(y, i, arr) {
+    return y <= base && arr.indexOf(y) === i;
+  });
+  for (var i = 0; i < candidates.length; i++) {
+    var y = candidates[i];
+    var minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
+    if (hasMonthlyCoverage(rows, y, minObs)) return y;
+  }
+  return null;
+}
+
 var DCA_REASON_LABEL = {
   'no-symbol': 'No symbol mapping',
-  'no-data': 'Stooq has no data',
-  'insufficient-history': 'Less than 3yrs history',
-  'insufficient-coverage': 'Gaps in monthly data',
+  'no-data': 'Yahoo has no data',
+  'insufficient-history': 'Less than 2yrs history',
+  'insufficient-coverage': 'Gaps even in 2yr window',
   'error': 'Fetch error'
 };
 
 async function checkAsset(item) {
-  var sym = stooqSymbol(item);
+  var sym = yahooSymbol(item);
   if (!sym) return { status: 'no-symbol', sym: null };
   try {
     var r = await fetch('/api/prices?s=' + encodeURIComponent(sym));
     if (!r.ok) return { status: 'no-data', sym: sym };
     var data = await r.json();
-    if (!data || !data.monthly || data.monthly.length < 36) return { status: 'insufficient-history', sym: sym };
-    if (!hasFullMonthlyCoverage(data.monthly, 15, 5)) return { status: 'insufficient-coverage', sym: sym };
-    return { status: 'verified', sym: sym };
+    if (!data || !data.monthly || data.monthly.length < 24) return { status: 'insufficient-history', sym: sym };
+    var years = resolveAdaptiveYears(data.monthly, 15);
+    if (years === null) return { status: 'insufficient-coverage', sym: sym };
+    return { status: 'verified', sym: sym, years: years };
   } catch (e) {
     return { status: 'error', sym: sym };
   }
@@ -401,6 +401,7 @@ function renderDcaResults(items, results) {
   var verified = 0, modelled = 0;
   var bySection = {};
   var modelledRows = [];
+  var byYears = {};
 
   for (var i = 0; i < items.length; i++) {
     var it = items[i], res = results[i];
@@ -410,6 +411,7 @@ function renderDcaResults(items, results) {
     if (res.status === 'verified') {
       verified++;
       bySection[sec].verified++;
+      byYears[res.years] = (byYears[res.years] || 0) + 1;
     } else {
       modelled++;
       modelledRows.push({ item: it, res: res });
@@ -421,6 +423,13 @@ function renderDcaResults(items, results) {
     '<div class="dca-cell"><div class="ov-label">Verified (Real Data)</div><div class="ov-val g">' + verified + '</div></div>' +
     '<div class="dca-cell"><div class="ov-label">Modelled</div><div class="ov-val a">' + modelled + '</div></div>' +
     '<div class="dca-cell"><div class="ov-label">Coverage</div><div class="ov-val w">' + Math.round(verified / items.length * 100) + '%</div></div>';
+
+  var yearsHtml = Object.keys(byYears).map(Number).sort(function(a,b){return b-a;}).map(function(y) {
+    return '<span class="tag free" style="margin-right:6px">' + y + 'yr: ' + byYears[y] + '</span>';
+  }).join('');
+  document.getElementById('dcaYearsBreakdown').innerHTML = yearsHtml
+    ? '<div class="sec-label" style="margin-top:6px">Verified assets by history depth</div><div style="margin-bottom:6px">' + yearsHtml + '</div>'
+    : '';
 
   var regionsHtml = Object.keys(bySection).sort().map(function(sec) {
     var d = bySection[sec];

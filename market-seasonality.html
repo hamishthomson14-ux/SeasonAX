@@ -1963,51 +1963,17 @@ function animateBars(){
 var REAL_CACHE = {};
 var lastDataSource = 'model';
 
-var STOOQ_MAP = {
-  'sp500':'^spx','nasdaq':'^ndq','dow':'^dji','russell':'^rut',
-  'ftse100':'^ukx','ftse250':'^ftm','dax':'^dax','mdax':'^mdax',
-  'nikkei':'^nkx','hsi':'^hsi','kospi':'^kospi','sensex':'^snx',
-  'btc':'btcusd','eth':'ethusd',
-  'spy':'spy.us','qqq':'qqq.us','dia':'dia.us','iwm':'iwm.us','vti':'vti.us',
-  'gld':'gld.us','slv':'slv.us','uso':'uso.us','tlt':'tlt.us','vnq':'vnq.us','xle':'xle.us','xlf':'xlf.us','xlv':'xlv.us','xlk':'xlk.us','xlp':'xlp.us','xlu':'xlu.us','arkk':'arkk.us',
-  // Asia-listed companies whose primary/most liquid listing is a US ADR
-  // (these have region:'Asia' in the catalogue, so the generic region==='US'
-  // shortcut below doesn't catch them \u2014 map them explicitly)
-  'pinduoduo':'pdd.us','bidu':'bidu.us','ntes':'ntes.us','nio':'nio.us','tsmc':'tsm.us',
-  'ase':'asx.us','infosys':'infy.us','wipro':'wit.us','hdfc':'hdb.us','icici':'ibn.us','drreddy':'rdy.us'
-};
-
-// Maps a ticker's exchange suffix (as used in our catalogue) to the suffix
-// Stooq expects for that exchange. Coverage varies by market \u2014 if Stooq
-// doesn't have data for a given symbol, fetchRealMonths() falls back to the
-// modelled pattern automatically, so adding entries here is low-risk: hits
-// get upgraded to real data, misses are unaffected (same as today).
-var EXCHANGE_SUFFIX_MAP = {
-  'l':'uk',    // London Stock Exchange (e.g. HSBA.L -> hsba.uk)
-  't':'jp',    // Tokyo Stock Exchange (e.g. 7203.T -> 7203.jp)
-  'de':'de',   // Germany (already in Stooq's format, pass through)
-  'hk':'hk',   // Hong Kong
-  'ax':'au',   // Australia (ASX)
-  'si':'sg',   // Singapore
-  'ks':'kr',   // South Korea (best effort \u2014 coverage varies)
-  'tw':'tw',   // Taiwan (best effort)
-  'ns':'in'    // India NSE (best effort)
-};
-
-function stooqSymbol(item) {
+// Yahoo Finance uses ticker symbols natively in the same format our
+// catalogue already stores them (e.g. HSBA.L, SAP.DE, 7203.T, 0700.HK,
+// ^GSPC) \u2014 so almost everything just passes through as-is. The only
+// exception is crypto, which needs a "-USD" suffix.
+function yahooSymbol(item) {
   if (!item) return null;
-  if (STOOQ_MAP[item.id]) return STOOQ_MAP[item.id];
-  var t = (item.ticker || '').toLowerCase();
-  if (!t || t.charAt(0) === '^') return null;
-  var m = t.match(/\.([a-z]+)$/);
-  if (m) {
-    var stooqSuf = EXCHANGE_SUFFIX_MAP[m[1]];
-    if (!stooqSuf) return null; // unrecognized exchange suffix \u2014 don't guess
-    return t.slice(0, t.length - m[1].length) + stooqSuf;
-  }
-  if (item.region === 'US') return t + '.us';
-  return null;
+  if (item.id === 'btc') return 'BTC-USD';
+  if (item.id === 'eth') return 'ETH-USD';
+  return item.ticker || null;
 }
+
 
 function computeRealMonths(rows, yearsWanted, yearFilterFn, minObs) {
   // rows: [{d:'YYYY-MM-DD', c:close}, ...] monthly, oldest first
@@ -2043,7 +2009,34 @@ function computeRealMonths(rows, yearsWanted, yearFilterFn, minObs) {
   return months;
 }
 
-// ── YEAR-FILTER PRESETS (presidential cycle + outlier exclusion) ──────
+// Adaptive resolution: try the requested window first, then progressively
+// shorter windows for assets that don't have that much history yet (e.g.
+// a stock that IPO'd 4 years ago can never satisfy a 15yr/5-obs check, but
+// genuinely has real data \u2014 a 5yr/2-obs window for it is honest and real,
+// not modelled). minObs scales down with the window so smaller windows
+// still require a sensible minimum sample size. Returns {months, years}
+// for the first window that has enough observations in every calendar
+// month, or null if even the shortest (2yr) window doesn't.
+function computeAdaptiveRealMonths(rows, yearsWanted) {
+  var base = yearsWanted || 15;
+  var candidates = [base, 10, 7, 5, 3, 2].filter(function(y, i, arr) {
+    return y <= base && arr.indexOf(y) === i;
+  });
+  // How many years of data the asset actually has \u2014 used so the
+  // displayed "XYR" badge reflects real history, not just the cutoff
+  // window that happened to satisfy the relaxed minObs threshold.
+  var firstYear = rows.length ? new Date(rows[0].d).getFullYear() : null;
+  var lastYear = rows.length ? new Date(rows[rows.length - 1].d).getFullYear() : null;
+  var actualYears = (firstYear && lastYear) ? Math.max(1, lastYear - firstYear + 1) : base;
+  for (var i = 0; i < candidates.length; i++) {
+    var y = candidates[i];
+    var minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
+    var months = computeRealMonths(rows, y, null, minObs);
+    if (months) return { months: months, years: Math.min(y, actualYears) };
+  }
+  return null;
+}
+
 // US presidential elections fall on years divisible by 4 (2024, 2028...).
 var YEAR_FILTER_PRESETS = {
   all:           { label: 'All years',              fn: null,                                    minObs: 5, years: null },
@@ -2090,27 +2083,27 @@ function recomputeView() {
 }
 
 function fetchRealMonths(item, yearsWanted, cb) {
-  var sym = stooqSymbol(item);
+  var sym = yahooSymbol(item);
   if (!sym) { cb(null); return; }
   var ck = sym + ':' + yearsWanted;
   if (REAL_CACHE[ck]) { CUR_RAW_ROWS = REAL_RAW_ROWS_CACHE[sym] || null; cb(REAL_CACHE[ck]); return; }
   fetch('/api/prices?s=' + encodeURIComponent(sym))
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(data){
-      if (!data || !data.monthly || data.monthly.length < 36) { CUR_RAW_ROWS = null; cb(null); return; }
-      var months = computeRealMonths(data.monthly, yearsWanted);
-      if (months) {
+      if (!data || !data.monthly || data.monthly.length < 24) { CUR_RAW_ROWS = null; cb(null); return; }
+      var resolved = computeAdaptiveRealMonths(data.monthly, yearsWanted);
+      if (resolved) {
         // Preserve the model's written notes per month for colour
         var patKey = (item.pattern) || 'broadIndex';
         var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
-        for (var i = 0; i < 12; i++) months[i].note = pat[i].note || '';
-        REAL_CACHE[ck] = months;
+        for (var i = 0; i < 12; i++) resolved.months[i].note = pat[i].note || '';
+        REAL_CACHE[ck] = resolved;
         REAL_RAW_ROWS_CACHE[sym] = data.monthly;
         CUR_RAW_ROWS = data.monthly;
       } else {
         CUR_RAW_ROWS = null;
       }
-      cb(months);
+      cb(resolved);
     })
     .catch(function(){ CUR_RAW_ROWS = null; cb(null); });
 }
@@ -2124,12 +2117,12 @@ function getMonthsResolved(id, years, cb) {
   for (var i = 0; i < CATALOGUE.length; i++) { if (CATALOGUE[i].id === id) { item = CATALOGUE[i]; break; } }
   if (!item) { cb({ months: null, source: 'model', item: null }); return; }
   var ck = id + ':' + (years || 15);
-  if (MONTHS_CACHE[ck]) { cb({ months: MONTHS_CACHE[ck].months, source: MONTHS_CACHE[ck].source, item: item }); return; }
+  if (MONTHS_CACHE[ck]) { cb({ months: MONTHS_CACHE[ck].months, source: MONTHS_CACHE[ck].source, years: MONTHS_CACHE[ck].years, item: item }); return; }
   fetchRealMonths(item, years || 15, function(real) {
     var res;
-    if (real) { res = { months: real, source: 'real', item: item }; }
-    else { res = { months: getMonths(id), source: 'model', item: item }; }
-    MONTHS_CACHE[ck] = { months: res.months, source: res.source };
+    if (real) { res = { months: real.months, source: 'real', years: real.years, item: item }; }
+    else { res = { months: getMonths(id), source: 'model', years: null, item: item }; }
+    MONTHS_CACHE[ck] = { months: res.months, source: res.source, years: res.years };
     cb(res);
   });
 }
@@ -2184,9 +2177,9 @@ function run() {
   pill('FETCHING REAL DATA...','loading');
 
   // Try real price data first; fall back to the model with an honest badge.
-  fetchRealMonths(item, years, function(realMonths){
-    if (realMonths) {
-      renderRun(item, realMonths, 'real', years);
+  fetchRealMonths(item, years, function(real){
+    if (real) {
+      renderRun(item, real.months, 'real', real.years);
     } else {
       renderRun(item, getMonths(selectedId), 'model', years);
     }
@@ -2905,7 +2898,7 @@ function btWindowMonths(buyM, sellM, buyDay, sellDay) {
 // cb({map, source}) where map[year][monthIndex] = pct return that month.
 var BT_REAL_CACHE = {};
 function btFetchRealReturns(item, cb) {
-  var sym = stooqSymbol(item);
+  var sym = yahooSymbol(item);
   if (!sym) { cb({ map: null, source: 'model' }); return; }
   if (BT_REAL_CACHE[sym]) { cb({ map: BT_REAL_CACHE[sym], source: 'real' }); return; }
   fetch('/api/prices?s=' + encodeURIComponent(sym))
@@ -4014,7 +4007,7 @@ function scGo(id) {
   setTimeout(function(){ selectAsset(id); }, 80);
 }
 
-// Curated liquid universe with real Stooq data — used for the real-data screener.
+// Curated liquid universe with real price data — used for the real-data screener.
 var SC_UNIVERSE = ['sp500','nasdaq','dowjones','russell2000','spy','qqq','nvda','aapl','msft','tsla','amzn','meta','gld','slv','btc','eth','ftse100','dax','nikkei','xle','xlf','xlk','xlv','tlt'];
 var SC_REAL_CACHE = null;
 
