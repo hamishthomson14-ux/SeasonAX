@@ -105,15 +105,15 @@ button{cursor:pointer;font-family:var(--sans)}
 #analysis{margin-top:48px;scroll-margin-top:72px}
 
 /* Selected header */
-.sel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--bg2);border:1px solid var(--b2);border-radius:12px 12px 0 0;border-bottom:none;flex-wrap:wrap;gap:12px}
-.sel-left{display:flex;align-items:center;gap:16px}
-.sel-ticker{font:600 28px/1 var(--mono);color:var(--amber2);letter-spacing:-.02em}
-.sel-name{font-size:15px;color:var(--w2);font-weight:500}
+.sel-header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;background:var(--bg2);border:1px solid var(--b2);border-radius:12px 12px 0 0;border-bottom:none;flex-wrap:wrap;gap:14px}
+.sel-left{display:flex;align-items:center;gap:14px;min-width:0;flex:1 1 auto}
+.sel-ticker{font:600 26px/1 var(--mono);color:var(--amber2);letter-spacing:-.02em;white-space:nowrap}
+.sel-name{font-size:15px;color:var(--w2);font-weight:500;line-height:1.2}
 .sel-sector{font:400 11px/1 var(--mono);color:var(--w4);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
-.sel-right{display:flex;align-items:center;gap:10px}
+.sel-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .yr-sel{background:var(--s1);border:1px solid var(--b2);color:var(--w2);padding:8px 12px;font:400 12px/1 var(--mono);border-radius:6px;outline:none;cursor:pointer;transition:border-color .18s}
 .yr-sel:focus{border-color:var(--amber2)}
-.btn-analyze{background:var(--amber);color:var(--bg);border:none;padding:9px 22px;font:700 13px/1 var(--mono);border-radius:6px;transition:all .18s;display:flex;align-items:center;gap:7px}
+.btn-analyze{background:var(--amber);color:var(--bg);border:none;padding:9px 22px;font:700 13px/1 var(--mono);border-radius:6px;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px}
 .btn-analyze:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(232,147,24,.25)}
 .btn-analyze:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
 .status-pill{font:400 11px/1 var(--mono);padding:5px 12px;border-radius:20px;background:var(--s1);color:var(--w4);border:1px solid var(--b2);white-space:nowrap}
@@ -182,16 +182,21 @@ button{cursor:pointer;font-family:var(--sans)}
 
 /* Seasonal tape — the signature: whole year in one color-coded row */
 .tape{display:flex;background:var(--b1);border-bottom:1px solid var(--b1);gap:1px}
-.tape-cell{flex:1;position:relative;background:var(--bg3);padding:10px 4px 9px;text-align:center;transition:background .15s;overflow:hidden;min-width:0}
+.tape-cell{flex:1 1 0;position:relative;background:var(--bg3);padding:9px 2px 8px;text-align:center;transition:background .15s;overflow:hidden;min-width:0}
 .tape-cell::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--tc,transparent)}
 .tape-cell:hover{background:var(--bg2)}
-.tape-m{font:500 9px/1 var(--mono);color:var(--w4);letter-spacing:.04em;margin-bottom:6px;text-transform:uppercase}
-.tape-v{font:600 11px/1 var(--mono);letter-spacing:-.02em}
+.tape-m{font:500 9px/1 var(--mono);color:var(--w4);letter-spacing:.02em;margin-bottom:6px;text-transform:uppercase;white-space:nowrap}
+.tape-v{font:600 11px/1 var(--mono);letter-spacing:-.03em;white-space:nowrap}
 .tape-v.p{color:var(--green)}.tape-v.n{color:var(--red)}
 .tape-cell.cur{background:rgba(245,165,47,.07)}
 .tape-cell.cur .tape-m{color:var(--amber2)}
-.tape-cell.peak .tape-m::after{content:" ▲";font-size:7px;color:var(--green)}
-.tape-cell.trough .tape-m::after{content:" ▼";font-size:7px;color:var(--red)}
+.tape-cell.peak .tape-mk{position:absolute;top:2px;right:3px;font-size:6px;line-height:1;color:var(--green)}
+.tape-cell.trough .tape-mk{position:absolute;top:2px;right:3px;font-size:6px;line-height:1;color:var(--red)}
+@media(max-width:620px){
+  .tape-cell{padding:8px 1px 7px}
+  .tape-m{font-size:8px;margin-bottom:4px;letter-spacing:0}
+  .tape-v{font-size:9px}
+}
 
 /* Segmented tab control */
 .term-tabs{display:flex;background:var(--bg3);border-bottom:1px solid var(--b1);overflow-x:auto;scrollbar-width:none}
@@ -278,7 +283,14 @@ button{cursor:pointer;font-family:var(--sans)}
   .hs-title{font-size:30px;line-height:1.15}
   .filter-bar{gap:8px}
   .asset-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
-  .sel-header{padding:14px 16px}
+  .sel-header{padding:14px 16px;flex-direction:column;align-items:stretch}
+  .sel-ticker{font-size:22px}
+  .sel-right{justify-content:stretch}
+  .sel-right .yr-sel{flex:1 1 auto;min-width:0}
+  .sel-right #yearFilterSel{flex:1 1 100%}
+  .sel-right .btn-analyze{flex:1 1 auto;order:5}
+  .sel-right .detrend-toggle{flex:0 0 auto}
+  .sel-right .status-pill{order:6;flex:0 0 auto}
   .charts-row{grid-template-columns:1fr}
   .chart-panel:first-child{border-right:none;border-bottom:1px solid var(--b1)}
   .cgrid{grid-template-columns:repeat(3,1fr)}
@@ -2767,7 +2779,9 @@ function seasonalTape(months, curIdx, bestIdx, worstIdx) {
     if(i===bestIdx) cls+=' peak';
     if(i===worstIdx) cls+=' trough';
     var sign=pos?'+':'';
+    var mk = i===bestIdx ? '<span class="tape-mk">\u25b2</span>' : (i===worstIdx ? '<span class="tape-mk">\u25bc</span>' : '');
     cells+='<div class="'+cls+'" style="--tc:'+col+';" title="'+m.m+': '+sign+Number(m.avg).toFixed(2)+'% \u00b7 '+m.win+'% win rate">'+
+      mk+
       '<div class="tape-m">'+m.m+'</div>'+
       '<div class="tape-v '+(pos?'p':'n')+'" style="opacity:'+(0.55+norm*0.45).toFixed(2)+'">'+sign+Number(m.avg).toFixed(1)+'</div>'+
     '</div>';
