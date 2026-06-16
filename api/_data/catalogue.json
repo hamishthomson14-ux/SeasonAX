@@ -5236,5 +5236,1517 @@
     "region": "US",
     "pattern": "speculative",
     "catSection": "US EV & Emerging Tech"
+  },
+  {
+    "id": "iii",
+    "ticker": "III.L",
+    "name": "3i Group",
+    "sector": "Private Equity",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "abdn",
+    "ticker": "ABDN.L",
+    "name": "abrdn",
+    "sector": "Asset Management",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "phnx",
+    "ticker": "PHNX.L",
+    "name": "Phoenix Group Holdings",
+    "sector": "Life Insurance",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "adm",
+    "ticker": "ADM.L",
+    "name": "Admiral Group",
+    "sector": "Motor Insurance",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "hsx",
+    "ticker": "HSX.L",
+    "name": "Hiscox",
+    "sector": "Specialty Insurance",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "dlg",
+    "ticker": "DLG.L",
+    "name": "Direct Line Insurance Group",
+    "sector": "Motor Insurance",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Banking & Finance"
+  },
+  {
+    "id": "fres",
+    "ticker": "FRES.L",
+    "name": "Fresnillo",
+    "sector": "Precious Metals Mining",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "svt",
+    "ticker": "SVT.L",
+    "name": "Severn Trent",
+    "sector": "Water Utility",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "uu",
+    "ticker": "UU.L",
+    "name": "United Utilities",
+    "sector": "Water Utility",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "pnn",
+    "ticker": "PNN.L",
+    "name": "Pennon Group",
+    "sector": "Water Utility",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "hbr",
+    "ticker": "HBR.L",
+    "name": "Harbour Energy",
+    "sector": "Oil & Gas E&P",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "enq",
+    "ticker": "ENQ.L",
+    "name": "EnQuest",
+    "sector": "Oil & Gas E&P",
+    "region": "UK",
+    "pattern": "energy",
+    "catSection": "UK Energy & Mining"
+  },
+  {
+    "id": "ctec",
+    "ticker": "CTEC.L",
+    "name": "ConvaTec Group",
+    "sector": "Medical Devices",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "indv",
+    "ticker": "INDV.L",
+    "name": "Indivior",
+    "sector": "Pharmaceuticals",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "sn",
+    "ticker": "SN.L",
+    "name": "Smith & Nephew",
+    "sector": "Medical Devices",
+    "region": "UK",
+    "pattern": "healthcare",
+    "catSection": "UK Pharma & Health"
+  },
+  {
+    "id": "tsco",
+    "ticker": "TSCO.L",
+    "name": "Tesco",
+    "sector": "Grocery",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "sbry",
+    "ticker": "SBRY.L",
+    "name": "Sainsbury's",
+    "sector": "Grocery",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "kgf",
+    "ticker": "KGF.L",
+    "name": "Kingfisher",
+    "sector": "Home Improvement Retail",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "abf",
+    "ticker": "ABF.L",
+    "name": "Associated British Foods",
+    "sector": "Food & Ingredients",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "wtb",
+    "ticker": "WTB.L",
+    "name": "Whitbread",
+    "sector": "Hotels",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "ihg",
+    "ticker": "IHG.L",
+    "name": "InterContinental Hotels Group",
+    "sector": "Hotels",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "ent",
+    "ticker": "ENT.L",
+    "name": "Entain",
+    "sector": "Betting & Gaming",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "ocdo",
+    "ticker": "OCDO.L",
+    "name": "Ocado Group",
+    "sector": "Online Grocery",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "bme",
+    "ticker": "BME.L",
+    "name": "B&M European Value Retail",
+    "sector": "Discount Retail",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "cch",
+    "ticker": "CCH.L",
+    "name": "Coca-Cola HBC",
+    "sector": "Beverages",
+    "region": "UK",
+    "pattern": "consumer",
+    "catSection": "UK Consumer & Retail"
+  },
+  {
+    "id": "pson",
+    "ticker": "PSON.L",
+    "name": "Pearson",
+    "sector": "Education Publishing",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "dplm",
+    "ticker": "DPLM.L",
+    "name": "Diploma",
+    "sector": "Industrial Distribution Tech",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "boo",
+    "ticker": "BOO.L",
+    "name": "boohoo Group",
+    "sector": "Online Fashion",
+    "region": "UK",
+    "pattern": "techGrowth",
+    "catSection": "UK Technology"
+  },
+  {
+    "id": "itrk",
+    "ticker": "ITRK.L",
+    "name": "Intertek Group",
+    "sector": "Testing & Inspection",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "bnzl",
+    "ticker": "BNZL.L",
+    "name": "Bunzl",
+    "sector": "Industrial Distribution",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "weir",
+    "ticker": "WEIR.L",
+    "name": "Weir Group",
+    "sector": "Mining Equipment",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "mndi",
+    "ticker": "MNDI.L",
+    "name": "Mondi",
+    "sector": "Packaging",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "rto",
+    "ticker": "RTO.L",
+    "name": "Rentokil Initial",
+    "sector": "Pest Control Services",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "hwdn",
+    "ticker": "HWDN.L",
+    "name": "Howden Joinery Group",
+    "sector": "Building Products",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "tw",
+    "ticker": "TW.L",
+    "name": "Taylor Wimpey",
+    "sector": "Homebuilder",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "psn",
+    "ticker": "PSN.L",
+    "name": "Persimmon",
+    "sector": "Homebuilder",
+    "region": "UK",
+    "pattern": "defense",
+    "catSection": "UK Industrials & Defense"
+  },
+  {
+    "id": "utg",
+    "ticker": "UTG.L",
+    "name": "Unite Group",
+    "sector": "Student Housing REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "safe",
+    "ticker": "SAFE.L",
+    "name": "Safestore Holdings",
+    "sector": "Self-Storage REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "dln",
+    "ticker": "DLN.L",
+    "name": "Derwent London",
+    "sector": "Office REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "hmso",
+    "ticker": "HMSO.L",
+    "name": "Hammerson",
+    "sector": "Retail REIT",
+    "region": "UK",
+    "pattern": "financials",
+    "catSection": "UK Telecoms & Property"
+  },
+  {
+    "id": "nem",
+    "ticker": "NEM.DE",
+    "name": "Nemetschek",
+    "sector": "Construction Software",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "utdi",
+    "ticker": "UTDI.DE",
+    "name": "United Internet",
+    "sector": "Internet Services",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Technology"
+  },
+  {
+    "id": "fpe3",
+    "ticker": "FPE3.DE",
+    "name": "Fuchs SE",
+    "sector": "Lubricants",
+    "region": "Germany",
+    "pattern": "techGrowth",
+    "catSection": "German Automotive"
+  },
+  {
+    "id": "dtg",
+    "ticker": "DTG.DE",
+    "name": "Daimler Truck Holding",
+    "sector": "Commercial Vehicles",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "srt3",
+    "ticker": "SRT3.DE",
+    "name": "Sartorius",
+    "sector": "Lab & Pharma Equipment",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "sy1",
+    "ticker": "SY1.DE",
+    "name": "Symrise",
+    "sector": "Flavors & Fragrances",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "lxs",
+    "ticker": "LXS.DE",
+    "name": "Lanxess",
+    "sector": "Specialty Chemicals",
+    "region": "Germany",
+    "pattern": "energy",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "g1a",
+    "ticker": "G1A.DE",
+    "name": "GEA Group",
+    "sector": "Food Processing Equipment",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "kco",
+    "ticker": "KCO.DE",
+    "name": "Kloeckner & Co",
+    "sector": "Steel Distribution",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "bnr",
+    "ticker": "BNR.DE",
+    "name": "Brenntag",
+    "sector": "Chemical Distribution",
+    "region": "Germany",
+    "pattern": "energy",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "qia",
+    "ticker": "QIA.DE",
+    "name": "Qiagen",
+    "sector": "Diagnostics",
+    "region": "Germany",
+    "pattern": "healthcare",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "fra",
+    "ticker": "FRA.DE",
+    "name": "Fraport",
+    "sector": "Airport Operator",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "waf",
+    "ticker": "WAF.DE",
+    "name": "Siltronic",
+    "sector": "Semiconductor Wafers",
+    "region": "Germany",
+    "pattern": "semis",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "hot",
+    "ticker": "HOT.DE",
+    "name": "Hochtief",
+    "sector": "Construction",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "dez",
+    "ticker": "DEZ.DE",
+    "name": "Deutz AG",
+    "sector": "Engines",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "sdf",
+    "ticker": "SDF.DE",
+    "name": "K+S AG",
+    "sector": "Potash & Fertilizer",
+    "region": "Germany",
+    "pattern": "energy",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "raa",
+    "ticker": "RAA.DE",
+    "name": "Rational AG",
+    "sector": "Commercial Kitchen Equipment",
+    "region": "Germany",
+    "pattern": "defense",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "jen",
+    "ticker": "JEN.DE",
+    "name": "Jenoptik",
+    "sector": "Optical Technology",
+    "region": "Germany",
+    "pattern": "semis",
+    "catSection": "German Industrials & Chemicals"
+  },
+  {
+    "id": "vna",
+    "ticker": "VNA.DE",
+    "name": "Vonovia",
+    "sector": "Residential Real Estate",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "tlx",
+    "ticker": "TLX.DE",
+    "name": "Talanx",
+    "sector": "Insurance",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "pbb",
+    "ticker": "PBB.DE",
+    "name": "Deutsche Pfandbriefbank",
+    "sector": "Commercial Real Estate Bank",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "arl",
+    "ticker": "ARL.DE",
+    "name": "Aareal Bank",
+    "sector": "Commercial Real Estate Bank",
+    "region": "Germany",
+    "pattern": "financials",
+    "catSection": "German Finance & Insurance"
+  },
+  {
+    "id": "hfg",
+    "ticker": "HFG.DE",
+    "name": "HelloFresh",
+    "sector": "Meal Kit Delivery",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "cec",
+    "ticker": "CEC.DE",
+    "name": "Ceconomy",
+    "sector": "Consumer Electronics Retail",
+    "region": "Germany",
+    "pattern": "consumer",
+    "catSection": "German Consumer & Retail"
+  },
+  {
+    "id": "9202",
+    "ticker": "9202.T",
+    "name": "ANA Holdings",
+    "sector": "Airlines",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "9201",
+    "ticker": "9201.T",
+    "name": "Japan Airlines",
+    "sector": "Airlines",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8801",
+    "ticker": "8801.T",
+    "name": "Mitsui Fudosan",
+    "sector": "Real Estate",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8802",
+    "ticker": "8802.T",
+    "name": "Mitsubishi Estate",
+    "sector": "Real Estate",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Japan"
+  },
+  {
+    "id": "9020",
+    "ticker": "9020.T",
+    "name": "JR East",
+    "sector": "Rail Transport",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "9022",
+    "ticker": "9022.T",
+    "name": "Central Japan Railway",
+    "sector": "Rail Transport",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "4661",
+    "ticker": "4661.T",
+    "name": "Oriental Land",
+    "sector": "Theme Parks",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "9613",
+    "ticker": "9613.T",
+    "name": "NTT Data",
+    "sector": "IT Services",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Japan"
+  },
+  {
+    "id": "6902",
+    "ticker": "6902.T",
+    "name": "Denso",
+    "sector": "Auto Parts",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "7269",
+    "ticker": "7269.T",
+    "name": "Suzuki Motor",
+    "sector": "Automakers",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "7270",
+    "ticker": "7270.T",
+    "name": "Subaru",
+    "sector": "Automakers",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "5108",
+    "ticker": "5108.T",
+    "name": "Bridgestone",
+    "sector": "Tires",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8113",
+    "ticker": "8113.T",
+    "name": "Unicharm",
+    "sector": "Household Products",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "2503",
+    "ticker": "2503.T",
+    "name": "Kirin Holdings",
+    "sector": "Beverages",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "2502",
+    "ticker": "2502.T",
+    "name": "Asahi Group",
+    "sector": "Beverages",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "2914",
+    "ticker": "2914.T",
+    "name": "Japan Tobacco",
+    "sector": "Tobacco",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "4452",
+    "ticker": "4452.T",
+    "name": "Kao Corp",
+    "sector": "Household Products",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Japan"
+  },
+  {
+    "id": "4519",
+    "ticker": "4519.T",
+    "name": "Chugai Pharmaceutical",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "4568",
+    "ticker": "4568.T",
+    "name": "Daiichi Sankyo",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "4523",
+    "ticker": "4523.T",
+    "name": "Eisai",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8035",
+    "ticker": "8035.T",
+    "name": "Tokyo Electron",
+    "sector": "Semiconductor Equipment",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "6857",
+    "ticker": "6857.T",
+    "name": "Advantest",
+    "sector": "Semiconductor Equipment",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "6841",
+    "ticker": "6841.T",
+    "name": "Yokogawa Electric",
+    "sector": "Industrial Automation",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "6920",
+    "ticker": "6920.T",
+    "name": "Lasertec",
+    "sector": "Semiconductor Equipment",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "5401",
+    "ticker": "5401.T",
+    "name": "Nippon Steel",
+    "sector": "Steel",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8053",
+    "ticker": "8053.T",
+    "name": "Sumitomo Corp",
+    "sector": "Trading Conglomerate",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8001",
+    "ticker": "8001.T",
+    "name": "Itochu",
+    "sector": "Trading Conglomerate",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "8031",
+    "ticker": "8031.T",
+    "name": "Mitsui & Co",
+    "sector": "Trading Conglomerate",
+    "region": "Asia",
+    "pattern": "japanExport",
+    "catSection": "Japan"
+  },
+  {
+    "id": "6971",
+    "ticker": "6971.T",
+    "name": "Kyocera",
+    "sector": "Electronic Components",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "Japan"
+  },
+  {
+    "id": "9531",
+    "ticker": "9531.T",
+    "name": "Tokyo Gas",
+    "sector": "Gas Utility",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Japan"
+  },
+  {
+    "id": "0941",
+    "ticker": "0941.HK",
+    "name": "China Mobile",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0762",
+    "ticker": "0762.HK",
+    "name": "China Unicom",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0728",
+    "ticker": "0728.HK",
+    "name": "China Telecom",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1929",
+    "ticker": "1929.HK",
+    "name": "Chow Tai Fook Jewellery",
+    "sector": "Jewelry Retail",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "2628",
+    "ticker": "2628.HK",
+    "name": "China Life Insurance",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0386",
+    "ticker": "0386.HK",
+    "name": "Sinopec",
+    "sector": "Oil & Gas Refining",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0688",
+    "ticker": "0688.HK",
+    "name": "China Overseas Land & Investment",
+    "sector": "Real Estate",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1093",
+    "ticker": "1093.HK",
+    "name": "CSPC Pharmaceutical",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1177",
+    "ticker": "1177.HK",
+    "name": "Sino Biopharmaceutical",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "2269",
+    "ticker": "2269.HK",
+    "name": "WuXi Biologics",
+    "sector": "Biotech Services",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "2382",
+    "ticker": "2382.HK",
+    "name": "Sunny Optical Technology",
+    "sector": "Optical Components",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1024",
+    "ticker": "1024.HK",
+    "name": "Kuaishou Technology",
+    "sector": "Internet/Video",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "9626",
+    "ticker": "9626.HK",
+    "name": "Bilibili",
+    "sector": "Internet/Video",
+    "region": "Asia",
+    "pattern": "chinaInternet",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0011",
+    "ticker": "0011.HK",
+    "name": "Hang Seng Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0016",
+    "ticker": "0016.HK",
+    "name": "Sun Hung Kai Properties",
+    "sector": "Real Estate",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0001",
+    "ticker": "0001.HK",
+    "name": "CK Hutchison Holdings",
+    "sector": "Diversified Conglomerate",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0002",
+    "ticker": "0002.HK",
+    "name": "CLP Holdings",
+    "sector": "Utilities",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0003",
+    "ticker": "0003.HK",
+    "name": "Hong Kong & China Gas",
+    "sector": "Utilities",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0006",
+    "ticker": "0006.HK",
+    "name": "Power Assets Holdings",
+    "sector": "Utilities",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1044",
+    "ticker": "1044.HK",
+    "name": "Hengan International",
+    "sector": "Household Products",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0291",
+    "ticker": "0291.HK",
+    "name": "China Resources Beer",
+    "sector": "Beverages",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "2020",
+    "ticker": "2020.HK",
+    "name": "ANTA Sports Products",
+    "sector": "Sportswear",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "1109",
+    "ticker": "1109.HK",
+    "name": "China Resources Land",
+    "sector": "Real Estate",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "0388",
+    "ticker": "0388.HK",
+    "name": "Hong Kong Exchanges & Clearing",
+    "sector": "Exchanges",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "2319",
+    "ticker": "2319.HK",
+    "name": "China Mengniu Dairy",
+    "sector": "Dairy/Food",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "China & Hong Kong"
+  },
+  {
+    "id": "bhartiartl",
+    "ticker": "BHARTIARTL.NS",
+    "name": "Bharti Airtel",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "India"
+  },
+  {
+    "id": "itc",
+    "ticker": "ITC.NS",
+    "name": "ITC Limited",
+    "sector": "Diversified Consumer",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "India"
+  },
+  {
+    "id": "lt",
+    "ticker": "LT.NS",
+    "name": "Larsen & Toubro",
+    "sector": "Engineering & Construction",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "India"
+  },
+  {
+    "id": "axisbank",
+    "ticker": "AXISBANK.NS",
+    "name": "Axis Bank",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "sbin",
+    "ticker": "SBIN.NS",
+    "name": "State Bank of India",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "asianpaint",
+    "ticker": "ASIANPAINT.NS",
+    "name": "Asian Paints",
+    "sector": "Paints",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "India"
+  },
+  {
+    "id": "nestleind",
+    "ticker": "NESTLEIND.NS",
+    "name": "Nestle India",
+    "sector": "Packaged Foods",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "India"
+  },
+  {
+    "id": "ultracemco",
+    "ticker": "ULTRACEMCO.NS",
+    "name": "UltraTech Cement",
+    "sector": "Cement",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "India"
+  },
+  {
+    "id": "adanient",
+    "ticker": "ADANIENT.NS",
+    "name": "Adani Enterprises",
+    "sector": "Diversified Conglomerate",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "India"
+  },
+  {
+    "id": "adaniports",
+    "ticker": "ADANIPORTS.NS",
+    "name": "Adani Ports & SEZ",
+    "sector": "Ports & Logistics",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "India"
+  },
+  {
+    "id": "powergrid",
+    "ticker": "POWERGRID.NS",
+    "name": "Power Grid Corp of India",
+    "sector": "Power Transmission",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "India"
+  },
+  {
+    "id": "ntpc",
+    "ticker": "NTPC.NS",
+    "name": "NTPC Limited",
+    "sector": "Power Generation",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "India"
+  },
+  {
+    "id": "ongc",
+    "ticker": "ONGC.NS",
+    "name": "Oil & Natural Gas Corp",
+    "sector": "Oil & Gas E&P",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "India"
+  },
+  {
+    "id": "coalindia",
+    "ticker": "COALINDIA.NS",
+    "name": "Coal India",
+    "sector": "Coal Mining",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "India"
+  },
+  {
+    "id": "tatamotors",
+    "ticker": "TATAMOTORS.NS",
+    "name": "Tata Motors",
+    "sector": "Automakers",
+    "region": "Asia",
+    "pattern": "evGrowth",
+    "catSection": "India"
+  },
+  {
+    "id": "tatasteel",
+    "ticker": "TATASTEEL.NS",
+    "name": "Tata Steel",
+    "sector": "Steel",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "India"
+  },
+  {
+    "id": "jswsteel",
+    "ticker": "JSWSTEEL.NS",
+    "name": "JSW Steel",
+    "sector": "Steel",
+    "region": "Asia",
+    "pattern": "defense",
+    "catSection": "India"
+  },
+  {
+    "id": "bajajfinsv",
+    "ticker": "BAJAJFINSV.NS",
+    "name": "Bajaj Finserv",
+    "sector": "Financial Services",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "India"
+  },
+  {
+    "id": "divislab",
+    "ticker": "DIVISLAB.NS",
+    "name": "Divi's Laboratories",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "India"
+  },
+  {
+    "id": "cipla",
+    "ticker": "CIPLA.NS",
+    "name": "Cipla",
+    "sector": "Pharmaceuticals",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "India"
+  },
+  {
+    "id": "003550",
+    "ticker": "003550.KS",
+    "name": "LG Corp",
+    "sector": "Conglomerate Holding Co",
+    "region": "Asia",
+    "pattern": "koreanTech",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "012330",
+    "ticker": "012330.KS",
+    "name": "Hyundai Mobis",
+    "sector": "Auto Parts",
+    "region": "Asia",
+    "pattern": "germanAuto",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "015760",
+    "ticker": "015760.KS",
+    "name": "KEPCO (Korea Electric Power)",
+    "sector": "Utilities",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "032830",
+    "ticker": "032830.KS",
+    "name": "Samsung Life Insurance",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "086790",
+    "ticker": "086790.KS",
+    "name": "Hana Financial Group",
+    "sector": "Banking",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "207940",
+    "ticker": "207940.KS",
+    "name": "Samsung Biologics",
+    "sector": "Biotech Manufacturing",
+    "region": "Asia",
+    "pattern": "healthcare",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "006400",
+    "ticker": "006400.KS",
+    "name": "Samsung SDI",
+    "sector": "Batteries",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "009150",
+    "ticker": "009150.KS",
+    "name": "Samsung Electro-Mechanics",
+    "sector": "Electronic Components",
+    "region": "Asia",
+    "pattern": "semis",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "010130",
+    "ticker": "010130.KS",
+    "name": "Korea Zinc",
+    "sector": "Metals & Mining",
+    "region": "Asia",
+    "pattern": "germanChemical",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "011170",
+    "ticker": "011170.KS",
+    "name": "Lotte Chemical",
+    "sector": "Petrochemicals",
+    "region": "Asia",
+    "pattern": "germanChemical",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "028260",
+    "ticker": "028260.KS",
+    "name": "Samsung C&T",
+    "sector": "Construction & Trading",
+    "region": "Asia",
+    "pattern": "koreanTech",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "030200",
+    "ticker": "030200.KS",
+    "name": "KT Corp",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "South Korea"
+  },
+  {
+    "id": "z74",
+    "ticker": "Z74.SI",
+    "name": "Singtel",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "a17u",
+    "ticker": "A17U.SI",
+    "name": "Ascendas REIT",
+    "sector": "Industrial REIT",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "c38u",
+    "ticker": "C38U.SI",
+    "name": "CapitaLand Integrated Commercial Trust",
+    "sector": "Retail REIT",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "g13",
+    "ticker": "G13.SI",
+    "name": "Genting Singapore",
+    "sector": "Casinos & Resorts",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "f34",
+    "ticker": "F34.SI",
+    "name": "Wilmar International",
+    "sector": "Agribusiness",
+    "region": "Asia",
+    "pattern": "consumer",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "bn4",
+    "ticker": "BN4.SI",
+    "name": "Keppel Corp",
+    "sector": "Infrastructure & Marine",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "tls",
+    "ticker": "TLS.AX",
+    "name": "Telstra Group",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "wds",
+    "ticker": "WDS.AX",
+    "name": "Woodside Energy",
+    "sector": "Oil & Gas",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "tcl",
+    "ticker": "TCL.AX",
+    "name": "Transurban Group",
+    "sector": "Toll Roads",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "gmg",
+    "ticker": "GMG.AX",
+    "name": "Goodman Group",
+    "sector": "Industrial REIT",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "sto",
+    "ticker": "STO.AX",
+    "name": "Santos",
+    "sector": "Oil & Gas",
+    "region": "Asia",
+    "pattern": "energy",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "qbe",
+    "ticker": "QBE.AX",
+    "name": "QBE Insurance Group",
+    "sector": "Insurance",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Singapore & Australia"
+  },
+  {
+    "id": "2882",
+    "ticker": "2882.TW",
+    "name": "Cathay Financial Holding",
+    "sector": "Financial Holding",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "2891",
+    "ticker": "2891.TW",
+    "name": "CTBC Financial Holding",
+    "sector": "Financial Holding",
+    "region": "Asia",
+    "pattern": "financials",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "1303",
+    "ticker": "1303.TW",
+    "name": "Nan Ya Plastics",
+    "sector": "Petrochemicals",
+    "region": "Asia",
+    "pattern": "germanChemical",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "2412",
+    "ticker": "2412.TW",
+    "name": "Chunghwa Telecom",
+    "sector": "Telecom",
+    "region": "Asia",
+    "pattern": "bonds",
+    "catSection": "Taiwan"
+  },
+  {
+    "id": "2357",
+    "ticker": "2357.TW",
+    "name": "Asus",
+    "sector": "PC Hardware",
+    "region": "Asia",
+    "pattern": "techGrowth",
+    "catSection": "Taiwan"
   }
 ]
