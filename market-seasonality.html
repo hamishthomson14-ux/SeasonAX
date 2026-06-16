@@ -175,6 +175,70 @@ button{cursor:pointer;font-family:var(--sans)}
 /* Empty analysis state */
 .analysis-empty{padding:60px 24px;text-align:center;color:var(--w4);font-family:var(--mono);font-size:12px}
 
+/* ═══════════════════════════════════════════════════════
+   TERMINAL LAYOUT (Analyzer redesign)
+   Dense, tabbed, mono-data. Seasonal tape always visible.
+   ═══════════════════════════════════════════════════════ */
+
+/* Seasonal tape — the signature: whole year in one color-coded row */
+.tape{display:flex;background:var(--b1);border-bottom:1px solid var(--b1);gap:1px}
+.tape-cell{flex:1;position:relative;background:var(--bg3);padding:10px 4px 9px;text-align:center;transition:background .15s;overflow:hidden;min-width:0}
+.tape-cell::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--tc,transparent)}
+.tape-cell:hover{background:var(--bg2)}
+.tape-m{font:500 9px/1 var(--mono);color:var(--w4);letter-spacing:.04em;margin-bottom:6px;text-transform:uppercase}
+.tape-v{font:600 11px/1 var(--mono);letter-spacing:-.02em}
+.tape-v.p{color:var(--green)}.tape-v.n{color:var(--red)}
+.tape-cell.cur{background:rgba(245,165,47,.07)}
+.tape-cell.cur .tape-m{color:var(--amber2)}
+.tape-cell.peak .tape-m::after{content:" ▲";font-size:7px;color:var(--green)}
+.tape-cell.trough .tape-m::after{content:" ▼";font-size:7px;color:var(--red)}
+
+/* Segmented tab control */
+.term-tabs{display:flex;background:var(--bg3);border-bottom:1px solid var(--b1);overflow-x:auto;scrollbar-width:none}
+.term-tabs::-webkit-scrollbar{display:none}
+.term-tab{flex:1;min-width:fit-content;background:none;border:none;border-bottom:2px solid transparent;color:var(--w4);font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:13px 16px;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:6px}
+.term-tab:hover{color:var(--w2)}
+.term-tab.active{color:var(--amber2);border-bottom-color:var(--amber2)}
+
+/* Tab panels */
+.term-panel{display:none;animation:termfade .25s ease}
+.term-panel.show{display:block}
+@keyframes termfade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+/* Compact KPI rail */
+.kpi-rail{display:flex;background:var(--b1);border-bottom:1px solid var(--b1);gap:1px}
+.kpi{flex:1;background:var(--bg3);padding:11px 12px;min-width:0}
+.kpi-l{font:400 8px/1.2 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.kpi-v{font:600 15px/1 var(--mono);letter-spacing:-.02em;color:var(--w);white-space:nowrap}
+.kpi-v.p{color:var(--green)}.kpi-v.n{color:var(--red)}.kpi-v.a{color:var(--amber2)}
+@media(max-width:600px){.kpi-rail{flex-wrap:wrap}.kpi{flex:1 1 45%}}
+
+/* Months data table — replaces the 12 cards */
+.mtable{width:100%;border-collapse:collapse;font-family:var(--mono)}
+.mtable thead th{font:500 8px/1 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase;text-align:right;padding:10px 14px;border-bottom:1px solid var(--b1);background:var(--bg3)}
+.mtable thead th:first-child{text-align:left}
+.mtable tbody td{padding:9px 14px;border-bottom:1px solid var(--b1);font-size:12px;text-align:right;vertical-align:middle}
+.mtable tbody tr:last-child td{border-bottom:none}
+.mtable tbody tr:hover td{background:var(--bg3)}
+.mtable tbody tr.cur td{background:rgba(245,165,47,.05)}
+.mt-month{text-align:left!important;color:var(--w2);font-weight:500}
+.mtable tbody tr.cur .mt-month{color:var(--amber2)}
+.mt-ret.p{color:var(--green)}.mt-ret.n{color:var(--red)}
+.mt-win{color:var(--w3)}
+.mt-barcell{width:34%;padding-right:14px!important}
+.mt-bar{height:7px;background:var(--s1);border-radius:2px;overflow:hidden;width:100%}
+.mt-barfill{height:100%;border-radius:2px;width:0;transition:width .6s cubic-bezier(.4,0,.2,1)}
+@media(max-width:600px){.mt-barcell,.mtable thead th.mt-bar-h{display:none}}
+
+/* Chart panel wrapper inside tabs */
+.term-chartwrap{padding:22px 24px}
+@media(max-width:600px){.term-chartwrap{padding:18px 14px}}
+
+/* Two-up chart grid (Calendar tab shows wheel + bars together on desktop) */
+.term-twoup{display:flex;gap:1px;background:var(--b1)}
+.term-twoup>div{flex:1;background:var(--bg2);padding:22px 24px;min-width:0}
+@media(max-width:760px){.term-twoup{flex-direction:column}}
+
 /* Paywall overlay */
 #paywallOverlay{display:none;position:fixed;inset:0;background:rgba(4,7,15,.92);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
 .pw-card{background:var(--bg2);border:1px solid var(--b3);border-radius:14px;padding:40px;max-width:440px;width:100%;text-align:center;position:relative}
@@ -2607,59 +2671,158 @@ function paintAnalysis(item, monthsIn, source, years) {
       var sign0 = sorted[0].avg>=0?'+':'';
       var bestM=sorted[0].m+' '+sign0+(+sorted[0].avg).toFixed(1)+sfx;
       var worstM=sorted[11].m+' '+(+sorted[11].avg).toFixed(1)+sfx;
-      var posLabel = detrend ? 'Above-Average Months' : 'Positive Months';
-      var posM=months.filter(function(m){return m.avg>0;}).length+'/12';
-      var ai=ANALYSIS_BY_PATTERN[patKey]||ANALYSIS_BY_PATTERN['broadIndex']||'';
+      var posLabel = detrend ? 'Above Avg' : 'Positive Mo';
+      var posCount=months.filter(function(m){return m.avg>0;}).length;
+      var posM=posCount+'/12';
+
+      // current calendar month + best/worst indices (for tape highlighting)
+      var curMonthIdx = new Date().getMonth();
+      var bestIdx = months.indexOf(sorted[0]);
+      var worstIdx = months.indexOf(sorted[11]);
+      var curMonthData = months[curMonthIdx] || months[0];
+      var curSign = curMonthData.avg>=0?'+':'';
 
       var detrendBanner = detrend
-        ? '<div class="detrend-banner"><b>&#9881; Detrended view</b> &mdash; showing each month\u2019s return relative to '+item.ticker+'\u2019s own average month ('+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12 >= 0 ? '+' : '')+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12).toFixed(2)+'%/mo overall). Positive = stronger than typical, negative = weaker than typical \u2014 even if still positive in absolute terms.</div>'
+        ? '<div class="detrend-banner"><b>&#9881; Detrended view</b> &mdash; each month relative to '+item.ticker+'\u2019s own average month ('+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12 >= 0 ? '+' : '')+(monthsIn.reduce(function(s,m){return s+m.avg;},0)/12).toFixed(2)+'%/mo overall). Positive = stronger than typical.</div>'
         : '';
 
       var yearFilterBanner = '';
       if (CUR_YEAR_FILTER) {
         var sampleN = months[0] && months[0].n ? months[0].n : '?';
-        yearFilterBanner = '<div class="yearfilter-banner"><b>&#128197; ' + CUR_YEAR_FILTER.label + '</b> &mdash; based on ' + sampleN + ' years matching this filter (smaller sample than the full history \u2014 read with extra caution).</div>';
+        yearFilterBanner = '<div class="yearfilter-banner"><b>&#128197; ' + CUR_YEAR_FILTER.label + '</b> &mdash; based on ' + sampleN + ' years matching this filter (smaller sample \u2014 read with extra caution).</div>';
       }
 
       document.getElementById('analysisBody').innerHTML=
         yearFilterBanner+
         detrendBanner+
-        '<div class="stats-strip">'+
-          '<div class="ss"><div class="ss-v" style="color:var(--green)">'+bestM+'</div><div class="ss-l">Best Month'+(detrend?' (Relative)':'')+'</div></div>'+
-          '<div class="ss"><div class="ss-v" style="color:var(--red)">'+worstM+'</div><div class="ss-l">Worst Month'+(detrend?' (Relative)':'')+'</div></div>'+
-          '<div class="ss"><div class="ss-v" style="color:var(--amber2)">'+posM+'</div><div class="ss-l">'+posLabel+'</div></div>'+
+        seasonalTape(months, curMonthIdx, bestIdx, worstIdx)+
+        kpiRail(curMonthData, curSign, sfx, bestM, worstM, posM, posLabel, detrend)+
+        '<div class="term-tabs" id="termTabs">'+
+          '<button class="term-tab active" data-tab="calendar" onclick="switchTab(\'calendar\')">Calendar</button>'+
+          '<button class="term-tab" data-tab="returns" onclick="switchTab(\'returns\')">Returns</button>'+
+          '<button class="term-tab" data-tab="months" onclick="switchTab(\'months\')">Months</button>'+
+          '<button class="term-tab" data-tab="briefing" onclick="switchTab(\'briefing\')">Briefing</button>'+
         '</div>'+
-        '<div class="charts-row">'+
-          '<div class="chart-panel">'+
-            '<div class="cp-title">Monthly Return Calendar'+(detrend?' (Detrended)':'')+'</div>'+
-            '<div id="cwrap" style="display:flex;flex-direction:column;align-items:center">'+
-              wheel(months,item.ticker)+
-              '<div class="legend">'+
-                '<span><span class="ld" style="background:var(--green)"></span>'+(detrend?'Stronger than average':'Positive avg')+'</span>'+
-                '<span><span class="ld" style="background:var(--red)"></span>'+(detrend?'Weaker than average':'Negative avg')+'</span>'+
-                '<span style="font-size:10px">Arc = magnitude</span>'+
+        // CALENDAR tab — wheel + bars two-up on desktop
+        '<div class="term-panel show" data-panel="calendar">'+
+          '<div class="term-twoup">'+
+            '<div>'+
+              '<div class="cp-title">Monthly Return Calendar'+(detrend?' (Detrended)':'')+'</div>'+
+              '<div id="cwrap">'+
+                wheel(months,item.ticker)+
+                '<div class="legend">'+
+                  '<span><span class="ld" style="background:var(--green)"></span>'+(detrend?'Stronger':'Positive')+'</span>'+
+                  '<span><span class="ld" style="background:var(--red)"></span>'+(detrend?'Weaker':'Negative')+'</span>'+
+                  '<span style="font-size:10px">Arc = magnitude</span>'+
+                '</div>'+
               '</div>'+
             '</div>'+
+            '<div>'+
+              '<div class="cp-title">'+(detrend?'Relative Monthly Strength':'Average Monthly Return')+'</div>'+
+              bars(months, sfx)+
+            '</div>'+
           '</div>'+
-          '<div class="chart-panel">'+
-            '<div class="cp-title">'+(detrend?'Relative Monthly Strength':'Average Monthly Return')+'</div>'+
+        '</div>'+
+        // RETURNS tab — just the horizontal bars, full width
+        '<div class="term-panel" data-panel="returns">'+
+          '<div class="term-chartwrap">'+
+            '<div class="cp-title">'+(detrend?'Relative Monthly Strength':'Average Monthly Return')+' &middot; '+years+'YR</div>'+
             bars(months, sfx)+
           '</div>'+
         '</div>'+
-        makeCards(months, sfx)+
-        '<div class="ai-panel">'+
-          '<div class="ai-header">'+
-            '<span class="ai-badge">Intelligence Briefing</span>'+
-            '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Seasonal Analysis'+(detrend?' &middot; Detrended':'')+'</span>'+
-            '<button class="alert-btn" id="alertBtn" onclick="toggleAlert()">&#128276; Notify me</button>'+
-            '<button class="alert-btn" id="pdfBtn" onclick="downloadPdfReport()">&#128196; Download PDF<span class="mt-lock">&#128274; PRO</span></button>'+
+        // MONTHS tab — dense data table
+        '<div class="term-panel" data-panel="months">'+
+          monthsTable(months, sfx, curMonthIdx, bestIdx, worstIdx)+
+        '</div>'+
+        // BRIEFING tab — the AI intelligence panel
+        '<div class="term-panel" data-panel="briefing">'+
+          '<div class="ai-panel" style="border-top:none">'+
+            '<div class="ai-header">'+
+              '<span class="ai-badge">Intelligence Briefing</span>'+
+              '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Analysis'+(detrend?' &middot; Detrended':'')+'</span>'+
+              '<button class="alert-btn" id="alertBtn" onclick="toggleAlert()">&#128276; Notify me</button>'+
+              '<button class="alert-btn" id="pdfBtn" onclick="downloadPdfReport()">&#128196; Download PDF<span class="mt-lock">&#128274; PRO</span></button>'+
+            '</div>'+
+            '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years, detrend)+'</div>'+
           '</div>'+
-          '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years, detrend)+'</div>'+
         '</div>';
 
       animateBars();
+      animateTableBars();
       refreshAlertButton();
       pill('COMPLETE','done');
+}
+
+// ── Seasonal tape: the signature element — whole year in one row ──
+function seasonalTape(months, curIdx, bestIdx, worstIdx) {
+  var mx=0.5;
+  months.forEach(function(m){ if(Math.abs(m.avg)>mx) mx=Math.abs(m.avg); });
+  var cells='';
+  months.forEach(function(m,i){
+    var pos=m.avg>=0;
+    var col=pos?'var(--green)':'var(--red)';
+    var norm=Math.abs(m.avg)/mx;
+    var cls='tape-cell';
+    if(i===curIdx) cls+=' cur';
+    if(i===bestIdx) cls+=' peak';
+    if(i===worstIdx) cls+=' trough';
+    var sign=pos?'+':'';
+    cells+='<div class="'+cls+'" style="--tc:'+col+';" title="'+m.m+': '+sign+Number(m.avg).toFixed(2)+'% \u00b7 '+m.win+'% win rate">'+
+      '<div class="tape-m">'+m.m+'</div>'+
+      '<div class="tape-v '+(pos?'p':'n')+'" style="opacity:'+(0.55+norm*0.45).toFixed(2)+'">'+sign+Number(m.avg).toFixed(1)+'</div>'+
+    '</div>';
+  });
+  return '<div class="tape">'+cells+'</div>';
+}
+
+// ── KPI rail: compact 4-up summary ──
+function kpiRail(curM, curSign, sfx, bestM, worstM, posM, posLabel, detrend) {
+  var cmf = MO.indexOf(curM.m); var cmName = cmf>=0?MF_LONG[cmf]:curM.m;
+  return '<div class="kpi-rail">'+
+    '<div class="kpi"><div class="kpi-l">'+cmName+' Now</div><div class="kpi-v '+(curM.avg>=0?'p':'n')+'">'+curSign+Number(curM.avg).toFixed(1)+sfx+'</div></div>'+
+    '<div class="kpi"><div class="kpi-l">Best Month</div><div class="kpi-v p">'+bestM+'</div></div>'+
+    '<div class="kpi"><div class="kpi-l">Worst Month</div><div class="kpi-v n">'+worstM+'</div></div>'+
+    '<div class="kpi"><div class="kpi-l">'+posLabel+'</div><div class="kpi-v a">'+posM+'</div></div>'+
+  '</div>';
+}
+
+// ── Months data table: replaces the 12 cards ──
+function monthsTable(months, sfx, curIdx, bestIdx, worstIdx) {
+  var mx=0.5;
+  months.forEach(function(m){ if(Math.abs(m.avg)>mx) mx=Math.abs(m.avg); });
+  var rows='';
+  months.forEach(function(m,i){
+    var pos=m.avg>=0, sign=pos?'+':'';
+    var col=pos?'var(--green)':'var(--red)';
+    var w=(Math.abs(m.avg)/mx*100).toFixed(0);
+    var idx=MO.indexOf(m.m); var nm=idx>=0?MF_LONG[idx]:m.m;
+    var tag = i===bestIdx?' \u25b2':(i===worstIdx?' \u25bc':'');
+    rows+='<tr'+(i===curIdx?' class="cur"':'')+'>'+
+      '<td class="mt-month">'+nm+tag+'</td>'+
+      '<td class="mt-ret '+(pos?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+sfx+'</td>'+
+      '<td class="mt-win">'+m.win+'%</td>'+
+      '<td class="mt-barcell"><div class="mt-bar"><div class="mt-barfill" style="background:'+col+';opacity:.72" data-w="'+w+'"></div></div></td>'+
+    '</tr>';
+  });
+  return '<table class="mtable">'+
+    '<thead><tr><th>Month</th><th>Avg Return</th><th>Win Rate</th><th class="mt-bar-h">Magnitude</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table>';
+}
+
+function animateTableBars(){
+  setTimeout(function(){
+    document.querySelectorAll('.mt-barfill').forEach(function(el){ el.style.width=el.dataset.w+'%'; });
+  },120);
+}
+
+// ── Tab switching ──
+function switchTab(name){
+  var body=document.getElementById('analysisBody');
+  if(!body) return;
+  body.querySelectorAll('.term-tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab===name); });
+  body.querySelectorAll('.term-panel').forEach(function(p){ p.classList.toggle('show', p.dataset.panel===name); });
+  if(name==='returns'||name==='calendar') animateBars();
+  if(name==='months') animateTableBars();
 }
 
 // ============================================================
