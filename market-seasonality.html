@@ -218,6 +218,16 @@ button{cursor:pointer;font-family:var(--sans)}
 .kpi-v.p{color:var(--green)}.kpi-v.n{color:var(--red)}.kpi-v.a{color:var(--amber2)}
 @media(max-width:600px){.kpi-rail{flex-wrap:wrap}.kpi{flex:1 1 45%}}
 
+/* 6-up KPI rail (backtest) wraps to 3-up then 2-up; rounded top to read as a card */
+.kpi-rail-6{border:1px solid var(--b2);border-bottom:none;border-radius:12px 12px 0 0;overflow:hidden}
+.kpi-rail-6 .kpi-v{font-size:14px}
+@media(max-width:760px){.kpi-rail-6{flex-wrap:wrap}.kpi-rail-6 .kpi{flex:1 1 33%}}
+@media(max-width:480px){.kpi-rail-6 .kpi{flex:1 1 50%}}
+/* When a term-tabs/term-panel set follows a card-style rail, frame it to match */
+.kpi-rail-6 + .term-tabs{border-left:1px solid var(--b2);border-right:1px solid var(--b2)}
+.kpi-rail-6 ~ .term-panel{border-left:1px solid var(--b2);border-right:1px solid var(--b2)}
+.kpi-rail-6 ~ .term-panel:last-of-type{border-bottom:1px solid var(--b2);border-radius:0 0 12px 12px}
+
 /* Months data table — replaces the 12 cards */
 .mtable{width:100%;border-collapse:collapse;font-family:var(--mono)}
 .mtable thead th{font:500 8px/1 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase;text-align:right;padding:10px 14px;border-bottom:1px solid var(--b1);background:var(--bg3)}
@@ -294,8 +304,15 @@ button{cursor:pointer;font-family:var(--sans)}
   .charts-row{grid-template-columns:1fr}
   .chart-panel:first-child{border-right:none;border-bottom:1px solid var(--b1)}
   .cgrid{grid-template-columns:repeat(3,1fr)}
-  .nav{padding:0 16px}
+  .nav{padding:0 14px}
   .nav-sub,.nav-div{display:none}
+  .nav-left{gap:7px}
+  .nav-right{gap:6px}
+  .nav-back{display:none}
+  .user-badge{padding:4px 9px;font-size:10px;max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .tier-badge{margin-left:0;padding:3px 6px;font-size:8px}
+  .btn-so{padding:4px 9px;font-size:10px;white-space:nowrap}
+  .btn-si{padding:5px 11px;font-size:11px}
 }
 
 /* ── MODE SWITCHER ── */
@@ -330,7 +347,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .bt-legend{display:flex;gap:16px;font:400 10px/1 var(--mono);color:var(--w4);margin-top:10px}
 .bt-legend span{display:flex;align-items:center;gap:5px}
 .bt-ld{width:14px;height:2px;display:inline-block;border-radius:1px}
-@media(max-width:768px){.bt-stats{grid-template-columns:repeat(3,1fr)}.bt-row{flex-direction:column}}
+@media(max-width:768px){.bt-stats{grid-template-columns:repeat(3,1fr)}.bt-row{flex-direction:column}.bt-field{min-width:0!important;width:100%}.bt-field[style*="min-width:280px"]{min-width:0!important}.bt-field[style*="min-width:170px"]{min-width:0!important;justify-content:stretch!important}#btGoBtn{width:100%}}
 
 /* ── EVENT STUDIES ── */
 .es-catblock{margin-bottom:30px}
@@ -523,7 +540,7 @@ body.is-pro .mt-lock{display:none}
     <div class="nav-sub">Seasonal Analyzer</div>
   </div>
   <div class="nav-right">
-    <a href="/dashboard.html" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
+    <a href="/dashboard.html" class="nav-back" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
     <div id="userMenu" style="display:none;align-items:center;gap:8px">
       <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
       <button class="btn-so" onclick="signOut()">Sign out</button>
@@ -2839,6 +2856,15 @@ function switchTab(name){
   if(name==='months') animateTableBars();
 }
 
+// ── Backtest tab switching ──
+function btSwitchTab(name){
+  var res=document.getElementById('btResults');
+  if(!res) return;
+  res.querySelectorAll('.term-tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab===name); });
+  res.querySelectorAll('.term-panel').forEach(function(p){ p.classList.toggle('show', p.dataset.panel===name); });
+  if(name==='years'){ setTimeout(function(){ res.querySelectorAll('.bt-yr-f').forEach(function(el){ el.style.width=el.dataset.w+'%'; }); }, 60); }
+}
+
 // ============================================================
 // INIT
 // ============================================================
@@ -3532,26 +3558,34 @@ function runBacktest() {
       });
 
       res.innerHTML =
-        '<div class="bt-stats">' +
-          '<div class="bts"><div class="bts-v" style="color:' + col(totalRet) + '">' + sgn(totalRet) + '</div><div class="bts-l">Total Return</div></div>' +
-          '<div class="bts"><div class="bts-v" style="color:' + col(cagr) + '">' + sgn(cagr) + '</div><div class="bts-l">CAGR</div></div>' +
-          '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + winRate + '%</div><div class="bts-l">Win Rate</div></div>' +
-          '<div class="bts"><div class="bts-v" style="color:var(--green)">' + best.year + ' ' + sgn(best.ret) + '</div><div class="bts-l">Best Year</div></div>' +
-          '<div class="bts"><div class="bts-v" style="color:var(--red)">' + worst.year + ' ' + sgn(worst.ret) + '</div><div class="bts-l">Worst Year</div></div>' +
-          '<div class="bts"><div class="bts-v" style="color:' + col(edge) + '">' + sgn(edge) + '</div><div class="bts-l">vs Buy &amp; Hold</div></div>' +
+        '<div class="kpi-rail kpi-rail-6">' +
+          '<div class="kpi"><div class="kpi-l">Total Return</div><div class="kpi-v ' + (totalRet>=0?'p':'n') + '">' + sgn(totalRet) + '</div></div>' +
+          '<div class="kpi"><div class="kpi-l">CAGR</div><div class="kpi-v ' + (cagr>=0?'p':'n') + '">' + sgn(cagr) + '</div></div>' +
+          '<div class="kpi"><div class="kpi-l">Win Rate</div><div class="kpi-v a">' + winRate + '%</div></div>' +
+          '<div class="kpi"><div class="kpi-l">Best Year</div><div class="kpi-v p">' + best.year + ' ' + sgn(best.ret) + '</div></div>' +
+          '<div class="kpi"><div class="kpi-l">Worst Year</div><div class="kpi-v n">' + worst.year + ' ' + sgn(worst.ret) + '</div></div>' +
+          '<div class="kpi"><div class="kpi-l">vs Buy &amp; Hold</div><div class="kpi-v ' + (edge>=0?'p':'n') + '">' + sgn(edge) + '</div></div>' +
         '</div>' +
-        '<div class="bt-panel">' +
-          '<div class="bt-ptitle">' + item.ticker + ' \u00b7 ' + stratLabel + ' \u00b7 Growth of 100</div>' +
-          svg +
-          '<div class="bt-legend">' +
-            '<span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span>' +
-            '<span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span>' +
+        '<div class="term-tabs" id="btTabs">' +
+          '<button class="term-tab active" data-tab="equity" onclick="btSwitchTab(\'equity\')">Equity Curve</button>' +
+          '<button class="term-tab" data-tab="years" onclick="btSwitchTab(\'years\')">Year by Year</button>' +
+        '</div>' +
+        '<div class="term-panel show" data-panel="equity">' +
+          '<div class="term-chartwrap">' +
+            '<div class="cp-title">' + item.ticker + ' \u00b7 ' + stratLabel + ' \u00b7 Growth of 100</div>' +
+            svg +
+            '<div class="bt-legend">' +
+              '<span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span>' +
+              '<span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span>' +
+            '</div>' +
+            '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from TimingAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="bt-panel last">' +
-          '<div class="bt-ptitle">Year-by-Year Strategy Returns</div>' +
-          '<div class="bt-yrgrid">' + yrHtml + '</div>' +
-          '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from TimingAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
+        '<div class="term-panel" data-panel="years">' +
+          '<div class="term-chartwrap">' +
+            '<div class="cp-title">Year-by-Year Strategy Returns</div>' +
+            '<div class="bt-yrgrid">' + yrHtml + '</div>' +
+          '</div>' +
         '</div>';
 
       setTimeout(function() {
