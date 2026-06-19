@@ -330,10 +330,10 @@ button{cursor:pointer;font-family:var(--sans)}
 .bt-select{background:var(--s1);border:1px solid var(--b2);color:var(--w2);padding:9px 10px;font:400 12px/1 var(--mono);border-radius:6px;outline:none;cursor:pointer;transition:border-color .18s;width:100%}
 .bt-select:focus{border-color:var(--amber2)}
 .bt-pair{display:flex;gap:8px;align-items:center}
-.bt-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px 12px 0 0;overflow:hidden}
-.bts{background:var(--bg3);padding:16px 12px;text-align:center}
-.bts-v{font:600 17px/1 var(--mono);margin-bottom:5px;letter-spacing:-.01em}
-.bts-l{font:400 9px/1 var(--mono);color:var(--w4);letter-spacing:.08em;text-transform:uppercase}
+.bt-stats{display:flex;flex-wrap:wrap;gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px 12px 0 0;overflow:hidden}
+.bts{flex:1 1 0;min-width:33%;background:var(--bg3);padding:12px 14px;text-align:left}
+.bts-v{font:600 15px/1 var(--mono);margin-bottom:6px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bts-l{font:400 8px/1.2 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase}
 .bt-panel{background:var(--bg2);border:1px solid var(--b2);border-top:none;padding:22px 24px}
 .bt-panel.last{border-radius:0 0 12px 12px}
 .bt-ptitle{font:500 9px/1 var(--mono);letter-spacing:.16em;color:var(--w4);text-transform:uppercase;margin-bottom:16px}
@@ -347,7 +347,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .bt-legend{display:flex;gap:16px;font:400 10px/1 var(--mono);color:var(--w4);margin-top:10px}
 .bt-legend span{display:flex;align-items:center;gap:5px}
 .bt-ld{width:14px;height:2px;display:inline-block;border-radius:1px}
-@media(max-width:768px){.bt-stats{grid-template-columns:repeat(3,1fr)}.bt-row{flex-direction:column}.bt-field{min-width:0!important;width:100%}.bt-field[style*="min-width:280px"]{min-width:0!important}.bt-field[style*="min-width:170px"]{min-width:0!important;justify-content:stretch!important}#btGoBtn{width:100%}}
+@media(max-width:768px){.bts{min-width:50%}.bt-row{flex-direction:column}.bt-field{min-width:0!important;width:100%}.bt-field[style*="min-width:280px"]{min-width:0!important}.bt-field[style*="min-width:170px"]{min-width:0!important;justify-content:stretch!important}#btGoBtn{width:100%}}
 
 /* ── EVENT STUDIES ── */
 .es-catblock{margin-bottom:30px}
@@ -406,14 +406,17 @@ button{cursor:pointer;font-family:var(--sans)}
 @media(max-width:900px){.ea-scen{grid-template-columns:repeat(2,1fr)}.es-inst{grid-template-columns:130px 1fr 60px}}
 
 /* ── SCREENER ── */
-.sc-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.sc-row{display:grid;grid-template-columns:24px 1fr 110px 64px 76px;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--b1)}
-.sc-rank{font:600 10px/1 var(--mono);color:var(--w5)}
-.sc-id{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-cols{display:flex;gap:24px}
+.sc-cols>div{flex:1;min-width:0}
+.sc-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-bottom:1px solid var(--b1);transition:background .12s;border-radius:4px}
+.sc-row:hover{background:var(--bg3)}
+.sc-rank{flex:0 0 20px;font:600 10px/1 var(--mono);color:var(--w5);text-align:center}
+.sc-id{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc-more{font:400 9px/1 var(--mono);color:var(--w5);margin-left:6px}
-.sc-win{display:flex;align-items:center;gap:6px;font:400 9px/1 var(--mono);color:var(--w4)}
+.sc-win{flex:0 0 92px;display:flex;align-items:center;gap:6px;font:400 9px/1 var(--mono);color:var(--w4)}
 .sc-winbar{flex:1;height:4px;background:var(--s1);border-radius:2px;overflow:hidden}
-.sc-avg{font:600 12px/1 var(--mono);text-align:right}
+.sc-avg{flex:0 0 58px;font:600 13px/1 var(--mono);text-align:right;letter-spacing:-.02em}
+.sc-go{flex:0 0 auto}
 .sc-go{background:none;border:1px solid var(--b2);color:var(--w4);padding:4px 9px;border-radius:5px;font:500 10px/1 var(--mono);cursor:pointer;transition:all .15s;white-space:nowrap}
 .sc-go:hover{border-color:var(--amber2);color:var(--amber2)}
 .sc-shifts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -458,7 +461,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .mode-divider{width:1px;height:16px;align-self:center;background:var(--b2);flex-shrink:0}
 body.is-pro .mode-divider{display:none}
 @media(max-width:900px){
-  .sc-cols{grid-template-columns:1fr}
+  .sc-cols{flex-direction:column;gap:20px}
   .sc-shifts{grid-template-columns:1fr}
   .wl-row{grid-template-columns:1fr 1fr;row-gap:8px}
   .ec-row{grid-template-columns:48px 1fr 90px;row-gap:6px}
@@ -723,8 +726,9 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
       <select class="bt-select" id="scMonth" style="max-width:200px"></select>
       <div class="ea-nm">Defaults to the current month · rankings update instantly</div>
     </div>
-    <div class="bt-stats" id="scStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
+    <div class="bt-stats" id="scStats" style="border-radius:12px 12px 0 0"></div>
     <div class="bt-panel">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px" id="scDataBadge"></div>
       <div class="sc-cols">
         <div>
           <div class="bt-ptitle" id="scStrongTitle" style="color:var(--green)">Strongest</div>
