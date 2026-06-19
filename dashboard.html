@@ -68,6 +68,22 @@ button{cursor:pointer;font-family:var(--sans)}
 .wl-btn.ghost:hover{border-color:var(--amber2);color:var(--w)}
 .sec-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .sec-label::before{content:"";width:14px;height:1px;background:var(--amber2);opacity:.5}
+/* ── SEASONAL RIBBON (signature live tape) ── */
+.seasonal-ribbon{display:flex;gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:10px;overflow:hidden;margin-bottom:28px}
+.sr-lead{flex:0 0 auto;background:var(--bg3);padding:13px 20px;display:flex;flex-direction:column;justify-content:center;gap:4px;border-right:2px solid var(--amber2);min-width:0}
+.sr-lead-l{font:500 8px/1 var(--mono);letter-spacing:.16em;color:var(--w4);text-transform:uppercase}
+.sr-lead-v{font:700 18px/1 var(--mono);letter-spacing:-.02em}
+.sr-lead-v.g{color:var(--green)}.sr-lead-v.r{color:var(--red)}.sr-lead-v.a{color:var(--amber2)}
+.sr-track{flex:1 1 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.sr-track::-webkit-scrollbar{display:none}
+.sr-cell{flex:1 1 0;min-width:74px;background:var(--bg3);padding:11px 12px;border-left:1px solid var(--b1);position:relative;transition:background .15s}
+.sr-cell:hover{background:var(--s1)}
+.sr-cell::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--src,transparent)}
+.sr-tk{font:600 10px/1 var(--mono);color:var(--w2);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-v{font:600 12px/1 var(--mono);letter-spacing:-.02em}
+.sr-v.g{color:var(--green)}.sr-v.r{color:var(--red)}
+.sr-w{font:400 8px/1 var(--mono);color:var(--w5);margin-top:3px}
+@media(max-width:760px){.seasonal-ribbon{flex-direction:column}.sr-lead{flex-direction:row;align-items:center;justify-content:space-between;border-right:none;border-bottom:2px solid var(--amber2)}.sr-track{overflow-x:auto}.sr-cell{flex:0 0 84px}}
 .overview{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px;overflow:hidden;margin-bottom:28px}
 .ov-cell{background:var(--bg2);padding:18px 20px;transition:background .18s}
 .ov-cell:hover{background:var(--s1)}
@@ -136,7 +152,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .qa-btn-icon{font-size:16px}
 .qa-btn-label{font:500 11px/1 var(--sans)}
 @media(max-width:1100px){.main-grid{grid-template-columns:1fr}.tools-grid{grid-template-columns:repeat(2,1fr)}.overview{grid-template-columns:repeat(3,1fr)}.ov-cell:nth-child(4),.ov-cell:nth-child(5){display:none}}
-@media(max-width:700px){.page{padding:20px 16px 60px}.topbar{padding:0 16px}.tb-center{display:none}.tools-grid{grid-template-columns:1fr}.overview{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.page{padding:20px 16px 60px}.topbar{padding:0 14px;gap:8px}.tb-center{display:none}.tb-divider,.tb-label{display:none}.tb-left{gap:7px}.tb-right{gap:6px}.user-pill{padding:4px 9px;font-size:10px;max-width:130px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.btn-so{padding:4px 9px;font-size:10px;white-space:nowrap}.tools-grid{grid-template-columns:1fr}.overview{grid-template-columns:1fr 1fr}}
 
 /* ── ONBOARDING MODAL ── */
 .ob-overlay{position:fixed;inset:0;background:rgba(4,7,15,.82);backdrop-filter:blur(6px);z-index:9500;display:flex;align-items:center;justify-content:center;padding:24px;animation:obFade .25s ease}
@@ -234,6 +250,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       <a href="/index.html"><button class="wl-btn ghost">&#8592; Home</button></a>
     </div>
   </div>
+  <div class="seasonal-ribbon" id="seasonalRibbon"></div>
   <div class="sec-label">This Month &#8212; <span id="ovMonthLabel"></span></div>
   <div class="overview">
     <div class="ov-cell"><div class="ov-label">S&amp;P 500 avg</div><div class="ov-val" id="ov1">&#8212;</div><div class="ov-sub" id="ov1s"></div></div>
@@ -817,6 +834,51 @@ function obMaybeShow() {
 function sgn(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
 function col(v){return v>=0?'g':'r';}
 
+function buildRibbon(mi){
+  // A live terminal tape: the current month's seasonal posture across the
+  // major asset classes, with a "market read" lead block. All from PATTERNS.
+  var mn = MO_NAMES[mi];
+  var assets = [
+    {tk:'S&P 500', k:'broadIndex'},
+    {tk:'NASDAQ', k:'techGrowth'},
+    {tk:'Semis', k:'semis'},
+    {tk:'Bitcoin', k:'crypto'},
+    {tk:'Gold', k:'gold'},
+    {tk:'Energy', k:'energy'},
+    {tk:'Health', k:'healthcare'},
+    {tk:'Consumer', k:'consumer'},
+    {tk:'Defense', k:'defense'},
+    {tk:'Bonds', k:'bonds'}
+  ];
+  // Lead = breadth read across these asset classes this month
+  var pos = 0, sumAvg = 0;
+  assets.forEach(function(a){ var p=PATTERNS[a.k][mi]; if(p.avg>0) pos++; sumAvg+=p.avg; });
+  var breadth = Math.round(pos/assets.length*100);
+  var avgAll = sumAvg/assets.length;
+  var read = breadth>=70?'RISK-ON':breadth<=35?'RISK-OFF':'MIXED';
+  var readCls = breadth>=70?'g':breadth<=35?'r':'a';
+
+  var cells = assets.map(function(a){
+    var p = PATTERNS[a.k][mi];
+    var b = p.avg>=0;
+    var col = b?'var(--green)':'var(--red)';
+    var sign = b?'+':'';
+    return '<div class="sr-cell" style="--src:'+col+'" onclick="window.location=\'/market-seasonality.html\'" title="'+a.tk+' '+mn+': '+sign+p.avg.toFixed(2)+'% avg, '+p.win+'% win rate">'+
+      '<div class="sr-tk">'+a.tk+'</div>'+
+      '<div class="sr-v '+(b?'g':'r')+'">'+sign+p.avg.toFixed(1)+'%</div>'+
+      '<div class="sr-w">'+p.win+'% win</div>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('seasonalRibbon').innerHTML =
+    '<div class="sr-lead">'+
+      '<div class="sr-lead-l">'+mn+' Market Read</div>'+
+      '<div class="sr-lead-v '+readCls+'">'+read+'</div>'+
+      '<div class="sr-w">'+breadth+'% of classes positive</div>'+
+    '</div>'+
+    '<div class="sr-track">'+cells+'</div>';
+}
+
 function buildDashboard(){
   var mi=new Date().getMonth();
   var mn=MO_NAMES[mi];
@@ -825,6 +887,7 @@ function buildDashboard(){
   document.getElementById('tc7stat').textContent=mn+' edition';
 
   var sp=PATTERNS.broadIndex[mi], tg=PATTERNS.techGrowth[mi], cr=PATTERNS.crypto[mi];
+  buildRibbon(mi);
   function setOv(id,sid,v,win){
     var e=document.getElementById(id); e.textContent=sgn(v); e.className='ov-val '+col(v);
     document.getElementById(sid).textContent=win+'% win rate';
