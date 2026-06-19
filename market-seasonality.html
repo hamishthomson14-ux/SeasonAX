@@ -244,6 +244,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .mt-bar{height:7px;background:var(--s1);border-radius:2px;overflow:hidden;width:100%}
 .mt-barfill{height:100%;border-radius:2px;width:0;transition:width .6s cubic-bezier(.4,0,.2,1)}
 @media(max-width:600px){.mt-barcell,.mtable thead th.mt-bar-h{display:none}}
+@media(max-width:600px){.sc-win{display:none}.sc-go-lbl{display:none}.sc-go{padding:5px 10px;font-size:13px}.sc-id{font-size:13px}.sc-row{gap:8px}}
 
 /* Chart panel wrapper inside tabs */
 .term-chartwrap{padding:22px 24px}
@@ -278,7 +279,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .sector-tab{background:transparent;border:1px solid var(--b2);color:var(--w4);padding:6px 14px;border-radius:20px;font:500 11px/1 var(--sans);transition:all .18s;white-space:nowrap}
 .sector-tab:hover{border-color:var(--b3);color:var(--w2)}
 .sector-tab.active{background:rgba(232,147,24,.1);border-color:rgba(232,147,24,.4);color:var(--amber2)}
-.region-badge{font:600 9px/1 var(--mono);padding:2px 6px;border-radius:3px;margin-right:7px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.region-badge{font:600 9px/1 var(--mono);padding:2px 6px;border-radius:3px;margin-right:7px;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle;flex:0 0 auto}
 .region-us{background:rgba(74,163,255,.1);color:#4DA3FF;border:1px solid rgba(74,163,255,.2)}
 .region-uk{background:rgba(200,64,64,.1);color:#E06060;border:1px solid rgba(200,64,64,.2)}
 .region-germany{background:rgba(255,200,50,.1);color:#E8B820;border:1px solid rgba(255,200,50,.2)}
@@ -411,7 +412,9 @@ button{cursor:pointer;font-family:var(--sans)}
 .sc-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-bottom:1px solid var(--b1);transition:background .12s;border-radius:4px}
 .sc-row:hover{background:var(--bg3)}
 .sc-rank{flex:0 0 20px;font:600 10px/1 var(--mono);color:var(--w5);text-align:center}
-.sc-id{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-id{flex:1 1 auto;min-width:0;display:flex;align-items:baseline;gap:6px;overflow:hidden;white-space:nowrap}
+.sc-id .ea-tk{flex:0 0 auto}
+.sc-id .ea-nm{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .sc-more{font:400 9px/1 var(--mono);color:var(--w5);margin-left:6px}
 .sc-win{flex:0 0 92px;display:flex;align-items:center;gap:6px;font:400 9px/1 var(--mono);color:var(--w4)}
 .sc-winbar{flex:1;height:4px;background:var(--s1);border-radius:2px;overflow:hidden}
@@ -4539,7 +4542,7 @@ function scRow(r, rank) {
     '<div class="sc-id"><span class="ea-tk">' + r.item.ticker + '</span><span class="ea-nm"> ' + r.item.name + '</span> ' + badge + more + '</div>' +
     '<div class="sc-win"><div class="sc-winbar"><div style="width:' + r.win + '%;height:100%;background:' + col + ';opacity:.5;border-radius:2px"></div></div><span>' + r.win + '%</span></div>' +
     '<div class="sc-avg" style="color:' + col + '">' + sign + Number(r.avg).toFixed(1) + '%</div>' +
-    '<button class="sc-go" onclick="scGo(\'' + r.item.id + '\')">Analyze \u2192</button>' +
+    '<button class="sc-go" onclick="scGo(\'' + r.item.id + '\')"><span class="sc-go-lbl">Analyze </span>\u2192</button>' +
   '</div>';
 }
 
