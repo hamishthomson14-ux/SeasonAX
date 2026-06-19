@@ -270,6 +270,13 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
 .demo-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;padding:4px 10px;border-radius:4px;background:var(--s1);color:var(--w4);border:1px solid var(--b2);transition:all .3s}
 .demo-badge.real{background:rgba(0,201,126,.1);color:var(--green);border-color:rgba(0,201,126,.3)}
 .demo-chips{display:flex;gap:7px;padding:14px 22px;border-bottom:1px solid var(--b1);flex-wrap:wrap;background:var(--bg2)}
+.demo-tape{display:flex;gap:1px;background:var(--b1);border-bottom:1px solid var(--b1)}
+.demo-tape-c{flex:1 1 0;min-width:0;background:var(--bg3);padding:8px 2px 7px;text-align:center;position:relative;overflow:hidden}
+.demo-tape-c::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--dtc,transparent)}
+.demo-tape-m{font:500 8px/1 var(--mono);color:var(--w4);letter-spacing:.02em;margin-bottom:4px;text-transform:uppercase}
+.demo-tape-v{font:600 10px/1 var(--mono);letter-spacing:-.02em;white-space:nowrap}
+.demo-tape-v.g{color:var(--green)}.demo-tape-v.r{color:var(--red)}
+.demo-tape-c.cur{background:rgba(232,147,24,.08)}.demo-tape-c.cur .demo-tape-m{color:var(--amber2)}
 .demo-chip{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:7px 15px;border-radius:100px;font:500 12px/1 var(--sans);cursor:pointer;transition:all .18s}
 .demo-chip:hover{border-color:var(--s4);color:var(--w)}
 .demo-chip.on{background:rgba(232,147,24,.12);border-color:var(--amber2);color:var(--amber2);font-weight:600}
@@ -382,6 +389,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
         <div class="demo-badge" id="demoBadge">MODELLED</div>
       </div>
       <div class="demo-chips" id="demoChips"></div>
+      <div class="demo-tape" id="demoTape"></div>
       <div class="demo-body">
         <div class="demo-chart" id="demoChart"></div>
         <div class="demo-side">
@@ -721,6 +729,24 @@ function demoRender(monthVals, winVals, isReal) {
   if (badge) {
     if (isReal) { badge.textContent = 'VERIFIED — REAL DATA'; badge.className = 'demo-badge real'; }
     else { badge.textContent = 'LOADING REAL DATA…'; badge.className = 'demo-badge'; }
+  }
+
+  // Signature seasonal tape — whole year at a glance, matches the app
+  var tape = document.getElementById('demoTape');
+  if (tape) {
+    var curMo = new Date().getMonth();
+    var th = '';
+    for (var t = 0; t < 12; t++) {
+      var tv = monthVals[t];
+      var pos = tv >= 0;
+      var tcol = pos ? 'var(--green)' : 'var(--red)';
+      var tnorm = Math.abs(tv) / maxAbs;
+      th += '<div class="demo-tape-c' + (t === curMo ? ' cur' : '') + '" style="--dtc:' + tcol + '">' +
+        '<div class="demo-tape-m">' + DEMO_MO[t] + '</div>' +
+        '<div class="demo-tape-v ' + (pos ? 'g' : 'r') + '" style="opacity:' + (0.55 + tnorm * 0.45).toFixed(2) + '">' + (pos ? '+' : '') + tv.toFixed(1) + '</div>' +
+      '</div>';
+    }
+    tape.innerHTML = th;
   }
 }
 
