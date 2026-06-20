@@ -24,12 +24,13 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5) {
   const cutoffYear = new Date().getFullYear() - yearsWanted;
   for (let i = 1; i < rows.length; i++) {
     const prev = rows[i - 1], cur = rows[i];
-    const dt = new Date(cur.d);
-    if (dt.getFullYear() < cutoffYear) continue;
+    const yr = +cur.d.slice(0, 4);          // parse 'YYYY-MM-DD' directly (no TZ drift)
+    const mo = +cur.d.slice(5, 7) - 1;       // 0-indexed month
+    if (yr < cutoffYear) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     const ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    byMonth[dt.getMonth()].push(ret);
+    byMonth[mo].push(ret);
   }
   const months = [];
   for (let m = 0; m < 12; m++) {
@@ -70,7 +71,7 @@ const YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
 
 export async function fetchMonthly(sym) {
   for (const host of YAHOO_HOSTS) {
-    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1mo';
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
     let json = null;
     try {
       const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
@@ -81,12 +82,21 @@ export async function fetchMonthly(sym) {
     const result = json && json.chart && json.chart.result && json.chart.result[0];
     const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
     if (!result || !result.timestamp || !quote) continue;
-    const rows = [];
+    const adj = result.indicators.adjclose && result.indicators.adjclose[0];
+    const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+    // Roll daily closes up to one observation per calendar month (last close
+    // in each UTC month). Avoids Yahoo's 1mo boundary drift that skips/dups
+    // months for non-US exchanges (e.g. .L listings missing October).
+    const byYM = new Map();
     for (let i = 0; i < result.timestamp.length; i++) {
-      const c = quote.close[i];
+      const c = closes[i];
       if (c == null || !isFinite(c)) continue;
-      rows.push({ d: new Date(result.timestamp[i] * 1000).toISOString().slice(0, 10), c });
+      const ym = new Date(result.timestamp[i] * 1000).toISOString().slice(0, 7);
+      byYM.set(ym, c);
     }
+    const rows = Array.from(byYM.entries())
+      .map(([ym, c]) => ({ d: ym + '-01', c }))
+      .sort((a, b) => a.d < b.d ? -1 : 1);
     if (rows.length < 24) return null;
     return rows;
   }
