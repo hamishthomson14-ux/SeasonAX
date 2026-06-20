@@ -37,14 +37,15 @@ a{color:inherit;text-decoration:none}
 .glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(232,147,24,.08),transparent 65%);pointer-events:none}
 
 .content{position:relative;z-index:1;max-width:520px}
-.chart{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:36px;height:90px}
-.bar{width:18px;border-radius:4px 4px 0 0;animation:rise 1.4s ease-out infinite alternate}
-.bar:nth-child(1){height:30px;background:var(--green);animation-delay:0s}
-.bar:nth-child(2){height:55px;background:var(--green);animation-delay:.1s}
-.bar:nth-child(3){height:25px;background:var(--amber);animation-delay:.2s}
-.bar:nth-child(4){height:80px;background:var(--amber);animation-delay:.3s}
-.bar:nth-child(5){height:40px;background:var(--amber2);animation-delay:.4s}
-@keyframes rise{from{opacity:.5;transform:scaleY(.8)}to{opacity:1;transform:scaleY(1)}}
+.tape404{display:flex;gap:2px;justify-content:center;margin-bottom:36px;flex-wrap:nowrap}
+.t4{flex:0 0 auto;width:28px;background:var(--bg3);border:1px solid var(--b2);border-radius:5px;padding:8px 0 0;font:600 9px/1 var(--mono);color:var(--w4);display:flex;flex-direction:column;align-items:center;gap:7px;overflow:hidden}
+.t4 i{display:block;width:100%;height:3px;background:transparent}
+.t4 i.g{background:var(--green)}
+.t4 i.r{background:var(--red)}
+.t4.miss{color:var(--amber2);border-color:var(--amber2);border-style:dashed;animation:miss404 1.6s ease-in-out infinite}
+.t4.miss i{background:var(--amber2);opacity:.5}
+@keyframes miss404{0%,100%{opacity:.45}50%{opacity:1}}
+@media(max-width:520px){.t4{width:24px;font-size:8px}}
 
 .code{font:800 16px/1 var(--mono);letter-spacing:.3em;color:var(--amber2);margin-bottom:18px}
 .h{font:800 56px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
@@ -92,16 +93,23 @@ footer{padding:24px 32px;text-align:center;font:400 11px/1 var(--mono);color:var
   <div class="dg" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
   <div class="content">
-    <div class="chart">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
+    <div class="tape404" aria-hidden="true">
+      <div class="t4">J<i class="g"></i></div>
+      <div class="t4">F<i class="g"></i></div>
+      <div class="t4">M<i class="g"></i></div>
+      <div class="t4">A<i class="g"></i></div>
+      <div class="t4">M<i class="r"></i></div>
+      <div class="t4">J<i class="g"></i></div>
+      <div class="t4 miss">?<i></i></div>
+      <div class="t4">A<i class="r"></i></div>
+      <div class="t4">S<i class="r"></i></div>
+      <div class="t4">O<i class="g"></i></div>
+      <div class="t4">N<i class="g"></i></div>
+      <div class="t4">D<i class="g"></i></div>
     </div>
     <div class="code">ERROR 404</div>
     <h1 class="h">This page isn&rsquo;t in<br>our <em>seasonal data</em> either.</h1>
-    <p class="sub">The page you&rsquo;re looking for doesn&rsquo;t exist or has moved. But <strong>430+ assets</strong> and <strong>9 analysis tools</strong> are exactly where you left them.</p>
+    <p class="sub">The page you&rsquo;re looking for doesn&rsquo;t exist or has moved. But <strong>750+ assets</strong> and <strong>10 analysis tools</strong> are exactly where you left them.</p>
     <div class="actions">
       <a href="/dashboard.html"><button class="btn primary">Go to Dashboard &rarr;</button></a>
       <a href="/index.html"><button class="btn ghost">Back to Home</button></a>
