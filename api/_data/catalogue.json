@@ -712,7 +712,7 @@
   },
   {
     "id": "sq",
-    "ticker": "SQ",
+    "ticker": "XYZ",
     "name": "Block (Square)",
     "sector": "Fintech",
     "region": "US",
@@ -1693,7 +1693,7 @@
   },
   {
     "id": "lsl",
-    "ticker": "LSE.L",
+    "ticker": "LSEG.L",
     "name": "London Stock Exchange",
     "sector": "Exchange",
     "region": "UK",
@@ -1711,7 +1711,7 @@
   },
   {
     "id": "intv",
-    "ticker": "IG.L",
+    "ticker": "IGG.L",
     "name": "IG Group",
     "sector": "Trading Platform",
     "region": "UK",
@@ -1732,15 +1732,6 @@
     "ticker": "AJB.L",
     "name": "AJ Bell",
     "sector": "Retail Invest.",
-    "region": "UK",
-    "pattern": "financials",
-    "catSection": "UK Banking & Finance"
-  },
-  {
-    "id": "harg",
-    "ticker": "HL.L",
-    "name": "Hargreaves Lansdown",
-    "sector": "Wealth Mgmt",
     "region": "UK",
     "pattern": "financials",
     "catSection": "UK Banking & Finance"
@@ -1908,15 +1899,6 @@
     "catSection": "UK Pharma & Health"
   },
   {
-    "id": "evolv",
-    "ticker": "EVO.L",
-    "name": "Evolution Gaming",
-    "sector": "Online Gaming",
-    "region": "UK",
-    "pattern": "consumer",
-    "catSection": "UK Pharma & Health"
-  },
-  {
     "id": "ncyt",
     "ticker": "NCYT.L",
     "name": "Novacyt",
@@ -1999,7 +1981,7 @@
   },
   {
     "id": "flts",
-    "ticker": "FLTX.L",
+    "ticker": "FLTR.L",
     "name": "Flutter Entertainment",
     "sector": "Betting",
     "region": "UK",
@@ -2020,15 +2002,6 @@
     "ticker": "WPP.L",
     "name": "WPP",
     "sector": "Advertising",
-    "region": "UK",
-    "pattern": "consumer",
-    "catSection": "UK Consumer & Retail"
-  },
-  {
-    "id": "pub",
-    "ticker": "PUB.L",
-    "name": "Pub Group",
-    "sector": "Hospitality",
     "region": "UK",
     "pattern": "consumer",
     "catSection": "UK Consumer & Retail"
@@ -2061,35 +2034,8 @@
     "catSection": "UK Technology"
   },
   {
-    "id": "avsuk",
-    "ticker": "AVS.L",
-    "name": "Avast",
-    "sector": "Cybersecurity",
-    "region": "UK",
-    "pattern": "techGrowth",
-    "catSection": "UK Technology"
-  },
-  {
-    "id": "darkt",
-    "ticker": "DARK.L",
-    "name": "Darktrace",
-    "sector": "AI Security",
-    "region": "UK",
-    "pattern": "speculative",
-    "catSection": "UK Technology"
-  },
-  {
-    "id": "aveva",
-    "ticker": "AVV.L",
-    "name": "AVEVA",
-    "sector": "Industrial SW",
-    "region": "UK",
-    "pattern": "techGrowth",
-    "catSection": "UK Technology"
-  },
-  {
     "id": "autocad",
-    "ticker": "ATC.L",
+    "ticker": "AUTO.L",
     "name": "Auto Trader",
     "sector": "Online Auto",
     "region": "UK",
@@ -2160,24 +2106,6 @@
     "catSection": "UK Industrials & Defense"
   },
   {
-    "id": "megg",
-    "ticker": "MGGT.L",
-    "name": "Meggitt",
-    "sector": "Aerospace",
-    "region": "UK",
-    "pattern": "defense",
-    "catSection": "UK Industrials & Defense"
-  },
-  {
-    "id": "spmk",
-    "ticker": "SMDS.L",
-    "name": "Smith & Nephew",
-    "sector": "Medical Devices",
-    "region": "UK",
-    "pattern": "healthcare",
-    "catSection": "UK Industrials & Defense"
-  },
-  {
     "id": "croda",
     "ticker": "CRDA.L",
     "name": "Croda International",
@@ -2224,7 +2152,7 @@
   },
   {
     "id": "smw",
-    "ticker": "SMW.L",
+    "ticker": "SMIN.L",
     "name": "Smiths Group",
     "sector": "Diversified Ind.",
     "region": "UK",
@@ -2242,7 +2170,7 @@
   },
   {
     "id": "btem",
-    "ticker": "BT.A.L",
+    "ticker": "BT-A.L",
     "name": "BT Group",
     "sector": "Telecom",
     "region": "UK",
@@ -2272,15 +2200,6 @@
     "ticker": "SGRO.L",
     "name": "Segro",
     "sector": "Logistics REIT",
-    "region": "UK",
-    "pattern": "financials",
-    "catSection": "UK Telecoms & Property"
-  },
-  {
-    "id": "lxb",
-    "ticker": "LXB.L",
-    "name": "LXi REIT",
-    "sector": "REIT",
     "region": "UK",
     "pattern": "financials",
     "catSection": "UK Telecoms & Property"
@@ -2337,15 +2256,6 @@
     "sector": "Chip Equipment",
     "region": "Germany",
     "pattern": "semis",
-    "catSection": "German Technology"
-  },
-  {
-    "id": "wmk",
-    "ticker": "WMK.DE",
-    "name": "Wirecard (hist.)",
-    "sector": "Fintech",
-    "region": "Germany",
-    "pattern": "speculative",
     "catSection": "German Technology"
   },
   {
@@ -2443,15 +2353,6 @@
     "ticker": "PAH3.DE",
     "name": "Porsche AG",
     "sector": "Sports Cars",
-    "region": "Germany",
-    "pattern": "germanAuto",
-    "catSection": "German Automotive"
-  },
-  {
-    "id": "audi",
-    "ticker": "NSU.DE",
-    "name": "Audi (via VW)",
-    "sector": "Premium Autos",
     "region": "Germany",
     "pattern": "germanAuto",
     "catSection": "German Automotive"
@@ -2566,7 +2467,7 @@
   },
   {
     "id": "fms",
-    "ticker": "FMS.DE",
+    "ticker": "FME.DE",
     "name": "Fresenius Medical",
     "sector": "Dialysis",
     "region": "Germany",
@@ -2620,7 +2521,7 @@
   },
   {
     "id": "siko",
-    "ticker": "SIK.DE",
+    "ticker": "SIKA.SW",
     "name": "Sika AG",
     "sector": "Construction Chem",
     "region": "Germany",
@@ -2701,7 +2602,7 @@
   },
   {
     "id": "hex",
-    "ticker": "H24.DE",
+    "ticker": "HYQ.DE",
     "name": "Hypoport",
     "sector": "Mortgage Platform",
     "region": "Germany",
@@ -2772,35 +2673,8 @@
     "catSection": "German Consumer & Retail"
   },
   {
-    "id": "rhkg",
-    "ticker": "RHKG.DE",
-    "name": "Rewe Group",
-    "sector": "Supermarkets",
-    "region": "Germany",
-    "pattern": "consumer",
-    "catSection": "German Consumer & Retail"
-  },
-  {
-    "id": "obi",
-    "ticker": "OBI.DE",
-    "name": "OBI",
-    "sector": "Home Improvement",
-    "region": "Germany",
-    "pattern": "consumer",
-    "catSection": "German Consumer & Retail"
-  },
-  {
-    "id": "metro",
-    "ticker": "B4B.DE",
-    "name": "Metro AG",
-    "sector": "Wholesale",
-    "region": "Germany",
-    "pattern": "consumer",
-    "catSection": "German Consumer & Retail"
-  },
-  {
     "id": "pro7",
-    "ticker": "P7S1.DE",
+    "ticker": "PSM.DE",
     "name": "ProSiebenSat.1",
     "sector": "Broadcasting",
     "region": "Germany",
@@ -2854,7 +2728,7 @@
   },
   {
     "id": "orsted",
-    "ticker": "ORSTED.DE",
+    "ticker": "ORSTED.CO",
     "name": "Orsted",
     "sector": "Offshore Wind",
     "region": "Germany",
@@ -3673,7 +3547,7 @@
   },
   {
     "id": "reliance",
-    "ticker": "RELI.NS",
+    "ticker": "RELIANCE.NS",
     "name": "Reliance Industries",
     "sector": "Conglomerate",
     "region": "Asia",
@@ -5787,15 +5661,6 @@
     "catSection": "German Finance & Insurance"
   },
   {
-    "id": "arl",
-    "ticker": "ARL.DE",
-    "name": "Aareal Bank",
-    "sector": "Commercial Real Estate Bank",
-    "region": "Germany",
-    "pattern": "financials",
-    "catSection": "German Finance & Insurance"
-  },
-  {
     "id": "hfg",
     "ticker": "HFG.DE",
     "name": "HelloFresh",
@@ -5874,15 +5739,6 @@
     "sector": "Theme Parks",
     "region": "Asia",
     "pattern": "consumer",
-    "catSection": "Japan"
-  },
-  {
-    "id": "9613",
-    "ticker": "9613.T",
-    "name": "NTT Data",
-    "sector": "IT Services",
-    "region": "Asia",
-    "pattern": "techGrowth",
     "catSection": "Japan"
   },
   {
