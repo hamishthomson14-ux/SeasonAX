@@ -84,8 +84,14 @@ export default async function handler(req, res) {
     const key = 'h:' + sym;
     let rows = cacheGet(key, HIST_TTL);
     if (!rows) {
-      const { result, debug } = await fetchChart(sym, '20y', '1mo');
+      // Fetch DAILY data and roll up to one close per calendar month
+      // ourselves. Yahoo's native 1mo candles have boundary-timestamp drift
+      // (esp. for .L / non-US exchanges) that can skip or duplicate a month
+      // — e.g. HSBA.L never emits an October candle and double-stamps March.
+      // Daily->monthly aggregation keyed on the UTC year-month is exact.
+      const { result, debug } = await fetchChart(sym, '20y', '1d');
       const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
+      const adj = result && result.indicators && result.indicators.adjclose && result.indicators.adjclose[0];
       if (!result || !result.timestamp || !quote) {
         const body = { error: 'No data for symbol', symbol: sym };
         if (req.query.debug) {
@@ -94,13 +100,18 @@ export default async function handler(req, res) {
         return res.status(404).json(body);
       }
       const ts = result.timestamp;
-      const closes = quote.close;
-      rows = [];
+      const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+      // Keep the LAST valid close within each calendar month (month-end close).
+      const byYM = new Map();
       for (let i = 0; i < ts.length; i++) {
         const c = closes[i];
         if (c == null || !isFinite(c)) continue;
-        rows.push({ d: new Date(ts[i] * 1000).toISOString().slice(0, 10), c: c });
+        const ym = new Date(ts[i] * 1000).toISOString().slice(0, 7); // 'YYYY-MM' (UTC)
+        byYM.set(ym, c); // later daily rows overwrite -> last close of the month
       }
+      rows = Array.from(byYM.entries())
+        .map(([ym, c]) => ({ d: ym + '-01', c: c }))
+        .sort((a, b) => a.d < b.d ? -1 : 1);
       if (rows.length < 24) {
         return res.status(404).json({ error: 'Insufficient history', symbol: sym, rows: rows.length });
       }
