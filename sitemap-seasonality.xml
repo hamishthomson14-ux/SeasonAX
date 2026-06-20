@@ -966,11 +966,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/harg</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/bp_uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1061,11 +1056,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/evolv</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/ncyt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1126,11 +1116,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pub</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/gregg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1142,21 +1127,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/sage</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/avsuk</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/darkt</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/aveva</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -1197,16 +1167,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/qinetic</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/megg</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/spmk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -1266,11 +1226,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lxb</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/dax</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1297,11 +1252,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/aixa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/wmk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -1357,11 +1307,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/pah3</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/audi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -1537,21 +1482,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/dfv</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rhkg</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/obi</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/metro</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -3216,11 +3146,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/arl</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/hfg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -3262,11 +3187,6 @@
   </url>
   <url>
     <loc>https://timingax.co.uk/seasonality/4661</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/9613</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
