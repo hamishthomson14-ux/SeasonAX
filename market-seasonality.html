@@ -2410,13 +2410,14 @@ function computeRealMonths(rows, yearsWanted, yearFilterFn, minObs) {
   var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
   for (var i = 1; i < rows.length; i++) {
     var prev = rows[i-1], cur = rows[i];
-    var dt = new Date(cur.d);
-    if (dt.getFullYear() < cutoffYear) continue;
-    if (yearFilterFn && !yearFilterFn(dt.getFullYear())) continue;
+    var yr = +cur.d.slice(0, 4);            // parse 'YYYY-MM-DD' directly (no TZ drift)
+    var mo = +cur.d.slice(5, 7) - 1;         // 0-indexed month
+    if (yr < cutoffYear) continue;
+    if (yearFilterFn && !yearFilterFn(yr)) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     var ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    byMonth[dt.getMonth()].push(ret);
+    byMonth[mo].push(ret);
   }
   var months = [];
   for (var m = 0; m < 12; m++) {

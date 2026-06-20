@@ -58,6 +58,7 @@ button{cursor:pointer;font-family:var(--sans)}
 
 .grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:28px;align-items:start}
 @media(max-width:900px){.grid2{grid-template-columns:1fr}.overview{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.topbar{padding:0 14px;gap:8px}.tb-divider,.tb-label{display:none}.tb-left{gap:7px}.tb-right{gap:6px}.btn-so{padding:4px 9px;font-size:10px;white-space:nowrap}}
 
 .card{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;overflow:hidden}
 .card-head{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
@@ -305,12 +306,13 @@ function hasMonthlyCoverage(rows, yearsWanted, minObs) {
   var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
   for (var i = 1; i < rows.length; i++) {
     var prev = rows[i-1], cur = rows[i];
-    var dt = new Date(cur.d);
-    if (dt.getFullYear() < cutoffYear) continue;
+    var yr = +cur.d.slice(0, 4);
+    var mo = +cur.d.slice(5, 7) - 1;
+    if (yr < cutoffYear) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     var ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    byMonth[dt.getMonth()].push(ret);
+    byMonth[mo].push(ret);
   }
   for (var m = 0; m < 12; m++) { if (byMonth[m].length < (minObs || 5)) return false; }
   return true;
