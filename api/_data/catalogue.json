@@ -1431,15 +1431,6 @@
     "catSection": "US Communications & Media"
   },
   {
-    "id": "nflx2",
-    "ticker": "NFLX",
-    "name": "Netflix",
-    "sector": "Streaming",
-    "region": "US",
-    "pattern": "techGrowth",
-    "catSection": "US Communications & Media"
-  },
-  {
     "id": "wbd",
     "ticker": "WBD",
     "name": "Warner Bros.",
