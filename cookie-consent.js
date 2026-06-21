@@ -8,9 +8,27 @@
 //     (functional - stays on your device, only syncs if you're logged in)
 //
 // Because there's nothing non-essential to opt in/out of, this is an
-// informational notice rather than an accept/reject gate. If analytics
-// or other non-essential storage is added in future, this script should
-// be upgraded to a proper consent gate before that change ships.
+// informational notice rather than an accept/reject gate.
+//
+// ANALYTICS: We use Cloudflare Web Analytics, which is COOKIELESS and
+// privacy-first - it sets no cookies, stores nothing on the visitor's
+// device, and collects no personal data or cross-site identifiers. This
+// is why it does not require a consent gate and does not contradict our
+// privacy policy (no Google Analytics, no tracking cookies, no ad trackers).
+// To activate: create a free Cloudflare Web Analytics site in your
+// Cloudflare dashboard and paste the generated token below.
+
+(function () {
+  // ── Cloudflare Web Analytics (cookieless) ──
+  var CF_TOKEN = 'script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4fc389ba53334f75a1b1ed5a2df87b50"}'></script>';
+  if (CF_TOKEN && CF_TOKEN.indexOf('REPLACE_WITH') === -1) {
+    var cf = document.createElement('script');
+    cf.defer = true;
+    cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    cf.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_TOKEN }));
+    document.head.appendChild(cf);
+  }
+})();
 
 (function () {
   var KEY = 'sx_cookie_notice_seen';
