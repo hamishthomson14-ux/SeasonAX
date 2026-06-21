@@ -796,11 +796,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nflx2</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://timingax.co.uk/seasonality/wbd</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

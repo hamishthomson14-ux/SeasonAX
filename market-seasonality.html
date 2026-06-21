@@ -13,6 +13,7 @@
 <meta property="og:title" content="TimingAX — Global Seasonal Pattern Analyzer">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://timingax.co.uk/market-seasonality.html">
+<link rel="canonical" href="https://timingax.co.uk/market-seasonality.html">
 <meta property="og:image" content="https://timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
@@ -566,7 +567,7 @@ body.is-pro .mt-lock{display:none}
   </div>
 </nav>
 
-<div class="page">
+<div class="page" role="main">
 
   <!-- MODE SWITCHER -->
   <div class="mode-bar">
@@ -593,7 +594,7 @@ body.is-pro .mt-lock{display:none}
   <div id="modeAnalyzer">
   <!-- FILTER BAR -->
   <div class="filter-bar">
-    <input type="text" class="filter-search" id="searchBox" placeholder="Search ticker, name or market..." oninput="handleSearch()">
+    <input type="text" class="filter-search" id="searchBox" aria-label="Search assets by ticker, name or market" placeholder="Search ticker, name or market..." oninput="handleSearch()">
   </div>
   <div class="region-bar" id="regionTabs"></div>
   <div class="sector-bar" id="sectorTabs"></div>
@@ -602,7 +603,7 @@ body.is-pro .mt-lock{display:none}
   <div class="browser" id="browser"></div>
 
   <!-- ANALYSIS SECTION -->
-  <div id="analysis" style="display:none">
+  <div id="analysis" style="display:none" role="region" aria-live="polite" aria-label="Seasonal analysis results">
     <div class="sel-header">
       <div class="sel-left">
         <div class="sel-ticker" id="selTicker">—</div>
@@ -763,7 +764,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
   <div id="modeWatchlist" style="display:none">
     <div class="bt-config" style="margin-bottom:18px;position:relative">
       <div class="bt-label" style="margin-bottom:8px">Add an asset (max 10)</div>
-      <input type="text" class="filter-search" id="wlSearch" placeholder="Search ticker or name to add..." autocomplete="off">
+      <input type="text" class="filter-search" id="wlSearch" aria-label="Search ticker or name to add to watchlist" placeholder="Search ticker or name to add..." autocomplete="off">
       <div class="wl-suggest" id="wlSuggest" style="display:none"></div>
     </div>
     <div class="bt-stats" id="wlStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
@@ -820,7 +821,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
   <div id="modePortfolio" style="display:none">
     <div class="bt-config" style="margin-bottom:18px;position:relative">
       <div class="bt-label" style="margin-bottom:8px">Add a holding (max 15)</div>
-      <input type="text" class="filter-search" id="pfSearchBox" placeholder="Search ticker or name to add..." autocomplete="off" oninput="pfSuggest()">
+      <input type="text" class="filter-search" id="pfSearchBox" aria-label="Search ticker or name to add to portfolio" placeholder="Search ticker or name to add..." autocomplete="off" oninput="pfSuggest()">
       <div class="wl-suggest" id="pfSuggestBox" style="display:none"></div>
     </div>
     <div id="pfHoldings"></div>
@@ -878,7 +879,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
     <div class="pw-line"></div>
     <div class="pw-icon">🔒</div>
     <div class="pw-title" id="pwTitle">You&rsquo;ve used your 3 free analyses</div>
-    <div class="pw-sub" id="pwSub">Create a free account to get 3 analyses per month, or upgrade to Pro (&pound;19.99/mo) for unlimited access to all 430+ assets.</div>
+    <div class="pw-sub" id="pwSub">Create a free account to get 3 analyses per month, or upgrade to Pro (&pound;19.99/mo) for unlimited access to all 730+ assets.</div>
     <div class="pw-btns">
       <a href="/auth.html" class="pw-primary">Create free account</a>
       <a href="/index.html#pricing" class="pw-ghost">View plans from £19.99/mo</a>
@@ -1209,7 +1210,6 @@ const CATALOGUE = [
 { id:"bwa", ticker:"BWA", name:"BorgWarner", sector:"Auto Parts", region:"US", pattern:"evGrowth" },
 { section:"US Communications & Media", region:"US" },
 { id:"dis",   ticker:"DIS",   name:"Walt Disney",       sector:"Entertainment",   region:"US", pattern:"consumer" },
-{ id:"nflx2", ticker:"NFLX",  name:"Netflix",           sector:"Streaming",       region:"US", pattern:"techGrowth" },
 { id:"wbd",   ticker:"WBD",   name:"Warner Bros.",      sector:"Media",           region:"US", pattern:"consumer" },
 { id:"t_us",  ticker:"T",     name:"AT&T",              sector:"Telecom",         region:"US", pattern:"bonds" },
 { id:"vz",    ticker:"VZ",    name:"Verizon",           sector:"Telecom",         region:"US", pattern:"bonds" },
@@ -3276,16 +3276,16 @@ function showPaywall(reason, toolName){
   var sub = document.getElementById('pwSub');
   if(reason === 'asset'){
     if(title) title.textContent = 'This asset is part of Pro';
-    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 430+ assets \u2014 individual stocks, crypto and every regional market.';
+    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 730+ assets \u2014 individual stocks, crypto and every regional market.';
   } else if(reason === 'tool'){
     if(title) title.textContent = (toolName || 'This tool') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 430+ assets and every other tool.';
+    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 730+ assets and every other tool.';
   } else if(reason === 'feature'){
     if(title) title.textContent = (toolName || 'This feature') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 430+ assets and every other tool.';
+    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 730+ assets and every other tool.';
   } else {
     if(title) title.textContent = 'You\u2019ve used your 3 free analyses';
-    if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 430+ assets.';
+    if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 730+ assets.';
   }
   document.getElementById('paywallOverlay').style.display = 'flex';
 }
