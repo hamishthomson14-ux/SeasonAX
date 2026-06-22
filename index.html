@@ -188,6 +188,8 @@ button{cursor:pointer;font-family:var(--sans)}
 /* PRICING */
 .pricing{max-width:1200px;margin:0 auto;padding:100px 48px}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-top:56px}
+.price-grid-2{grid-template-columns:repeat(2,1fr);max-width:760px;margin-left:auto;margin-right:auto}
+.pc-fine{font:400 11px/1.4 var(--mono);color:var(--w4);text-align:center;margin-top:12px}
 .pc{background:var(--bg);padding:40px 32px;position:relative;transition:background .18s}
 .pc:hover{background:var(--bg2)}
 .pc.hot{background:var(--bg2)}
@@ -536,15 +538,15 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
   <div class="eyebrow">Pricing</div>
   <h2 class="sec-h">Simple pricing.<br><em>No dark patterns.</em></h2>
   <p class="sec-p" style="margin-bottom:0">One click to cancel. No retention screens. No &ldquo;are you sure?&rdquo; loops.</p>
-  <div class="price-grid reveal-stagger">
+  <div class="price-grid price-grid-2 reveal-stagger">
     <div class="pc">
       <div class="pc-tier">Free</div>
       <div class="pc-amt"><sup>&pound;</sup>0</div>
-      <div class="pc-per">Forever free &middot; no card needed</div>
+      <div class="pc-per">Free forever &middot; no card needed</div>
       <div class="pc-div"></div>
       <ul class="pc-feats">
-        <li><span class="y">&#10003;</span>3 analyses per month</li>
-        <li><span class="y">&#10003;</span>Index funds &amp; ETFs only</li>
+        <li><span class="y">&#10003;</span>5 analyses per month</li>
+        <li><span class="y">&#10003;</span>Index funds &amp; ETFs universe</li>
         <li><span class="y">&#10003;</span>15-year history window</li>
         <li><span class="y">&#10003;</span>Event Studies (free)</li>
         <li><span class="y">&#10003;</span>Economic Calendar (free)</li>
@@ -552,41 +554,27 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36
         <li class="off"><span class="n">&mdash;</span>Screener &amp; Watchlist</li>
         <li class="off"><span class="n">&mdash;</span>Backtest &amp; Earnings tracker</li>
       </ul>
-      <a href="/auth.html"><button class="pc-btn g">Get started free</button></a>
+      <a href="/auth.html"><button class="pc-btn g">Create free account</button></a>
     </div>
     <div class="pc hot">
       <div class="pc-line" style="background:var(--amber)"></div>
-      <div class="pc-tier">Pro &middot; Most Popular</div>
+      <div class="pc-tier">Pro &middot; 7-Day Free Trial</div>
       <div class="pc-amt"><sup>&pound;</sup>19<sub>.99/mo</sub></div>
-      <div class="pc-per">Billed monthly &middot; cancel anytime<br>
-          <button style="background:none;border:none;color:var(--amber2);font:500 12px/1 var(--mono);cursor:pointer;margin-top:8px;padding:0;text-decoration:underline" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Switch to annual &mdash; &pound;149/yr (save &pound;91)</button></div>
+      <div class="pc-per">Free for 7 days, then &pound;19.99/mo &middot; cancel anytime<br>
+          <button style="background:none;border:none;color:var(--amber2);font:500 12px/1 var(--mono);cursor:pointer;margin-top:8px;padding:0;text-decoration:underline" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Or go annual &mdash; &pound;149/yr (save &pound;91)</button></div>
       <div class="pc-div"></div>
       <ul class="pc-feats">
         <li><span class="y">&#10003;</span>Unlimited analyses</li>
-        <li><span class="y">&#10003;</span>All 730+ global assets</li>
+        <li><span class="y">&#10003;</span>All 733 global assets</li>
         <li><span class="y">&#10003;</span>1&ndash;20 year history windows</li>
         <li><span class="y">&#10003;</span>All 10 platform tools</li>
-        <li><span class="y">&#10003;</span>Screener + Watchlist (10 assets)</li>
+        <li><span class="y">&#10003;</span>Screener + Watchlist</li>
         <li><span class="y">&#10003;</span>25-year strategy backtest</li>
+        <li><span class="y">&#10003;</span>Email seasonal alerts</li>
         <li><span class="y">&#10003;</span>Priority support</li>
       </ul>
-      <button class="pc-btn p" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Subscribe &mdash; &pound;19.99/mo</button>
-    </div>
-    <div class="pc">
-      <div class="pc-tier">Lifetime</div>
-      <div class="pc-amt"><sup>&pound;</sup>299</div>
-      <div class="pc-per">Pay once &middot; use forever &middot; no subscription ever</div>
-      <div class="pc-div"></div>
-      <ul class="pc-feats">
-        <li><span class="y">&#10003;</span>Everything in Pro</li>
-        <li><span class="y">&#10003;</span>Extended Watchlist (25 assets)</li>
-        <li><span class="y">&#10003;</span>Email seasonal alerts</li>
-        <li><span class="y">&#10003;</span>Founding member badge</li>
-        <li><span class="y">&#10003;</span>API access (100 req/day)</li>
-        <li><span class="y">&#10003;</span>Vote on the roadmap</li>
-        <li><span class="y">&#10003;</span>Early access to new tools</li>
-      </ul>
-      <button class="pc-btn g" onclick="stripeCheckout('price_1ThF5A2MZ73Stw01PfOUuDNl','payment')">Buy lifetime &mdash; &pound;299</button>
+      <button class="pc-btn p" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Start 7-day free trial</button>
+      <div class="pc-fine">No charge today &middot; we&rsquo;ll email you before the trial ends</div>
     </div>
   </div>
 </section>

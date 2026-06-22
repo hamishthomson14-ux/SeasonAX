@@ -878,14 +878,14 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
   <div class="pw-card">
     <div class="pw-line"></div>
     <div class="pw-icon">🔒</div>
-    <div class="pw-title" id="pwTitle">You&rsquo;ve used your 3 free analyses</div>
-    <div class="pw-sub" id="pwSub">Create a free account to get 3 analyses per month, or upgrade to Pro (&pound;19.99/mo) for unlimited access to all 730+ assets.</div>
+    <div class="pw-title" id="pwTitle">Create a free account to analyze</div>
+    <div class="pw-sub" id="pwSub">TimingAX is free to start &mdash; no card needed. Sign up to run 5 seasonal analyses every month.</div>
     <div class="pw-btns">
-      <a href="/auth.html" class="pw-primary">Create free account</a>
-      <a href="/index.html#pricing" class="pw-ghost">View plans from £19.99/mo</a>
+      <a href="/auth.html" class="pw-primary" id="pwPrimary">Create free account</a>
+      <a href="/index.html#pricing" class="pw-ghost" id="pwGhost">Start 7-day Pro trial</a>
       <button class="pw-skip" onclick="document.getElementById('paywallOverlay').style.display='none'">Maybe later</button>
     </div>
-    <div class="pw-usage">Used: 3/3 free analyses this month</div>
+    <div class="pw-usage" id="pwUsage"></div>
   </div>
 </div>
 
@@ -3191,7 +3191,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 5;
 let analysisCount = 0;
 
 async function initAuth(){
@@ -3257,6 +3257,11 @@ function trackAnalysis(){
 
 function checkUsageLimit(){
   if(isPro()) return true;
+  // Account now required to run any analysis — no anonymous access.
+  if(!currentUser){
+    showPaywall('signup');
+    return false;
+  }
   if(analysisCount >= FREE_LIMIT){
     showPaywall('limit');
     return false;
@@ -3276,16 +3281,37 @@ function showPaywall(reason, toolName){
   var sub = document.getElementById('pwSub');
   if(reason === 'asset'){
     if(title) title.textContent = 'This asset is part of Pro';
-    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 730+ assets \u2014 individual stocks, crypto and every regional market.';
+    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 733 assets \u2014 individual stocks, crypto and every regional market.';
+  } else if(reason === 'signup'){
+    if(title) title.textContent = 'Create a free account to analyze';
+    if(sub) sub.innerHTML = 'TimingAX is free to start \u2014 no card needed. Sign up to run <strong>5 seasonal analyses every month</strong> across our index &amp; ETF universe, plus Event Studies and the Economic Calendar.';
   } else if(reason === 'tool'){
     if(title) title.textContent = (toolName || 'This tool') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 730+ assets and every other tool.';
+    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 733 assets and every other tool.';
   } else if(reason === 'feature'){
     if(title) title.textContent = (toolName || 'This feature') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 730+ assets and every other tool.';
+    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 733 assets and every other tool.';
   } else {
-    if(title) title.textContent = 'You\u2019ve used your 3 free analyses';
-    if(sub) sub.innerHTML = (currentUser ? 'You\u2019re on the Free plan \u2014 ' : 'Create a free account to get ') + '3 analyses per month' + (currentUser ? '.' : ', or ') + ' Upgrade to Pro (\u00a319.99/mo) for unlimited access to all 730+ assets.';
+    if(title) title.textContent = 'You\u2019ve used your 5 free analyses';
+    if(sub) sub.innerHTML = 'You\u2019re on the Free plan \u2014 5 analyses per month. Start a <strong>7-day free Pro trial</strong> for unlimited analyses across all 733 assets and every tool.';
+  }
+  // Adapt buttons + usage line to context
+  var pwPrimary = document.getElementById('pwPrimary');
+  var pwGhost = document.getElementById('pwGhost');
+  var pwUsage = document.getElementById('pwUsage');
+  if(reason === 'signup'){
+    if(pwPrimary){ pwPrimary.textContent = 'Create free account'; pwPrimary.setAttribute('href','/auth.html'); }
+    if(pwGhost){ pwGhost.textContent = 'See plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
+    if(pwUsage) pwUsage.textContent = 'Free \u00b7 no card needed';
+  } else if(currentUser){
+    // Logged-in free user who hit the limit, or asset/tool gate -> push the trial
+    if(pwPrimary){ pwPrimary.textContent = 'Start 7-day free trial'; pwPrimary.setAttribute('href','/index.html#pricing'); }
+    if(pwGhost){ pwGhost.textContent = 'See all plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
+    if(pwUsage) pwUsage.textContent = (reason === 'limit') ? ('Used: ' + analysisCount + '/' + FREE_LIMIT + ' free analyses this month') : '';
+  } else {
+    if(pwPrimary){ pwPrimary.textContent = 'Create free account'; pwPrimary.setAttribute('href','/auth.html'); }
+    if(pwGhost){ pwGhost.textContent = 'See plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
+    if(pwUsage) pwUsage.textContent = 'Free \u00b7 no card needed';
   }
   document.getElementById('paywallOverlay').style.display = 'flex';
 }

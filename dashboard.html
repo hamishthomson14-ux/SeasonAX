@@ -266,11 +266,11 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       <div id="upgradeBanner" style="display:none;background:rgba(232,147,24,.06);border:1px solid rgba(232,147,24,.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <div>
           <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 10 tools &amp; 730+ global assets</div>
-          <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 3 analyses/month &middot; indices &amp; ETFs only</div>
+          <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 5 analyses/month &middot; indices &amp; ETFs only</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Upgrade &mdash; &pound;19.99/mo</button>
-          <button onclick="stripeCheckout('price_1ThF5A2MZ73Stw01PfOUuDNl','payment')" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Lifetime &pound;299</button>
+          <button onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Start 7-day free trial</button>
+          <button onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Annual &mdash; &pound;149/yr</button>
         </div>
       </div>
       <div class="sec-label">Research Tools &#8212; choose where to go</div>
@@ -755,7 +755,7 @@ var OB_STEPS = [
   {
     icon: '&#127942;', iconBg: 'rgba(0,201,126,.1)',
     title: 'Your <em>free tier.</em>',
-    body: 'You’re on the Free plan: <strong>3 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Upgrade anytime for unlimited access to all 730+ assets and every tool.',
+    body: 'You’re on the Free plan: <strong>5 analyses per month</strong>, indices &amp; ETFs only, with Event Studies and the Calendar fully unlocked. Start a 7-day free Pro trial anytime for unlimited access to all 733 assets and every tool.',
     tiers: true,
     final: true
   }
@@ -797,9 +797,9 @@ function obRender() {
 
   if (s.tiers) {
     html += '<div class="ob-tier">' +
-      '<div class="ob-tier-card"><div class="ob-tier-name">Free</div><div class="ob-tier-price">&pound;0</div><div class="ob-tier-desc">3/month<br>Indices &amp; ETFs</div></div>' +
-      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">Unlimited<br>All 730+ assets</div></div>' +
-      '<div class="ob-tier-card"><div class="ob-tier-name">Lifetime</div><div class="ob-tier-price">&pound;299</div><div class="ob-tier-desc">Pay once<br>Forever</div></div>' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Free</div><div class="ob-tier-price">&pound;0</div><div class="ob-tier-desc">5/month<br>Indices &amp; ETFs</div></div>' +
+      '<div class="ob-tier-card highlight"><div class="ob-tier-name">Pro</div><div class="ob-tier-price">&pound;19.99<span style="font-size:11px;color:var(--w4)">/mo</span></div><div class="ob-tier-desc">7-day free trial<br>All 733 assets</div></div>' +
+      '<div class="ob-tier-card"><div class="ob-tier-name">Annual</div><div class="ob-tier-price">&pound;149<span style="font-size:11px;color:var(--w4)">/yr</span></div><div class="ob-tier-desc">Save &pound;91<br>vs monthly</div></div>' +
     '</div>';
   }
 
