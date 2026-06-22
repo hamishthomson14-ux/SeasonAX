@@ -113,14 +113,50 @@ export default async function handler(req, res) {
     return `<a href="/seasonality/${a.id}" class="rel-chip">${esc(dt)}${dt !== a.name ? ` <span>${esc(a.name)}</span>` : ''}</a>`;
   }).join('');
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    'name': title,
-    'description': desc,
-    'url': url,
-    'about': { '@type': 'Thing', 'name': item.name, 'identifier': dispTicker(item) }
-  };
+  // Build the FAQ answers from the real computed figures
+  const dt = dispTicker(item);
+  const faqBestA = `Historically, ${MONTH_NAMES[best.i]} has been ${item.name}'s strongest month, averaging ${pct(best.avg)} with a ${best.win}% win rate${years ? ' over ' + years + ' years of data' : ''}. ${MONTH_NAMES[worst.i]} has been the weakest at ${pct(worst.avg)}.`;
+  const faqSeasonalA = `${item.name} shows a measurable seasonal pattern: its best and worst months differ by ${(best.avg - worst.avg).toFixed(2)} percentage points on average. ${source === 'real' ? 'These figures come from ' + years + ' years of real monthly closing prices.' : 'These figures are based on a modelled sector pattern.'} Seasonality is a historical tendency, not a prediction.`;
+  const faqNowA = `${item.name} is currently in ${MONTH_NAMES[cm]}, which has historically averaged ${pct(cur.avg)} with a ${cur.win}% win rate. ${verdict[0] === 'SEASONAL TAILWIND' ? 'That has historically been a seasonally favourable window.' : verdict[0] === 'SEASONAL HEADWIND' ? 'That has historically been a seasonally weak window.' : 'That is a historically neutral window.'}`;
+
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Dataset',
+      'name': `${dt} Monthly Seasonality Data`,
+      'description': desc,
+      'url': url,
+      'keywords': [`${item.name} seasonality`, `${dt} seasonal pattern`, `${item.name} best month`, `${item.name} monthly returns`],
+      'creator': { '@type': 'Organization', 'name': 'TimingAX', 'url': 'https://timingax.co.uk' },
+      'isAccessibleForFree': true,
+      'temporalCoverage': years ? `${new Date().getFullYear() - years}/${new Date().getFullYear()}` : undefined,
+      'variableMeasured': [
+        { '@type': 'PropertyValue', 'name': 'Average monthly return', 'unitText': 'PERCENT' },
+        { '@type': 'PropertyValue', 'name': 'Monthly win rate', 'unitText': 'PERCENT' }
+      ],
+      'about': { '@type': 'Thing', 'name': item.name, 'identifier': dt }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        { '@type': 'Question', 'name': `What is ${item.name}'s best month historically?`,
+          'acceptedAnswer': { '@type': 'Answer', 'text': faqBestA } },
+        { '@type': 'Question', 'name': `Is ${item.name} seasonal?`,
+          'acceptedAnswer': { '@type': 'Answer', 'text': faqSeasonalA } },
+        { '@type': 'Question', 'name': `How does ${item.name} historically perform in ${MONTH_NAMES[cm]}?`,
+          'acceptedAnswer': { '@type': 'Answer', 'text': faqNowA } }
+      ]
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Seasonality', 'item': 'https://timingax.co.uk/market-seasonality.html' },
+        { '@type': 'ListItem', 'position': 2, 'name': `${dt} Seasonality`, 'item': url }
+      ]
+    }
+  ];
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -185,6 +221,10 @@ tr.cur td{background:rgba(232,147,24,.06)}
 .related h3{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:10px}
 .rel-chip{display:inline-block;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:7px 12px;margin:0 6px 6px 0;font-size:12px;color:var(--w2)}
 .rel-chip span{color:var(--w4)}
+.faq{margin:36px 0;border-top:1px solid var(--b1);padding-top:28px}
+.faq h2{font-size:18px;margin:0 0 18px;color:var(--w)}
+.faq-q{font-weight:600;color:var(--w);font-size:14px;margin:18px 0 7px}
+.faq-a{color:var(--w3);font-size:13.5px;line-height:1.65}
 .disc{font-size:11px;color:var(--w4);margin-top:32px;line-height:1.7}
 footer{border-top:1px solid var(--b1);padding:20px 24px;text-align:center;font:400 11px/1.6 var(--mono);color:var(--w4)}
 footer a{color:var(--amber2)}
@@ -226,6 +266,16 @@ footer a{color:var(--amber2)}
   </table>
 
   <div class="data-note">${dataLine} Past seasonal patterns are not a guarantee of future performance. See our <a href="/methodology.html" style="color:var(--amber2)">methodology</a> for how this is calculated, or visit the <a href="/academy.html" style="color:var(--amber2)">Academy</a> to learn how to read seasonal data responsibly.</div>
+
+  <div class="faq">
+    <h2>${esc(item.name)} seasonality &mdash; common questions</h2>
+    <div class="faq-q">What is ${esc(item.name)}'s best month historically?</div>
+    <div class="faq-a">${esc(faqBestA)}</div>
+    <div class="faq-q">Is ${esc(item.name)} seasonal?</div>
+    <div class="faq-a">${esc(faqSeasonalA)}</div>
+    <div class="faq-q">How does ${esc(item.name)} historically perform in ${MONTH_NAMES[cm]}?</div>
+    <div class="faq-a">${esc(faqNowA)}</div>
+  </div>
 
   <div class="cta">
     <h2>Get the full analysis</h2>
