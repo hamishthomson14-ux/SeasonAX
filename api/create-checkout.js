@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   const { priceId, email, mode } = req.body;
   if (!priceId) return res.status(400).json({ error: 'Missing priceId' });
 
-  const origin = req.headers.origin || 'https://season-ax.vercel.app';
+  const origin = req.headers.origin || 'https://timingax.co.uk';
 
   try {
     const body = new URLSearchParams({
@@ -28,6 +28,15 @@ export default async function handler(req, res) {
       'cancel_url': `${origin}/index.html#pricing`,
       'allow_promotion_codes': 'true',
     });
+
+    // 7-day free trial on all subscriptions (Pro monthly & annual).
+    // Card is collected up front; Stripe charges automatically when the
+    // trial ends unless the user cancels. trial_settings ensures the sub
+    // is cancelled (not charged) if no valid card is on file at trial end.
+    if (mode !== 'payment') {
+      body.append('subscription_data[trial_period_days]', '7');
+      body.append('subscription_data[trial_settings][end_behavior][missing_payment_method]', 'cancel');
+    }
 
     if (email) body.append('customer_email', email);
 
