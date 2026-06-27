@@ -581,7 +581,9 @@ async function signUp() {
     document.getElementById('tabs').style.display = 'none';
   } catch(e) {
     err.className = 'r-hint';
-    err.textContent = e.message.includes('already') ? 'An account with this email already exists. Try signing in.' : (e.message || 'Sign up failed. Please try again.');
+    var msg = (typeof e === 'string') ? e : (e.message || e.msg || e.error_description || JSON.stringify(e));
+    if (!msg || msg === '{}' || msg === 'undefined') msg = 'Sign up failed. Please try again.';
+    err.textContent = msg.includes('already') ? 'An account with this email already exists. Try signing in.' : msg;
     setLoading('su_btn','su_btn_txt',false);
     document.getElementById('su_btn_txt').textContent = 'Create free account';
     document.getElementById('su_btn').disabled = false;
