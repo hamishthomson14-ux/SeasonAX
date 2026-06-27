@@ -575,7 +575,6 @@ async function signUp() {
   setLoading('su_btn','su_btn_txt',true);
   try {
     var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://timingax.co.uk/dashboard.html' } });
-    console.log('Supabase signUp response:', JSON.stringify(r));
     if (r.error) throw r.error;
     document.getElementById('confirm_email').textContent = email;
     showTab('confirm');
