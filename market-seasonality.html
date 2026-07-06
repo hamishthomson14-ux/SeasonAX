@@ -491,6 +491,10 @@ body.is-pro .mode-divider{display:none}
 
 .mt-lock{font-size:9px;opacity:.55;margin-left:3px}
 body.is-pro .mt-lock{display:none}
+.sub-tabs{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.sub-tab{font:600 12px/1 var(--mono,monospace);letter-spacing:.08em;color:var(--w3,#8F887A);background:transparent;border:1px solid var(--b1,rgba(232,147,24,.16));border-radius:6px;padding:9px 14px;cursor:pointer}
+.sub-tab:hover{color:var(--w,#F4EFE6)}
+.sub-tab.active{color:var(--amber,#E89318);border-color:var(--b2,rgba(232,147,24,.32));background:rgba(232,147,24,.07)}
 
 .data-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:4px;display:inline-block;margin-top:7px}
 .data-badge.real{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
@@ -573,16 +577,18 @@ body.is-pro .mt-lock{display:none}
   <div class="mode-bar">
     <button class="mode-tab active" id="mt_analyzer" onclick="switchMode('analyzer')">Analyzer</button>
     <button class="mode-tab" id="mt_events" onclick="switchMode('events')">Event Studies</button>
-    <button class="mode-tab" id="mt_month" onclick="switchMode('month')">This Month</button>
+    <button class="mode-tab" id="mt_month" style="display:none" onclick="switchMode('month')">This Month</button>
     <button class="mode-tab" id="mt_calendar" onclick="switchMode('calendar')">Calendar</button>
     <div class="mode-divider"></div>
     <button class="mode-tab" id="mt_backtest" onclick="switchMode('backtest')">Backtest <span class="mt-lock">&#128274;</span></button>
-    <button class="mode-tab" id="mt_earnings" onclick="switchMode('earnings')">Earnings <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_earnings" style="display:none" onclick="switchMode('earnings')">Earnings <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_screener" onclick="switchMode('screener')">Screener <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_watchlist" onclick="switchMode('watchlist')">Watchlist <span class="mt-lock">&#128274;</span></button>
     <button class="mode-tab" id="mt_pairs" onclick="switchMode('pairs')">Correlations <span class="mt-lock">&#128274;</span></button>
-    <button class="mode-tab" id="mt_portfolio" onclick="switchMode('portfolio')">Portfolio <span class="mt-lock">&#128274;</span></button>
+    <button class="mode-tab" id="mt_portfolio" style="display:none" onclick="switchMode('portfolio')">Portfolio <span class="mt-lock">&#128274;</span></button>
   </div>
+
+  <div class="bt-disclaimer" style="margin:10px 0 0;text-align:center">Historical data for information and education only &mdash; not investment advice or a personal recommendation. Past performance does not guarantee future results. Capital at risk.</div>
 
   <!-- HERO STRIP -->
   <div class="hero-strip">
@@ -702,12 +708,14 @@ body.is-pro .mt-lock{display:none}
 
   <!-- EVENT STUDIES MODE -->
   <div id="modeEvents" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab active" onclick="switchMode('events')">Market Events</button><button class="sub-tab" onclick="switchMode('earnings')">Earnings <span class="mt-lock">&#128274;</span></button></div>
     <div id="esBrowser"></div>
     <div id="esDetail" style="display:none;margin-top:36px"></div>
   </div>
 
   <!-- EARNINGS ANALYSIS MODE -->
   <div id="modeEarnings" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab" onclick="switchMode('events')">Market Events</button><button class="sub-tab active" onclick="switchMode('earnings')">Earnings <span class="mt-lock">&#128274;</span></button></div>
     <div class="bt-stats" id="eaStats" style="border-radius:12px 12px 0 0"></div>
     <div class="bt-panel">
       <div class="bt-ptitle">The Four Earnings Scenarios &mdash; computed live from the tracker below</div>
@@ -719,11 +727,11 @@ body.is-pro .mt-lock{display:none}
       <div class="ea-tablewrap"><table class="ea-table" id="eaTable"></table></div>
     </div>
     <div class="bt-panel">
-      <div class="ai-header"><span class="ai-badge">Earnings Intelligence</span><span class="ai-title">How to interpret the next report</span></div>
+      <div class="ai-header"><span class="ai-badge">Earnings Intelligence</span><span class="ai-title">Historical context for the next report</span></div>
       <div class="aitxt" style="margin-bottom:22px">The most documented anomaly in earnings is post-earnings announcement drift (PEAD): stocks that move decisively on a report tend to KEEP moving in that direction for one to three months, rather than instantly pricing everything in. You can see it in this dataset &mdash; the day-1 direction held at the one-month mark in the overwhelming majority of cases, and the day-1 verdict — from Amazon’s October 2025 surge to Meta’s post-report slide — told you where the next month was heading.
 
 The four scenarios above are the practical framework. The dangerous quadrants are the contradictory ones: a BEAT that sells off means the market is rejecting the quality of the beat &mdash; usually guidance &mdash; and those names (Palantir, Microsoft and Nvidia in this sample) continued falling for weeks. A MISS that rallies means expectations were already destroyed, and that washout has historically marked durable lows. In both cases the price reaction carried more information than the EPS line. Before the next report you trade, ask one question: what is positioning expecting? The reaction to the NUMBER is unpredictable; the reaction relative to EXPECTATIONS follows the patterns on this page.</div>
-      <div class="bt-ptitle">Earnings Playbook</div>
+      <div class="bt-ptitle">Historical Playbook</div>
       <div class="es-playbook" id="eaPlaybook"></div>
     </div>
     <div class="bt-panel last">
@@ -762,6 +770,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 
   <!-- WATCHLIST MODE -->
   <div id="modeWatchlist" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab active" onclick="switchMode('watchlist')">Watchlist</button><button class="sub-tab" onclick="switchMode('portfolio')">Portfolio</button></div>
     <div class="bt-config" style="margin-bottom:18px;position:relative">
       <div class="bt-label" style="margin-bottom:8px">Add an asset (max 10)</div>
       <input type="text" class="filter-search" id="wlSearch" aria-label="Search ticker or name to add to watchlist" placeholder="Search ticker or name to add..." autocomplete="off">
@@ -777,6 +786,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 
   <!-- THIS MONTH MODE -->
   <div id="modeMonth" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab" onclick="switchMode('calendar')">Upcoming Events</button><button class="sub-tab active" onclick="switchMode('month')">This Month in History</button></div>
     <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <div class="bt-label" style="margin:0">Month</div>
       <select class="bt-select" id="mhMonth" style="max-width:200px"></select>
@@ -819,6 +829,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 
   <!-- PORTFOLIO MODE -->
   <div id="modePortfolio" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab" onclick="switchMode('watchlist')">Watchlist</button><button class="sub-tab active" onclick="switchMode('portfolio')">Portfolio</button></div>
     <div class="bt-config" style="margin-bottom:18px;position:relative">
       <div class="bt-label" style="margin-bottom:8px">Add a holding (max 15)</div>
       <input type="text" class="filter-search" id="pfSearchBox" aria-label="Search ticker or name to add to portfolio" placeholder="Search ticker or name to add..." autocomplete="off" oninput="pfSuggest()">
@@ -863,6 +874,7 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 
   <!-- CALENDAR MODE -->
   <div id="modeCalendar" style="display:none">
+  <div class="sub-tabs"><button class="sub-tab active" onclick="switchMode('calendar')">Upcoming Events</button><button class="sub-tab" onclick="switchMode('month')">This Month in History</button></div>
     <div class="bt-stats" id="ecStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(4,1fr)"></div>
     <div class="bt-panel last">
       <div class="bt-ptitle">Upcoming market catalysts</div>
@@ -2039,31 +2051,31 @@ PATTERNS.koreanTech = [
 ];
 
 const ANALYSIS_BY_PATTERN = {
-  techGrowth: `1. KEY SEASONAL PATTERNS\nTech growth stocks follow a clear dual-peak pattern. November (+2.5%) and April (+2.0%) are the two standout months, driven by earnings cycles and holiday demand. September is the consistent danger zone at -1.4% with only a 39% win rate. The Nov–Apr window averages roughly +1.7%/month versus +0.4%/month for May–Oct.\n\n2. BEST ENTRY WINDOWS\nEarly October after the September selloff is the highest-conviction entry. Buying into Q4 captures November's strength and typically holds into the new year. April is the best spring entry, timed ahead of Q2 earnings catalysts.\n\n3. CAUTION PERIODS\nSeptember is the clear danger period. The weakness often starts mid-August (-0.3% average) and accelerates through September. These two months consistently underperform even in strong bull markets.\n\n4. SEASONAL STRATEGIES\n• September-to-November Rotation: Reduce tech exposure in late August, re-enter in early October.\n• Earnings Season Positioning: Add exposure ahead of April and July earnings cycles.\n• Year-End Hold: Once positioned in November, historical data supports holding through January.\n\n5. IMPORTANT CAVEATS\nTech seasonality is heavily influenced by a handful of mega-cap names. AI cycle momentum (2023-2025) has distorted traditional patterns. Fed rate decisions can override seasonal tendencies entirely, especially for growth stocks with high duration sensitivity.`,
+  techGrowth: `1. KEY SEASONAL PATTERNS\nTech growth stocks follow a clear dual-peak pattern. November (+2.5%) and April (+2.0%) are the two standout months, driven by earnings cycles and holiday demand. September is the consistent danger zone at -1.4% with only a 39% win rate. The Nov–Apr window averages roughly +1.7%/month versus +0.4%/month for May–Oct.\n\n2. HISTORICALLY STRONG WINDOWS\nEarly October — following the typical September selloff — has historically opened the strongest stretch of the year. In the data, Q4 strength arrived in November and typically persisted into the new year. April has been the standout spring month, coinciding with Q2 earnings catalysts.\n\n3. HISTORICALLY WEAK PERIODS\nSeptember is the clear danger period. The weakness often starts mid-August (-0.3% average) and accelerates through September. These two months consistently underperform even in strong bull markets.\n\n4. PATTERNS OBSERVED IN THE DATA\n• September-to-November Rotation: a widely studied pattern in which late-August weakness historically resolved into strength from early October.\n• Earnings-Season Effect: April and July earnings cycles have historically coincided with above-average months.\n• Year-End Persistence: once November strength arrived, it historically carried through January.\n\n5. IMPORTANT CAVEATS\nTech seasonality is heavily influenced by a handful of mega-cap names. AI cycle momentum (2023-2025) has distorted traditional patterns. Fed rate decisions can override seasonal tendencies entirely, especially for growth stocks with high duration sensitivity.`,
 
-  broadIndex: `1. KEY SEASONAL PATTERNS\nThe clearest pattern is the "Best Six Months" — November through April averages +1.2%/month versus +0.3%/month for May through October. November (+1.7%), December (+1.5%), and April (+1.5%) are the three strongest months. September is the consistent weak point at -0.7%, the only month averaging a loss over 15 years.\n\n2. BEST ENTRY WINDOWS\nLate October into November offers the best risk-adjusted entry, transitioning from the volatile October "bear killer" into the strongest seasonal period of the year. Historically, buying at end of October and holding through April captures the bulk of annual index returns.\n\n3. CAUTION PERIODS\nAugust (-0.2%, 47% win rate) through September (-0.7%, 42% win rate) is the danger zone. Investors holding through the summer have historically given back spring gains.\n\n4. SEASONAL STRATEGIES\n• Sell in May: Hold Nov–Apr, reduce exposure May–Oct. Reduces drawdown without missing major bull runs.\n• Q4 Momentum: Buy early November, hold through December — two consecutive 70%+ win-rate months.\n• September Hedge: Add downside protection in late August before the historically weakest month.\n\n5. IMPORTANT CAVEATS\nSeasonal patterns are tendencies, not guarantees. 2020, 2022, and other outlier years broke nearly every pattern. Election cycles, Fed policy, and macro shocks routinely override seasonal effects. Any single year can vary dramatically from the 15-year average.`,
+  broadIndex: `1. KEY SEASONAL PATTERNS\nThe clearest pattern is the "Best Six Months" — November through April averages +1.2%/month versus +0.3%/month for May through October. November (+1.7%), December (+1.5%), and April (+1.5%) are the three strongest months. September is the consistent weak point at -0.7%, the only month averaging a loss over 15 years.\n\n2. HISTORICALLY STRONG WINDOWS\nLate October into November has historically marked the seasonal turn — from the volatile October "bear killer" into the strongest period of the year. In the data, the end-of-October-through-April stretch has contained the bulk of annual index returns.\n\n3. HISTORICALLY WEAK PERIODS\nAugust (-0.2%, 47% win rate) through September (-0.7%, 42% win rate) is the danger zone. Investors holding through the summer have historically given back spring gains.\n\n4. PATTERNS OBSERVED IN THE DATA\n• "Sell in May" (the pattern): the Nov–Apr half of the year has historically outperformed May–Oct with smaller drawdowns — one of the most studied calendar effects.\n• Q4 Momentum: early November through December delivered two consecutive 70%+ win-rate months.\n• September Effect: the historically weakest month, with weakness often beginning in late August.\n\n5. IMPORTANT CAVEATS\nSeasonal patterns are tendencies, not guarantees. 2020, 2022, and other outlier years broke nearly every pattern. Election cycles, Fed policy, and macro shocks routinely override seasonal effects. Any single year can vary dramatically from the 15-year average.`,
 
-  evGrowth: `1. KEY SEASONAL PATTERNS\nHigh-growth EV and disruptive tech stocks show amplified seasonality. November is the standout at +5.8% with a 70% win rate, while July (+4.1%) benefits from quarterly delivery reports. The risk is steep: May (-3.1%), June (-2.4%), and September (-3.7%) form a brutal three-month stretch averaging -3.1%/month.\n\n2. BEST ENTRY WINDOWS\nLate September into early October is the highest-conviction entry for high-beta growth. The transition from September's worst-of-year weakness into October and November's seasonal strength is historically sharp. April is also a strong entry ahead of Q1 delivery numbers.\n\n3. CAUTION PERIODS\nMay through September is the danger zone for growth stocks. The risk-off rotation hits high-multiple names hardest. September alone averages -3.7% — more than double the broad market's weakness.\n\n4. SEASONAL STRATEGIES\n• Delivery Number Positioning: Add ahead of quarterly delivery report months (Apr, Jul, Oct).\n• Summer Avoidance: Reduce exposure from late April through September to avoid the summer drawdown.\n• November Momentum: The strongest seasonal window — high win rate with strong average gains.\n\n5. IMPORTANT CAVEATS\nHigh-volatility growth stocks have wide seasonal variance. A single earnings miss or delivery miss can overwhelm seasonal tailwinds. Interest rate sensitivity means Fed decisions can reverse seasonal patterns overnight.`,
+  evGrowth: `1. KEY SEASONAL PATTERNS\nHigh-growth EV and disruptive tech stocks show amplified seasonality. November is the standout at +5.8% with a 70% win rate, while July (+4.1%) benefits from quarterly delivery reports. The risk is steep: May (-3.1%), June (-2.4%), and September (-3.7%) form a brutal three-month stretch averaging -3.1%/month.\n\n2. HISTORICALLY STRONG WINDOWS\nLate September into early October has historically been the sharpest seasonal turn for high-beta growth — from the year's worst month into October and November strength. April has also been historically strong, coinciding with Q1 delivery numbers.\n\n3. HISTORICALLY WEAK PERIODS\nMay through September is the danger zone for growth stocks. The risk-off rotation hits high-multiple names hardest. September alone averages -3.7% — more than double the broad market's weakness.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Delivery-Month Effect: quarterly delivery report months (Apr, Jul, Oct) have historically been stronger than average.\n• Summer Weakness: late April through September has been the historically weak stretch for high-multiple names.\n• November Momentum: historically the strongest seasonal window — high win rate with strong average gains.\n\n5. IMPORTANT CAVEATS\nHigh-volatility growth stocks have wide seasonal variance. A single earnings miss or delivery miss can overwhelm seasonal tailwinds. Interest rate sensitivity means Fed decisions can reverse seasonal patterns overnight.`,
 
-  financials: `1. KEY SEASONAL PATTERNS\nFinancial stocks are driven by earnings cycles and rate expectations. November (+2.2%) is the standout month, followed by April (+1.9%) and January (+1.8%). September (-0.8%) and August (-0.3%) are the weak spots, though less severe than growth stocks.\n\n2. BEST ENTRY WINDOWS\nApril earnings season is historically the cleanest entry for banks — Q1 loan growth data and net interest margin reports tend to beat expectations. November is the strongest month, driven by rate optimism and year-end rebalancing into cyclicals.\n\n3. CAUTION PERIODS\nAugust and September show consistent weakness as summer lull combines with macro uncertainty around Fed meetings. Rate curve inversions can extend this weakness beyond the seasonal pattern.\n\n4. SEASONAL STRATEGIES\n• Earnings Season: Position before April and October earnings for potential beats on NIM expansion.\n• Dividend Capture: Financial stocks' dividend cycles make September/October pullbacks attractive entry points for income investors.\n• November Entry: Historically the highest win rate month for financials.\n\n5. IMPORTANT CAVEATS\nBank seasonality is overwhelmed by credit cycle events (2008, 2023 regional bank crisis). Rate decisions by the Fed are the dominant driver — seasonal patterns are secondary to the rate regime.`,
+  financials: `1. KEY SEASONAL PATTERNS\nFinancial stocks are driven by earnings cycles and rate expectations. November (+2.2%) is the standout month, followed by April (+1.9%) and January (+1.8%). September (-0.8%) and August (-0.3%) are the weak spots, though less severe than growth stocks.\n\n2. HISTORICALLY STRONG WINDOWS\nApril earnings season has historically been the cleanest seasonal window for banks — Q1 loan growth data and net interest margin reports tended to beat expectations. November has been the strongest month, historically driven by rate optimism and year-end rebalancing into cyclicals.\n\n3. HISTORICALLY WEAK PERIODS\nAugust and September show consistent weakness as summer lull combines with macro uncertainty around Fed meetings. Rate curve inversions can extend this weakness beyond the seasonal pattern.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Earnings-Season Effect: April and October reports have historically coincided with NIM-driven beats.\n• September/October Pullbacks: historically frequent — and historically followed by the sector's strongest months.\n• November: historically the highest win-rate month for financials.\n\n5. IMPORTANT CAVEATS\nBank seasonality is overwhelmed by credit cycle events (2008, 2023 regional bank crisis). Rate decisions by the Fed are the dominant driver — seasonal patterns are secondary to the rate regime.`,
 
-  energy: `1. KEY SEASONAL PATTERNS\nEnergy stocks follow physical demand cycles. January (+2.1%) benefits from heating demand, while the spring driving season lifts March through May. The summer plateau (July-August) often disappoints despite peak demand, and September (-1.2%) is the clear weak month as driving season ends.\n\n2. BEST ENTRY WINDOWS\nLate November into December captures the winter demand premium, while late February into March positions for the spring driving season run-up. OPEC meeting cycles also create entry opportunities when cuts are anticipated.\n\n3. CAUTION PERIODS\nAugust and September are weak as the driving season ends and refinery maintenance begins. Supply concerns peak, and demand forecasts for Q4 are uncertain.\n\n4. SEASONAL STRATEGIES\n• Winter Demand: Enter energy positions in late November for heating season premium.\n• Spring Gasoline: Buy in late February ahead of the spring driving season.\n• Summer Plateau: Reduce energy exposure in August as peak demand plateaus.\n\n5. IMPORTANT CAVEATS\nEnergy seasonality is frequently overridden by OPEC decisions, geopolitical events (Ukraine, Middle East), and global demand shocks. Crude oil price moves dominate energy stock returns regardless of season.`,
+  energy: `1. KEY SEASONAL PATTERNS\nEnergy stocks follow physical demand cycles. January (+2.1%) benefits from heating demand, while the spring driving season lifts March through May. The summer plateau (July-August) often disappoints despite peak demand, and September (-1.2%) is the clear weak month as driving season ends.\n\n2. HISTORICALLY STRONG WINDOWS\nLate November into December has historically captured the winter demand premium, while late February into March coincided with the spring driving-season run-up. OPEC meeting cycles have also historically moved the sector when cuts were anticipated.\n\n3. HISTORICALLY WEAK PERIODS\nAugust and September are weak as the driving season ends and refinery maintenance begins. Supply concerns peak, and demand forecasts for Q4 are uncertain.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Winter Demand: late November has historically begun the heating-season strength.\n• Spring Gasoline: late February has historically preceded the driving-season run-up.\n• Summer Plateau: August has historically marked the point where peak demand flattened.\n\n5. IMPORTANT CAVEATS\nEnergy seasonality is frequently overridden by OPEC decisions, geopolitical events (Ukraine, Middle East), and global demand shocks. Crude oil price moves dominate energy stock returns regardless of season.`,
 
-  consumer: `1. KEY SEASONAL PATTERNS\nConsumer stocks show the clearest seasonal pattern of any sector. December (+2.1%, 75% win rate) and November (+2.4%) are driven by holiday shopping — the two strongest months by far. August (+1.3%) captures back-to-school spending. January (-) shows post-holiday hangover.\n\n2. BEST ENTRY WINDOWS\nOctober is the best entry for consumer stocks, positioning ahead of the November-December holiday surge. August's back-to-school season is the second-best entry window.\n\n3. CAUTION PERIODS\nJanuary and February see post-holiday spending hangovers and return processing. These months tend to underperform other sectors even as the broader market recovers.\n\n4. SEASONAL STRATEGIES\n• Holiday Season Play: Enter October, hold through December for the Black Friday/holiday retail surge.\n• Back-to-School: Add consumer positions in late July ahead of August spending.\n• Amazon Prime Day: July typically sees a consumer stock boost from the mid-year Prime Day event.\n\n5. IMPORTANT CAVEATS\nConsumer seasonality depends heavily on consumer confidence and credit availability. Recessions override seasonal patterns entirely. Inflation cycles (2021-2023) disrupted traditional spending patterns significantly.`,
+  consumer: `1. KEY SEASONAL PATTERNS\nConsumer stocks show the clearest seasonal pattern of any sector. December (+2.1%, 75% win rate) and November (+2.4%) are driven by holiday shopping — the two strongest months by far. August (+1.3%) captures back-to-school spending. January (-) shows post-holiday hangover.\n\n2. HISTORICALLY STRONG WINDOWS\nOctober has historically been the start of consumer stocks' strongest stretch, ahead of the November-December holiday surge. August's back-to-school season has been the second-strongest window in the data.\n\n3. HISTORICALLY WEAK PERIODS\nJanuary and February see post-holiday spending hangovers and return processing. These months tend to underperform other sectors even as the broader market recovers.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Holiday-Season Effect: October through December has historically captured the Black Friday/holiday retail surge.\n• Back-to-School: late July into August has historically been a seasonally strong stretch.\n• Prime Day Effect: July has typically seen a consumer-stock boost around the mid-year event.\n\n5. IMPORTANT CAVEATS\nConsumer seasonality depends heavily on consumer confidence and credit availability. Recessions override seasonal patterns entirely. Inflation cycles (2021-2023) disrupted traditional spending patterns significantly.`,
 
-  healthcare: `1. KEY SEASONAL PATTERNS\nHealthcare is one of the most defensive sectors, showing modest but consistent gains. November (+1.6%) leads, with January and December also strong. September shows slight weakness (-0.2%) but less than other sectors. Healthcare tends to hold up better in weak market periods.\n\n2. BEST ENTRY WINDOWS\nOctober into November, coinciding with open enrollment season for health insurance, is the strongest seasonal window. May is also notable for ASCO conference catalysts in oncology stocks.\n\n3. CAUTION PERIODS\nSeptember and October can see selling pressure related to drug pricing legislation concerns, which tend to surface ahead of budget negotiations. Political risk is the primary seasonal headwind.\n\n4. SEASONAL STRATEGIES\n• Defensive Rotation: Add healthcare in August-September as a defensive position ahead of the weakest equity months.\n• Conference Catalysts: Position ahead of ASCO (May) and ASH (December) for biotech names.\n• Election Year Caution: Drug pricing political risk peaks in election years, overriding positive seasonality.\n\n5. IMPORTANT CAVEATS\nHealthcare seasonality is secondary to FDA approval cycles, clinical trial data, and drug pricing legislation. Individual stock variance within healthcare is extremely high — sector averages mask very different biotech vs. large pharma patterns.`,
+  healthcare: `1. KEY SEASONAL PATTERNS\nHealthcare is one of the most defensive sectors, showing modest but consistent gains. November (+1.6%) leads, with January and December also strong. September shows slight weakness (-0.2%) but less than other sectors. Healthcare tends to hold up better in weak market periods.\n\n2. HISTORICALLY STRONG WINDOWS\nOctober into November — coinciding with open enrollment season for health insurance — has historically been the strongest seasonal window. May has also been notable historically for ASCO conference catalysts in oncology stocks.\n\n3. HISTORICALLY WEAK PERIODS\nSeptember and October can see selling pressure related to drug pricing legislation concerns, which tend to surface ahead of budget negotiations. Political risk is the primary seasonal headwind.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Defensive Pattern: healthcare has historically outperformed in August-September as the broader market weakened.\n• Conference Catalysts: ASCO (May) and ASH (December) have historically moved biotech names.\n• Election-Year Effect: drug-pricing political risk has historically peaked in election years, overriding positive seasonality.\n\n5. IMPORTANT CAVEATS\nHealthcare seasonality is secondary to FDA approval cycles, clinical trial data, and drug pricing legislation. Individual stock variance within healthcare is extremely high — sector averages mask very different biotech vs. large pharma patterns.`,
 
-  speculative: `1. KEY SEASONAL PATTERNS\nHighly speculative stocks (AI, crypto miners, small-cap growth) show extreme seasonality. November averages +9.8% with a 71% win rate, and January sees an +8.4% surge from retail FOMO. The downside is equally severe: September averages -6.1% (33% win rate), June -5.2%, and May -4.8%.\n\n2. BEST ENTRY WINDOWS\nMid-to-late September after the selloff is historically the best entry for speculative names, capturing the Q4 momentum surge. Late December also offers a setup for the January effect in small-cap and speculative names.\n\n3. CAUTION PERIODS\nMay through September is brutal. Three of those five months average losses over 4%, and win rates drop below 40% in the worst months. This is when retail investors capitulate and institutional selling dominates.\n\n4. SEASONAL STRATEGIES\n• Q4 Momentum Chase: Enter in early October for the November surge — highest-probability month historically.\n• January Effect: Buy beaten-down speculative names in mid-December for the January retail-driven surge.\n• Summer Avoidance: Avoid or short speculative names May through September.\n\n5. IMPORTANT CAVEATS\nSpeculative stock seasonality has the widest variance of any category — individual names can move 5-10x the seasonal average in either direction. Meme stock cycles (2021), crypto crashes, and AI hype cycles completely override seasonal patterns. Use position sizing carefully.`,
+  speculative: `1. KEY SEASONAL PATTERNS\nHighly speculative stocks (AI, crypto miners, small-cap growth) show extreme seasonality. November averages +9.8% with a 71% win rate, and January sees an +8.4% surge from retail FOMO. The downside is equally severe: September averages -6.1% (33% win rate), June -5.2%, and May -4.8%.\n\n2. HISTORICALLY STRONG WINDOWS\nMid-to-late September — after the typical selloff — has historically preceded the Q4 momentum surge in speculative names. Late December has historically preceded the January effect in small-cap and speculative names.\n\n3. HISTORICALLY WEAK PERIODS\nMay through September is brutal. Three of those five months average losses over 4%, and win rates drop below 40% in the worst months. This is when retail investors capitulate and institutional selling dominates.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Q4 Momentum: October into November has historically been the highest-probability stretch for the group.\n• January Effect: beaten-down speculative names have historically rebounded in January on retail-driven flows.\n• Summer Weakness: May through September has been the historically weakest stretch for speculative names.\n\n5. IMPORTANT CAVEATS\nSpeculative stock seasonality has the widest variance of any category — individual names can move 5-10x the seasonal average in either direction. Meme stock cycles (2021), crypto crashes, and AI hype cycles completely override seasonal patterns. Use position sizing carefully.`,
 
-  gold: `1. KEY SEASONAL PATTERNS\nGold has a distinct seasonal pattern driven by physical demand. January (+1.8%) and August (+1.5%) are the two strongest months, reflecting Chinese New Year demand and Indian festival season buying respectively. June is the weakest month (-0.7%) when equity strength reduces safe-haven appeal.\n\n2. BEST ENTRY WINDOWS\nLate December into January is historically the best entry for gold, capturing the Asian New Year demand cycle. Late July is a strong entry ahead of the August seasonal strength, often amplified by Indian festival jewelry demand.\n\n3. CAUTION PERIODS\nJune is the clearest danger zone. When equities rally (as they often do in spring), gold loses its appeal and typically sells off. March also shows weakness (-0.5%) as Q1 positioning unwinds.\n\n4. SEASONAL STRATEGIES\n• New Year Trade: Buy gold in late December, hold through February for Asian demand.\n• Summer Safe-Haven: Buy late July ahead of August geopolitical risk season.\n• June Underweight: Reduce gold in June when equity strength peaks.\n\n5. IMPORTANT CAVEATS\nGold seasonality is disrupted by dollar strength, Fed rate decisions, and geopolitical crises. Central bank buying programs and ETF flows can mute seasonal signals. The 2022-2024 gold bull run was driven primarily by central bank buying, overriding traditional seasonal patterns.`,
+  gold: `1. KEY SEASONAL PATTERNS\nGold has a distinct seasonal pattern driven by physical demand. January (+1.8%) and August (+1.5%) are the two strongest months, reflecting Chinese New Year demand and Indian festival season buying respectively. June is the weakest month (-0.7%) when equity strength reduces safe-haven appeal.\n\n2. HISTORICALLY STRONG WINDOWS\nLate December into January has historically been gold's strongest seasonal window, coinciding with the Asian New Year demand cycle. Late July has also been strong historically, ahead of August strength often amplified by Indian festival jewelry demand.\n\n3. HISTORICALLY WEAK PERIODS\nJune is the clearest danger zone. When equities rally (as they often do in spring), gold loses its appeal and typically sells off. March also shows weakness (-0.5%) as Q1 positioning unwinds.\n\n4. PATTERNS OBSERVED IN THE DATA\n• New Year Pattern: late December through February has historically coincided with Asian demand strength.\n• Summer Safe-Haven: August has historically been a strong month, coinciding with geopolitical risk season.\n• June Weakness: gold has historically been weakest in June, when equity strength peaked.\n\n5. IMPORTANT CAVEATS\nGold seasonality is disrupted by dollar strength, Fed rate decisions, and geopolitical crises. Central bank buying programs and ETF flows can mute seasonal signals. The 2022-2024 gold bull run was driven primarily by central bank buying, overriding traditional seasonal patterns.`,
 
-  crypto: `1. KEY SEASONAL PATTERNS\nBitcoin and Ethereum show the most dramatic seasonality of any asset class. "Uptober" is the most reliable pattern — October averages +21.4% with a 75% win rate. November follows at +18.6%. The downside is equally extreme: June averages -8.7% and September -5.8%.\n\n2. BEST ENTRY WINDOWS\nLate September is the highest-conviction entry timing for crypto, capturing the Uptober phenomenon. This pattern is tied to post-summer institutional accumulation ahead of Q4. January and April are also historically strong.\n\n3. CAUTION PERIODS\nMay through September is brutal in crypto. June (-8.7%) and September (-5.8%) represent the worst average drawdown months. The crypto version of "Sell in May" (-5.2%) is far more severe than in equities.\n\n4. SEASONAL STRATEGIES\n• Uptober Entry: Accumulate in September weakness for October-November seasonal surge.\n• May Exit: Reduce crypto exposure in late April / early May ahead of summer drawdown.\n• Halving Cycle Overlay: Bitcoin's 4-year halving cycle amplifies Q4 gains in post-halving years.\n\n5. IMPORTANT CAVEATS\nCrypto seasonality is distorted by 4-year halving cycles — mixing different cycle phases creates misleading averages. Exchange failures, regulatory actions, and macro risk-off events override seasonal patterns completely. Extreme volatility means single-year deviations are massive.`,
+  crypto: `1. KEY SEASONAL PATTERNS\nBitcoin and Ethereum show the most dramatic seasonality of any asset class. "Uptober" is the most reliable pattern — October averages +21.4% with a 75% win rate. November follows at +18.6%. The downside is equally extreme: June averages -8.7% and September -5.8%.\n\n2. HISTORICALLY STRONG WINDOWS\nLate September has historically preceded the "Uptober" phenomenon — a pattern tied to post-summer institutional accumulation ahead of Q4. January and April have also been historically strong.\n\n3. HISTORICALLY WEAK PERIODS\nMay through September is brutal in crypto. June (-8.7%) and September (-5.8%) represent the worst average drawdown months. The crypto version of "Sell in May" (-5.2%) is far more severe than in equities.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Uptober: September weakness has historically resolved into an October-November seasonal surge.\n• "Sell in May" (crypto edition): the May-September stretch has historically been far more severe in crypto than in equities.\n• Halving-Cycle Overlay: Bitcoin's 4-year halving cycle has historically amplified Q4 gains in post-halving years.\n\n5. IMPORTANT CAVEATS\nCrypto seasonality is distorted by 4-year halving cycles — mixing different cycle phases creates misleading averages. Exchange failures, regulatory actions, and macro risk-off events override seasonal patterns completely. Extreme volatility means single-year deviations are massive.`,
 
-  bonds: `1. KEY SEASONAL PATTERNS\nUS Treasury bonds show an inverse seasonal to equities. May (+0.9%) and August (+1.1%) are the strongest months, benefiting from equity weakness. November (-0.8%) and October (-0.5%) are the weakest as equity rallies drain bond demand.\n\n2. BEST ENTRY WINDOWS\nLate April into May offers the best seasonal entry for bonds, coinciding with the "Sell in May" equity weakness driving safe-haven flows. August is historically strong as summer equity volatility spikes.\n\n3. CAUTION PERIODS\nOctober and November are the clearest danger zones — the equity rally in these months consistently pressures Treasury prices. March also weakens as Fed meeting cycle triggers rate hike pricing.\n\n4. SEASONAL STRATEGIES\n• Equity-Bond Rotation: Move from equities to bonds late April, reverse in late October — the systematic "Sell in May" trade.\n• August Safe-Haven: Add bond duration in July ahead of August volatility.\n• November Underweight: Reduce bond exposure before the historically strong equity November rally.\n\n5. IMPORTANT CAVEATS\nBond seasonality collapsed in rising rate regimes (2022). Fed policy decisions dominate bond returns and override seasonal tendencies. Duration risk means even modest rate moves overwhelm seasonal patterns.`,
+  bonds: `1. KEY SEASONAL PATTERNS\nUS Treasury bonds show an inverse seasonal to equities. May (+0.9%) and August (+1.1%) are the strongest months, benefiting from equity weakness. November (-0.8%) and October (-0.5%) are the weakest as equity rallies drain bond demand.\n\n2. HISTORICALLY STRONG WINDOWS\nLate April into May has historically been the strongest seasonal window for bonds, coinciding with "Sell in May" equity weakness driving safe-haven flows. August has been historically strong as summer equity volatility spiked.\n\n3. HISTORICALLY WEAK PERIODS\nOctober and November are the clearest danger zones — the equity rally in these months consistently pressures Treasury prices. March also weakens as Fed meeting cycle triggers rate hike pricing.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Equity-Bond Rotation (the pattern): bonds historically strong late April to late October, equities strong the other half — the calendar mirror of "Sell in May".\n• August Safe-Haven: bond strength has historically coincided with August equity volatility.\n• November Weakness: bonds have historically been pressured during the strong equity November rally.\n\n5. IMPORTANT CAVEATS\nBond seasonality collapsed in rising rate regimes (2022). Fed policy decisions dominate bond returns and override seasonal tendencies. Duration risk means even modest rate moves overwhelm seasonal patterns.`,
 
-  defense: `1. KEY SEASONAL PATTERNS\nDefense and industrial stocks show stable, consistent seasonality. November (+1.8%) leads, with January (+1.4%) and December (+1.4%) also strong. The sector is notably resilient in weak market periods — September weakness is only -0.4% versus the broader market's -0.7%.\n\n2. BEST ENTRY WINDOWS\nOctober into November is the best entry, capturing the year-end defense spending announcements and budget cycle news. April earnings are also a reliable catalyst as Q1 backlog and contract data are reported.\n\n3. CAUTION PERIODS\nSeptember shows modest weakness, more from broad market correlation than sector-specific factors. Congressional budget negotiations can create uncertainty in August-September.\n\n4. SEASONAL STRATEGIES\n• Year-End Budget Play: Add defense exposure in October ahead of November contract award season.\n• Geopolitical Hedge: Defense stocks often spike on geopolitical events regardless of season.\n• Earnings Season: Q1 and Q3 earnings (April, October) consistently show backlog growth.\n\n5. IMPORTANT CAVEATS\nDefense seasonality is overwhelmed by geopolitical events (wars, conflicts, NATO commitments). Congressional budget battles and continuing resolutions can delay contract awards and disrupt seasonal patterns. Pentagon budget cycles don't always align with fiscal year expectations.`,
+  defense: `1. KEY SEASONAL PATTERNS\nDefense and industrial stocks show stable, consistent seasonality. November (+1.8%) leads, with January (+1.4%) and December (+1.4%) also strong. The sector is notably resilient in weak market periods — September weakness is only -0.4% versus the broader market's -0.7%.\n\n2. HISTORICALLY STRONG WINDOWS\nOctober into November has historically been the strongest window, coinciding with year-end defense spending announcements and budget-cycle news. April earnings have also been a historically reliable catalyst as Q1 backlog and contract data were reported.\n\n3. HISTORICALLY WEAK PERIODS\nSeptember shows modest weakness, more from broad market correlation than sector-specific factors. Congressional budget negotiations can create uncertainty in August-September.\n\n4. PATTERNS OBSERVED IN THE DATA\n• Year-End Budget Cycle: October-November contract award season has historically coincided with sector strength.\n• Geopolitical Sensitivity: defense stocks have historically spiked on geopolitical events regardless of season.\n• Earnings Effect: Q1 and Q3 reports (April, October) have consistently shown backlog growth.\n\n5. IMPORTANT CAVEATS\nDefense seasonality is overwhelmed by geopolitical events (wars, conflicts, NATO commitments). Congressional budget battles and continuing resolutions can delay contract awards and disrupt seasonal patterns. Pentagon budget cycles don't always align with fiscal year expectations.`,
 
-  semis: `1. KEY SEASONAL PATTERNS\nSemiconductors show amplified tech seasonality driven by fab utilization cycles. November is the strongest at +3.2% with a 72% win rate, fueled by AI chip demand and data center spending. September is the worst at -1.8% (38% win rate) as inventory correction fears peak. CES in January (+3.1%) consistently boosts the sector.\n\n2. BEST ENTRY WINDOWS\nEarly October after September's inventory-fear selloff is the best entry, capturing November's AI-driven strength. January is also a strong entry as CES announcements and new product cycles drive sentiment.\n\n3. CAUTION PERIODS\nJune (-1.1%) and September (-1.8%) form the weakest stretch as inventory cycle concerns dominate. Chip stocks often sell off 10-20% in individual years during these months.\n\n4. SEASONAL STRATEGIES\n• CES/January Effect: Position in late December for the January semiconductor surge.\n• Earnings Season: Add ahead of April and July for data center and AI GPU demand beats.\n• Inventory Cycle: September weakness often represents the best buy point for the semiconductor cycle.\n\n5. IMPORTANT CAVEATS\nSemiconductor seasonality is disrupted by inventory super-cycles (2022 bust, 2023 AI boom). Nvidia's dominance in AI chips means one stock increasingly drives the entire sector's seasonal pattern. China trade restrictions and export controls add geopolitical risk that overrides seasonal tendencies.`
+  semis: `1. KEY SEASONAL PATTERNS\nSemiconductors show amplified tech seasonality driven by fab utilization cycles. November is the strongest at +3.2% with a 72% win rate, fueled by AI chip demand and data center spending. September is the worst at -1.8% (38% win rate) as inventory correction fears peak. CES in January (+3.1%) consistently boosts the sector.\n\n2. HISTORICALLY STRONG WINDOWS\nEarly October — after September's inventory-fear selloff — has historically preceded November's AI-driven strength. January has also been historically strong, as CES announcements and new product cycles drove sentiment.\n\n3. HISTORICALLY WEAK PERIODS\nJune (-1.1%) and September (-1.8%) form the weakest stretch as inventory cycle concerns dominate. Chip stocks often sell off 10-20% in individual years during these months.\n\n4. PATTERNS OBSERVED IN THE DATA\n• CES/January Effect: late December into January has historically been a strong stretch for semiconductors.\n• Earnings Effect: April and July have historically coincided with data-center and AI GPU demand beats.\n• Inventory Cycle: September weakness has historically marked the low point of the semiconductor cycle.\n\n5. IMPORTANT CAVEATS\nSemiconductor seasonality is disrupted by inventory super-cycles (2022 bust, 2023 AI boom). Nvidia's dominance in AI chips means one stock increasingly drives the entire sector's seasonal pattern. China trade restrictions and export controls add geopolitical risk that overrides seasonal tendencies.`
 };
 
 // ============================================================
@@ -3332,14 +3344,14 @@ initAuth();
 var MODE_HERO = {
   analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 500+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
   backtest: ['Test any window. <em>25 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
-  events:   ['When history repeats, <em>know the script.</em>', 'Fed decisions, elections, CPI prints, mega-cap earnings, halvings \u2014 and every major crash. How markets actually behaved, with a playbook for each.'],
-  earnings: ['Earnings move markets. <em>Read the reaction.</em>', 'What really happens 1 week, 2 weeks and 1 month after companies report \u2014 and how to interpret the next print before you trade it.'],
+  events:   ['When history repeats, <em>know the script.</em>', 'Fed decisions, elections, CPI prints, mega-cap earnings, halvings \u2014 and every major crash. How markets actually behaved, with the historical playbook for each.'],
+  earnings: ['Earnings move markets. <em>Read the reaction.</em>', 'What really happened 1 week, 2 weeks and 1 month after companies reported \u2014 and the historical context for reading the next print.'],
   screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
   watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
   month: ['This month, <em>in market history.</em>', 'The average returns, the famous crashes and the legendary rallies that happened in this calendar month.'],
   pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
   calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.'],
-  portfolio: ['Your whole portfolio. <em>One seasonal picture.</em>', 'Enter your holdings and weights to see your portfolio\u2019s combined seasonal exposure \u2014 which months work for you, and which work against you.']
+  portfolio: ['Your whole portfolio. <em>One seasonal picture.</em>', 'Enter your holdings and weights to see your portfolio\u2019s combined seasonal exposure \u2014 which months have historically worked in your favour, and which against.']
 };
 var PRO_ONLY_MODES = ['backtest','earnings','screener','watchlist','pairs','portfolio'];
 var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
@@ -3356,6 +3368,11 @@ function switchMode(mode) {
     var tab = document.getElementById('mt_' + m);
     if (tab) tab.classList.toggle('active', m === mode);
   });
+  var alias = { earnings:'events', month:'calendar', portfolio:'watchlist' };
+  if (alias[mode]) {
+    var aliasTab = document.getElementById('mt_' + alias[mode]);
+    if (aliasTab) aliasTab.classList.add('active');
+  }
   var h = MODE_HERO[mode];
   if (h) {
     var t = document.querySelector('.hs-title');
@@ -3659,9 +3676,9 @@ var EVENT_STUDIES = [
   ],
   insight:"The most studied calendar event in finance. NY Fed research (Lucca & Moench) found that since 1994, a striking share of the entire equity risk premium has been earned in the 24 hours BEFORE scheduled FOMC announcements — the famous \"pre-FOMC announcement drift\" of roughly +0.49%. The day itself averages +0.27% with a 63% win rate, but the dispersion is huge: dovish surprises have produced +3% days, hawkish surprises -3% days. Since 2022, press-conference language has mattered more than the decision itself — several meetings saw the initial move fully reverse while Powell spoke. Volatility is reliably elevated: option-implied moves on FOMC days run roughly 2x a normal session, and implied volatility consistently collapses immediately after the statement (the \"vol crush\").",
   playbook:[
-    "The historical edge is being LONG into the announcement, not after it — the pre-FOMC drift is the documented anomaly.",
-    "Expect the first move to be wrong: initial spikes frequently reverse during the press conference.",
-    "Options are systematically expensive into FOMC days; volatility sellers have historically been paid for the vol crush.",
+    "The documented anomaly is the pre-FOMC drift — historically, gains accrued in the run-up to the announcement rather than after it.",
+    "The first move has often been the wrong one: initial spikes frequently reversed during the press conference.",
+    "Options have been systematically expensive into FOMC days; the post-decision volatility crush is well documented.",
     "Hawkish-surprise days (-1% or worse) have historically been followed by weak weeks — momentum, not mean reversion."
   ]
 },
@@ -3686,7 +3703,7 @@ var EVENT_STUDIES = [
   ],
   insight:"The single most important question after the first cut is WHY the Fed is cutting. When the first cut is an \"insurance\" cut into a still-growing economy (1984, 1995, 2019, 2024), the S&P 500 has averaged roughly +12% over the following 12 months — 1995 launched one of the greatest bull runs in history. When the first cut comes because the economy is already rolling into recession (2001, 2007), the average 12-month outcome flips to roughly -12%, because cuts cannot outrun collapsing earnings. The 3-month window is more forgiving — 6 of 7 cycles were positive a quarter after the first cut — which is exactly why the danger is mistaking the early relief rally for the all-clear.",
   playbook:[
-    "Don't trade the cut — trade the reason for it. Growth data decides whether you're in the +12% or -12% script.",
+    "Historically, the reason for the cut mattered more than the cut itself — growth data separated the +12% outcomes from the -12% ones.",
     "The first 3 months after a cut are usually green even in the bad scenarios; strength alone proves nothing.",
     "Rate-sensitive groups (small caps, REITs, homebuilders) have historically led in the no-recession script.",
     "If unemployment is rising when the Fed cuts, history says defensives and bonds beat equities over 12 months."
@@ -3718,7 +3735,7 @@ var EVENT_STUDIES = [
     "CPI-day power is regime-dependent: it only dominates when inflation is the market's primary fear.",
     "The bigger move historically comes from the surprise AGAINST positioning — cool prints in bear markets are rocket fuel.",
     "The first 30 minutes set the day's direction far more reliably on CPI days than normal days.",
-    "Avoid expiring-that-day options ahead of the print unless you're explicitly paying for the lottery ticket."
+    "Same-day-expiry options ahead of the print have historically behaved like lottery tickets — priced for extreme moves that usually didn't arrive."
   ]
 },
 {
@@ -3742,9 +3759,9 @@ var EVENT_STUDIES = [
   ],
   insight:"Payrolls is the longest-running scheduled macro event, and its meaning flips with the regime. In inflation-fear regimes (2022), STRONG jobs numbers were bad news — they meant more Fed hikes — so the worst jobs-day of recent years (-3.0%, April 2022) came on hot wage growth. In growth-fear regimes (mid-2024), the same strong number became good news and weak prints caused selloffs — the August 2024 miss triggered a -1.8% day and a global volatility spike. The headline payroll figure is also among the most heavily revised statistics in economics: initial prints are routinely revised by 50-100k, which is why the market reaction often exceeds what the final data would justify.",
   playbook:[
-    "Decide first which regime you're in: is good news good, or is good news bad? That flips the entire trade.",
+    "The reaction has been regime-dependent: in some periods good news was good, in others good news was bad — the same print produced opposite moves.",
     "Wage growth (average hourly earnings) has often mattered more than the headline jobs number.",
-    "Revisions to prior months frequently move markets as much as the headline — read the whole release.",
+    "Revisions to prior months have frequently moved markets as much as the headline number itself.",
     "Jobs Friday + a long weekend has historically amplified moves: traders cut risk rather than hold."
   ]
 },
@@ -3771,8 +3788,8 @@ var EVENT_STUDIES = [
   ],
   insight:"Election years average +7.5% for the S&P 500 and have been positive 83% of the time since 1928 — but the path matters more than the destination. The classic pattern: markets chop sideways with elevated volatility in September-October as uncertainty peaks, then rally once the result is known — almost regardless of who wins. The market hates uncertainty far more than it hates either party: 2016 and 2024 both produced strong next-day rallies on results many predicted would crash markets, while the contested 2000 election (no result for 36 days) produced one of the few sustained post-election drawdowns. Resolution is the trade, not the winner. The exception is when an election lands inside an existing crisis — 2008's -5.3% next-day drop was the financial crisis, not the ballot.",
   playbook:[
-    "Buy the resolution, not the candidate — uncertainty removal has been the reliable rally trigger.",
-    "Pre-election October chop is normal and has historically been a buying window, not a warning.",
+    "Historically the rally trigger was resolution, not the winner — uncertainty removal moved markets more than either candidate.",
+    "Pre-election October chop has been the historical norm — and has resolved upward more often than it extended.",
     "A contested or delayed result is the genuine risk scenario (see 2000: -8% during the dispute).",
     "Sector rotation by expected policy (energy, defense, clean tech) is where the winner actually matters."
   ]
@@ -3801,7 +3818,7 @@ var EVENT_STUDIES = [
     "The 12-month post-midterm window is statistically the strongest of the entire 4-year cycle.",
     "Midterm-year weakness (especially Sep-Oct) has historically been the setup, not the warning.",
     "Divided-government outcomes have historically been the most bullish — gridlock is a feature.",
-    "19/19 is remarkable but n=19 is small; size it as a tailwind, not a certainty."
+    "19/19 is remarkable, but n=19 is a small sample — a historical tailwind, not a certainty."
   ]
 },
 
@@ -3827,7 +3844,7 @@ var EVENT_STUDIES = [
   ],
   insight:"The May 2023 report is already legend: Nvidia guided revenue ~50% above Wall Street's estimate, the stock gained +24.4% overnight, and roughly $200 billion of market value appeared in a session — the announcement that ignited the AI capex supercycle. Since then NVDA earnings have functioned as a macro event: index futures, semiconductor ETFs, and AI-adjacent names all reprice on the number, and option markets routinely imply ±8-10% single-day moves. The pattern that emerged is brutal escalation: beating estimates stopped being enough — the stock began selling off on results that merely met elevated expectations (-6.4% Aug 2024, -8.5% Feb 2025 despite record numbers). The bar resets higher every quarter; the trade is expectations versus delivery, not good versus bad. By late 2025 the dynamic sharpened again: November\u2019s quarter was a clean beat-and-raise, yet the stock reversed from +5% to negative in a session as the market began stress-testing the circular financing behind AI capex \u2014 at $4 trillion scale, the debate moved from Nvidia\u2019s numbers to the durability of its customers\u2019 spending.",
   playbook:[
-    "The implied move (straddle price) tells you the market's expected swing — the edge is having a view versus THAT.",
+    "The implied move (straddle price) shows the market's expected swing — historically, reactions were driven by results relative to THAT bar, not the raw numbers.",
     "Guidance, not the reported quarter, has driven nearly every large reaction.",
     "NVDA earnings is a market-wide event: SMH, SOXX and even S&P futures reprice with it.",
     "After mega-beats, strength persisted for weeks; after disappointments, the fade also trended. Momentum, not reversion."
@@ -3883,7 +3900,7 @@ var EVENT_STUDIES = [
   playbook:[
     "Positioning into the print matters more than the print — crushed expectations have produced rallies on misses.",
     "Buyback announcements (often in the spring report) have repeatedly trumped soft product numbers.",
-    "Watch services margin: it is the quiet driver of Apple's multiple.",
+    "Services margin has been the quiet driver of Apple's multiple.",
     "An Apple gap moves the entire index — even index-only investors are trading this event."
   ]
 },
@@ -3913,7 +3930,7 @@ var EVENT_STUDIES = [
     "The halving day itself does nothing — the historical edge is the 12-18 month window after it.",
     "Each cycle's return has been roughly an order of magnitude smaller; calibrate expectations accordingly.",
     "Cycle peaks have historically landed ~450 days post-halving — that window is where distribution began.",
-    "Post-halving years contain 50-70% drawdowns WITHIN the uptrend; the pattern rewards holders, not leverage."
+    "Post-halving years contained 50-70% drawdowns WITHIN the uptrend — historically the pattern punished leverage severely."
   ]
 },
 {
@@ -3938,8 +3955,8 @@ var EVENT_STUDIES = [
   insight:"January 10, 2024 — the SEC approved eleven spot Bitcoin ETFs simultaneously after a decade of rejections. What followed was a textbook two-act structure. Act one: sell the news. Bitcoin dropped roughly 15% in twelve days as traders who had bought the rumor took profits and the converted GBTC trust bled billions in outflows. Many declared the ETF a failure. Act two: the actual flows arrived. BlackRock's IBIT became the fastest ETF in history to $10 billion AUM, daily net inflows exceeded $1 billion at the peak, and Bitcoin rallied about 90% to a new all-time high ($73k) within nine weeks — BEFORE the halving. The lesson generalizes: known catalysts get front-run and dumped, but structural demand changes win over weeks, not days.",
   playbook:[
     "Anticipated events get sold first — the immediate reaction to a known catalyst is usually noise.",
-    "Structural flow changes (a new buyer class) play out over weeks; that was the real trade.",
-    "Watch the flows, not the price: ETF net inflows led the rally by days.",
+    "Structural flow changes (a new buyer class) played out over weeks — that was where the historical move actually happened.",
+    "ETF net inflows led the price rally by days — flows, not price, were the leading indicator.",
     "The pattern repeats across assets: approval/inclusion events dip first, then re-rate."
   ]
 },
@@ -3971,7 +3988,7 @@ var EVENT_STUDIES = [
     "Policy-induced crashes are reversible by the same pen that caused them \u2014 they have resolved far faster than recession or credit crashes.",
     "Watch bonds during equity panics: yields RISING during a crash signals systemic stress \u2014 and historically forces the policy retreat.",
     "The +9.5% day landed 5 days after the -6% day. Exiting into tariff panic meant missing the single move that repaired the year.",
-    "Headline-driven regimes whipsaw violently (Apr 7\u2019s false-rumor spike); position sizing beats reaction speed."
+    "Headline-driven regimes whipsawed violently (Apr 7\u2019s false-rumor spike) — reaction speed was historically punished."
   ]
 },
 {
@@ -4022,8 +4039,8 @@ var EVENT_STUDIES = [
   playbook:[
     "Bubble unwinds feature multiple +30-45% rallies that fail — a big bounce is not proof of a bottom.",
     "Valuation is the only defense: the thesis being RIGHT didn't save anyone who overpaid for it.",
-    "Survivors of a burst bubble can be generational buys — but only identifiable by balance sheet, not story.",
-    "Recovery from valuation bubbles is measured in decades, not quarters. Diversification exists for this."
+    "Survivors of burst bubbles later proved to be generational winners — identifiable historically by balance sheet, not story.",
+    "Recovery from valuation bubbles has historically been measured in decades, not quarters."
   ]
 },
 {
@@ -4048,8 +4065,8 @@ var EVENT_STUDIES = [
   playbook:[
     "The best days live inside the panic — exiting after big drops has historically locked in the worst of both worlds.",
     "Bottoms form on exhausted selling, not good news. The news was still awful in March 2009.",
-    "Systemic crises end when policy goes unlimited (TARP, QE) — the policy pivot was the buy signal.",
-    "Quality businesses fell 50%+ alongside broken ones; crisis indiscrimination is the long-term investor's gift."
+    "Systemic crises ended when policy went unlimited (TARP, QE) — the policy pivot marked the historical turning point.",
+    "Quality businesses fell 50%+ alongside broken ones — crisis selling was historically indiscriminate."
   ]
 },
 {
@@ -4073,8 +4090,8 @@ var EVENT_STUDIES = [
   ],
   insight:"At 2:32pm on May 6, 2010, a single large algorithmic sell order in S&P futures triggered a liquidity vacuum: high-frequency market makers withdrew simultaneously, and for 36 minutes prices ceased to mean anything. The S&P fell 9%; Accenture — a healthy $25 billion company — traded at one CENT; Apple briefly printed $100,000 a share; roughly $1 trillion in market value vanished and mostly reappeared within the hour. The market closed down just 3.2%. Over 20,000 trades were cancelled afterward, and the episode produced stock-level circuit breakers (limit-up/limit-down) that now halt individual names on extreme moves. The enduring lesson is about market structure: liquidity is a fair-weather friend — abundant until the exact moment everyone needs it.",
   playbook:[
-    "Never leave resting stop-loss MARKET orders on quality holdings — they executed at absurd prices that day.",
-    "Liquidity evaporates precisely when needed; size positions assuming exits get expensive in stress.",
+    "Resting stop-loss MARKET orders executed at absurd prices that day — a structural hazard this event exposed.",
+    "Liquidity evaporated precisely when it was needed most — exits became expensive exactly in the stress window.",
     "Stock-level circuit breakers now exist because of this day — single-name death-prints are largely fixed.",
     "Structural flash events recover in hours; the danger was reacting, not the event itself."
   ]
@@ -4099,9 +4116,9 @@ var EVENT_STUDIES = [
   ],
   insight:"COVID compressed an entire bear market into 33 days: -34% from the February 19 peak to March 23 — the fastest 30% drawdown ever recorded, with FOUR separate circuit-breaker halts in eight trading days and a -12% session (March 16) worse than any day of 2008. Then came the fastest recovery ever: the Fed announced unlimited QE on March 23 (the exact bottom, to the day), Congress passed $2 trillion in stimulus, and the S&P reclaimed its all-time high by August — five months. Whipsaw days were unprecedented: -9.5% Thursday, +9.3% Friday. The crash also produced history's greatest buying opportunity in specific names: Amazon, Nvidia and the digital economy never looked back. Policy speed, not virus news, set the bottom — cases were still EXPLODING in late March while stocks soared.",
   playbook:[
-    "The bottom printed the day policy went unlimited — not when the actual news improved. Track the response, not the crisis.",
+    "The bottom printed the day policy went unlimited — not when the actual news improved.",
     "Fastest crash, fastest recovery: modern crashes resolve quicker because policy reaction is now instant.",
-    "Back-to-back ±9% days mean position sizing is survival — leverage died in March 2020 even when 'right'.",
+    "Back-to-back ±9% days destroyed leveraged positions in March 2020 — even ones whose thesis later proved 'right'.",
     "Crisis accelerates existing trends; the winners of the prior regime (digital) led the recovery, not the losers."
   ]
 },
@@ -4125,9 +4142,9 @@ var EVENT_STUDIES = [
   ],
   insight:"2022 broke the one rule every portfolio was built on: that bonds protect you when stocks fall. With inflation at 9%, the Fed hiked 525bp in 16 months — the fastest tightening since 1980 — and BOTH fell: the S&P -25%, the NASDAQ -36%, and the aggregate bond index -17%, its worst year in recorded history. The classic 60/40 portfolio had its worst year since 1937. The bear was a grind of traps: two separate +11% and +17% rallies failed before the October 13 capitulation — a day that opened -2.4% on a hot CPI print and closed +2.6%, one of the great reversal days, which marked the low almost exactly. Long-duration growth was the epicenter (profitless tech fell 70-90%) while energy rose 59% — the only green sector.",
   playbook:[
-    "When inflation is the problem, bonds don't hedge stocks — they fall together. Diversification must include real assets.",
+    "When inflation was the problem, bonds didn't hedge stocks — they fell together, and the classic 60/40 hedge failed in this regime.",
     "Rate-driven bears punish duration: the longer the cash flows (growth/tech), the bigger the drawdown.",
-    "Bear-market rallies of +10-17% failed twice; trend confirmation beats bottom-guessing.",
+    "Bear-market rallies of +10-17% failed twice before the real turn — early bottom calls were repeatedly punished.",
     "The low printed on a TERRIBLE news day that reversed (Oct 13) — capitulation reversals mark bottoms, not good news."
   ]
 },
@@ -4157,7 +4174,7 @@ var EVENT_STUDIES = [
     "Modern bank runs take hours, not weeks — speed of policy response is everything, and it was fast.",
     "Contained financial stress can be BULLISH for the index: it forces the Fed dovish (the 2023 tech rally).",
     "The losers were specific (concentrated, uninsured-deposit banks); indiscriminate regional-bank selling overshot.",
-    "When a crisis hits one sector, look at who benefits from the policy response — that was the trade."
+    "Historically, the beneficiaries were whoever the policy response favoured — falling rate expectations powered the 2023 tech rally."
   ]
 }
 ];
@@ -4297,7 +4314,7 @@ function esSelect(id) {
     '<div class="bt-panel">' +
       '<div class="ai-header"><span class="ai-badge">Event Intelligence</span><span class="ai-title">What history says</span></div>' +
       '<div class="aitxt" style="margin-bottom:22px">' + ev.insight + '</div>' +
-      '<div class="bt-ptitle">Trading Playbook</div>' +
+      '<div class="bt-ptitle">Historical Playbook</div>' +
       '<div class="es-playbook">' + pb + '</div>' +
     '</div>' +
     '<div class="bt-panel last">' +
@@ -4495,11 +4512,11 @@ function eaBuildPlaybook() {
   var el = document.getElementById('eaPlaybook');
   if (!el) return;
   var items = [
-    "Trade the reaction, not the report. In this dataset the day-1 direction held at the 1-month mark far more often than the EPS beat/miss did \u2014 the market\u2019s verdict beats the accountant\u2019s.",
-    "A beat that sells off is a warning, not a discount. Beat-and-fell names (Palantir, Microsoft and Nvidia in late 2025) kept sliding for weeks \u2014 the market was pricing valuation and AI-capex durability, not the headline.",
-    "A miss that rallies is one of the strongest contrarian signals. When ugly headlines (Oracle\u2019s EPS miss, Tesla\u2019s April 2025 washout) can\u2019t make a stock go down, the selling was already done \u2014 Oracle\u2019s +36% day on a technical miss is the most extreme example in modern large-cap history.",
+    "The reaction has been a better signal than the report. In this dataset the day-1 direction held at the 1-month mark far more often than the EPS beat/miss did \u2014 the market\u2019s verdict beat the accountant\u2019s.",
+    "A beat that sold off has historically been a warning, not a discount. Beat-and-fell names (Palantir, Microsoft and Nvidia in late 2025) kept sliding for weeks \u2014 the market was pricing valuation and AI-capex durability, not the headline.",
+    "A miss that rallied has been one of the strongest historical tells. When ugly headlines (Oracle\u2019s EPS miss, Tesla\u2019s April 2025 washout) couldn\u2019t make a stock go down, the selling was already done \u2014 Oracle\u2019s +36% day on a technical miss is the most extreme example in modern large-cap history.",
     "Guidance drives more day-1 reactions than results do. Most violent moves in the table trace to forward guidance, not the reported quarter.",
-    "The drift is a 1-week-to-3-month edge, not a year-long one. Academic research on post-earnings announcement drift shows it decays after about a quarter \u2014 by the next report, the clock resets."
+    "The drift has historically been a 1-week-to-3-month phenomenon, not a year-long one. Academic research on post-earnings announcement drift shows it decays after about a quarter \u2014 by the next report, the clock resets."
   ];
   var html = '';
   items.forEach(function(p, i) {
