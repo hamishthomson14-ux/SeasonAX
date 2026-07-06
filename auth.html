@@ -12,12 +12,13 @@
 <title>TimingAX &mdash; Sign in</title>
 <meta property="og:title" content="TimingAX &mdash; Sign in">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://timingax.co.uk/auth.html">
-<link rel="canonical" href="https://timingax.co.uk/auth.html">
-<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta property="og:url" content="https://www.timingax.co.uk/auth.html">
+<link rel="canonical" href="https://www.timingax.co.uk/auth.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="description" content="Sign in to TimingAX. Professional seasonal market intelligence for serious investors.">
+<meta name="robots" content="noindex">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -35,10 +36,10 @@ html,body{height:100%;-webkit-font-smoothing:antialiased}
   --disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;
   --sans:"Inter",sans-serif;
 }
-body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;display:flex}
 
 /* ── LEFT PANEL ── */
-.left{background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;min-height:100vh;padding:40px 56px;position:relative;overflow:hidden}
+.left{flex:1 1 0;min-width:0;background:var(--bg2);border-right:1px solid var(--b1);display:flex;flex-direction:column;min-height:100vh;padding:40px 56px;position:relative;overflow:hidden}
 .left-grid{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 80% 60% at 30% 20%,black 20%,transparent 80%);pointer-events:none;opacity:.4}
 .left-glow1{position:absolute;top:-120px;left:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
 .left-glow2{position:absolute;bottom:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,201,126,.04),transparent 65%);pointer-events:none}
@@ -68,7 +69,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 .l-stat:hover{border-color:var(--b3)}
 .l-stat-v{font:600 22px/1 var(--mono);letter-spacing:-.02em;min-width:72px}
 .l-stat-v.g{color:var(--green)}.l-stat-v.r{color:var(--red)}.l-stat-v.a{color:var(--amber2)}
-.l-stat-text{}
+.l-stat-text{flex:1;min-width:0}
 .l-stat-l{font-size:13px;color:var(--w2);font-weight:500;margin-bottom:2px}
 .l-stat-s{font:400 10px/1 var(--mono);color:var(--w4)}
 
@@ -78,7 +79,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 .l-trust-row::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
 
 /* ── RIGHT PANEL ── */
-.right{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 56px;background:var(--bg)}
+.right{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 56px;background:var(--bg)}
 
 .r-inner{width:100%;max-width:420px}
 .r-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:40px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
@@ -147,14 +148,14 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 
 /* Mobile */
 @media(max-width:900px){
-  body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
-  .left{min-height:auto;padding:24px;display:block}
+  body{flex-direction:column}
+  .left{flex:none;min-height:auto;padding:24px;display:block}
   .l-hero{padding:24px 0}
   .l-h{font-size:32px}
   .l-stats{display:none}
   .l-tape{margin-bottom:4px;max-width:none}
   .l-trust{display:none}
-  .right{padding:32px 24px;min-height:auto}
+  .right{flex:none;padding:32px 24px;min-height:auto}
   .r-inner{max-width:100%}
 }
 </style>
@@ -324,7 +325,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       </div>
       <div class="r-group">
         <label class="r-label" for="fp_email">Email address</label>
-        <input class="r-input" type="email" id="fp_email" placeholder="you@example.com">
+        <input class="r-input" type="email" id="fp_email" placeholder="you@example.com" autocomplete="email">
         <div class="r-hint" id="fp_hint"></div>
       </div>
       <button class="r-btn" id="fp_btn" onclick="sendReset()">
@@ -344,11 +345,11 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       </div>
       <div class="r-group">
         <label class="r-label" for="newpw_pw">New password</label>
-        <input class="r-input" type="password" id="newpw_pw" placeholder="At least 8 characters">
+        <input class="r-input" type="password" id="newpw_pw" placeholder="At least 8 characters" autocomplete="new-password">
       </div>
       <div class="r-group">
         <label class="r-label" for="newpw_pw2">Confirm new password</label>
-        <input class="r-input" type="password" id="newpw_pw2" placeholder="Re-enter your new password">
+        <input class="r-input" type="password" id="newpw_pw2" placeholder="Re-enter your new password" autocomplete="new-password">
         <div class="r-hint" id="newpw_err"></div>
       </div>
       <button class="r-btn" id="newpw_btn" onclick="updatePassword()">
@@ -402,7 +403,8 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 <script>
 var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
 var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
-var sb = window.supabase.createClient(SB_URL, SB_KEY);
+var sb = null;
+try { sb = window.supabase.createClient(SB_URL, SB_KEY); } catch (e) {}
 
 // ── REFERRAL CAPTURE ──────────────────────────────────
 // If arriving via someone's referral link (?ref=<their user id>), remember
@@ -430,7 +432,7 @@ var isRecoveryLink = window.location.hash.indexOf('type=recovery') !== -1 ||
 if (isRecoveryLink) {
   showTab('newpw');
   document.getElementById('tabs').style.display = 'none';
-} else {
+} else if (sb) {
   // Check if already logged in
   sb.auth.getSession().then(function(r) {
     if (r.data && r.data.session) {
@@ -453,6 +455,9 @@ if (isRecoveryLink) {
       document.getElementById('tabs').style.display = 'flex';
     }
   });
+} else {
+  showTab('in');
+  document.getElementById('tabs').style.display = 'flex';
 }
 
 // ── Update password (after clicking email reset link) ─────
@@ -462,6 +467,7 @@ async function updatePassword() {
   var err = document.getElementById('newpw_err');
   err.className = 'r-hint';
   err.textContent = '';
+  if (!sb) { err.textContent = 'Connection problem — please refresh the page and try again.'; return; }
   if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; return; }
   if (pw !== pw2) { err.textContent = 'Passwords do not match.'; return; }
   setLoading('newpw_btn','newpw_btn_txt',true);
@@ -474,8 +480,6 @@ async function updatePassword() {
       ? 'This reset link has expired. Please request a new one.'
       : (e.message || 'Could not update password. Please try again.');
     setLoading('newpw_btn','newpw_btn_txt',false);
-    document.getElementById('newpw_btn_txt').textContent = 'Update password';
-    document.getElementById('newpw_btn').disabled = false;
   }
 }
 
@@ -505,7 +509,12 @@ function setLoading(btnId, txtId, loading) {
   var txt = document.getElementById(txtId);
   if (!btn || !txt) return;
   btn.disabled = loading;
-  txt.innerHTML = loading ? '<div class="spinner"></div>' : txt.getAttribute('data-label') || txt.textContent;
+  if (loading) {
+    if (!txt.getAttribute('data-label')) txt.setAttribute('data-label', txt.textContent);
+    txt.innerHTML = '<div class="spinner"></div>';
+  } else {
+    txt.textContent = txt.getAttribute('data-label') || txt.textContent;
+  }
 }
 
 function togglePw(id, btn) {
@@ -549,6 +558,7 @@ async function signIn() {
   var pw = document.getElementById('si_pw').value;
   var err = document.getElementById('si_err');
   err.textContent = '';
+  if (!sb) { err.textContent = 'Connection problem — please refresh the page and try again.'; err.className='r-hint'; return; }
   if (!email || !pw) { err.textContent = 'Please enter your email and password.'; err.className='r-hint'; return; }
   setLoading('si_btn','si_btn_txt',true);
   try {
@@ -557,10 +567,9 @@ async function signIn() {
     window.location.href = '/dashboard.html';
   } catch(e) {
     err.className = 'r-hint';
-    err.textContent = e.message.includes('Invalid') ? 'Incorrect email or password.' : (e.message || 'Sign in failed. Please try again.');
+    var msg = (e && e.message) || '';
+    err.textContent = msg.indexOf('Invalid') !== -1 ? 'Incorrect email or password.' : (msg || 'Sign in failed. Please try again.');
     setLoading('si_btn','si_btn_txt',false);
-    document.getElementById('si_btn_txt').textContent = 'Sign in';
-    document.getElementById('si_btn').disabled = false;
   }
 }
 
@@ -570,12 +579,19 @@ async function signUp() {
   var pw = document.getElementById('su_pw').value;
   var err = document.getElementById('su_err');
   err.textContent = '';
+  if (!sb) { err.textContent = 'Connection problem — please refresh the page and try again.'; err.className='r-hint'; return; }
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent='Please enter a valid email address.'; err.className='r-hint'; return; }
   if (pw.length < 8) { err.textContent='Password must be at least 8 characters.'; err.className='r-hint'; return; }
   setLoading('su_btn','su_btn_txt',true);
   try {
-    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://timingax.co.uk/dashboard.html' } });
+    var r = await sb.auth.signUp({ email: email, password: pw, options: { emailRedirectTo: 'https://www.timingax.co.uk/dashboard.html' } });
     if (r.error) throw r.error;
+    if (r.data && r.data.session) {
+      // Email confirmations are disabled: user is logged in immediately.
+      window.location.href = '/dashboard.html';
+      return;
+    }
+    // Fallback (only reached if email confirmations get re-enabled later)
     document.getElementById('confirm_email').textContent = email;
     showTab('confirm');
     document.getElementById('tabs').style.display = 'none';
@@ -583,10 +599,8 @@ async function signUp() {
     err.className = 'r-hint';
     var msg = (typeof e === 'string') ? e : (e.message || e.msg || e.error_description || JSON.stringify(e));
     if (!msg || msg === '{}' || msg === 'undefined') msg = 'Sign up failed. Please try again.';
-    err.textContent = msg.includes('already') ? 'An account with this email already exists. Try signing in.' : msg;
+    err.textContent = msg.indexOf('already') !== -1 ? 'An account with this email already exists. Try signing in.' : msg;
     setLoading('su_btn','su_btn_txt',false);
-    document.getElementById('su_btn_txt').textContent = 'Create free account';
-    document.getElementById('su_btn').disabled = false;
   }
 }
 
@@ -595,31 +609,33 @@ async function sendReset() {
   var email = (document.getElementById('fp_email').value||'').trim();
   var hint = document.getElementById('fp_hint');
   hint.textContent = '';
-  if (!email) { hint.textContent='Please enter your email address.'; hint.className='r-hint'; return; }
+  if (!sb) { hint.textContent = 'Connection problem — please refresh the page and try again.'; hint.className='r-hint'; return; }
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { hint.textContent='Please enter a valid email address.'; hint.className='r-hint'; return; }
   setLoading('fp_btn','fp_btn_txt',true);
   try {
-    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://timingax.co.uk/auth.html' });
+    var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://www.timingax.co.uk/auth.html' });
     if (r.error) throw r.error;
     showTab('reset_sent');
     document.getElementById('tabs').style.display = 'none';
   } catch(e) {
-    hint.textContent = e.message || 'Failed to send reset email.';
+    hint.textContent = (e && e.message) || 'Failed to send reset email.';
     hint.className = 'r-hint';
     setLoading('fp_btn','fp_btn_txt',false);
-    document.getElementById('fp_btn_txt').textContent = 'Send reset link';
-    document.getElementById('fp_btn').disabled = false;
   }
 }
 
 // Enter key support
 document.addEventListener('keydown', function(e) {
   if (e.key !== 'Enter') return;
+  if (!e.target || e.target.tagName !== 'INPUT') return;
   var fi = document.getElementById('form_in');
   var fu = document.getElementById('form_up');
   var ff = document.getElementById('form_forgot');
+  var fn = document.getElementById('form_newpw');
   if (fi && fi.style.display !== 'none') signIn();
   else if (fu && fu.style.display !== 'none') signUp();
   else if (ff && ff.style.display !== 'none') sendReset();
+  else if (fn && fn.style.display !== 'none') updatePassword();
 });
 </script>
 <script src="/cookie-consent.js"></script>
