@@ -3,6 +3,8 @@
 // Requires STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUPABASE_URL,
 // SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables
 
+import crypto from 'node:crypto';
+
 export const config = { api: { bodyParser: false } };
 
 function getRawBody(req) {
@@ -16,8 +18,6 @@ function getRawBody(req) {
 
 // Manual Stripe signature verification using Node's crypto (not Web Crypto)
 function verifyStripeSignature(rawBody, sigHeader, secret) {
-  const crypto = require('crypto');
-
   if (!sigHeader) throw new Error('Missing stripe-signature header');
 
   const parts = sigHeader.split(',').reduce((acc, part) => {
@@ -28,7 +28,13 @@ function verifyStripeSignature(rawBody, sigHeader, secret) {
   }, {});
 
   if (!parts.timestamp || !parts.signatures) {
-    throw new Error('Malformed stripe-signature header: ' + sigHeader);
+    throw new Error('Malformed stripe-signature header');
+  }
+
+  // Reject events outside a 5-minute replay window.
+  const TOLERANCE_SECONDS = 300;
+  if (Math.abs(Math.floor(Date.now() / 1000) - Number(parts.timestamp)) > TOLERANCE_SECONDS) {
+    throw new Error('Timestamp outside tolerance');
   }
 
   const signedPayload = `${parts.timestamp}.${rawBody.toString('utf8')}`;
@@ -46,7 +52,7 @@ function verifyStripeSignature(rawBody, sigHeader, secret) {
   });
 
   if (!valid) {
-    throw new Error('Signature mismatch. Expected one of: ' + JSON.stringify(parts.signatures) + ' computed: ' + expectedSig);
+    throw new Error('Signature mismatch');
   }
 
   return true;
@@ -160,8 +166,8 @@ export default async function handler(req, res) {
     verifyStripeSignature(rawBody, sig, webhookSecret);
   } catch (e) {
     console.error('Signature verification failed:', e.message);
-    // Return the error message so it's visible in Stripe's webhook log for debugging
-    return res.status(400).json({ error: 'Signature verification failed: ' + e.message });
+    // Details stay in server logs only - never echo signature material to the caller.
+    return res.status(400).json({ error: 'Signature verification failed' });
   }
 
   let event;
@@ -236,7 +242,45 @@ export default async function handler(req, res) {
   if (event.type === 'customer.subscription.deleted') {
     const sub = event.data.object;
     console.log('Subscription cancelled:', sub.id);
-    // Optional: downgrade user to free here via customer ID lookup
+    try {
+      const supabaseUrl = process.env.SUPABASE_URL;
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+      if (secretKey && supabaseUrl && supabaseServiceKey && sub.customer) {
+        // Resolve the customer's email via Stripe, then downgrade that user.
+        const custRes = await fetch('https://api.stripe.com/v1/customers/' + sub.customer, {
+          headers: { Authorization: 'Bearer ' + secretKey },
+        });
+        const cust = await custRes.json();
+        const email = cust && cust.email;
+        if (email) {
+          const userRes = await fetch(
+            supabaseUrl + '/auth/v1/admin/users?email=' + encodeURIComponent(email),
+            { headers: { apikey: supabaseServiceKey, Authorization: 'Bearer ' + supabaseServiceKey } }
+          );
+          const userData = await userRes.json();
+          if (userData.users && userData.users.length > 0) {
+            const u = userData.users[0];
+            const current = u.app_metadata && u.app_metadata.subscription;
+            if (current !== 'lifetime') {
+              await fetch(supabaseUrl + '/auth/v1/admin/users/' + u.id, {
+                method: 'PUT',
+                headers: {
+                  apikey: supabaseServiceKey,
+                  Authorization: 'Bearer ' + supabaseServiceKey,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  app_metadata: { subscription: 'free', stripe_customer: sub.customer },
+                }),
+              });
+              console.log('Downgraded ' + email + ' -> free');
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Downgrade error:', e.message);
+    }
   }
 
   return res.status(200).json({ received: true });

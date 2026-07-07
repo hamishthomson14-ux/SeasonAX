@@ -79,11 +79,11 @@ export default async function handler(req, res) {
               reminder based on historical data, not a trading signal.
             </p>
             <p style="margin-top:24px">
-              <a href="https://timingax.co.uk/market-seasonality.html" style="background:#E89318;color:#04070F;text-decoration:none;padding:10px 20px;border-radius:6px;font-weight:600;font-size:14px">Open the Analyzer &rarr;</a>
+              <a href="https://www.timingax.co.uk/market-seasonality.html" style="background:#E89318;color:#04070F;text-decoration:none;padding:10px 20px;border-radius:6px;font-weight:600;font-size:14px">Open the Analyzer &rarr;</a>
             </p>
             <p style="font-size:11px;color:#8FA3B8;margin-top:32px">
               You're receiving this because you set a seasonal alert for ${alert.asset_ticker} on TimingAX.
-              Manage your alerts from the dashboard.
+              Manage your alerts from the <a href="https://www.timingax.co.uk/dashboard.html" style="color:#8FA3B8">dashboard</a>.
             </p>
           </div>`;
 
