@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://timingax.co.uk/sitemap.xml
+Sitemap: https://www.timingax.co.uk/sitemap.xml

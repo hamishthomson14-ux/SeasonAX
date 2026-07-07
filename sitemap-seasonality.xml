@@ -1,4399 +1,4399 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://timingax.co.uk/seasonality/sp500</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sp500</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nasdaq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nasdaq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dow</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dow</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/russell</loc>
+    <loc>https://www.timingax.co.uk/seasonality/russell</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/spy</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/qqq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/spy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/iwm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/dia</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/voo</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/vti</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xlk</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xlf</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xle</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xlv</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xlre</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xly</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/gld</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/slv</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/tlt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hyg</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/aapl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qqq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/msft</loc>
+    <loc>https://www.timingax.co.uk/seasonality/iwm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nvda</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dia</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/voo</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/vti</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xlk</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xlf</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xle</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xlv</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xlre</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xly</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/gld</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/slv</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/tlt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hyg</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/aapl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/googl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/msft</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/meta</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/amzn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/tsla</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nvda</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/avgo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/googl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/orcl</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/crm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/amd</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/intc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/qcom</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/adbe</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/now</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/shop</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pltr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/snow</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/uber</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/nflx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/spot</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/net</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ddog</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mdb</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/twlo</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/zm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/team</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rblx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/u_game</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/smci</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/arm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/amat</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lrcx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/klac</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/txn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mrvl</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mu</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/wdc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hp_us</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ibm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/csco</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/acn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ftnt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/panw</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/crwd</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/s_ai</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/soun</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ionq</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/jpm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bac</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/gs</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ms</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/wfc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/c_us</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/usb</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pnc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/v</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ma</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pypl</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/sq</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/afrm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hood</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/schw</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/blk</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/kkr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/aig</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/met</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/coin</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mstr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mara</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/riot</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/btc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/eth</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/unh</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/jnj</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/abbv</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lly</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mrk</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pfe</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mrna</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bntx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/amgn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/isrg</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bsx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/syk</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mdv</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cvs</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ci</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hum</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/vrtx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/regn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/gild</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/biib</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/wmt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/tgt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cost</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mcd</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/sbux</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/nke</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lulu</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/abnb</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bkng</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lyft</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/dkng</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mgm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/czr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hlt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mar</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/dri</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/yum</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cmg</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ebay</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/etsy</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/xom</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cvx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cop</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/slb</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hal</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/oxyx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/enph</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/plug</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/fslr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bep</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ba</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lmt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rtx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/noc</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ge</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/cat</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/de</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ups</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/fdx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/hon</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/mmm</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/emr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pgh</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/carr</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/dis</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/wbd</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/t_us</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/vz</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/tmus</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/snap</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/pins</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rddt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ttd</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/iaci</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rivn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/lcid</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/spce</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rkt</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/sofi</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/nu</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/bbai</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/rgti</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://timingax.co.uk/seasonality/ftse100</loc>
+    <loc>https://www.timingax.co.uk/seasonality/meta</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ftse250</loc>
+    <loc>https://www.timingax.co.uk/seasonality/amzn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hsba</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tsla</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/avgo</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/orcl</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/crm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/amd</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/intc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/qcom</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/adbe</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/now</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/shop</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pltr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/snow</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/uber</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/nflx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/spot</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/net</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ddog</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mdb</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/twlo</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/zm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/team</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rblx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/u_game</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/smci</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/arm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/amat</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lrcx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/klac</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/txn</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mrvl</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mu</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/wdc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hp_us</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ibm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/csco</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/acn</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ftnt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/panw</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/crwd</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/s_ai</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/soun</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ionq</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/jpm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bac</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/gs</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ms</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/wfc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/c_us</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/usb</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pnc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/v</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ma</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pypl</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/sq</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/afrm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hood</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/schw</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/blk</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/kkr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/aig</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/met</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/coin</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mstr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mara</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/riot</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/btc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/eth</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/unh</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/jnj</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/abbv</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lly</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mrk</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pfe</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mrna</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bntx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/amgn</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/isrg</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bsx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/syk</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mdv</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cvs</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ci</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hum</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/vrtx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/regn</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/gild</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/biib</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/wmt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/tgt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cost</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mcd</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/sbux</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/nke</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lulu</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/abnb</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bkng</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lyft</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/dkng</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mgm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/czr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hlt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mar</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/dri</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/yum</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cmg</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ebay</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/etsy</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/xom</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cvx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cop</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/slb</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hal</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/oxyx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/enph</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/plug</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/fslr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bep</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ba</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lmt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rtx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/noc</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ge</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/cat</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/de</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ups</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/fdx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hon</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/mmm</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/emr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pgh</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/carr</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/dis</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/wbd</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/t_us</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/vz</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/tmus</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/snap</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/pins</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rddt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ttd</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/iaci</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rivn</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/lcid</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/spce</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rkt</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/sofi</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/nu</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/bbai</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/rgti</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ftse100</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/ftse250</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/seasonality/hsba</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lloy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lloy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/barc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/barc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/natw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/natw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/stan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/stan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/avia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/avia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lgen</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lgen</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pru</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pru</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shro</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shro</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lsl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lsl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/halma</loc>
+    <loc>https://www.timingax.co.uk/seasonality/halma</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/intv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/intv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mng</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mng</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ajb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ajb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bp_uk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bp_uk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shel</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shel</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rdsb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rdsb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/riouk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/riouk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/anto</loc>
+    <loc>https://www.timingax.co.uk/seasonality/anto</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/aau</loc>
+    <loc>https://www.timingax.co.uk/seasonality/aau</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/glen</loc>
+    <loc>https://www.timingax.co.uk/seasonality/glen</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bhp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bhp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cenm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cenm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ngt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ngt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sso</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sso</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/drax</loc>
+    <loc>https://www.timingax.co.uk/seasonality/drax</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/azn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/azn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gsk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gsk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hikm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hikm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/decm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/decm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/smi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/smi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ipx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ipx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ncyt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ncyt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/uniluk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/uniluk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/diageo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/diageo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/reckitt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/reckitt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nxt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nxt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mks</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mks</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jds</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jds</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bts</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bts</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/imp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/imp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/flts</loc>
+    <loc>https://www.timingax.co.uk/seasonality/flts</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bpt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bpt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wpp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wpp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gregg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gregg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sspg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sspg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sage</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sage</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/autocad</loc>
+    <loc>https://www.timingax.co.uk/seasonality/autocad</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rightm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rightm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/iptv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/iptv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/relx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/relx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/informa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/informa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bae</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bae</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rr_uk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rr_uk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/qinetic</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qinetic</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/croda</loc>
+    <loc>https://www.timingax.co.uk/seasonality/croda</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jmats</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jmats</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ferv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ferv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/imi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/imi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sxs</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sxs</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/smw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/smw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/voduk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/voduk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/btem</loc>
+    <loc>https://www.timingax.co.uk/seasonality/btem</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/blnd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/blnd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/land</loc>
+    <loc>https://www.timingax.co.uk/seasonality/land</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/segro</loc>
+    <loc>https://www.timingax.co.uk/seasonality/segro</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dax</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dax</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mdax</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mdax</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sap</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sap</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ifx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ifx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1u1</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1u1</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/aixa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/aixa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/teamv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/teamv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sul</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sul</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/enr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/enr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sfq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sfq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hhm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hhm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/demde</loc>
+    <loc>https://www.timingax.co.uk/seasonality/demde</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/zal</loc>
+    <loc>https://www.timingax.co.uk/seasonality/zal</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bmw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bmw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mbg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mbg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/vow3</loc>
+    <loc>https://www.timingax.co.uk/seasonality/vow3</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pah3</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pah3</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/con</loc>
+    <loc>https://www.timingax.co.uk/seasonality/con</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shaf</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shaf</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ht1</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ht1</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/knebv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/knebv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/elring</loc>
+    <loc>https://www.timingax.co.uk/seasonality/elring</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sie</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sie</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bas</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bas</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bayer</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bayer</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/merck</loc>
+    <loc>https://www.timingax.co.uk/seasonality/merck</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/eve</loc>
+    <loc>https://www.timingax.co.uk/seasonality/eve</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/frk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/frk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fms</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fms</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/thys</loc>
+    <loc>https://www.timingax.co.uk/seasonality/thys</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mtu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mtu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/air</loc>
+    <loc>https://www.timingax.co.uk/seasonality/air</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rhm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rhm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hei</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hei</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/siko</loc>
+    <loc>https://www.timingax.co.uk/seasonality/siko</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kion</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kion</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wacker</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wacker</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/db</loc>
+    <loc>https://www.timingax.co.uk/seasonality/db</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cbk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cbk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/alv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/alv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mun</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mun</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hanover</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hanover</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dws</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dws</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hex</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hex</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fb2</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fb2</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ads</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ads</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/puma</loc>
+    <loc>https://www.timingax.co.uk/seasonality/puma</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hugo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hugo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/henk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/henk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/beisd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/beisd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dfv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dfv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pro7</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pro7</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mbc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mbc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dte</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dte</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rwe</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rwe</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/eon</loc>
+    <loc>https://www.timingax.co.uk/seasonality/eon</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/unp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/unp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/orsted</loc>
+    <loc>https://www.timingax.co.uk/seasonality/orsted</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nordex</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nordex</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nikkei</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nikkei</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/toyota</loc>
+    <loc>https://www.timingax.co.uk/seasonality/toyota</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sony</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sony</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/softbk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/softbk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/keyence</loc>
+    <loc>https://www.timingax.co.uk/seasonality/keyence</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fanuc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fanuc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fast</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fast</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nintend</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nintend</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/honda</loc>
+    <loc>https://www.timingax.co.uk/seasonality/honda</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nissan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nissan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mitsu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mitsu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mitsub</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mitsub</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hitach</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hitach</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/panaso</loc>
+    <loc>https://www.timingax.co.uk/seasonality/panaso</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/canon</loc>
+    <loc>https://www.timingax.co.uk/seasonality/canon</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fujifl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fujifl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/daikin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/daikin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tdk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tdk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/murata</loc>
+    <loc>https://www.timingax.co.uk/seasonality/murata</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/renesas</loc>
+    <loc>https://www.timingax.co.uk/seasonality/renesas</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/recruit</loc>
+    <loc>https://www.timingax.co.uk/seasonality/recruit</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/softbk2</loc>
+    <loc>https://www.timingax.co.uk/seasonality/softbk2</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ntt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ntt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kddi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kddi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mufg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mufg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/smfg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/smfg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mizuho</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mizuho</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tokmar</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tokmar</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nomura</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nomura</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/olympus</loc>
+    <loc>https://www.timingax.co.uk/seasonality/olympus</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/takeda</loc>
+    <loc>https://www.timingax.co.uk/seasonality/takeda</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/astellas</loc>
+    <loc>https://www.timingax.co.uk/seasonality/astellas</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/otsuka</loc>
+    <loc>https://www.timingax.co.uk/seasonality/otsuka</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kubota</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kubota</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/komatsu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/komatsu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hsi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hsi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/alibaba</loc>
+    <loc>https://www.timingax.co.uk/seasonality/alibaba</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tencent</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tencent</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/meituan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/meituan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pinduoduo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pinduoduo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bidu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bidu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/neteas</loc>
+    <loc>https://www.timingax.co.uk/seasonality/neteas</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/byd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/byd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/xiaomi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/xiaomi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/smic</loc>
+    <loc>https://www.timingax.co.uk/seasonality/smic</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lenovo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lenovo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/geely</loc>
+    <loc>https://www.timingax.co.uk/seasonality/geely</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sands</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sands</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/galaxy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/galaxy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cnooc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cnooc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/petro</loc>
+    <loc>https://www.timingax.co.uk/seasonality/petro</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/icbc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/icbc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ccb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ccb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/abc_cn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/abc_cn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/boc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/boc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pingan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pingan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/aia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/aia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shenwan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shenwan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ntes</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ntes</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/li_auto</loc>
+    <loc>https://www.timingax.co.uk/seasonality/li_auto</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nio</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nio</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/xpeng</loc>
+    <loc>https://www.timingax.co.uk/seasonality/xpeng</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kospi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kospi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/samsung</loc>
+    <loc>https://www.timingax.co.uk/seasonality/samsung</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/skhynix</loc>
+    <loc>https://www.timingax.co.uk/seasonality/skhynix</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hyundai</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hyundai</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lg_chem</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lg_chem</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kakao</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kakao</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/naver</loc>
+    <loc>https://www.timingax.co.uk/seasonality/naver</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/posco</loc>
+    <loc>https://www.timingax.co.uk/seasonality/posco</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sk_tel</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sk_tel</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kb_fin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kb_fin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/shinhan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/shinhan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hanwha</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hanwha</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/celtrion</loc>
+    <loc>https://www.timingax.co.uk/seasonality/celtrion</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tsmc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tsmc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/meditek</loc>
+    <loc>https://www.timingax.co.uk/seasonality/meditek</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/foxconn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/foxconn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ase</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ase</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/delta_tw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/delta_tw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/htc_tw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/htc_tw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sensex</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sensex</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tcs</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tcs</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/infosys</loc>
+    <loc>https://www.timingax.co.uk/seasonality/infosys</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wipro</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wipro</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hdfc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hdfc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/reliance</loc>
+    <loc>https://www.timingax.co.uk/seasonality/reliance</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hclt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hclt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/icici</loc>
+    <loc>https://www.timingax.co.uk/seasonality/icici</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bajfin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bajfin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/titan</loc>
+    <loc>https://www.timingax.co.uk/seasonality/titan</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/maruti</loc>
+    <loc>https://www.timingax.co.uk/seasonality/maruti</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ltim</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ltim</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sunph</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sunph</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/drreddy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/drreddy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kotak</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kotak</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dbs</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dbs</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ocbc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ocbc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/uob</loc>
+    <loc>https://www.timingax.co.uk/seasonality/uob</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/comb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/comb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nab</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nab</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/anz</loc>
+    <loc>https://www.timingax.co.uk/seasonality/anz</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/westpac</loc>
+    <loc>https://www.timingax.co.uk/seasonality/westpac</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/macq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/macq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/csl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/csl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bhpau</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bhpau</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rioto</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rioto</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wesfarm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wesfarm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wool</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wool</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fortesc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fortesc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/intu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/intu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/adsk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/adsk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/snps</loc>
+    <loc>https://www.timingax.co.uk/seasonality/snps</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cdns</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cdns</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/anss</loc>
+    <loc>https://www.timingax.co.uk/seasonality/anss</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/adp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/adp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/payx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/payx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gpn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gpn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hpq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hpq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dell</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dell</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ntap</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ntap</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jnpr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jnpr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mchp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mchp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/on</loc>
+    <loc>https://www.timingax.co.uk/seasonality/on</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/swks</loc>
+    <loc>https://www.timingax.co.uk/seasonality/swks</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/qrvo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qrvo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ter</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ter</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/anet</loc>
+    <loc>https://www.timingax.co.uk/seasonality/anet</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/stx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/stx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/glw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/glw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/aph</loc>
+    <loc>https://www.timingax.co.uk/seasonality/aph</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tdy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tdy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/keys</loc>
+    <loc>https://www.timingax.co.uk/seasonality/keys</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/zbra</loc>
+    <loc>https://www.timingax.co.uk/seasonality/zbra</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ea</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ea</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ttwo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ttwo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/roku</loc>
+    <loc>https://www.timingax.co.uk/seasonality/roku</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cmcsa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cmcsa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/chtr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/chtr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/foxa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/foxa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nwsa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nwsa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mtch</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mtch</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lyv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lyv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/expe</loc>
+    <loc>https://www.timingax.co.uk/seasonality/expe</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tmo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tmo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dhr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dhr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/abt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/abt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/elv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/elv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cnc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cnc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/moh</loc>
+    <loc>https://www.timingax.co.uk/seasonality/moh</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/zts</loc>
+    <loc>https://www.timingax.co.uk/seasonality/zts</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dxcm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dxcm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ew</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ew</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/idxx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/idxx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/a</loc>
+    <loc>https://www.timingax.co.uk/seasonality/a</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mtd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mtd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wat</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wat</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hca</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hca</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dva</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dva</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/incy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/incy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/alny</loc>
+    <loc>https://www.timingax.co.uk/seasonality/alny</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rprx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rprx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/axp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/axp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cof</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cof</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tfc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tfc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fitb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fitb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/stt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/stt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/trow</loc>
+    <loc>https://www.timingax.co.uk/seasonality/trow</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/amp</loc>
+    <loc>https://www.timingax.co.uk/seasonality/amp</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mco</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mco</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/spgi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/spgi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ice</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ice</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cme</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cme</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ndaq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ndaq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cboe</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cboe</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/all</loc>
+    <loc>https://www.timingax.co.uk/seasonality/all</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/trv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/trv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pgr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pgr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hig</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hig</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/afl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/afl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/prufin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/prufin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bro</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bro</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wtw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wtw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/low</loc>
+    <loc>https://www.timingax.co.uk/seasonality/low</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tjx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tjx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rost</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rost</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/orly</loc>
+    <loc>https://www.timingax.co.uk/seasonality/orly</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/azo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/azo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dltr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dltr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/syy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/syy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ko</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ko</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pep</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pep</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mdlz</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mdlz</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/khc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/khc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kmb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kmb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/clx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/clx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hsy</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hsy</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/stz</loc>
+    <loc>https://www.timingax.co.uk/seasonality/stz</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tap</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tap</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/el</loc>
+    <loc>https://www.timingax.co.uk/seasonality/el</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tpr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tpr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/deck</loc>
+    <loc>https://www.timingax.co.uk/seasonality/deck</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/crox</loc>
+    <loc>https://www.timingax.co.uk/seasonality/crox</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ulta</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ulta</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/f</loc>
+    <loc>https://www.timingax.co.uk/seasonality/f</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gd</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gd</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lhx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lhx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/txt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/txt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hii</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hii</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tdg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tdg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/axon</loc>
+    <loc>https://www.timingax.co.uk/seasonality/axon</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/itw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/itw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dov</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dov</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rok</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rok</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ame</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ame</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/xyl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/xyl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pnr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pnr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/swk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/swk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gww</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gww</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fastenal</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fastenal</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cmi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cmi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pcar</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pcar</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wab</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wab</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/uri</loc>
+    <loc>https://www.timingax.co.uk/seasonality/uri</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/csx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/csx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/unionpac</loc>
+    <loc>https://www.timingax.co.uk/seasonality/unionpac</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nsc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nsc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/aptv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/aptv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bwa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bwa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wmb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wmb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kmi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kmi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/oke</loc>
+    <loc>https://www.timingax.co.uk/seasonality/oke</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/eog</loc>
+    <loc>https://www.timingax.co.uk/seasonality/eog</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dvn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dvn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mpc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mpc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/vlo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/vlo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/psx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/psx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bkr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bkr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fang</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fang</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cvna</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cvna</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/upst</loc>
+    <loc>https://www.timingax.co.uk/seasonality/upst</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/path</loc>
+    <loc>https://www.timingax.co.uk/seasonality/path</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dash</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dash</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/w</loc>
+    <loc>https://www.timingax.co.uk/seasonality/w</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/joby</loc>
+    <loc>https://www.timingax.co.uk/seasonality/joby</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/achr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/achr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/qs</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qs</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/chpt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/chpt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/envx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/envx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/iii</loc>
+    <loc>https://www.timingax.co.uk/seasonality/iii</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/abdn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/abdn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/phnx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/phnx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/adm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/adm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hsx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hsx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dlg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dlg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fres</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fres</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/svt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/svt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/uu</loc>
+    <loc>https://www.timingax.co.uk/seasonality/uu</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pnn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pnn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hbr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hbr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/enq</loc>
+    <loc>https://www.timingax.co.uk/seasonality/enq</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ctec</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ctec</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/indv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/indv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tsco</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tsco</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sbry</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sbry</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kgf</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kgf</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/abf</loc>
+    <loc>https://www.timingax.co.uk/seasonality/abf</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wtb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wtb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ihg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ihg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ent</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ent</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ocdo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ocdo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bme</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bme</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cch</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cch</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pson</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pson</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dplm</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dplm</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/boo</loc>
+    <loc>https://www.timingax.co.uk/seasonality/boo</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/itrk</loc>
+    <loc>https://www.timingax.co.uk/seasonality/itrk</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bnzl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bnzl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/weir</loc>
+    <loc>https://www.timingax.co.uk/seasonality/weir</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/mndi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/mndi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/rto</loc>
+    <loc>https://www.timingax.co.uk/seasonality/rto</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hwdn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hwdn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tw</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tw</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/psn</loc>
+    <loc>https://www.timingax.co.uk/seasonality/psn</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/utg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/utg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/safe</loc>
+    <loc>https://www.timingax.co.uk/seasonality/safe</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dln</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dln</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hmso</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hmso</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nem</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nem</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/utdi</loc>
+    <loc>https://www.timingax.co.uk/seasonality/utdi</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fpe3</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fpe3</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dtg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dtg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/srt3</loc>
+    <loc>https://www.timingax.co.uk/seasonality/srt3</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sy1</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sy1</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lxs</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lxs</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/g1a</loc>
+    <loc>https://www.timingax.co.uk/seasonality/g1a</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/kco</loc>
+    <loc>https://www.timingax.co.uk/seasonality/kco</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bnr</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bnr</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/qia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/fra</loc>
+    <loc>https://www.timingax.co.uk/seasonality/fra</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/waf</loc>
+    <loc>https://www.timingax.co.uk/seasonality/waf</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hot</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hot</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/dez</loc>
+    <loc>https://www.timingax.co.uk/seasonality/dez</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sdf</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sdf</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/raa</loc>
+    <loc>https://www.timingax.co.uk/seasonality/raa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jen</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jen</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/vna</loc>
+    <loc>https://www.timingax.co.uk/seasonality/vna</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tlx</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tlx</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/pbb</loc>
+    <loc>https://www.timingax.co.uk/seasonality/pbb</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/hfg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/hfg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cec</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cec</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9202</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9202</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9201</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9201</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8801</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8801</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8802</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8802</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9020</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9020</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9022</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9022</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/4661</loc>
+    <loc>https://www.timingax.co.uk/seasonality/4661</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/6902</loc>
+    <loc>https://www.timingax.co.uk/seasonality/6902</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/7269</loc>
+    <loc>https://www.timingax.co.uk/seasonality/7269</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/7270</loc>
+    <loc>https://www.timingax.co.uk/seasonality/7270</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/5108</loc>
+    <loc>https://www.timingax.co.uk/seasonality/5108</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8113</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8113</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2503</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2503</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2502</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2502</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2914</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2914</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/4452</loc>
+    <loc>https://www.timingax.co.uk/seasonality/4452</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/4519</loc>
+    <loc>https://www.timingax.co.uk/seasonality/4519</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/4568</loc>
+    <loc>https://www.timingax.co.uk/seasonality/4568</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/4523</loc>
+    <loc>https://www.timingax.co.uk/seasonality/4523</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8035</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8035</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/6857</loc>
+    <loc>https://www.timingax.co.uk/seasonality/6857</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/6841</loc>
+    <loc>https://www.timingax.co.uk/seasonality/6841</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/6920</loc>
+    <loc>https://www.timingax.co.uk/seasonality/6920</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/5401</loc>
+    <loc>https://www.timingax.co.uk/seasonality/5401</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8053</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8053</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8001</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8001</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/8031</loc>
+    <loc>https://www.timingax.co.uk/seasonality/8031</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/6971</loc>
+    <loc>https://www.timingax.co.uk/seasonality/6971</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9531</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9531</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0941</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0941</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0762</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0762</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0728</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0728</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1929</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1929</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2628</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2628</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0386</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0386</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0688</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0688</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1093</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1093</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1177</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1177</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2269</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2269</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2382</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2382</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1024</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1024</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/9626</loc>
+    <loc>https://www.timingax.co.uk/seasonality/9626</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0011</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0011</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0016</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0016</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0001</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0001</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0002</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0002</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0003</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0003</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0006</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0006</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1044</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1044</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0291</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0291</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2020</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2020</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1109</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1109</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/0388</loc>
+    <loc>https://www.timingax.co.uk/seasonality/0388</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2319</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2319</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bhartiartl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bhartiartl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/itc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/itc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/lt</loc>
+    <loc>https://www.timingax.co.uk/seasonality/lt</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/axisbank</loc>
+    <loc>https://www.timingax.co.uk/seasonality/axisbank</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sbin</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sbin</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/asianpaint</loc>
+    <loc>https://www.timingax.co.uk/seasonality/asianpaint</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/nestleind</loc>
+    <loc>https://www.timingax.co.uk/seasonality/nestleind</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ultracemco</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ultracemco</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/adanient</loc>
+    <loc>https://www.timingax.co.uk/seasonality/adanient</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/adaniports</loc>
+    <loc>https://www.timingax.co.uk/seasonality/adaniports</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/powergrid</loc>
+    <loc>https://www.timingax.co.uk/seasonality/powergrid</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ntpc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ntpc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/ongc</loc>
+    <loc>https://www.timingax.co.uk/seasonality/ongc</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/coalindia</loc>
+    <loc>https://www.timingax.co.uk/seasonality/coalindia</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tatamotors</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tatamotors</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tatasteel</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tatasteel</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/jswsteel</loc>
+    <loc>https://www.timingax.co.uk/seasonality/jswsteel</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bajajfinsv</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bajajfinsv</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/divislab</loc>
+    <loc>https://www.timingax.co.uk/seasonality/divislab</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/cipla</loc>
+    <loc>https://www.timingax.co.uk/seasonality/cipla</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/003550</loc>
+    <loc>https://www.timingax.co.uk/seasonality/003550</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/012330</loc>
+    <loc>https://www.timingax.co.uk/seasonality/012330</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/015760</loc>
+    <loc>https://www.timingax.co.uk/seasonality/015760</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/032830</loc>
+    <loc>https://www.timingax.co.uk/seasonality/032830</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/086790</loc>
+    <loc>https://www.timingax.co.uk/seasonality/086790</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/207940</loc>
+    <loc>https://www.timingax.co.uk/seasonality/207940</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/006400</loc>
+    <loc>https://www.timingax.co.uk/seasonality/006400</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/009150</loc>
+    <loc>https://www.timingax.co.uk/seasonality/009150</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/010130</loc>
+    <loc>https://www.timingax.co.uk/seasonality/010130</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/011170</loc>
+    <loc>https://www.timingax.co.uk/seasonality/011170</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/028260</loc>
+    <loc>https://www.timingax.co.uk/seasonality/028260</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/030200</loc>
+    <loc>https://www.timingax.co.uk/seasonality/030200</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/z74</loc>
+    <loc>https://www.timingax.co.uk/seasonality/z74</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/a17u</loc>
+    <loc>https://www.timingax.co.uk/seasonality/a17u</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/c38u</loc>
+    <loc>https://www.timingax.co.uk/seasonality/c38u</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/g13</loc>
+    <loc>https://www.timingax.co.uk/seasonality/g13</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/f34</loc>
+    <loc>https://www.timingax.co.uk/seasonality/f34</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/bn4</loc>
+    <loc>https://www.timingax.co.uk/seasonality/bn4</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tls</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tls</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/wds</loc>
+    <loc>https://www.timingax.co.uk/seasonality/wds</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/tcl</loc>
+    <loc>https://www.timingax.co.uk/seasonality/tcl</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/gmg</loc>
+    <loc>https://www.timingax.co.uk/seasonality/gmg</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/sto</loc>
+    <loc>https://www.timingax.co.uk/seasonality/sto</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/qbe</loc>
+    <loc>https://www.timingax.co.uk/seasonality/qbe</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2882</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2882</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2891</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2891</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/1303</loc>
+    <loc>https://www.timingax.co.uk/seasonality/1303</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2412</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2412</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://timingax.co.uk/seasonality/2357</loc>
+    <loc>https://www.timingax.co.uk/seasonality/2357</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
