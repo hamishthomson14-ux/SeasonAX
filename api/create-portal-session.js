@@ -6,7 +6,7 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -17,10 +17,25 @@ export default async function handler(req, res) {
   if (!secretKey) return res.status(500).json({ error: 'Stripe not configured' });
   if (!supabaseUrl || !supabaseServiceKey) return res.status(500).json({ error: 'Supabase not configured' });
 
-  const { userId } = req.body;
-  if (!userId) return res.status(400).json({ error: 'Missing userId' });
+  // Verify the caller's own session token \u2014 never trust a userId from the body.
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '');
+  if (!token) return res.status(401).json({ error: 'Missing session token' });
 
-  const origin = req.headers.origin || 'https://timingax.co.uk';
+  let userId;
+  try {
+    const meRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: { apikey: supabaseServiceKey, Authorization: `Bearer ${token}` },
+    });
+    if (!meRes.ok) return res.status(401).json({ error: 'Invalid session' });
+    const me = await meRes.json();
+    userId = me.id;
+  } catch (e) {
+    return res.status(401).json({ error: 'Could not verify session' });
+  }
+  if (!userId) return res.status(401).json({ error: 'Invalid session' });
+
+  const origin = req.headers.origin || 'https://www.timingax.co.uk';
 
   try {
     // Look up the user's stripe_customer ID from Supabase metadata

@@ -1,5 +1,5 @@
 // api/catalogue.js
-// Serves the full asset catalogue (433 items) as JSON. Used by
+// Serves the full asset catalogue (733 items) as JSON. Used by
 // /admin.html's Data Coverage Audit to enumerate every asset without
 // duplicating the (large) catalogue array client-side. The _data/
 // directory itself isn't web-routable, so this small endpoint exposes

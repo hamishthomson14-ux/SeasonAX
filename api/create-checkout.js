@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   const { priceId, email, mode } = req.body;
   if (!priceId) return res.status(400).json({ error: 'Missing priceId' });
 
-  const origin = req.headers.origin || 'https://timingax.co.uk';
+  const origin = req.headers.origin || 'https://www.timingax.co.uk';
 
   try {
     const body = new URLSearchParams({
