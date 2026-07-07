@@ -12,11 +12,11 @@
 <title>Data & Methodology — TimingAX</title>
 <meta property="og:title" content="Data & Methodology — TimingAX">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://timingax.co.uk/methodology.html">
-<link rel="canonical" href="https://timingax.co.uk/methodology.html">
-<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta property="og:url" content="https://www.timingax.co.uk/methodology.html">
+<link rel="canonical" href="https://www.timingax.co.uk/methodology.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="description" content="How TimingAX computes every seasonal stat from real price data, what VERIFIED vs MODELLED means, and the honest limits of seasonal analysis. No black boxes, observation counts shown.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@ a{color:inherit;text-decoration:none}
 button{cursor:pointer;font-family:var(--sans)}
 
 /* NAV */
-.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
 .n-logo{display:flex;align-items:center;gap:9px}
 .n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
 .n-word b{color:var(--amber2);font-weight:800}
@@ -299,19 +299,16 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
   <!-- 4. Per-tool breakdown -->
   <div class="s-section">
     <div class="s-label">Per-tool breakdown</div>
-    <h2 class="s-h">How each of the<br>10 tools uses data.</h2>
+    <h2 class="s-h">How each of the<br>7 tools uses data.</h2>
     <div class="meth-table">
       <div class="mt-row mt-head"><div>Tool</div><div>Data type</div><div>Notes</div></div>
       <div class="mt-row"><div>Seasonal Analyzer</div><div><span class="tt real">Real prices</span></div><div>Computed live per asset, VERIFIED badge shown</div></div>
       <div class="mt-row"><div>Strategy Backtest</div><div><span class="tt real">Real prices</span></div><div>Year-by-year returns from actual history; year range auto-clamped to available data</div></div>
       <div class="mt-row"><div>Seasonal Screener</div><div><span class="tt real">Real prices</span></div><div>Ranks a curated universe of 24 liquid assets by real current-month performance</div></div>
-      <div class="mt-row"><div>Watchlist</div><div><span class="tt real">Real prices</span></div><div>Each tracked asset resolved to real data where available</div></div>
+      <div class="mt-row"><div>Watchlist &amp; Portfolio</div><div><span class="tt real">Real prices</span></div><div>Each tracked asset resolved to real data where available; the portfolio view blends holdings by your entered allocation</div></div>
       <div class="mt-row"><div>Seasonal Correlations</div><div><span class="tt real">Real prices</span></div><div>Both assets resolved to real monthly returns before correlating</div></div>
-      <div class="mt-row"><div>Portfolio Seasonality</div><div><span class="tt real">Real prices</span></div><div>Weighted blend of each holding’s resolved real/model monthly returns, by your entered allocation</div></div>
-      <div class="mt-row"><div>Event Studies</div><div><span class="tt curated">Curated research</span></div><div>19 hand-researched historical events (Fed decisions, crashes, halvings) with documented market outcomes</div></div>
-      <div class="mt-row"><div>Earnings Analysis</div><div><span class="tt curated">Curated research</span></div><div>26 real historical earnings reports with documented price reactions</div></div>
-      <div class="mt-row"><div>This Month in History</div><div><span class="tt curated">Curated research</span></div><div>Written essays on real historical market events by calendar month</div></div>
-      <div class="mt-row"><div>Economic Calendar</div><div><span class="tt live">Live computed</span></div><div>FOMC/CPI/NFP dates computed from known schedules, countdowns calculated in real time</div></div>
+      <div class="mt-row"><div>Event Studies &amp; Earnings</div><div><span class="tt curated">Curated research</span></div><div>19 hand-researched historical events plus 26 real earnings reports, all with documented market reactions</div></div>
+      <div class="mt-row"><div>Economic Calendar</div><div><span class="tt live">Live computed</span></div><div>FOMC/CPI/NFP dates computed from known schedules with real-time countdowns; includes written market-history essays for every calendar month</div></div>
     </div>
   </div>
 
