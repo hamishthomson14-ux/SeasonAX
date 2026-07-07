@@ -12,11 +12,11 @@
 <title>TimingAX — Dashboard</title>
 <meta property="og:title" content="TimingAX — Dashboard">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://timingax.co.uk/dashboard.html">
-<link rel="canonical" href="https://timingax.co.uk/dashboard.html">
-<meta property="og:image" content="https://timingax.co.uk/og-image.png">
+<meta property="og:url" content="https://www.timingax.co.uk/dashboard.html">
+<link rel="canonical" href="https://www.timingax.co.uk/dashboard.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
+<meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -265,7 +265,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       
       <div id="upgradeBanner" style="display:none;background:rgba(232,147,24,.06);border:1px solid rgba(232,147,24,.25);border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <div>
-          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 10 tools &amp; 730+ global assets</div>
+          <div style="font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:4px">Unlock all 7 tools &amp; 730+ global assets</div>
           <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 5 analyses/month &middot; indices &amp; ETFs only</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -407,7 +407,6 @@ async function initAuth() {
     var msb = document.getElementById('manageSubBtn');
     if (msb) {
       msb.style.display = 'inline-flex';
-      msb.dataset.userId = user.id;
     }
   } else {
     var banner2 = document.getElementById('upgradeBanner');
@@ -446,7 +445,7 @@ async function recordReferralIfNew(user) {
 async function renderReferralWidget(user) {
   var box = document.getElementById('referralBox');
   if (!box) return;
-  var link = 'https://timingax.co.uk/auth.html?ref=' + user.id + '&tab=up';
+  var link = 'https://www.timingax.co.uk/auth.html?ref=' + user.id + '&tab=up';
   document.getElementById('referralLink').value = link;
 
   var res = await sb.from('referrals').select('status').eq('referrer_id', user.id);
@@ -471,15 +470,17 @@ function copyReferralLink() {
 
 async function openBillingPortal() {
   var btn = document.getElementById('manageSubBtn');
-  var userId = btn.dataset.userId;
   var orig = btn.textContent;
   btn.textContent = 'Loading...';
   btn.disabled = true;
   try {
+    var sess = await sb.auth.getSession();
+    var token = sess && sess.data && sess.data.session && sess.data.session.access_token;
+    if (!token) throw new Error('Please sign in again to manage billing.');
     var res = await fetch('/api/create-portal-session', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: userId })
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({})
     });
     var data = await res.json();
     if (data.url) {

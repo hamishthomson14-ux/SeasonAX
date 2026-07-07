@@ -20,7 +20,7 @@
 
 (function () {
   // ── Cloudflare Web Analytics (cookieless) ──
-  var CF_TOKEN = 'script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4fc389ba53334f75a1b1ed5a2df87b50"}'></script>';
+  var CF_TOKEN = '4fc389ba53334f75a1b1ed5a2df87b50';
   if (CF_TOKEN && CF_TOKEN.indexOf('REPLACE_WITH') === -1) {
     var cf = document.createElement('script');
     cf.defer = true;
