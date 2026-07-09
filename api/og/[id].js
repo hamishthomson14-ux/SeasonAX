@@ -1,111 +1,152 @@
 // api/og/[id].js
-// Dynamically generates a unique 1200x630 social-share preview image for
-// each asset's seasonality page \u2014 asset name, ticker, sector/region,
-// and a decorative seasonal-shape chart so every shared link looks distinct.
+// Dynamically generates a 1200x630 social-share preview image for each
+// asset's seasonality page — asset name, ticker, sector/region, and a
+// decorative seasonal-shape chart so every shared link looks distinct.
 //
-// Uses @vercel/og (Satori). Runs on the Edge runtime for fast, cacheable
-// image responses. Chart bars are decorative (drawn from the sector/region
-// pattern shape) \u2014 the VERIFIED/MODELLED real data lives on the page itself;
-// this image exists to make shared links visually distinctive, not to state
-// a specific figure.
+// RUNTIME: Node (not Edge). @vercel/og cannot be bundled into an Edge
+// Function in this project, and Node lets us read the single source of
+// truth in api/_data/ rather than duplicating the catalogue here.
+//
+// The bars are an ILLUSTRATIVE shape drawn from the sector/region pattern,
+// not the asset's verified figures. The real VERIFIED/MODELLED data lives
+// on the page itself; this image exists to make shared links visually
+// distinctive. The footer says so explicitly.
 
 import { ImageResponse } from '@vercel/og';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
-export const config = { runtime: 'edge' };
+export const config = { runtime: 'nodejs' };
 
-// id -> [ticker, name, sector, region, patternKey]
-const CATALOGUE = {"sp500":["^GSPC","S&P 500","Index","US","broadIndex"],"nasdaq":["^IXIC","NASDAQ Composite","Index","US","broadIndex"],"dow":["^DJI","Dow Jones Ind. Avg.","Index","US","broadIndex"],"russell":["^RUT","Russell 2000","Index","US","broadIndex"],"spy":["SPY","SPDR S&P 500 ETF","ETF","US","broadIndex"],"qqq":["QQQ","Invesco NASDAQ-100","ETF","US","techGrowth"],"iwm":["IWM","iShares Russell 2000","ETF","US","broadIndex"],"dia":["DIA","SPDR Dow Jones ETF","ETF","US","broadIndex"],"voo":["VOO","Vanguard S&P 500","ETF","US","broadIndex"],"vti":["VTI","Vanguard Total Market","ETF","US","broadIndex"],"xlk":["XLK","Technology SPDR","Tech ETF","US","techGrowth"],"xlf":["XLF","Financial SPDR","Finance ETF","US","financials"],"xle":["XLE","Energy SPDR","Energy ETF","US","energy"],"xlv":["XLV","Health Care SPDR","Health ETF","US","healthcare"],"xlre":["XLRE","Real Estate SPDR","REIT ETF","US","financials"],"xly":["XLY","Consumer Discret. SPDR","Consumer ETF","US","consumer"],"gld":["GLD","SPDR Gold Shares","Gold ETF","US","gold"],"slv":["SLV","iShares Silver","Silver ETF","US","gold"],"tlt":["TLT","iShares 20yr Treasury","Bond ETF","US","bonds"],"hyg":["HYG","iShares High Yield","Bond ETF","US","bonds"],"aapl":["AAPL","Apple","Consumer Tech","US","techGrowth"],"msft":["MSFT","Microsoft","Cloud/Software","US","techGrowth"],"nvda":["NVDA","Nvidia","Semiconductors","US","semis"],"googl":["GOOGL","Alphabet","Internet/Ads","US","techGrowth"],"meta":["META","Meta Platforms","Social Media","US","techGrowth"],"amzn":["AMZN","Amazon","E-commerce/Cloud","US","techGrowth"],"tsla":["TSLA","Tesla","EV/Energy","US","evGrowth"],"avgo":["AVGO","Broadcom","Semiconductors","US","semis"],"orcl":["ORCL","Oracle","Enterprise SW","US","techGrowth"],"crm":["CRM","Salesforce","CRM Software","US","techGrowth"],"amd":["AMD","AMD","Semiconductors","US","semis"],"intc":["INTC","Intel","Semiconductors","US","semis"],"qcom":["QCOM","Qualcomm","Semiconductors","US","semis"],"adbe":["ADBE","Adobe","Creative SW","US","techGrowth"],"now":["NOW","ServiceNow","Enterprise SaaS","US","techGrowth"],"shop":["SHOP","Shopify","E-commerce","US","evGrowth"],"pltr":["PLTR","Palantir","Data/AI","US","speculative"],"snow":["SNOW","Snowflake","Cloud Data","US","techGrowth"],"uber":["UBER","Uber","Rideshare","US","consumer"],"nflx":["NFLX","Netflix","Streaming","US","techGrowth"],"spot":["SPOT","Spotify","Music Streaming","US","techGrowth"],"net":["NET","Cloudflare","Network Security","US","techGrowth"],"ddog":["DDOG","Datadog","Observability","US","techGrowth"],"mdb":["MDB","MongoDB","Database","US","techGrowth"],"twlo":["TWLO","Twilio","Comms API","US","techGrowth"],"zm":["ZM","Zoom Video","Video Comms","US","techGrowth"],"team":["TEAM","Atlassian","Dev Tools","US","techGrowth"],"rblx":["RBLX","Roblox","Gaming","US","speculative"],"u_game":["U","Unity Software","Game Engine","US","speculative"],"smci":["SMCI","Super Micro","AI Servers","US","semis"],"arm":["ARM","Arm Holdings","Chip Architecture","US","semis"],"amat":["AMAT","Applied Materials","Semiconductor Eq","US","semis"],"lrcx":["LRCX","Lam Research","Semiconductor Eq","US","semis"],"klac":["KLAC","KLA Corp","Semiconductor Eq","US","semis"],"txn":["TXN","Texas Instruments","Semiconductors","US","semis"],"mrvl":["MRVL","Marvell Technology","Semiconductors","US","semis"],"mu":["MU","Micron Technology","Memory Chips","US","semis"],"wdc":["WDC","Western Digital","Storage","US","semis"],"hp_us":["HPE","HP Enterprise","IT Infrastructure","US","techGrowth"],"ibm":["IBM","IBM","IT Services","US","techGrowth"],"csco":["CSCO","Cisco Systems","Networking","US","techGrowth"],"acn":["ACN","Accenture","IT Consulting","US","techGrowth"],"ftnt":["FTNT","Fortinet","Cybersecurity","US","techGrowth"],"panw":["PANW","Palo Alto Networks","Cybersecurity","US","techGrowth"],"crwd":["CRWD","CrowdStrike","Cybersecurity","US","techGrowth"],"s_ai":["AI","C3.ai","Enterprise AI","US","speculative"],"soun":["SOUN","SoundHound AI","Voice AI","US","speculative"],"ionq":["IONQ","IonQ","Quantum Computing","US","speculative"],"jpm":["JPM","JPMorgan Chase","Banking","US","financials"],"bac":["BAC","Bank of America","Banking","US","financials"],"gs":["GS","Goldman Sachs","Investment Bank","US","financials"],"ms":["MS","Morgan Stanley","Investment Bank","US","financials"],"wfc":["WFC","Wells Fargo","Banking","US","financials"],"c_us":["C","Citigroup","Banking","US","financials"],"usb":["USB","US Bancorp","Banking","US","financials"],"pnc":["PNC","PNC Financial","Banking","US","financials"],"v":["V","Visa","Payments","US","financials"],"ma":["MA","Mastercard","Payments","US","financials"],"pypl":["PYPL","PayPal","Fintech","US","financials"],"sq":["SQ","Block (Square)","Fintech","US","speculative"],"afrm":["AFRM","Affirm","BNPL Fintech","US","speculative"],"hood":["HOOD","Robinhood","Retail Trading","US","speculative"],"schw":["SCHW","Charles Schwab","Brokerage","US","financials"],"blk":["BLK","BlackRock","Asset Management","US","financials"],"bx":["BX","Blackstone","Private Equity","US","financials"],"kkr":["KKR","KKR","Private Equity","US","financials"],"aig":["AIG","AIG","Insurance","US","financials"],"met":["MET","MetLife","Insurance","US","financials"],"coin":["COIN","Coinbase","Crypto Exchange","US","speculative"],"mstr":["MSTR","MicroStrategy","Bitcoin Proxy","US","speculative"],"mara":["MARA","Marathon Digital","Bitcoin Mining","US","speculative"],"riot":["RIOT","Riot Platforms","Bitcoin Mining","US","speculative"],"btc":["BTC","Bitcoin","Cryptocurrency","US","crypto"],"eth":["ETH","Ethereum","Cryptocurrency","US","crypto"],"unh":["UNH","UnitedHealth","Health Insurance","US","healthcare"],"jnj":["JNJ","Johnson & Johnson","Pharma/Medical","US","healthcare"],"abbv":["ABBV","AbbVie","Biopharma","US","healthcare"],"lly":["LLY","Eli Lilly","Pharmaceuticals","US","healthcare"],"mrk":["MRK","Merck","Pharmaceuticals","US","healthcare"],"pfe":["PFE","Pfizer","Pharmaceuticals","US","healthcare"],"mrna":["MRNA","Moderna","mRNA Biotech","US","speculative"],"bntx":["BNTX","BioNTech","mRNA Biotech","US","speculative"],"amgn":["AMGN","Amgen","Biotechnology","US","healthcare"],"isrg":["ISRG","Intuitive Surgical","Medical Devices","US","healthcare"],"bsx":["BSX","Boston Scientific","Medical Devices","US","healthcare"],"syk":["SYK","Stryker","Medical Devices","US","healthcare"],"mdv":["MDT","Medtronic","Medical Devices","US","healthcare"],"cvs":["CVS","CVS Health","Pharmacy Retail","US","healthcare"],"ci":["CI","Cigna","Health Insurance","US","healthcare"],"hum":["HUM","Humana","Health Insurance","US","healthcare"],"vrtx":["VRTX","Vertex Pharma","Biotech","US","healthcare"],"regn":["REGN","Regeneron","Biotech","US","healthcare"],"gild":["GILD","Gilead Sciences","Antiviral Biotech","US","healthcare"],"biib":["BIIB","Biogen","Neuroscience","US","healthcare"],"wmt":["WMT","Walmart","Retail","US","consumer"],"tgt":["TGT","Target","Retail","US","consumer"],"cost":["COST","Costco","Wholesale Retail","US","consumer"],"mcd":["MCD","McDonald's","Fast Food","US","consumer"],"sbux":["SBUX","Starbucks","Coffee","US","consumer"],"nke":["NKE","Nike","Sportswear","US","consumer"],"lulu":["LULU","Lululemon","Apparel","US","consumer"],"abnb":["ABNB","Airbnb","Travel","US","consumer"],"bkng":["BKNG","Booking Holdings","Travel","US","consumer"],"lyft":["LYFT","Lyft","Rideshare","US","consumer"],"dkng":["DKNG","DraftKings","Sports Betting","US","speculative"],"mgm":["MGM","MGM Resorts","Casinos","US","consumer"],"czr":["CZR","Caesars","Casinos","US","consumer"],"hlt":["HLT","Hilton","Hotels","US","consumer"],"mar":["MAR","Marriott","Hotels","US","consumer"],"dri":["DRI","Darden Restaurants","Restaurants","US","consumer"],"yum":["YUM","Yum! Brands","Fast Food","US","consumer"],"cmg":["CMG","Chipotle","Fast Casual","US","consumer"],"ebay":["EBAY","eBay","E-commerce","US","consumer"],"etsy":["ETSY","Etsy","Marketplace","US","consumer"],"xom":["XOM","ExxonMobil","Oil & Gas","US","energy"],"cvx":["CVX","Chevron","Oil & Gas","US","energy"],"cop":["COP","ConocoPhillips","Oil & Gas","US","energy"],"slb":["SLB","Schlumberger","Oil Services","US","energy"],"hal":["HAL","Halliburton","Oil Services","US","energy"],"oxyx":["OXY","Occidental Petrol.","Oil & Gas","US","energy"],"enph":["ENPH","Enphase Energy","Solar","US","speculative"],"plug":["PLUG","Plug Power","Hydrogen","US","speculative"],"fslr":["FSLR","First Solar","Solar Panels","US","techGrowth"],"bep":["BEP","Brookfield Renewable","Clean Energy","US","techGrowth"],"ba":["BA","Boeing","Aerospace","US","defense"],"lmt":["LMT","Lockheed Martin","Defense","US","defense"],"rtx":["RTX","RTX (Raytheon)","Defense","US","defense"],"noc":["NOC","Northrop Grumman","Defense","US","defense"],"ge":["GE","GE Aerospace","Jet Engines","US","defense"],"cat":["CAT","Caterpillar","Heavy Machinery","US","defense"],"de":["DE","Deere & Co.","Agriculture","US","defense"],"ups":["UPS","UPS","Logistics","US","consumer"],"fdx":["FDX","FedEx","Logistics","US","consumer"],"hon":["HON","Honeywell","Industrials","US","defense"],"mmm":["MMM","3M","Diversified Ind.","US","defense"],"emr":["EMR","Emerson Electric","Automation","US","defense"],"pgh":["PH","Parker Hannifin","Hydraulics","US","defense"],"carr":["CARR","Carrier Global","HVAC","US","defense"],"dis":["DIS","Walt Disney","Entertainment","US","consumer"],"nflx2":["NFLX","Netflix","Streaming","US","techGrowth"],"wbd":["WBD","Warner Bros.","Media","US","consumer"],"t_us":["T","AT&T","Telecom","US","bonds"],"vz":["VZ","Verizon","Telecom","US","bonds"],"tmus":["TMUS","T-Mobile","Telecom","US","techGrowth"],"snap":["SNAP","Snap","Social Media","US","speculative"],"pins":["PINS","Pinterest","Social Media","US","techGrowth"],"rddt":["RDDT","Reddit","Social Media","US","speculative"],"ttd":["TTD","The Trade Desk","Ad Tech","US","techGrowth"],"iaci":["IAC","IAC","Internet Media","US","techGrowth"],"rivn":["RIVN","Rivian","EV Trucks","US","speculative"],"lcid":["LCID","Lucid Motors","EV Luxury","US","speculative"],"spce":["SPCE","Virgin Galactic","Space Tourism","US","speculative"],"rkt":["RKT","Rocket Companies","Mortgage Tech","US","speculative"],"sofi":["SOFI","SoFi Technologies","Neobank","US","speculative"],"nu":["NU","Nu Holdings","Digital Banking","US","speculative"],"bbai":["BBAI","BigBear.ai","AI Analytics","US","speculative"],"rgti":["RGTI","Rigetti Computing","Quantum","US","speculative"],"ftse100":["^FTSE","FTSE 100","Index","UK","ukMarket"],"ftse250":["^FTMC","FTSE 250","Index","UK","ukMarket"],"hsba":["HSBA.L","HSBC Holdings","Global Banking","UK","financials"],"lloy":["LLOY.L","Lloyds Banking","UK Banking","UK","ukMarket"],"barc":["BARC.L","Barclays","Investment Bank","UK","financials"],"natw":["NWG.L","NatWest Group","UK Banking","UK","ukMarket"],"stan":["STAN.L","Standard Chartered","Emerging Mkts","UK","financials"],"avia":["AV.L","Aviva","Insurance","UK","ukMarket"],"lgen":["LGEN.L","Legal & General","Insurance","UK","ukMarket"],"pru":["PRU.L","Prudential","Insurance","UK","financials"],"shro":["SDR.L","Schroders","Asset Mgmt","UK","financials"],"lsl":["LSE.L","London Stock Exchange","Exchange","UK","financials"],"halma":["HLMA.L","Halma","Safety Tech","UK","ukMarket"],"intv":["IG.L","IG Group","Trading Platform","UK","financials"],"mng":["MNG.L","Man Group","Hedge Fund","UK","financials"],"ajb":["AJB.L","AJ Bell","Retail Invest.","UK","financials"],"harg":["HL.L","Hargreaves Lansdown","Wealth Mgmt","UK","financials"],"bp_uk":["BP.L","BP","Oil & Gas","UK","energy"],"shel":["SHEL.L","Shell","Oil & Gas","UK","energy"],"rdsb":["EXPN.L","Experian","Data Analytics","UK","techGrowth"],"riouk":["RIO.L","Rio Tinto","Mining","UK","ukMining"],"anto":["ANTO.L","Antofagasta","Copper Mining","UK","ukMining"],"aau":["AAL.L","Anglo American","Diversified Mining","UK","ukMining"],"glen":["GLEN.L","Glencore","Commodities","UK","ukMining"],"bhp":["BHP.L","BHP Group","Mining","UK","ukMining"],"cenm":["CNA.L","Centrica","Utilities","UK","energy"],"ngt":["NG.L","National Grid","Utilities","UK","bonds"],"sso":["SSE.L","SSE","Energy/Utilities","UK","bonds"],"drax":["DRX.L","Drax Group","Power Generation","UK","energy"],"azn":["AZN.L","AstraZeneca","Pharmaceuticals","UK","healthcare"],"gsk":["GSK.L","GSK","Pharmaceuticals","UK","healthcare"],"hikm":["HIK.L","Hikma Pharma","Generics","UK","healthcare"],"decm":["DXRX.L","Benchmark Holdings","Biotech","UK","healthcare"],"smi":["SMT.L","Scottish Mortgage","Investment Trust","UK","techGrowth"],"ipx":["IPX.L","Ipsen","Specialty Pharma","UK","healthcare"],"evolv":["EVO.L","Evolution Gaming","Online Gaming","UK","consumer"],"ncyt":["NCYT.L","Novacyt","Diagnostics","UK","speculative"],"uniluk":["ULVR.L","Unilever","Consumer Goods","UK","consumer"],"diageo":["DGE.L","Diageo","Spirits/Beverages","UK","consumer"],"reckitt":["RKT.L","Reckitt","Household Goods","UK","consumer"],"nxt":["NXT.L","Next","Fashion Retail","UK","consumer"],"mks":["MKS.L","Marks & Spencer","Retail","UK","consumer"],"jds":["JD.L","JD Sports","Sportswear","UK","consumer"],"bts":["BATS.L","British American Tobacco","Tobacco","UK","consumer"],"imp":["IMB.L","Imperial Brands","Tobacco","UK","consumer"],"flts":["FLTX.L","Flutter Entertainment","Betting","UK","consumer"],"bpt":["BPT.L","BrightPoint","Distribution","UK","consumer"],"wpp":["WPP.L","WPP","Advertising","UK","consumer"],"pub":["PUB.L","Pub Group","Hospitality","UK","consumer"],"gregg":["GRG.L","Greggs","Food Retail","UK","consumer"],"sspg":["SSPG.L","SSP Group","Travel Food","UK","consumer"],"sage":["SGE.L","Sage Group","Accounting SW","UK","techGrowth"],"avsuk":["AVS.L","Avast","Cybersecurity","UK","techGrowth"],"darkt":["DARK.L","Darktrace","AI Security","UK","speculative"],"aveva":["AVV.L","AVEVA","Industrial SW","UK","techGrowth"],"autocad":["ATC.L","Auto Trader","Online Auto","UK","consumer"],"rightm":["RMV.L","Rightmove","Property Portal","UK","consumer"],"iptv":["ITV.L","ITV","Broadcasting","UK","consumer"],"relx":["REL.L","RELX","Info Services","UK","techGrowth"],"informa":["INF.L","Informa","Publishing","UK","consumer"],"bae":["BA.L","BAE Systems","Defense","UK","defense"],"rr_uk":["RR.L","Rolls-Royce","Jet Engines","UK","defense"],"qinetic":["QQ.L","QinetiQ","Defense Tech","UK","defense"],"megg":["MGGT.L","Meggitt","Aerospace","UK","defense"],"spmk":["SMDS.L","Smith & Nephew","Medical Devices","UK","healthcare"],"croda":["CRDA.L","Croda International","Specialty Chem","UK","ukMarket"],"jmats":["JMAT.L","Johnson Matthey","Catalysts","UK","ukMining"],"ferv":["FERG.L","Ferguson","Plumbing/HVAC","UK","consumer"],"imi":["IMI.L","IMI","Engineering","UK","defense"],"sxs":["SXS.L","Spectris","Precision Inst.","UK","defense"],"smw":["SMW.L","Smiths Group","Diversified Ind.","UK","defense"],"voduk":["VOD.L","Vodafone","Telecom","UK","bonds"],"btem":["BT.A.L","BT Group","Telecom","UK","bonds"],"blnd":["BLND.L","British Land","REIT","UK","financials"],"land":["LAND.L","Land Securities","REIT","UK","financials"],"segro":["SGRO.L","Segro","Logistics REIT","UK","financials"],"lxb":["LXB.L","LXi REIT","REIT","UK","financials"],"dax":["^GDAXI","DAX 40","Index","Germany","germanMarket"],"mdax":["^MDAXI","MDAX","Index","Germany","germanMarket"],"sap":["SAP.DE","SAP","Enterprise SW","Germany","techGrowth"],"ifx":["IFX.DE","Infineon","Semiconductors","Germany","semis"],"1u1":["1U1.DE","1&1","Telecom/Internet","Germany","techGrowth"],"aixa":["AIXA.DE","Aixtron","Chip Equipment","Germany","semis"],"wmk":["WMK.DE","Wirecard (hist.)","Fintech","Germany","speculative"],"teamv":["TMV.DE","TeamViewer","Remote Access SW","Germany","techGrowth"],"sul":["S92.DE","SMA Solar","Solar Technology","Germany","speculative"],"enr":["ENR.DE","Siemens Energy","Energy Tech","Germany","techGrowth"],"sfq":["SFQ.DE","Software AG","Enterprise SW","Germany","techGrowth"],"hhm":["HHFA.DE","Hawesko","Wine/Beverages","Germany","consumer"],"demde":["DHER.DE","Delivery Hero","Food Delivery","Germany","speculative"],"zal":["ZAL.DE","Zalando","Fashion E-comm","Germany","evGrowth"],"bmw":["BMW.DE","BMW","Luxury Autos","Germany","germanAuto"],"mbg":["MBG.DE","Mercedes-Benz","Luxury Autos","Germany","germanAuto"],"vow3":["VOW3.DE","Volkswagen","Mass Market Auto","Germany","germanAuto"],"pah3":["PAH3.DE","Porsche AG","Sports Cars","Germany","germanAuto"],"audi":["NSU.DE","Audi (via VW)","Premium Autos","Germany","germanAuto"],"con":["CON.DE","Continental","Auto Parts","Germany","germanAuto"],"shaf":["SHA.DE","Schaeffler","Auto Components","Germany","germanAuto"],"ht1":["HEN3.DE","Hella","Auto Lighting","Germany","defense"],"knebv":["KBX.DE","Knorr-Bremse","Rail/Truck Brakes","Germany","defense"],"elring":["ZIL2.DE","ElringKlinger","Auto Sealing","Germany","germanAuto"],"sie":["SIE.DE","Siemens","Industrials","Germany","defense"],"bas":["BAS.DE","BASF","Chemicals","Germany","germanChemical"],"bayer":["BAYN.DE","Bayer","Pharma/Chem","Germany","healthcare"],"merck":["MRK.DE","Merck KGaA","Pharma/Chem","Germany","healthcare"],"lin":["LIN.DE","Linde","Industrial Gas","Germany","germanChemical"],"eve":["EVK.DE","Evonik","Specialty Chem","Germany","germanChemical"],"frk":["FRE.DE","Fresenius","Healthcare Svc","Germany","healthcare"],"fms":["FMS.DE","Fresenius Medical","Dialysis","Germany","healthcare"],"thys":["TKA.DE","ThyssenKrupp","Steel/Ind.","Germany","defense"],"mtu":["MTX.DE","MTU Aero Engines","Jet Engines","Germany","defense"],"air":["AIR.DE","Airbus","Aerospace","Germany","defense"],"rhm":["RHM.DE","Rheinmetall","Defense","Germany","defense"],"hei":["HEI.DE","HeidelbergMat.","Building Matl.","Germany","germanChemical"],"siko":["SIK.DE","Sika AG","Construction Chem","Germany","germanChemical"],"kion":["KGX.DE","KION Group","Forklift/Logistics","Germany","defense"],"wacker":["WCH.DE","Wacker Chemie","Polysilicon","Germany","germanChemical"],"db":["DBK.DE","Deutsche Bank","Investment Bank","Germany","financials"],"cbk":["CBK.DE","Commerzbank","Retail Banking","Germany","financials"],"alv":["ALV.DE","Allianz","Insurance","Germany","financials"],"mun":["MUV2.DE","Munich Re","Reinsurance","Germany","financials"],"hanover":["HNR1.DE","Hannover Re","Reinsurance","Germany","financials"],"dws":["DWS.DE","DWS Group","Asset Management","Germany","financials"],"hex":["H24.DE","Hypoport","Mortgage Platform","Germany","financials"],"fb2":["FB2A.DE","Flatex DeGiro","Online Broker","Germany","speculative"],"ads":["ADS.DE","Adidas","Sportswear","Germany","consumer"],"puma":["PUM.DE","Puma","Sportswear","Germany","consumer"],"hugo":["BOSS.DE","Hugo Boss","Luxury Fashion","Germany","consumer"],"henk":["HEN3.DE","Henkel","Consumer Goods","Germany","consumer"],"beisd":["BEI.DE","Beiersdorf","Skin Care","Germany","consumer"],"dfv":["DFV.DE","Deutsche Familienversicherung","Insurtech","Germany","speculative"],"rhkg":["RHKG.DE","Rewe Group","Supermarkets","Germany","consumer"],"obi":["OBI.DE","OBI","Home Improvement","Germany","consumer"],"metro":["B4B.DE","Metro AG","Wholesale","Germany","consumer"],"pro7":["P7S1.DE","ProSiebenSat.1","Broadcasting","Germany","consumer"],"mbc":["MBB.DE","MBB SE","Industrial Hold.","Germany","defense"],"dte":["DTE.DE","Deutsche Telekom","Telecom","Germany","bonds"],"rwe":["RWE.DE","RWE","Utilities/Power","Germany","energy"],"eon":["EOAN.DE","E.ON","Utilities","Germany","bonds"],"unp":["UN01.DE","Uniper","Gas/Power","Germany","energy"],"orsted":["ORSTED.DE","Orsted","Offshore Wind","Germany","techGrowth"],"nordex":["NDX1.DE","Nordex","Wind Turbines","Germany","speculative"],"nikkei":["^N225","Nikkei 225","Index","Asia","japanExport"],"toyota":["7203.T","Toyota","Auto","Asia","japanExport"],"sony":["6758.T","Sony","Consumer Electronics","Asia","japanExport"],"softbk":["9984.T","SoftBank","Telecom/VC","Asia","techGrowth"],"keyence":["6861.T","Keyence","Automation","Asia","japanExport"],"fanuc":["6954.T","Fanuc","Industrial Robot","Asia","japanExport"],"fast":["9983.T","Fast Retailing (Uniqlo)","Fashion","Asia","consumer"],"nintend":["7974.T","Nintendo","Gaming","Asia","consumer"],"honda":["7267.T","Honda","Auto/Motorcycle","Asia","japanExport"],"nissan":["7201.T","Nissan","Auto","Asia","japanExport"],"mitsu":["8058.T","Mitsubishi Corp.","Trading Co.","Asia","japanExport"],"mitsub":["7011.T","Mitsubishi Heavy","Defense/Ind.","Asia","defense"],"hitach":["6501.T","Hitachi","IT/Infrastructure","Asia","techGrowth"],"panaso":["6752.T","Panasonic","Electronics","Asia","japanExport"],"canon":["7751.T","Canon","Imaging","Asia","japanExport"],"fujifl":["4901.T","Fujifilm","Healthcare/Photo","Asia","healthcare"],"daikin":["6367.T","Daikin","HVAC","Asia","japanExport"],"shin":["4063.T","Shin-Etsu Chemical","Chemicals","Asia","semis"],"tdk":["6762.T","TDK","Electronic Comp.","Asia","semis"],"murata":["6981.T","Murata Manufacturing","Components","Asia","semis"],"renesas":["6723.T","Renesas","Microcontrollers","Asia","semis"],"recruit":["6098.T","Recruit Holdings","HR/Job Portal","Asia","techGrowth"],"softbk2":["9434.T","SoftBank Corp.","Telecom","Asia","bonds"],"ntt":["9432.T","NTT","Telecom","Asia","bonds"],"kddi":["9433.T","KDDI","Telecom","Asia","bonds"],"mufg":["8306.T","MUFG","Banking","Asia","financials"],"smfg":["8316.T","Sumitomo Mitsui","Banking","Asia","financials"],"mizuho":["8411.T","Mizuho Financial","Banking","Asia","financials"],"tokmar":["8766.T","Tokio Marine","Insurance","Asia","financials"],"nomura":["8604.T","Nomura Holdings","Investment Bank","Asia","financials"],"olympus":["7733.T","Olympus","Medical Devices","Asia","healthcare"],"takeda":["4502.T","Takeda Pharma","Pharmaceuticals","Asia","healthcare"],"astellas":["4503.T","Astellas Pharma","Pharmaceuticals","Asia","healthcare"],"otsuka":["4578.T","Otsuka Holdings","Pharma/Beverages","Asia","healthcare"],"kubota":["6326.T","Kubota","Agriculture Mach.","Asia","defense"],"komatsu":["6301.T","Komatsu","Construction Eq.","Asia","defense"],"hsi":["^HSI","Hang Seng Index","Index","Asia","chinaInternet"],"alibaba":["9988.HK","Alibaba","E-commerce/Cloud","Asia","chinaInternet"],"tencent":["0700.HK","Tencent","Internet/Gaming","Asia","chinaInternet"],"meituan":["3690.HK","Meituan","Food Delivery","Asia","chinaInternet"],"jd":["9618.HK","JD.com","E-commerce","Asia","chinaInternet"],"pinduoduo":["PDD","PDD Holdings","Social Commerce","Asia","chinaInternet"],"bidu":["BIDU","Baidu","Search/AI","Asia","chinaInternet"],"neteas":["9999.HK","NetEase","Gaming","Asia","chinaInternet"],"byd":["1211.HK","BYD","EV","Asia","evGrowth"],"xiaomi":["1810.HK","Xiaomi","Smartphones","Asia","chinaInternet"],"smic":["0981.HK","SMIC","Foundry","Asia","semis"],"lenovo":["0992.HK","Lenovo","PC/Servers","Asia","techGrowth"],"geely":["0175.HK","Geely Auto","Autos","Asia","germanAuto"],"sands":["1928.HK","Sands China","Casino/Macau","Asia","consumer"],"galaxy":["0027.HK","Galaxy Entertainment","Casino","Asia","consumer"],"cnooc":["0883.HK","CNOOC","Oil & Gas","Asia","energy"],"petro":["0857.HK","PetroChina","Oil & Gas","Asia","energy"],"icbc":["1398.HK","ICBC","Banking","Asia","financials"],"ccb":["0939.HK","China Construction Bank","Banking","Asia","financials"],"abc_cn":["1288.HK","Agric. Bank of China","Banking","Asia","financials"],"boc":["3988.HK","Bank of China","Banking","Asia","financials"],"pingan":["2318.HK","Ping An Insurance","Insurance","Asia","financials"],"aia":["1299.HK","AIA Group","Insurance","Asia","financials"],"shenwan":["6060.HK","360 Security","Cybersecurity","Asia","chinaInternet"],"ntes":["NTES","NetEase (US ADR)","Gaming","Asia","chinaInternet"],"li_auto":["2015.HK","Li Auto","EV","Asia","evGrowth"],"nio":["NIO","NIO","EV","Asia","evGrowth"],"xpeng":["9868.HK","XPeng","EV","Asia","evGrowth"],"kospi":["^KS11","KOSPI Index","Index","Asia","koreanTech"],"samsung":["005930.KS","Samsung Electronics","Semiconductors/Phones","Asia","koreanTech"],"skhynix":["000660.KS","SK Hynix","Memory Chips","Asia","semis"],"hyundai":["005380.KS","Hyundai Motor","Auto","Asia","germanAuto"],"kia":["000270.KS","Kia","Auto","Asia","germanAuto"],"lg_chem":["051910.KS","LG Chem","Battery/Chem","Asia","germanChemical"],"kakao":["035720.KS","Kakao","Social/Internet","Asia","chinaInternet"],"naver":["035420.KS","Naver","Search/Internet","Asia","chinaInternet"],"posco":["005490.KS","POSCO","Steel","Asia","defense"],"sk_tel":["017670.KS","SK Telecom","Telecom","Asia","bonds"],"kb_fin":["105560.KS","KB Financial","Banking","Asia","financials"],"shinhan":["055550.KS","Shinhan Financial","Banking","Asia","financials"],"hanwha":["000880.KS","Hanwha","Defense/Chem","Asia","defense"],"celtrion":["068270.KS","Celltrion","Biosimilars","Asia","healthcare"],"tsmc":["TSM","TSMC","Chip Foundry","Asia","semis"],"meditek":["2454.TW","MediaTek","Mobile Chips","Asia","semis"],"foxconn":["2317.TW","Foxconn","Electronics Mfg.","Asia","techGrowth"],"ase":["ASX","ASE Technology","Chip Packaging","Asia","semis"],"delta_tw":["2308.TW","Delta Electronics","Power Mgmt","Asia","semis"],"htc_tw":["2498.TW","HTC","VR/Smartphones","Asia","speculative"],"sensex":["^BSESN","BSE Sensex","Index","Asia","broadIndex"],"tcs":["TCS.NS","Tata Consultancy","IT Services","Asia","techGrowth"],"infosys":["INFY","Infosys","IT Services","Asia","techGrowth"],"wipro":["WIT","Wipro","IT Services","Asia","techGrowth"],"hdfc":["HDB","HDFC Bank","Banking","Asia","financials"],"reliance":["RELI.NS","Reliance Industries","Conglomerate","Asia","energy"],"hclt":["HCLTECH.NS","HCL Technologies","IT Services","Asia","techGrowth"],"icici":["IBN","ICICI Bank","Banking","Asia","financials"],"bajfin":["BAJFINANCE.NS","Bajaj Finance","NBFC","Asia","financials"],"titan":["TITAN.NS","Titan Company","Jewelry/Watches","Asia","consumer"],"maruti":["MARUTI.NS","Maruti Suzuki","Auto","Asia","consumer"],"ltim":["LTIM.NS","LTIMindtree","IT Services","Asia","techGrowth"],"sunph":["SUNPHARMA.NS","Sun Pharma","Pharmaceuticals","Asia","healthcare"],"drreddy":["RDY","Dr. Reddy's Labs","Generics","Asia","healthcare"],"kotak":["KOTAKBANK.NS","Kotak Bank","Banking","Asia","financials"],"dbs":["D05.SI","DBS Group","Banking","Asia","financials"],"ocbc":["O39.SI","OCBC","Banking","Asia","financials"],"uob":["U11.SI","UOB","Banking","Asia","financials"],"sia":["C6L.SI","Singapore Airlines","Aviation","Asia","consumer"],"comb":["CBA.AX","Commonwealth Bank","Banking","Asia","financials"],"nab":["NAB.AX","NAB","Banking","Asia","financials"],"anz":["ANZ.AX","ANZ Bank","Banking","Asia","financials"],"westpac":["WBC.AX","Westpac","Banking","Asia","financials"],"macq":["MQG.AX","Macquarie Group","Investment Bank","Asia","financials"],"csl":["CSL.AX","CSL Limited","Biotech","Asia","healthcare"],"bhpau":["BHP.AX","BHP","Mining","Asia","ukMining"],"rioto":["RIO.AX","Rio Tinto (AU)","Mining","Asia","ukMining"],"wesfarm":["WES.AX","Wesfarmers","Retail","Asia","consumer"],"wool":["WOW.AX","Woolworths","Supermarkets","Asia","consumer"],"fortesc":["FMG.AX","Fortescue Metals","Iron Ore","Asia","ukMining"]};
-// patternKey -> 12 decorative magnitude values
-const PATTERNS = {"techGrowth":[2.4,0.6,1.1,2.0,0.3,-0.3,2.3,0.7,-1.4,0.9,2.5,1.9],"broadIndex":[1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5],"evGrowth":[5.2,2.1,1.4,3.8,-3.1,-2.4,4.1,1.8,-3.7,2.2,5.8,3.1],"financials":[1.8,0.6,0.4,1.9,0.2,0.5,1.6,-0.3,-0.8,1.4,2.2,1.1],"energy":[2.1,0.8,1.5,1.2,0.9,-0.4,0.3,-0.7,-1.2,0.6,1.4,0.8],"consumer":[0.4,0.9,1.3,1.6,0.7,0.2,1.1,1.3,-0.3,0.8,2.4,2.1],"healthcare":[1.2,0.8,0.6,1.0,0.5,0.3,0.9,0.4,-0.2,1.1,1.6,1.3],"speculative":[8.4,4.2,-2.1,3.1,-4.8,-5.2,5.1,2.3,-6.1,4.2,9.8,3.4],"gold":[1.8,1.2,-0.5,0.8,0.5,-0.7,0.3,1.5,1.2,0.6,0.2,-0.3],"crypto":[14.2,9.8,8.5,12.1,-5.2,-8.7,8.3,3.1,-5.8,21.4,18.6,5.2],"bonds":[0.8,0.3,-0.6,-0.4,0.9,0.5,0.2,1.1,-0.3,-0.5,-0.8,0.4],"defense":[1.4,0.9,1.1,1.0,0.7,0.5,0.8,0.6,-0.4,1.2,1.8,1.4],"semis":[3.1,1.2,1.8,2.4,-0.8,-1.1,2.8,1.4,-1.8,1.5,3.2,2.1]};
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
+const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
 
-const AMBER = '#E89318';
+// id -> catalogue entry, built once per cold start
+const BY_ID = new Map(CATALOGUE.map(a => [String(a.id).toLowerCase(), a]));
+
 const AMBER2 = '#F5A52F';
 const GREEN = '#00C97E';
 const RED = '#F04050';
 const BG = '#04070F';
-const BG2 = '#0B1120';
 const W = '#EDF2FA';
 const W3 = '#8FA3B8';
 const W4 = '#4D6880';
 const B2 = '#162540';
 
-export default async function handler(req) {
-  const url = new URL(req.url);
-  const id = (url.pathname.split('/').pop() || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
-  const entry = CATALOGUE[id];
+const IMG_OPTS = {
+  width: 1200,
+  height: 630,
+  headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' },
+};
 
-  if (!entry) {
-    return new ImageResponse(
-      { type: 'div', props: { style: { width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', background: BG, color: W, fontSize: 48, fontFamily:'sans-serif' }, children: 'TimingAX' } },
-      { width: 1200, height: 630, headers: { 'Cache-Control': 'public, max-age=3600' } }
-    );
+// Small helper so the JSX-less element tree stays readable
+const el = (style, children) => ({ type: 'div', props: { style, children } });
+
+function brandRow() {
+  return el(
+    { display: 'flex', alignItems: 'center', marginBottom: 8 },
+    [{
+      type: 'div',
+      props: {
+        style: { fontSize: 34, fontWeight: 800, color: W, display: 'flex' },
+        children: [
+          { type: 'span', props: { children: 'Timing' } },
+          { type: 'span', props: { style: { color: AMBER2 }, children: 'AX' } },
+        ],
+      },
+    }]
+  );
+}
+
+function fallbackImage() {
+  return new ImageResponse(
+    el(
+      {
+        width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', background: BG,
+        fontFamily: 'sans-serif',
+      },
+      [
+        el({ fontSize: 60, fontWeight: 800, color: W, display: 'flex', marginBottom: 12 }, [
+          { type: 'span', props: { children: 'Timing' } },
+          { type: 'span', props: { style: { color: AMBER2 }, children: 'AX' } },
+        ]),
+        el({ fontSize: 24, color: W3, display: 'flex' },
+          'Market seasonality, measured — timingax.co.uk'),
+      ]
+    ),
+    IMG_OPTS
+  );
+}
+
+export default async function handler(req) {
+  let id = '';
+  try {
+    const url = new URL(req.url, 'https://www.timingax.co.uk');
+    id = (url.pathname.split('/').pop() || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  } catch (e) {
+    return fallbackImage();
   }
 
-  const [ticker, name, sector, region, patternKey] = entry;
-  const pattern = PATTERNS[patternKey] || PATTERNS.broadIndex;
-  const maxAbs = Math.max(0.5, ...pattern.map(v => Math.abs(v)));
-  const displayTicker = ticker.startsWith('^') ? '' : ticker;
+  const item = BY_ID.get(id);
+  if (!item) return fallbackImage();
 
-  const bars = pattern.map((v, i) => {
-    const h = Math.max(4, Math.round((Math.abs(v) / maxAbs) * 160));
-    const color = v >= 0 ? GREEN : RED;
-    return {
-      type: 'div',
-      props: {
-        style: {
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end',
-          width: 36, height: 200, marginRight: 8
-        },
-        children: [
-          { type: 'div', props: { style: { width: 36, height: h, background: color, borderRadius: 3, opacity: 0.85 } } }
-        ]
-      }
-    };
-  });
+  const patternKey = item.pattern || 'broadIndex';
+  const pattern = PATTERNS[patternKey] || PATTERNS.broadIndex || [];
+
+  // patterns.json stores objects ({m, avg, win}); tolerate plain numbers too.
+  const values = pattern.map(p => (typeof p === 'number' ? p : Number(p && p.avg))).slice(0, 12);
+  if (values.length !== 12 || values.some(v => !isFinite(v))) return fallbackImage();
+
+  const maxAbs = Math.max(0.5, ...values.map(v => Math.abs(v)));
+  const ticker = String(item.ticker || '');
+  const displayTicker = ticker.startsWith('^') ? '' : ticker;
+  const name = String(item.name || ticker || 'TimingAX');
+
+  const bars = values.map(v => el(
+    {
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      justifyContent: 'flex-end', width: 36, height: 200, marginRight: 8,
+    },
+    [el({
+      width: 36,
+      height: Math.max(4, Math.round((Math.abs(v) / maxAbs) * 160)),
+      background: v >= 0 ? GREEN : RED,
+      borderRadius: 3,
+      opacity: 0.85,
+    }, [])]
+  ));
 
   return new ImageResponse(
-    {
-      type: 'div',
-      props: {
-        style: {
-          width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-          background: BG, padding: 64, fontFamily: 'sans-serif', position: 'relative'
-        },
-        children: [
-          // Logo row
+    el(
+      {
+        width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+        background: BG, padding: 64, fontFamily: 'sans-serif', position: 'relative',
+      },
+      [
+        brandRow(),
+        el({ fontSize: 16, letterSpacing: 4, color: AMBER2, textTransform: 'uppercase', marginBottom: 24, display: 'flex' },
+          'SEASONALITY SNAPSHOT'),
+        el({ fontSize: name.length > 26 ? 42 : 56, fontWeight: 800, color: W, marginBottom: 8, display: 'flex' },
+          name),
+        el({ fontSize: 22, color: W4, marginBottom: 36, display: 'flex' },
+          [item.sector, item.region, displayTicker].filter(Boolean).join('  \u00b7  ')),
+        el({ display: 'flex', alignItems: 'flex-end', height: 200, marginBottom: 8 }, bars),
+        el(
           {
-            type: 'div',
-            props: {
-              style: { display:'flex', alignItems:'center', marginBottom: 8 },
-              children: [
-                { type: 'div', props: { style: { fontSize: 34, fontWeight: 800, color: W, display:'flex' }, children: [
-                  { type: 'span', props: { children: 'Timing' } },
-                  { type: 'span', props: { style: { color: AMBER2 }, children: 'AX' } }
-                ]}}
-              ]
-            }
+            position: 'absolute', bottom: 56, left: 64, right: 64, display: 'flex',
+            justifyContent: 'space-between', alignItems: 'center',
+            borderTop: `1px solid ${B2}`, paddingTop: 24, fontSize: 18, color: W3,
           },
-          // Eyebrow
-          { type: 'div', props: { style: { fontSize: 16, letterSpacing: 4, color: AMBER2, textTransform: 'uppercase', marginBottom: 24, display:'flex' }, children: 'SEASONALITY SNAPSHOT' } },
-          // Asset name + ticker
-          { type: 'div', props: { style: { fontSize: 56, fontWeight: 800, color: W, marginBottom: 8, display:'flex' }, children: name } },
-          { type: 'div', props: { style: { fontSize: 22, color: W4, marginBottom: 36, display:'flex' }, children: [sector, region, displayTicker].filter(Boolean).join('  \u00b7  ') } },
-          // Chart bars
-          { type: 'div', props: { style: { display:'flex', alignItems:'flex-end', height: 200, marginBottom: 8 }, children: bars } },
-          // Footer tagline
-          {
-            type: 'div',
-            props: {
-              style: { position:'absolute', bottom: 56, left: 64, right: 64, display:'flex', justifyContent:'space-between', alignItems:'center', borderTop: `1px solid ${B2}`, paddingTop: 24, fontSize: 18, color: W3 },
-              children: [
-                { type: 'div', props: { style: {display:'flex'}, children: 'Free seasonal analysis \u2014 timingax.co.uk' } },
-                { type: 'div', props: { style: { color: AMBER2, display:'flex' }, children: '15-year seasonal pattern' } }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    { width: 1200, height: 630, headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' } }
+          [
+            el({ display: 'flex' }, 'Historical seasonal data \u2014 timingax.co.uk'),
+            el({ color: AMBER2, display: 'flex' }, 'Illustrative pattern'),
+          ]
+        ),
+      ]
+    ),
+    IMG_OPTS
   );
 }
