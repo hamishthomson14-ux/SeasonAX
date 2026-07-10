@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>TimingAX — Social Card</title>
+<!--
+  SOCIAL CARD RENDERER
+  Renders a branded, share-ready seasonality card for any asset in the catalogue.
+
+  USAGE:
+    /social-card.html?id=sp500                     → 1080x1080 square (default)
+    /social-card.html?id=aapl&format=story         → 1080x1920 vertical
+    /social-card.html?id=btc&format=og             → 1200x630 link preview
+    /social-card.html?ticker=TSLA                  → lookup by ticker instead of id
+    &hl=auto|none|1-12                             → highlight month (default: auto = current month)
+    &demo=1                                        → sample data, for design preview only (watermarked)
+
+  FOR SCREENSHOT APIS (htmlcsstoimage, ScreenshotOne, Urlbox, etc):
+    - Set viewport to the format size (e.g. 1080x1080)
+    - Wait for selector: "#stage.ready"  (the page adds .ready when data + fonts are loaded)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0908; --bg2:#111009;
+  --amber:#E89318; --amber2:#F5A52F;
+  --green:#3FBF7F; --red:#E5484D;
+  --w:#F4EFE6; --w2:#C9C2B4; --w3:#8F887A; --w5:#5C574C;
+  --b1:rgba(232,147,24,.16); --b2:rgba(232,147,24,.32);
+  --mono:'IBM Plex Mono',monospace; --serif:'Fraunces',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#000;height:100%}
+body{display:flex;align-items:flex-start;justify-content:flex-start;overflow:hidden}
+
+/* ---- STAGE (fixed-size canvas) ---- */
+#stage{
+  background:var(--bg);color:var(--w);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  transform-origin:top left;
+  font-family:var(--mono);
+}
+#stage.f-square{width:1080px;height:1080px;padding:72px}
+#stage.f-story{width:1080px;height:1920px;padding:88px 72px}
+#stage.f-og{width:1200px;height:630px;padding:48px 56px}
+
+/* subtle scanline texture */
+#stage::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px);
+}
+
+/* ---- HEADER ROW ---- */
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{font:600 26px/1 var(--mono);letter-spacing:.22em;color:var(--amber)}
+.brand span{color:var(--w3)}
+.badge{
+  font:600 20px/1 var(--mono);letter-spacing:.14em;color:var(--amber2);
+  border:1px solid var(--b2);padding:12px 18px;border-radius:6px;
+  background:rgba(232,147,24,.06)
+}
+.badge.modelled{color:var(--w2);border-color:rgba(244,239,230,.25);background:rgba(244,239,230,.04)}
+.f-og .brand{font-size:20px}
+.f-og .badge{font-size:15px;padding:9px 13px}
+
+/* ---- HEADLINE ---- */
+.head{margin-top:44px}
+.f-story .head{margin-top:72px}
+.f-og .head{margin-top:22px}
+.h-name{font:600 88px/1.04 var(--serif);color:var(--w);letter-spacing:-.01em}
+.f-story .h-name{font-size:104px}
+.f-og .h-name{font-size:56px}
+.h-sub{margin-top:16px;font:500 26px/1 var(--mono);color:var(--w3);letter-spacing:.08em}
+.h-sub b{color:var(--amber);font-weight:600}
+.f-og .h-sub{font-size:18px;margin-top:10px}
+
+/* ---- CHART LABEL ---- */
+.c-label{margin-top:56px;font:600 21px/1 var(--mono);letter-spacing:.2em;color:var(--w3)}
+.f-story .c-label{margin-top:88px}
+.f-og .c-label{margin-top:26px;font-size:15px}
+
+/* ---- SEASONAL TAPE (flexbox only — no grid) ---- */
+.tape{display:flex;align-items:stretch;margin-top:20px;flex:1 1 auto;min-height:0}
+.tcol{flex:1 1 0;display:flex;flex-direction:column;align-items:center;min-width:0;padding:0 5px}
+.tcol .val{font:600 20px/1 var(--mono);height:26px;display:flex;align-items:flex-end;justify-content:center;color:var(--w2);white-space:nowrap}
+.f-og .tcol .val{font-size:14px;height:18px}
+.tcol .barwrap{flex:1 1 auto;width:100%;display:flex;flex-direction:column;min-height:0}
+.tcol .pos{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-end}
+.tcol .neg{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-start;border-top:2px solid var(--b1)}
+.bar{width:100%;border-radius:4px;min-height:0}
+.bar.up{background:var(--green)}
+.bar.dn{background:var(--red)}
+.tcol.dim .bar{opacity:.82}
+.tcol .mon{margin-top:14px;font:600 22px/1 var(--mono);color:var(--w3);letter-spacing:.04em;text-align:center}
+.f-og .tcol .mon{font-size:14px;margin-top:8px}
+.tcol.hl .mon{color:var(--amber)}
+.tcol.hl .val{color:var(--amber2)}
+.tcol.hl .bar{outline:3px solid var(--amber);outline-offset:2px}
+.f-og .tcol.hl .bar{outline-width:2px}
+
+/* ---- STATS ROW ---- */
+.stats{display:flex;margin-top:52px;border-top:1px solid var(--b1);padding-top:36px}
+.f-story .stats{margin-top:72px;padding-top:44px}
+.f-og .stats{margin-top:24px;padding-top:20px}
+.stat{flex:1 1 0;min-width:0;padding-right:24px}
+.stat + .stat{border-left:1px solid var(--b1);padding-left:32px}
+.f-og .stat + .stat{padding-left:20px}
+.s-k{font:600 19px/1 var(--mono);letter-spacing:.2em;color:var(--w3)}
+.s-v{margin-top:14px;font:600 44px/1 var(--serif);color:var(--w)}
+.s-v.up{color:var(--green)} .s-v.dn{color:var(--red)}
+.s-m{margin-top:10px;font:500 21px/1.4 var(--mono);color:var(--w2)}
+.f-og .s-k{font-size:13px}
+.f-og .s-v{font-size:26px;margin-top:8px}
+.f-og .s-m{font-size:14px;margin-top:5px}
+
+/* ---- FOOTER ---- */
+.foot{margin-top:auto;padding-top:34px;border-top:1px solid var(--b1);display:flex;align-items:flex-end;justify-content:space-between}
+.f-url{font:600 25px/1 var(--mono);color:var(--amber);letter-spacing:.06em}
+.f-tag{font:500 19px/1.5 var(--mono);color:var(--w5);text-align:right;max-width:58%}
+.f-og .f-url{font-size:17px}
+.f-og .f-tag{font-size:12px}
+
+/* ---- STATES ---- */
+.msgwrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.msg-big{font:600 64px/1.15 var(--serif);color:var(--w)}
+.msg-sub{margin-top:24px;font:500 24px/1.6 var(--mono);color:var(--w3)}
+.demo-mark{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-18deg);
+  font:700 120px/1 var(--mono);letter-spacing:.3em;color:rgba(229,72,77,.16);
+  pointer-events:none;white-space:nowrap;z-index:5
+}
+</style>
+</head>
+<body>
+<div id="stage" class="f-square" role="img" aria-label="TimingAX seasonality card"></div>
+
+<script>
+// ============ CONFIG ============
+var API_PATH = '/api/v1/seasonality'; // same-origin; the endpoint is CORS-open if ever hosted elsewhere
+var SITE_URL = 'timingax.co.uk';
+var DISCLAIMER = 'Historical data, not investment advice. Past performance does not guarantee future results. Capital at risk.';
+
+// ============ URL PARAMS ============
+function qp(name){
+  var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
+}
+var P = {
+  id: qp('id'),
+  ticker: qp('ticker'),
+  format: (qp('format') || 'square').toLowerCase(),
+  hl: (qp('hl') || 'auto').toLowerCase(),
+  demo: qp('demo') === '1'
+};
+if (['square','story','og'].indexOf(P.format) === -1) P.format = 'square';
+
+var stage = document.getElementById('stage');
+stage.className = 'f-' + P.format;
+
+// ============ FIT-TO-VIEWPORT (preview only; scale=1 at exact viewport) ============
+function fit(){
+  var W = stage.offsetWidth, H = stage.offsetHeight;
+  var s = Math.min(window.innerWidth / W, window.innerHeight / H, 1);
+  stage.style.transform = s < 1 ? 'scale(' + s + ')' : 'none';
+}
+window.addEventListener('resize', fit);
+
+// ============ HELPERS ============
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function fmtPct(v){
+  var n = Number(v);
+  if (!isFinite(n)) return '—';
+  return (n > 0 ? '+' : '') + n.toFixed(1) + '%';
+}
+
+var SAMPLE = {
+  id:'sp500', ticker:'^GSPC', name:'S&P 500', region:'US',
+  source:'verified', years:15,
+  months:[
+    {abbr:'Jan',avgReturn:1.1,winRate:60},{abbr:'Feb',avgReturn:0.4,winRate:53},
+    {abbr:'Mar',avgReturn:1.3,winRate:64},{abbr:'Apr',avgReturn:1.9,winRate:73},
+    {abbr:'May',avgReturn:0.5,winRate:57},{abbr:'Jun',avgReturn:0.2,winRate:53},
+    {abbr:'Jul',avgReturn:2.1,winRate:78},{abbr:'Aug',avgReturn:-0.2,winRate:47},
+    {abbr:'Sep',avgReturn:-0.7,winRate:42},{abbr:'Oct',avgReturn:1.4,winRate:60},
+    {abbr:'Nov',avgReturn:2.6,winRate:80},{abbr:'Dec',avgReturn:1.2,winRate:67}
+  ],
+  best:{month:'November',avgReturn:2.6,winRate:80},
+  worst:{month:'September',avgReturn:-0.7,winRate:42}
+};
+
+// ============ RENDER ============
+function render(d){
+  var months = d.months || [];
+  if (months.length !== 12) return renderMsg('DATA ERROR', 'Unexpected response shape for "' + esc(P.id || P.ticker || '') + '"');
+
+  // highlight month index (0-11) or -1
+  var hlIdx = -1;
+  if (P.hl === 'auto') hlIdx = new Date().getMonth();
+  else if (/^([1-9]|1[0-2])$/.test(P.hl)) hlIdx = parseInt(P.hl, 10) - 1;
+
+  var maxAbs = 0;
+  for (var i = 0; i < 12; i++){
+    var a = Math.abs(Number(months[i].avgReturn) || 0);
+    if (a > maxAbs) maxAbs = a;
+  }
+  if (maxAbs === 0) maxAbs = 1;
+
+  var isVerified = d.source === 'verified';
+  var badge = isVerified
+    ? 'VERIFIED &middot; ' + esc(d.years || 15) + 'Y REAL DATA'
+    : 'MODELLED PATTERN';
+
+  // tape columns
+  var tape = '';
+  for (var m = 0; m < 12; m++){
+    var mo = months[m];
+    var avg = Number(mo.avgReturn) || 0;
+    var hPct = Math.max(4, Math.round(Math.abs(avg) / maxAbs * 100));
+    var cls = 'tcol' + (m === hlIdx ? ' hl' : ' dim');
+    var showVal = (m === hlIdx) ||
+      (d.best && mo.month === d.best.month) ||
+      (d.worst && mo.month === d.worst.month);
+    tape +=
+      '<div class="' + cls + '">' +
+        '<div class="val">' + (showVal ? fmtPct(avg) : '') + '</div>' +
+        '<div class="barwrap">' +
+          '<div class="pos">' + (avg >= 0 ? '<div class="bar up" style="height:' + hPct + '%"></div>' : '') + '</div>' +
+          '<div class="neg">' + (avg < 0 ? '<div class="bar dn" style="height:' + hPct + '%"></div>' : '') + '</div>' +
+        '</div>' +
+        '<div class="mon">' + esc((mo.abbr || '?').charAt(0)) + '</div>' +
+      '</div>';
+  }
+
+  // stats: BEST / WORST / highlighted month (if any and distinct)
+  var stats = '';
+  if (d.best) stats += statCell('HISTORICALLY BEST', d.best.month, d.best.avgReturn, d.best.winRate);
+  if (d.worst) stats += statCell('HISTORICALLY WORST', d.worst.month, d.worst.avgReturn, d.worst.winRate);
+  if (hlIdx >= 0){
+    var hm = months[hlIdx];
+    stats += statCell('THIS MONTH &middot; ' + esc((hm.month || hm.abbr || '').toUpperCase()), null, hm.avgReturn, hm.winRate);
+  }
+
+  stage.innerHTML =
+    '<div class="top">' +
+      '<div class="brand">TIMING<span>AX</span></div>' +
+      '<div class="badge' + (isVerified ? '' : ' modelled') + '">' + badge + '</div>' +
+    '</div>' +
+    '<div class="head">' +
+      '<div class="h-name" id="hname">' + esc(d.name || d.ticker || '') + '</div>' +
+      '<div class="h-sub"><b>' + esc(d.ticker || '') + '</b>' + (d.region ? ' &nbsp;&middot;&nbsp; ' + esc(d.region) : '') + '</div>' +
+    '</div>' +
+    '<div class="c-label">AVERAGE MONTHLY RETURN &mdash; ' + (isVerified ? 'LAST ' + esc(d.years || 15) + ' YEARS' : 'SECTOR PATTERN') + '</div>' +
+    '<div class="tape">' + tape + '</div>' +
+    '<div class="stats">' + stats + '</div>' +
+    '<div class="foot">' +
+      '<div class="f-url">' + SITE_URL + '</div>' +
+      '<div class="f-tag">' + DISCLAIMER + '</div>' +
+    '</div>' +
+    (P.demo ? '<div class="demo-mark">SAMPLE</div>' : '');
+
+  shrinkHeadline();
+  fit();
+  markReady();
+}
+
+function statCell(k, monthName, avg, win){
+  var n = Number(avg) || 0;
+  return '<div class="stat">' +
+    '<div class="s-k">' + k + '</div>' +
+    '<div class="s-v ' + (n >= 0 ? 'up' : 'dn') + '">' + (monthName ? esc(monthName) + ' ' : '') + fmtPct(n) + '</div>' +
+    '<div class="s-m">' + (win != null ? 'higher in ' + esc(win) + '% of years' : '') + '</div>' +
+  '</div>';
+}
+
+function shrinkHeadline(){
+  var el = document.getElementById('hname');
+  if (!el) return;
+  var size = parseFloat(window.getComputedStyle(el).fontSize);
+  var guard = 0;
+  while (el.scrollWidth > el.clientWidth && size > 34 && guard < 40){
+    size -= 4; el.style.fontSize = size + 'px'; guard++;
+  }
+}
+
+function renderMsg(big, sub){
+  stage.innerHTML =
+    '<div class="top">' +
+      '<div class="brand">TIMING<span>AX</span></div>' +
+      '<div class="badge modelled">RENDER ERROR</div>' +
+    '</div>' +
+    '<div class="msgwrap">' +
+      '<div class="msg-big">' + big + '</div>' +
+      '<div class="msg-sub">' + sub + '</div>' +
+    '</div>' +
+    '<div class="foot"><div class="f-url">' + SITE_URL + '</div><div class="f-tag">This card did not render and must not be posted.</div></div>';
+  fit();
+  // NOTE: .ready is deliberately NOT added on error, so screenshot automations
+  // that wait for "#stage.ready" fail loudly instead of posting an error card.
+}
+
+function markReady(){
+  var add = function(){ stage.classList.add('ready'); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(add).catch(add);
+  else setTimeout(add, 800);
+}
+
+// ============ BOOT ============
+(function(){
+  if (P.demo) return render(SAMPLE);
+  if (!P.id && !P.ticker) return renderMsg('NO ASSET SPECIFIED', 'Add ?id=sp500 or ?ticker=AAPL to the URL &mdash; or ?demo=1 for a sample.');
+
+  var url = API_PATH + '?' + (P.id ? 'id=' + encodeURIComponent(P.id) : 'ticker=' + encodeURIComponent(P.ticker));
+  fetch(url)
+    .then(function(r){
+      if (!r.ok) throw new Error('API responded ' + r.status);
+      return r.json();
+    })
+    .then(function(d){
+      if (d && d.error) return renderMsg('ASSET NOT FOUND', esc(P.id || P.ticker) + ' is not in the catalogue.');
+      render(d);
+    })
+    .catch(function(e){
+      renderMsg('COULD NOT LOAD DATA', esc(e && e.message ? e.message : 'Network error') + ' &mdash; this page must be viewed on the live site.');
+    });
+})();
+</script>
+</body>
+</html>
