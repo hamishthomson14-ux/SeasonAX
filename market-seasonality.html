@@ -257,6 +257,13 @@ button{cursor:pointer;font-family:var(--sans)}
 @media(max-width:760px){.term-twoup{flex-direction:column}}
 
 /* Paywall overlay */
+.sc-preview-wrap{position:relative}
+.sc-preview-blur{filter:blur(6px);opacity:.55;pointer-events:none;user-select:none}
+.sc-preview-cta{position:absolute;left:0;right:0;bottom:0;top:38%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:22px;background:linear-gradient(to bottom,rgba(4,7,15,0),rgba(4,7,15,.82) 32%,rgba(4,7,15,.96));border-radius:0 0 12px 12px}
+.sc-preview-cta h4{font:700 19px/1.25 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 8px;max-width:420px}
+.sc-preview-cta p{font:400 12px/1.5 var(--mono,monospace);color:var(--w3,#8F887A);margin:0 0 16px;max-width:380px}
+.sc-preview-cta .scp-btn{background:var(--amber,#E89318);color:#0A0908;border:none;font:600 13px/1 var(--sans);padding:12px 22px;border-radius:8px;cursor:pointer}
+.sc-preview-cta .scp-sub{font:400 10px/1.4 var(--mono,monospace);color:var(--w5,#5C574C);margin-top:10px}
 .usage-nudge{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;z-index:1200;box-shadow:0 14px 44px rgba(0,0,0,.55);opacity:0;transition:all .32s;max-width:92vw}
 .usage-nudge.show{transform:translateX(-50%) translateY(0);opacity:1}
 .usage-nudge .un-txt{font:500 13px/1.4 var(--sans);color:var(--w,#F4EFE6)}
@@ -3406,7 +3413,7 @@ var MODE_HERO = {
   calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC, CPI, jobs day, midterms \u2014 the full schedule ahead, each linked to its historical playbook.'],
   portfolio: ['Your whole portfolio. <em>One seasonal picture.</em>', 'Enter your holdings and weights to see your portfolio\u2019s combined seasonal exposure \u2014 which months have historically worked in your favour, and which against.']
 };
-var PRO_ONLY_MODES = ['backtest','earnings','screener','watchlist','pairs','portfolio'];
+var PRO_ONLY_MODES = ['backtest','earnings','watchlist','pairs','portfolio']; // screener is preview-gated, not hard-blocked
 var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
 
 function switchMode(mode) {
@@ -4669,6 +4676,7 @@ function scRenderReal(monthIdx, nextIdx, map) {
   document.getElementById('scWeak').innerHTML = wH;
   document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
   document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
+  applyScreenerPreviewGate();
 
   // Momentum shifts (real)
   var shifts = rows.map(function(r){ return { item:r.item, delta:r.next-r.avg, next:r.next }; })
@@ -4692,6 +4700,37 @@ function scRenderReal(monthIdx, nextIdx, map) {
     '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (strong[0]?strong[0].item.ticker+' +'+strong[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Strongest asset</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (weak[0]?weak[0].item.ticker+' '+weak[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Weakest asset</div></div>' +
     '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal?'real':'model') + '">' + (anyReal?'\u2713 REAL PRICE DATA \u00b7 LIQUID UNIVERSE':'MODELLED DATA') + '</span></div>';
+}
+
+function applyScreenerPreviewGate(){
+  var cols = [document.getElementById('scStrong'), document.getElementById('scWeak')];
+  cols.forEach(function(col){
+    if(!col) return;
+    var prev = col.parentNode.querySelector('.sc-preview-cta');
+    if(prev) prev.remove();
+    if(col.parentNode.classList) col.parentNode.classList.remove('sc-preview-wrap');
+    var rows = col.querySelectorAll('.sc-row');
+    for(var i=0;i<rows.length;i++) rows[i].classList.remove('sc-preview-blur');
+    if(isPro()) return;
+    var blurred = 0;
+    for(var j=3;j<rows.length;j++){ rows[j].classList.add('sc-preview-blur'); blurred++; }
+    if(blurred === 0) return;
+    col.parentNode.classList.add('sc-preview-wrap');
+    var cta = document.createElement('div');
+    cta.className = 'sc-preview-cta';
+    cta.innerHTML =
+      '<h4>' + blurred + ' more ranked below</h4>' +
+      '<p>You can see the top 3. Pro reveals the full ranking across 730+ assets \u2014 plus Backtest, Watchlist and every tool.</p>' +
+      '<button class="scp-btn" onclick="pwScreenerUpgrade(this)">Reveal full ranking \u2014 free 7-day trial</button>' +
+      '<div class="scp-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
+    col.parentNode.appendChild(cta);
+  });
+}
+
+function pwScreenerUpgrade(btn){
+  if(currentUser && typeof pwCheckout === 'function'){ pwCheckout(btn); }
+  else if(!currentUser){ window.location.href = '/auth.html'; }
+  else { showPaywall('tool','Seasonal Screener'); }
 }
 
 function scBuild() {
@@ -4733,6 +4772,7 @@ function scBuildModel(monthIdx) {
   document.getElementById('scWeak').innerHTML = wH;
   document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
   document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
+  applyScreenerPreviewGate();
 
   // Momentum shifts into next month
   var shifts = patKeys.map(function(k) {
