@@ -104,6 +104,44 @@ tr:last-child td{border-bottom:none}
 .dca-region-bar-fill{height:100%;background:var(--green)}
 .dca-region-frac{font:600 12px/1 var(--mono);min-width:60px;text-align:right;color:var(--w2)}
 @media(max-width:900px){.dca-summary{grid-template-columns:repeat(2,1fr)}.dca-region-name{min-width:120px;font-size:12px}}
+
+/* ── Admin v2: tabs, users, modal, toast ── */
+.tabbar{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--b1);flex-wrap:wrap}
+.tabbtn{background:none;border:none;color:var(--w4);font:600 12px/1 var(--mono);letter-spacing:.06em;padding:12px 18px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;text-transform:uppercase}
+.tabbtn:hover{color:var(--w2)}
+.tabbtn.active{color:var(--amber2);border-bottom-color:var(--amber2)}
+.tabpane{display:none}
+.tabpane.active{display:block}
+.searchrow{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.searchrow input{flex:1;min-width:220px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:11px 14px;color:var(--w);font:400 13px/1 var(--mono)}
+.searchrow input:focus{outline:none;border-color:var(--amber2)}
+.btn-run{background:var(--amber);color:var(--bg);border:none;padding:11px 18px;border-radius:8px;font:600 12px/1 var(--sans);transition:all .18s}
+.btn-run:hover{background:var(--amber2)}
+.btn-run:disabled{opacity:.5;cursor:default}
+.btn-ghost{background:none;border:1px solid var(--b2);color:var(--w3);padding:11px 16px;border-radius:8px;font:600 11px/1 var(--mono);transition:all .15s}
+.btn-ghost:hover{border-color:var(--amber2);color:var(--amber2)}
+.uact{display:inline-flex;gap:5px}
+.uact button{font:600 10px/1 var(--mono);padding:6px 9px;border-radius:5px;border:1px solid var(--b2);background:none;transition:all .15s;white-space:nowrap}
+.uact .grant{color:var(--green);border-color:rgba(0,201,126,.3)} .uact .grant:hover{background:rgba(0,201,126,.12)}
+.uact .revoke{color:var(--amber2);border-color:rgba(232,147,24,.3)} .uact .revoke:hover{background:rgba(232,147,24,.12)}
+.uact .reset{color:var(--w3)} .uact .reset:hover{border-color:var(--w3)}
+.uact .del{color:var(--red);border-color:rgba(240,64,80,.3)} .uact .del:hover{background:rgba(240,64,80,.12)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--b2);border-radius:14px;padding:28px;max-width:440px;width:100%}
+.modal h3{font:700 18px/1.2 var(--disp-serif);color:var(--w);margin-bottom:10px}
+.modal p{font-size:13px;color:var(--w3);line-height:1.6;margin-bottom:18px}
+.modal p b{color:var(--w)}
+.modal input{width:100%;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;padding:12px 14px;color:var(--w);font:400 14px/1 var(--mono);margin-bottom:18px}
+.modal input:focus{outline:none;border-color:var(--amber2)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.modal .cancel{background:none;border:1px solid var(--b2);color:var(--w3);padding:10px 18px;border-radius:8px;font:600 12px/1 var(--sans)}
+.modal .confirm{background:var(--red);color:#fff;border:none;padding:10px 18px;border-radius:8px;font:600 12px/1 var(--sans)}
+.modal .confirm.safe{background:var(--amber);color:var(--bg)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:14px 22px;font:500 13px/1.4 var(--sans);color:var(--w);box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:300;opacity:0;transition:all .3s;max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.ok{border-color:rgba(0,201,126,.4)} .toast.err{border-color:rgba(240,64,80,.4)}
+.umeta{font:400 11px/1 var(--mono);color:var(--w4)}
 </style>
 </head>
 <body>
@@ -135,9 +173,16 @@ tr:last-child td{border-bottom:none}
   </div>
 
   <div id="content" style="display:none">
-    <h1 class="ad-h">Admin <em>Overview</em></h1>
+    <h1 class="ad-h">Admin <em>Console</em></h1>
     <div class="ad-sub" id="generatedAt"></div>
 
+    <div class="tabbar">
+      <button class="tabbtn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="tabbtn" data-tab="users" onclick="showTab('users')">Users</button>
+      <button class="tabbtn" data-tab="data" onclick="showTab('data')">Data Coverage</button>
+    </div>
+
+    <div class="tabpane active" id="tab-dashboard">
     <div class="overview" id="ovGrid"></div>
 
     <div class="grid2">
@@ -174,6 +219,26 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    </div><!-- /tab-dashboard -->
+
+    <div class="tabpane" id="tab-users">
+      <div class="searchrow">
+        <input id="userSearch" placeholder="Search by email\u2026" oninput="onSearchInput()" />
+        <button class="btn-run" onclick="loadUsers()">Refresh</button>
+        <button class="btn-ghost" onclick="exportUsers()">Export CSV</button>
+      </div>
+      <div class="ad-sub" id="usersMeta" style="margin-bottom:14px"></div>
+      <div class="card">
+        <div class="card-body">
+          <table>
+            <tr><th>Email</th><th>Plan</th><th>Joined</th><th>Last seen</th><th>Actions</th></tr>
+            <tbody id="usersBody"><tr><td colspan="5" class="empty-row">Loading\u2026</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /tab-users -->
+
+    <div class="tabpane" id="tab-data">
     <div class="card" style="margin-bottom:28px">
       <div class="card-head">
         <div class="card-title">Data Coverage Audit</div>
@@ -198,8 +263,23 @@ tr:last-child td{border-bottom:none}
         </div>
       </div>
     </div>
+    </div><!-- /tab-data -->
   </div>
 </div>
+
+<!-- Action password modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle">Confirm action</h3>
+    <p id="modalBody"></p>
+    <input type="password" id="modalPw" placeholder="Admin action password" autocomplete="off" />
+    <div class="modal-actions">
+      <button class="cancel" onclick="closeModal()">Cancel</button>
+      <button class="confirm" id="modalConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
 <script>
 var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44');
@@ -221,6 +301,7 @@ async function init() {
   var r = await sb.auth.getSession();
   if (!r.data || !r.data.session) { window.location.href = '/auth.html'; return; }
   var token = r.data.session.access_token;
+  ADMIN_TOKEN = token;
 
   try {
     var res = await fetch('/api/admin-stats', { headers: { Authorization: 'Bearer ' + token } });
@@ -451,6 +532,155 @@ function renderDcaResults(items, results) {
 
   document.getElementById('dcaProgress').style.display = 'none';
   document.getElementById('dcaResults').style.display = 'block';
+}
+
+
+// ── Admin v2: tabs, users, actions ──────────────────────────
+var ADMIN_TOKEN = null; // set during init()
+
+function showTab(name) {
+  var panes = document.querySelectorAll('.tabpane');
+  for (var i = 0; i < panes.length; i++) panes[i].classList.remove('active');
+  var btns = document.querySelectorAll('.tabbtn');
+  for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+  var pane = document.getElementById('tab-' + name);
+  if (pane) pane.classList.add('active');
+  var btn = document.querySelector('.tabbtn[data-tab="' + name + '"]');
+  if (btn) btn.classList.add('active');
+  if (name === 'users' && !usersLoaded) loadUsers();
+}
+
+function toast(msg, kind) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (kind || 'ok');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.className = 'toast ' + (kind || 'ok'); }, 3400);
+}
+
+async function adminAction(payload) {
+  var res = await fetch('/api/admin-actions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + ADMIN_TOKEN },
+    body: JSON.stringify(payload)
+  });
+  var data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Action failed');
+  return data;
+}
+
+var usersLoaded = false;
+var allUsersCache = [];
+
+async function loadUsers() {
+  var body = document.getElementById('usersBody');
+  body.innerHTML = '<tr><td colspan="5" class="empty-row">Loading\u2026</td></tr>';
+  try {
+    var data = await adminAction({ action: 'list_users' });
+    allUsersCache = data.users || [];
+    usersLoaded = true;
+    renderUsers(allUsersCache);
+    document.getElementById('usersMeta').textContent = data.total + ' total users';
+  } catch (e) {
+    body.innerHTML = '<tr><td colspan="5" class="empty-row">' + esc(e.message) + '</td></tr>';
+  }
+}
+
+var searchTimer = null;
+function onSearchInput() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function() {
+    var q = document.getElementById('userSearch').value.toLowerCase().trim();
+    var filtered = q ? allUsersCache.filter(function(u){ return (u.email||'').toLowerCase().indexOf(q) !== -1; }) : allUsersCache;
+    renderUsers(filtered);
+    document.getElementById('usersMeta').textContent = filtered.length + ' of ' + allUsersCache.length + ' users';
+  }, 180);
+}
+
+function renderUsers(users) {
+  var body = document.getElementById('usersBody');
+  if (!users.length) { body.innerHTML = '<tr><td colspan="5" class="empty-row">No users match.</td></tr>'; return; }
+  body.innerHTML = users.map(function(u) {
+    var isPro = u.subscription === 'pro' || u.subscription === 'lifetime';
+    var e = esc(u.email);
+    var acts = '<div class="uact">' +
+      (isPro
+        ? '<button class="revoke" onclick="askRevoke(\'' + e + '\')">Revoke</button>'
+        : '<button class="grant" onclick="askGrant(\'' + e + '\')">Grant Pro</button>') +
+      '<button class="reset" onclick="askReset(\'' + e + '\')">Reset PW</button>' +
+      '<button class="del" onclick="askDelete(\'' + e + '\')">Delete</button>' +
+      '</div>';
+    return '<tr><td>' + e + '</td><td>' + planTag(u.subscription) + '</td><td>' +
+      fmtDate(u.created_at) + '</td><td>' + fmtDate(u.last_sign_in_at) + '</td><td>' + acts + '</td></tr>';
+  }).join('');
+}
+
+// ── Action-password modal ───────────────────────────────────
+var pendingAction = null;
+function openModal(title, bodyHtml, confirmLabel, safe, fn) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  var c = document.getElementById('modalConfirm');
+  c.textContent = confirmLabel;
+  c.className = 'confirm' + (safe ? ' safe' : '');
+  pendingAction = fn;
+  document.getElementById('modalPw').value = '';
+  document.getElementById('modalBg').classList.add('show');
+  setTimeout(function(){ document.getElementById('modalPw').focus(); }, 50);
+}
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('show');
+  pendingAction = null;
+}
+document.getElementById('modalConfirm').addEventListener('click', function() {
+  var pw = document.getElementById('modalPw').value;
+  if (!pw) { toast('Enter the action password', 'err'); return; }
+  if (pendingAction) { var fn = pendingAction; closeModal(); fn(pw); }
+});
+document.getElementById('modalPw').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') document.getElementById('modalConfirm').click();
+});
+document.getElementById('modalBg').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+function askGrant(email) {
+  openModal('Grant Pro access', 'Give <b>' + esc(email) + '</b> Pro access? Enter your action password to confirm.', 'Grant Pro', true, function(pw){ doAction('grant_pro', email, pw, 'Pro granted to ' + email); });
+}
+function askRevoke(email) {
+  openModal('Revoke Pro access', 'Downgrade <b>' + esc(email) + '</b> to free? Enter your action password to confirm.', 'Revoke', false, function(pw){ doAction('revoke_pro', email, pw, email + ' downgraded to free'); });
+}
+function askReset(email) {
+  openModal('Send password reset', 'Email a password-reset link to <b>' + esc(email) + '</b>? Enter your action password to confirm.', 'Send reset', true, function(pw){ doAction('reset_password', email, pw, 'Reset email sent to ' + email); });
+}
+function askDelete(email) {
+  openModal('Delete account', 'Permanently delete <b>' + esc(email) + '</b>? This cannot be undone. Use this for GDPR erasure requests. Enter your action password to confirm.', 'Delete permanently', false, function(pw){ doAction('delete_user', email, pw, email + ' deleted'); });
+}
+
+async function doAction(action, email, pw, successMsg) {
+  try {
+    await adminAction({ action: action, email: email, actionPassword: pw });
+    toast(successMsg, 'ok');
+    await loadUsers();
+    var q = document.getElementById('userSearch').value;
+    if (q) onSearchInput();
+  } catch (e) {
+    toast(e.message, 'err');
+  }
+}
+
+async function exportUsers() {
+  try {
+    toast('Preparing export\u2026', 'ok');
+    var data = await adminAction({ action: 'export_users' });
+    var blob = new Blob([data.csv], { type: 'text/csv' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'timingax-users-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (e) { toast(e.message, 'err'); }
 }
 
 init();
