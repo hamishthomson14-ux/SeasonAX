@@ -559,9 +559,14 @@ function toast(msg, kind) {
 }
 
 async function adminAction(payload) {
+  // Always use a fresh token — access tokens expire after ~1 hour, and the
+  // admin may act long after page load. getSession() auto-refreshes it.
+  var sess = await sb.auth.getSession();
+  var token = sess && sess.data && sess.data.session && sess.data.session.access_token;
+  if (!token) { window.location.href = '/auth.html'; throw new Error('Session expired \u2014 please sign in again'); }
   var res = await fetch('/api/admin-actions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + ADMIN_TOKEN },
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
     body: JSON.stringify(payload)
   });
   var data = await res.json();
