@@ -257,6 +257,12 @@ button{cursor:pointer;font-family:var(--sans)}
 @media(max-width:760px){.term-twoup{flex-direction:column}}
 
 /* Paywall overlay */
+.usage-nudge{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;z-index:1200;box-shadow:0 14px 44px rgba(0,0,0,.55);opacity:0;transition:all .32s;max-width:92vw}
+.usage-nudge.show{transform:translateX(-50%) translateY(0);opacity:1}
+.usage-nudge .un-txt{font:500 13px/1.4 var(--sans);color:var(--w,#F4EFE6)}
+.usage-nudge .un-txt b{color:var(--amber2,#F5A52F)}
+.usage-nudge .un-cta{background:var(--amber,#E89318);color:#0A0908;border:none;font:600 12px/1 var(--sans);padding:9px 14px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.usage-nudge .un-x{background:none;border:none;color:var(--w4,#8F887A);font-size:18px;cursor:pointer;line-height:1;padding:0 2px}
 #paywallOverlay{display:none;position:fixed;inset:0;background:rgba(4,7,15,.92);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
 .pw-card{background:var(--bg2);border:1px solid var(--b3);border-radius:14px;padding:40px;max-width:440px;width:100%;text-align:center;position:relative}
 .pw-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);border-radius:14px 14px 0 0}
@@ -889,6 +895,11 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 </div>
 
 <!-- PAYWALL -->
+<div class="usage-nudge" id="usageNudge">
+  <div class="un-txt"><b>1 free analysis left</b> this month. Pro removes the cap.</div>
+  <button class="un-cta" onclick="showPaywall('limit')">See Pro</button>
+  <button class="un-x" onclick="document.getElementById('usageNudge').classList.remove('show')" aria-label="Dismiss">&times;</button>
+</div>
 <div id="paywallOverlay">
   <div class="pw-card">
     <div class="pw-line"></div>
@@ -3209,6 +3220,34 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 const FREE_LIMIT = 5;
 let analysisCount = 0;
 
+// Real Stripe price IDs (same as dashboard). Monthly trial is the paywall default.
+var PW_PRICE_MONTHLY = 'price_1Tgkjt2MZ73Stw013w4czf7Z';
+var lastAnalyzedName = null;   // set when a free user analyses something, for contextual copy
+
+// Fire Stripe checkout straight from the paywall — no redirect to the pricing page.
+async function pwCheckout(btn){
+  if(!currentUser){ window.location.href = '/auth.html'; return; }
+  var orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Loading\u2026';
+  try{
+    var res = await fetch('/api/create-checkout', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ priceId: PW_PRICE_MONTHLY, mode:'subscription', email: (currentUser && currentUser.email) || undefined })
+    });
+    var data = await res.json();
+    if(data.url){ window.location.href = data.url; }
+    else { btn.disabled=false; btn.textContent=orig; alert('Checkout error: ' + (data.error||'Please try again')); }
+  } catch(e){ btn.disabled=false; btn.textContent=orig; alert('Could not start checkout. Please try again.'); }
+}
+
+function showUsageNudge(){
+  var n = document.getElementById('usageNudge');
+  if(!n) return;
+  n.classList.add('show');
+  clearTimeout(n._t);
+  n._t = setTimeout(function(){ n.classList.remove('show'); }, 7000);
+}
+
 async function initAuth(){
   let { data:{ session } } = await sb.auth.getSession();
   if(session){
@@ -3264,10 +3303,15 @@ async function signOut(){
 
 function trackAnalysis(){
   if(isPro()) return;
+  try { if(typeof CUR_ITEM !== 'undefined' && CUR_ITEM && CUR_ITEM.name) lastAnalyzedName = CUR_ITEM.name; } catch(e){}
   const thisMonth = new Date().toISOString().slice(0,7);
   const key = currentUser ? 'sx_usage_' + currentUser.id + '_' + thisMonth : 'sx_guest_' + thisMonth;
   analysisCount++;
   localStorage.setItem(key, analysisCount);
+  // Nudge one analysis BEFORE the wall so the decision is primed, not sprung.
+  if(!isPro() && analysisCount === FREE_LIMIT - 1){
+    if(typeof showUsageNudge === 'function') showUsageNudge();
+  }
 }
 
 function checkUsageLimit(){
@@ -3307,8 +3351,9 @@ function showPaywall(reason, toolName){
     if(title) title.textContent = (toolName || 'This feature') + ' is a Pro feature';
     if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 733 assets and every other tool.';
   } else {
-    if(title) title.textContent = 'You\u2019ve used your 5 free analyses';
-    if(sub) sub.innerHTML = 'You\u2019re on the Free plan \u2014 5 analyses per month. Start a <strong>7-day free Pro trial</strong> for unlimited analyses across all 733 assets and every tool.';
+    if(title) title.textContent = 'That\u2019s your 5 free analyses this month';
+    var ctx = lastAnalyzedName ? ('You were just looking at <strong>' + lastAnalyzedName + '</strong>. ') : '';
+    if(sub) sub.innerHTML = ctx + 'Start a <strong>7-day free Pro trial</strong> \u2014 unlimited analyses across all 733 assets, plus Backtest, Screener, Correlations and Watchlist. Cancel anytime, no charge in the trial.';
   }
   // Adapt buttons + usage line to context
   var pwPrimary = document.getElementById('pwPrimary');
@@ -3319,10 +3364,15 @@ function showPaywall(reason, toolName){
     if(pwGhost){ pwGhost.textContent = 'See plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
     if(pwUsage) pwUsage.textContent = 'Free \u00b7 no card needed';
   } else if(currentUser){
-    // Logged-in free user who hit the limit, or asset/tool gate -> push the trial
-    if(pwPrimary){ pwPrimary.textContent = 'Start 7-day free trial'; pwPrimary.setAttribute('href','/index.html#pricing'); }
-    if(pwGhost){ pwGhost.textContent = 'See all plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
-    if(pwUsage) pwUsage.textContent = (reason === 'limit') ? ('Used: ' + analysisCount + '/' + FREE_LIMIT + ' free analyses this month') : '';
+    // Logged-in free user: fire Stripe checkout directly, no redirect.
+    if(pwPrimary){
+      pwPrimary.textContent = 'Start 7-day free trial';
+      pwPrimary.removeAttribute('href');
+      pwPrimary.setAttribute('role','button');
+      pwPrimary.onclick = function(e){ e.preventDefault(); pwCheckout(pwPrimary); };
+    }
+    if(pwGhost){ pwGhost.textContent = 'See all plans'; pwGhost.setAttribute('href','/index.html#pricing'); pwGhost.onclick=null; }
+    if(pwUsage) pwUsage.innerHTML = '\u00a319.99/mo after trial \u00b7 cancel anytime' + ((reason === 'limit') ? (' \u00b7 used ' + analysisCount + '/' + FREE_LIMIT + ' this month') : '');
   } else {
     if(pwPrimary){ pwPrimary.textContent = 'Create free account'; pwPrimary.setAttribute('href','/auth.html'); }
     if(pwGhost){ pwGhost.textContent = 'See plans'; pwGhost.setAttribute('href','/index.html#pricing'); }
