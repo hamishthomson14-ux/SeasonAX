@@ -271,6 +271,27 @@ button{cursor:pointer;font-family:var(--sans)}
 .wc-start .wcs-nm{font:400 11px/1.3 var(--mono,monospace);color:var(--w4,#8F887A)}
 .wc-skip{background:none;border:none;color:var(--w4,#8F887A);font:500 12px/1 var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .wc-skip:hover{color:var(--w2,#C9C2B4)}
+.fav-star{background:none;border:none;cursor:pointer;font-size:22px;line-height:1;color:var(--w5,#5C574C);padding:2px 6px;transition:color .15s;align-self:center}
+.fav-star.on{color:var(--amber,#E89318)}
+.fav-star:hover{color:var(--amber2,#F5A52F)}
+.fav-strip{margin:0 0 14px;padding:12px 14px;background:var(--bg2,#111009);border:1px solid var(--b1,rgba(232,147,24,.16));border-radius:10px}
+.fav-strip-h{font:600 10px/1 var(--mono,monospace);letter-spacing:.14em;color:var(--w3,#8F887A);text-transform:uppercase;margin-bottom:10px}
+.fav-chips{display:flex;gap:8px;flex-wrap:wrap}
+.fav-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg3,#0A0908);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:20px;padding:6px 12px;cursor:pointer;font:600 12px/1 var(--mono,monospace);color:var(--w2,#C9C2B4);transition:all .15s}
+.fav-chip:hover{border-color:var(--amber,#E89318);color:var(--amber2,#F5A52F)}
+.hm-wrap{overflow-x:auto;padding:4px 0 8px}
+.hm-table{min-width:520px}
+.hm-row{display:flex;align-items:stretch}
+.hm-corner{flex:0 0 92px;min-width:92px}
+.hm-chl{flex:1 1 0;min-width:44px;display:flex;align-items:flex-end;justify-content:center;padding:6px 2px;font:600 10px/1.1 var(--mono,monospace);color:var(--w3,#8F887A);text-align:center;height:56px;writing-mode:vertical-rl;transform:rotate(180deg)}
+.hm-rl{flex:0 0 92px;min-width:92px;display:flex;align-items:center;font:600 11px/1 var(--mono,monospace);color:var(--w2,#C9C2B4);padding-right:8px}
+.hm-cell{flex:1 1 0;min-width:44px;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font:600 10px/1 var(--mono,monospace);color:#0A0908;border:1px solid var(--bg,#04070F);border-radius:3px;cursor:default}
+.hm-cell.diag{color:var(--w4,#8F887A);background:var(--bg2,#111009)!important}
+.hm-legend{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap;font:500 11px/1 var(--mono,monospace);color:var(--w3,#8F887A)}
+.hm-lg-bar{display:flex;height:12px;width:180px;border-radius:3px;overflow:hidden}
+.pr-viewtabs{display:flex;gap:8px;margin-bottom:16px}
+.pr-viewtab{background:none;border:1px solid var(--b1,rgba(232,147,24,.16));color:var(--w3,#8F887A);font:600 12px/1 var(--mono,monospace);padding:9px 15px;border-radius:7px;cursor:pointer}
+.pr-viewtab.active{color:var(--amber,#E89318);border-color:var(--b2,rgba(232,147,24,.32));background:rgba(232,147,24,.07)}
 .tool-preview-host{position:relative}
 .tool-preview-peek{max-height:340px;overflow:hidden;filter:blur(3px);opacity:.5;pointer-events:none;user-select:none}
 .tool-preview-cta{position:absolute;left:50%;top:300px;transform:translateX(-50%);width:min(460px,92%);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:14px;padding:26px 24px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.6);z-index:5}
@@ -643,6 +664,9 @@ body.is-pro .mt-lock{display:none}
   <div class="region-bar" id="regionTabs"></div>
   <div class="sector-bar" id="sectorTabs"></div>
 
+  <!-- FAVOURITES STRIP -->
+  <div id="favStrip" class="fav-strip" style="display:none"></div>
+
   <!-- ASSET BROWSER -->
   <div class="browser" id="browser"></div>
 
@@ -650,6 +674,7 @@ body.is-pro .mt-lock{display:none}
   <div id="analysis" style="display:none" role="region" aria-live="polite" aria-label="Seasonal analysis results">
     <div class="sel-header">
       <div class="sel-left">
+        <button class="fav-star" id="favStar" onclick="toggleFav()" title="Save to favourites" aria-label="Save to favourites">&#9734;</button>
         <div class="sel-ticker" id="selTicker">—</div>
         <div>
           <div class="sel-name" id="selName">—</div>
@@ -782,8 +807,22 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
   <div id="modeScreener" style="display:none">
     <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <div class="bt-label" style="margin:0">Screen month</div>
-      <select class="bt-select" id="scMonth" style="max-width:200px"></select>
-      <div class="ea-nm">Defaults to the current month · rankings update instantly</div>
+      <select class="bt-select" id="scMonth" style="max-width:180px"></select>
+      <div class="bt-label" style="margin:0">Min win rate</div>
+      <select class="bt-select" id="scMinWin" style="max-width:130px" onchange="scRerender()">
+        <option value="0">Any</option>
+        <option value="50">50%+</option>
+        <option value="60">60%+</option>
+        <option value="70">70%+</option>
+      </select>
+      <div class="bt-label" style="margin:0">Region</div>
+      <select class="bt-select" id="scRegion" style="max-width:150px" onchange="scRerender()">
+        <option value="">All regions</option>
+        <option value="US">US</option>
+        <option value="UK">UK</option>
+        <option value="Germany">Germany</option>
+        <option value="Asia">Asia</option>
+      </select>
     </div>
     <div class="bt-stats" id="scStats" style="border-radius:12px 12px 0 0"></div>
     <div class="bt-panel">
@@ -842,6 +881,11 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 
   <!-- CORRELATIONS MODE -->
   <div id="modePairs" style="display:none">
+    <div class="pr-viewtabs">
+      <button class="pr-viewtab active" id="prTabPair" onclick="prSetView('pair')">Compare a pair</button>
+      <button class="pr-viewtab" id="prTabMatrix" onclick="prSetView('matrix')">Full matrix &#128274;</button>
+    </div>
+    <div id="prPairView">
     <div class="bt-config" style="margin-bottom:18px">
       <div class="bt-row">
         <div class="bt-field"><label class="bt-label">Asset A</label><select class="bt-select" id="prA" onchange="prRun()"></select></div>
@@ -863,7 +907,21 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
         <div class="bt-disclaimer" style="margin-top:16px">CORRELATION — computed across the 12 monthly seasonal averages of each asset's pattern group. Seasonal correlation is not price correlation; it measures calendar rhythm alignment only.</div>
       </div>
     </div>
-  </div>
+    </div><!-- /prPairView -->
+
+    <div id="prMatrixView" style="display:none">
+      <div class="bt-stats" id="prMxStats" style="border-radius:12px;grid-template-columns:repeat(4,1fr);margin-bottom:16px"></div>
+      <div class="bt-panel last">
+        <div class="bt-ptitle">Seasonal correlation matrix &mdash; major assets</div>
+        <div class="hm-wrap"><div class="hm-table" id="prMatrix"></div></div>
+        <div class="hm-legend">
+          <span>Opposite seasons</span>
+          <div class="hm-lg-bar" id="prMxLegend"></div>
+          <span>Same seasons</span>
+        </div>
+        <div class="bt-disclaimer" style="margin-top:16px">Each cell is the correlation between two assets&rsquo; 12-month seasonal rhythms. Green = aligned calendars, red = opposite calendars. Seasonal correlation is not price correlation.</div>
+      </div>
+    </div>
 
   <!-- PORTFOLIO MODE -->
   <div id="modePortfolio" style="display:none">
@@ -2217,6 +2275,7 @@ function buildBrowser(q, regionFilter, sectorFilter) {
   var ql = q.toLowerCase().trim();
   var browser = document.getElementById('browser');
   if (!browser) return;
+  renderFavStrip();
 
   var groups = [];
   var cur = null;
@@ -2312,6 +2371,48 @@ function handleSearch() {
 // ============================================================
 // SELECT ASSET
 // ============================================================
+var FAV_KEY = 'sx_favs_v1';
+function getFavs(){ try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch(e){ return []; } }
+function setFavs(a){ try { localStorage.setItem(FAV_KEY, JSON.stringify(a.slice(0,20))); } catch(e){} }
+function isFav(id){ return getFavs().indexOf(id) !== -1; }
+function toggleFav(){
+  if(!selectedId) return;
+  var favs = getFavs();
+  var i = favs.indexOf(selectedId);
+  if(i === -1) favs.unshift(selectedId); else favs.splice(i,1);
+  setFavs(favs);
+  updateFavStar();
+  renderFavStrip();
+}
+function updateFavStar(){
+  var s = document.getElementById('favStar');
+  if(!s) return;
+  var on = selectedId && isFav(selectedId);
+  s.innerHTML = on ? '&#9733;' : '&#9734;';
+  s.className = 'fav-star' + (on ? ' on' : '');
+  s.title = on ? 'Remove from favourites' : 'Save to favourites';
+}
+function renderFavStrip(){
+  var host = document.getElementById('favStrip');
+  if(!host) return;
+  var favs = getFavs().filter(function(id){
+    for(var i=0;i<CATALOGUE.length;i++) if(CATALOGUE[i].id===id) return true;
+    return false;
+  });
+  if(!favs.length){ host.style.display='none'; host.innerHTML=''; return; }
+  var chips = favs.map(function(id){
+    var it=null; for(var i=0;i<CATALOGUE.length;i++) if(CATALOGUE[i].id===id){it=CATALOGUE[i];break;}
+    if(!it) return '';
+    return '<div class="fav-chip" onclick="favJump(\''+id+'\')"><span>&#9733;</span>'+(it.ticker||it.name)+'</div>';
+  }).join('');
+  host.style.display='block';
+  host.innerHTML = '<div class="fav-strip-h">Your favourites</div><div class="fav-chips">'+chips+'</div>';
+}
+function favJump(id){
+  selectAsset(id);
+  setTimeout(function(){ if(typeof run==='function') run(); }, 100);
+}
+
 function selectAsset(id) {
   if (!checkAssetAccess(id)) return;
   if (selectedId) {
@@ -2342,6 +2443,7 @@ function selectAsset(id) {
   document.getElementById('pill').className = 'status-pill';
   var body = document.getElementById('analysisBody');
   if (body) body.innerHTML = '<div class="analysis-empty">Hit <strong style="color:var(--amber2)">Analyze</strong> to load ' + (item.name || id) + '\'s seasonal data</div>';
+  updateFavStar();
 }
 
 // ============================================================
@@ -2840,6 +2942,7 @@ function paintAnalysis(item, monthsIn, source, years) {
               '<span class="ai-title">'+item.name+' &middot; '+years+'-Year Analysis'+(detrend?' &middot; Detrended':'')+'</span>'+
               '<button class="alert-btn" id="alertBtn" onclick="toggleAlert()">&#128276; Notify me</button>'+
               '<button class="alert-btn" id="pdfBtn" onclick="downloadPdfReport()">&#128196; Download PDF<span class="mt-lock">&#128274; PRO</span></button>'+
+              '<button class="alert-btn" id="csvBtn" onclick="downloadCsv()">&#128202; Export CSV<span class="mt-lock">&#128274; PRO</span></button>'+
             '</div>'+
             '<div class="aitxt" id="aiTxt">'+generateBriefing(item, months, source, years, detrend)+'</div>'+
           '</div>'+
@@ -2968,6 +3071,38 @@ function refreshAlertButton() {
 }
 
 // ── PDF Report Export (Pro feature) ────────────────────────
+function downloadCsv(){
+  if(!isPro()){ showPaywall('feature','CSV data export'); return; }
+  if(!CUR_ITEM || !CUR_MONTHS){ return; }
+  var detrend = document.getElementById('detrendChk') && document.getElementById('detrendChk').checked;
+  var months = detrend ? detrendMonths(CUR_MONTHS) : CUR_MONTHS;
+  var unit = detrend ? 'pp' : '%';
+  var item = CUR_ITEM;
+  var header = ['Month','Avg Return ('+unit+')','Win Rate (%)'];
+  var lines = [header.join(',')];
+  for(var i=0;i<12;i++){
+    var m = months[i];
+    var avg = (m.avg>=0?'+':'') + Number(m.avg).toFixed(2);
+    lines.push([MF_LONG[i], avg, (m.win!=null?m.win:'')].join(','));
+  }
+  // metadata footer
+  lines.push('');
+  lines.push('Asset,"'+String(item.name).replace(/"/g,'""')+'"');
+  lines.push('Ticker,'+(item.ticker||''));
+  lines.push('Data,'+(CUR_SOURCE==='real'?'Verified real prices':'Modelled pattern'));
+  lines.push('Years,'+(CUR_YEARS||''));
+  lines.push('Source,www.timingax.co.uk');
+  lines.push('Note,Historical data not investment advice. Past performance does not guarantee future results.');
+  var csv = lines.join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'timingax-' + (item.ticker||item.id||'asset').replace(/[^a-z0-9]/gi,'') + '-seasonality.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 var _jspdfLoading = null;
 function ensureJsPDF(){
   if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
@@ -4735,6 +4870,13 @@ function scRow(r, rank) {
   '</div>';
 }
 
+function scRerender(){
+  var mSel = document.getElementById('scMonth');
+  if(!mSel || !SC_REAL_CACHE) return;
+  var monthIdx = parseInt(mSel.value,10);
+  scRenderReal(monthIdx, (monthIdx+1)%12, SC_REAL_CACHE);
+}
+
 function scGo(id) {
   switchMode('analyzer');
   setTimeout(function(){ selectAsset(id); }, 80);
@@ -4767,14 +4909,25 @@ function scRenderReal(monthIdx, nextIdx, map) {
                 next: res.months[nextIdx].avg, source: res.source });
   });
   var anyReal = rows.some(function(r){ return r.source === 'real'; });
-  var strong = rows.slice().sort(function(a,b){return b.avg-a.avg;}).slice(0,12);
-  var weak   = rows.slice().sort(function(a,b){return a.avg-b.avg;}).slice(0,12);
+  // Apply user filters (win-rate floor + region)
+  var minWinEl = document.getElementById('scMinWin');
+  var regionEl = document.getElementById('scRegion');
+  var minWin = minWinEl ? parseInt(minWinEl.value,10) : 0;
+  var region = regionEl ? regionEl.value : '';
+  var filtered = rows.filter(function(r){
+    if(minWin && (r.win==null || r.win < minWin)) return false;
+    if(region && r.item.region !== region) return false;
+    return true;
+  });
+  var strong = filtered.slice().sort(function(a,b){return b.avg-a.avg;}).slice(0,12);
+  var weak   = filtered.slice().sort(function(a,b){return a.avg-b.avg;}).slice(0,12);
 
   var sH='', wH='';
   strong.forEach(function(r,i){ sH += scRow(r, i+1); });
   weak.forEach(function(r,i){ wH += scRow(r, i+1); });
-  document.getElementById('scStrong').innerHTML = sH;
-  document.getElementById('scWeak').innerHTML = wH;
+  var emptyMsg = '<div class="analysis-empty" style="padding:24px">No assets match these filters. Try widening them.</div>';
+  document.getElementById('scStrong').innerHTML = sH || emptyMsg;
+  document.getElementById('scWeak').innerHTML = wH || emptyMsg;
   document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
   document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
   applyScreenerPreviewGate();
@@ -5325,6 +5478,84 @@ function prRender(idA, idB, iA, iB, pA, pB) {
   document.getElementById('prText').innerHTML = prInterpret(r, iA.name, iB.name);
   document.getElementById('prResults').style.display = 'block';
   applyPairsPreviewGate();
+}
+
+var PR_MATRIX_BASKET = ['sp500','nasdaq','qqq','aapl','tsla','nvda','btc','eth','gld','tlt','ftse100','dax'];
+var PR_MX_CACHE = null;
+
+function prSetView(view){
+  var pairBtn = document.getElementById('prTabPair');
+  var mxBtn = document.getElementById('prTabMatrix');
+  var pairView = document.getElementById('prPairView');
+  var mxView = document.getElementById('prMatrixView');
+  if(view === 'matrix'){
+    if(!isPro()){ showPaywall('feature','the correlation matrix'); return; }
+    pairBtn.classList.remove('active'); mxBtn.classList.add('active');
+    pairView.style.display='none'; mxView.style.display='block';
+    prBuildMatrix();
+  } else {
+    mxBtn.classList.remove('active'); pairBtn.classList.add('active');
+    mxView.style.display='none'; pairView.style.display='block';
+  }
+}
+
+function prCorrColor(r){
+  // r in [-1,1] -> red (neg) through neutral grey to green (pos)
+  if(r >= 0){
+    var t = Math.min(1, r);
+    // grey(90,90,90) -> green(0,201,126)
+    var rr = Math.round(90 + t*(0-90));
+    var gg = Math.round(90 + t*(201-90));
+    var bb = Math.round(90 + t*(126-90));
+    return 'rgb('+rr+','+gg+','+bb+')';
+  } else {
+    var u = Math.min(1, -r);
+    var rr2 = Math.round(90 + u*(240-90));
+    var gg2 = Math.round(90 + u*(64-90));
+    var bb2 = Math.round(90 + u*(80-90));
+    return 'rgb('+rr2+','+gg2+','+bb2+')';
+  }
+}
+
+function prBuildMatrix(){
+  var mx = document.getElementById('prMatrix');
+  if(!mx) return;
+  mx.innerHTML = '<div class="analysis-empty">Loading real price data\u2026</div>';
+  getManyMonthsResolved(PR_MATRIX_BASKET, 15, function(map){
+    var ids = PR_MATRIX_BASKET.filter(function(id){ return map[id] && map[id].months; });
+    var items = ids.map(function(id){ return { id:id, it:map[id].item, avgs: map[id].months.map(function(m){return m.avg;}) }; });
+    // header row
+    var html = '<div class="hm-row"><div class="hm-corner"></div>';
+    items.forEach(function(a){ html += '<div class="hm-chl">'+ (a.it.ticker||a.id) +'</div>'; });
+    html += '</div>';
+    var sumAbs = 0, cnt = 0, maxPair=null, maxR=-2, minPair=null, minR=2;
+    items.forEach(function(a){
+      html += '<div class="hm-row"><div class="hm-rl">'+ (a.it.ticker||a.id) +'</div>';
+      items.forEach(function(b){
+        if(a.id === b.id){ html += '<div class="hm-cell diag">\u2014</div>'; return; }
+        var r = prPearson(a.avgs, b.avgs);
+        if(a.id < b.id){ sumAbs += Math.abs(r); cnt++;
+          if(r>maxR){maxR=r; maxPair=[a.it.ticker,b.it.ticker];}
+          if(r<minR){minR=r; minPair=[a.it.ticker,b.it.ticker];}
+        }
+        html += '<div class="hm-cell" style="background:'+prCorrColor(r)+'" title="'+(a.it.ticker)+' vs '+(b.it.ticker)+': '+r.toFixed(2)+'">'+r.toFixed(1)+'</div>';
+      });
+      html += '</div>';
+    });
+    mx.innerHTML = html;
+    // legend gradient
+    var lg = document.getElementById('prMxLegend');
+    if(lg){ var g=''; for(var s=-1;s<=1.0001;s+=0.2){ g += '<div style="flex:1;background:'+prCorrColor(s)+'"></div>'; } lg.innerHTML = g; }
+    // stats
+    var st = document.getElementById('prMxStats');
+    if(st){
+      st.innerHTML =
+        '<div class="bts"><div class="bts-v" style="color:var(--w)">'+items.length+'</div><div class="bts-l">Assets compared</div></div>'+
+        '<div class="bts"><div class="bts-v" style="color:var(--amber2)">'+(cnt?(sumAbs/cnt).toFixed(2):'-')+'</div><div class="bts-l">Avg |correlation|</div></div>'+
+        '<div class="bts"><div class="bts-v" style="color:var(--green)">'+(maxPair?maxPair[0]+'/'+maxPair[1]:'-')+'</div><div class="bts-l">Most aligned ('+maxR.toFixed(2)+')</div></div>'+
+        '<div class="bts"><div class="bts-v" style="color:var(--red)">'+(minPair?minPair[0]+'/'+minPair[1]:'-')+'</div><div class="bts-l">Most opposite ('+minR.toFixed(2)+')</div></div>';
+    }
+  });
 }
 
 function applyPairsPreviewGate(){
