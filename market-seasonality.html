@@ -3423,7 +3423,7 @@ var MODE_HERO = {
 };
 var PRO_ONLY_MODES = ['backtest','earnings','watchlist','pairs','portfolio']; // screener is preview-gated, not hard-blocked
 var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
-var PREVIEW_MODES = ['backtest','earnings','watchlist','pairs','portfolio'];
+var PREVIEW_MODES = ['backtest','watchlist','portfolio']; // earnings + pairs get deeper data-preview treatment
 var PREVIEW_COPY = {
   backtest: ['Backtest any seasonal strategy', 'Build an entry/exit rule and test it across 25 years \u2014 equity curve, CAGR and win rate vs buy-and-hold. Pro unlocks the full backtester.'],
   earnings: ['See how stocks move after earnings', 'The post-earnings drift tracker across 26 real reports \u2014 Day 1, +1 week, +1 month, beat-vs-miss. Pro unlocks the full table.'],
@@ -4579,6 +4579,31 @@ function eaBuildTable() {
   });
   html += '</tbody>';
   el.innerHTML = html;
+  applyEarningsPreviewGate();
+}
+
+function applyEarningsPreviewGate(){
+  var el = document.getElementById('eaTable');
+  if(!el) return;
+  var host = el.parentNode;
+  var prev = host.querySelector('.sc-preview-cta');
+  if(prev) prev.remove();
+  host.classList.remove('sc-preview-wrap');
+  var rows = el.querySelectorAll('tbody tr');
+  for(var i=0;i<rows.length;i++) rows[i].classList.remove('sc-preview-blur');
+  if(isPro()) return;
+  var blurred = 0;
+  for(var j=4;j<rows.length;j++){ rows[j].classList.add('sc-preview-blur'); blurred++; }
+  if(blurred === 0) return;
+  host.classList.add('sc-preview-wrap');
+  var cta = document.createElement('div');
+  cta.className = 'sc-preview-cta';
+  cta.innerHTML =
+    '<h4>' + blurred + ' more earnings reports</h4>' +
+    '<p>You can see 4. Pro unlocks the full tracker \u2014 26 reports, all filters and sorting, plus every other tool.</p>' +
+    '<button class="scp-btn" onclick="pwScreenerUpgrade(this)">Unlock the full table \u2014 free 7-day trial</button>' +
+    '<div class="scp-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
+  host.appendChild(cta);
 }
 
 function eaBuildPlaybook() {
@@ -5236,6 +5261,32 @@ function prRender(idA, idB, iA, iB, pA, pB) {
     '<span><span class="bt-ld" style="background:#4DA3FF"></span>' + iB.ticker + '</span>';
   document.getElementById('prText').innerHTML = prInterpret(r, iA.name, iB.name);
   document.getElementById('prResults').style.display = 'block';
+  applyPairsPreviewGate();
+}
+
+function applyPairsPreviewGate(){
+  // Free users can RUN a comparison and see the headline correlation + verdict,
+  // but the month-by-month breakdown is blurred behind an unlock CTA.
+  var chart = document.getElementById('prChart');
+  if(!chart) return;
+  var host = chart.parentNode;
+  var prev = host.querySelector('.sc-preview-cta');
+  if(prev) prev.remove();
+  host.classList.remove('sc-preview-wrap');
+  chart.classList.remove('sc-preview-blur');
+  var txt = document.getElementById('prText');
+  if(txt) txt.classList.remove('sc-preview-blur');
+  if(isPro()) return;
+  chart.classList.add('sc-preview-blur');
+  host.classList.add('sc-preview-wrap');
+  var cta = document.createElement('div');
+  cta.className = 'sc-preview-cta';
+  cta.innerHTML =
+    '<h4>See the month-by-month breakdown</h4>' +
+    '<p>You\u2019ve got the correlation score. Pro reveals the full 12-month comparison for any pair \u2014 plus every other tool.</p>' +
+    '<button class="scp-btn" onclick="pwScreenerUpgrade(this)">Unlock the breakdown \u2014 free 7-day trial</button>' +
+    '<div class="scp-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
+  host.appendChild(cta);
 }
 
 function prLoad(a, b) {
