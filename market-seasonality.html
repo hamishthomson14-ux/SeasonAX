@@ -257,6 +257,14 @@ button{cursor:pointer;font-family:var(--sans)}
 @media(max-width:760px){.term-twoup{flex-direction:column}}
 
 /* Paywall overlay */
+.tool-preview-host{position:relative}
+.tool-preview-peek{max-height:340px;overflow:hidden;filter:blur(3px);opacity:.5;pointer-events:none;user-select:none}
+.tool-preview-cta{position:absolute;left:50%;top:300px;transform:translateX(-50%);width:min(460px,92%);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:14px;padding:26px 24px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.6);z-index:5}
+.tool-preview-cta .tpc-eyebrow{font:600 11px/1 var(--mono,monospace);letter-spacing:.16em;color:var(--amber2,#F5A52F);text-transform:uppercase;margin-bottom:12px}
+.tool-preview-cta h4{font:700 22px/1.2 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 10px}
+.tool-preview-cta p{font:400 13px/1.6 var(--sans);color:var(--w3,#8F887A);margin:0 0 18px}
+.tool-preview-cta .tpc-btn{background:var(--amber,#E89318);color:#0A0908;border:none;font:600 14px/1 var(--sans);padding:13px 26px;border-radius:9px;cursor:pointer}
+.tool-preview-cta .tpc-sub{font:400 11px/1.4 var(--mono,monospace);color:var(--w5,#5C574C);margin-top:12px}
 .sc-preview-wrap{position:relative}
 .sc-preview-blur{filter:blur(6px);opacity:.55;pointer-events:none;user-select:none}
 .sc-preview-cta{position:absolute;left:0;right:0;bottom:0;top:38%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:22px;background:linear-gradient(to bottom,rgba(4,7,15,0),rgba(4,7,15,.82) 32%,rgba(4,7,15,.96));border-radius:0 0 12px 12px}
@@ -3415,12 +3423,16 @@ var MODE_HERO = {
 };
 var PRO_ONLY_MODES = ['backtest','earnings','watchlist','pairs','portfolio']; // screener is preview-gated, not hard-blocked
 var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
+var PREVIEW_MODES = ['backtest','earnings','watchlist','pairs','portfolio'];
+var PREVIEW_COPY = {
+  backtest: ['Backtest any seasonal strategy', 'Build an entry/exit rule and test it across 25 years \u2014 equity curve, CAGR and win rate vs buy-and-hold. Pro unlocks the full backtester.'],
+  earnings: ['See how stocks move after earnings', 'The post-earnings drift tracker across 26 real reports \u2014 Day 1, +1 week, +1 month, beat-vs-miss. Pro unlocks the full table.'],
+  watchlist: ['Track your assets\u2019 calendars', 'Add up to 10 assets and see where each sits in its own seasonal year at a glance. Pro unlocks your watchlist.'],
+  pairs: ['Compare any two assets\u2019 rhythms', 'Find pairs that have historically moved together \u2014 and pairs whose weak months haven\u2019t overlapped. Pro unlocks correlations.'],
+  portfolio: ['Your whole portfolio, one calendar', 'Enter your holdings and weights to map your mix\u2019s combined seasonal profile. Pro unlocks the portfolio view.']
+};
 
 function switchMode(mode) {
-  if (PRO_ONLY_MODES.indexOf(mode) !== -1 && !isPro()) {
-    showPaywall('tool', MODE_LABELS[mode]);
-    return;
-  }
   var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', earnings:'modeEarnings', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar', portfolio:'modePortfolio' };
   Object.keys(names).forEach(function(m) {
     var sec = document.getElementById(names[m]);
@@ -3433,6 +3445,7 @@ function switchMode(mode) {
     var aliasTab = document.getElementById('mt_' + alias[mode]);
     if (aliasTab) aliasTab.classList.add('active');
   }
+  applyToolPreviewGate(mode);
   var h = MODE_HERO[mode];
   if (h) {
     var t = document.querySelector('.hs-title');
@@ -4700,6 +4713,36 @@ function scRenderReal(monthIdx, nextIdx, map) {
     '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (strong[0]?strong[0].item.ticker+' +'+strong[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Strongest asset</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (weak[0]?weak[0].item.ticker+' '+weak[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Weakest asset</div></div>' +
     '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal?'real':'model') + '">' + (anyReal?'\u2713 REAL PRICE DATA \u00b7 LIQUID UNIVERSE':'MODELLED DATA') + '</span></div>';
+}
+
+function applyToolPreviewGate(mode){
+  // Remove any existing tool preview overlay first
+  var oldCta = document.querySelector('.tool-preview-cta');
+  if(oldCta) oldCta.remove();
+  var hosts = document.querySelectorAll('.tool-preview-host');
+  for(var k=0;k<hosts.length;k++){
+    hosts[k].classList.remove('tool-preview-host');
+    var peek = hosts[k].querySelector('.tool-preview-peek');
+    if(peek) peek.classList.remove('tool-preview-peek');
+  }
+  if(isPro() || PREVIEW_MODES.indexOf(mode) === -1) return;
+  var paneId = { backtest:'modeBacktest', earnings:'modeEarnings', watchlist:'modeWatchlist', pairs:'modePairs', portfolio:'modePortfolio' }[mode];
+  var pane = document.getElementById(paneId);
+  if(!pane) return;
+  pane.classList.add('tool-preview-host');
+  // Blur/clip the interactive body so they glimpse the real interface
+  var kids = pane.children;
+  for(var i=0;i<kids.length;i++) kids[i].classList.add('tool-preview-peek');
+  var copy = PREVIEW_COPY[mode] || ['Unlock this tool', 'Upgrade to Pro to use this tool.'];
+  var cta = document.createElement('div');
+  cta.className = 'tool-preview-cta';
+  cta.innerHTML =
+    '<div class="tpc-eyebrow">Pro tool \u00b7 preview</div>' +
+    '<h4>' + copy[0] + '</h4>' +
+    '<p>' + copy[1] + '</p>' +
+    '<button class="tpc-btn" onclick="pwScreenerUpgrade(this)">Start 7-day free trial</button>' +
+    '<div class="tpc-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
+  pane.appendChild(cta);
 }
 
 function applyScreenerPreviewGate(){
