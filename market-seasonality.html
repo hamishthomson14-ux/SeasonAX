@@ -257,6 +257,20 @@ button{cursor:pointer;font-family:var(--sans)}
 @media(max-width:760px){.term-twoup{flex-direction:column}}
 
 /* Paywall overlay */
+.wc-overlay{position:fixed;inset:0;background:rgba(4,7,15,.86);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:400;padding:20px}
+.wc-overlay.show{display:flex}
+.wc-box{background:var(--bg2,#111009);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:18px;padding:40px 34px;max-width:520px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.wc-eyebrow{font:600 11px/1 var(--mono,monospace);letter-spacing:.18em;color:var(--amber2,#F5A52F);text-transform:uppercase;margin-bottom:16px}
+.wc-box h2{font:700 30px/1.15 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 12px}
+.wc-box h2 em{font-style:normal;color:var(--amber,#E89318)}
+.wc-box .wc-sub{font:400 14px/1.6 var(--sans);color:var(--w3,#8F887A);margin:0 0 28px}
+.wc-starters{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+.wc-start{flex:1 1 140px;min-width:140px;background:var(--bg3,#0A0908);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:12px;padding:18px 14px;cursor:pointer;transition:all .16s;text-align:center}
+.wc-start:hover{border-color:var(--amber,#E89318);background:rgba(232,147,24,.06);transform:translateY(-2px)}
+.wc-start .wcs-tk{font:700 18px/1 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin-bottom:5px}
+.wc-start .wcs-nm{font:400 11px/1.3 var(--mono,monospace);color:var(--w4,#8F887A)}
+.wc-skip{background:none;border:none;color:var(--w4,#8F887A);font:500 12px/1 var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.wc-skip:hover{color:var(--w2,#C9C2B4)}
 .tool-preview-host{position:relative}
 .tool-preview-peek{max-height:340px;overflow:hidden;filter:blur(3px);opacity:.5;pointer-events:none;user-select:none}
 .tool-preview-cta{position:absolute;left:50%;top:300px;transform:translateX(-50%);width:min(460px,92%);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:14px;padding:26px 24px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.6);z-index:5}
@@ -910,6 +924,19 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
 </div>
 
 <!-- PAYWALL -->
+<div class="wc-overlay" id="wcOverlay">
+  <div class="wc-box">
+    <div class="wc-eyebrow">Welcome to TimingAX</div>
+    <h2>Every market has a calendar.<br><em>Here&rsquo;s how to read yours.</em></h2>
+    <div class="wc-sub">Pick one to see its full 15-year seasonal pattern &mdash; the months that have historically been strong, the months that have been weak, and how often.</div>
+    <div class="wc-starters">
+      <div class="wc-start" onclick="wcStart('sp500')"><div class="wcs-tk">S&amp;P 500</div><div class="wcs-nm">The US market</div></div>
+      <div class="wc-start" onclick="wcStart('gld')"><div class="wcs-tk">Gold</div><div class="wcs-nm">The classic haven</div></div>
+      <div class="wc-start" onclick="wcStart('tsla')"><div class="wcs-tk">Tesla</div><div class="wcs-nm">A retail favourite</div></div>
+    </div>
+    <button class="wc-skip" onclick="wcDismiss()">or explore on my own</button>
+  </div>
+</div>
 <div class="usage-nudge" id="usageNudge">
   <div class="un-txt"><b>1 free analysis left</b> this month. Pro removes the cap.</div>
   <button class="un-cta" onclick="showPaywall('limit')">See Pro</button>
@@ -3221,6 +3248,8 @@ buildBrowser('', null, null);
   var preselect = localStorage.getItem('sax_preselect');
   if(mode) { localStorage.removeItem('sax_mode'); setTimeout(function(){ switchMode(mode); },100); }
   if(preselect) { localStorage.removeItem('sax_preselect'); setTimeout(function(){ selectAsset(preselect); },200); }
+  // First-time visitors get the welcome starter overlay (unless arriving from a dashboard quick-launch).
+  if(!mode && !preselect) setTimeout(maybeShowWelcome, 400);
 })();
 
 
@@ -3255,6 +3284,25 @@ async function pwCheckout(btn){
   } catch(e){ btn.disabled=false; btn.textContent=orig; alert('Could not start checkout. Please try again.'); }
 }
 
+var WC_KEY = 'sx_seen_welcome_v1';
+function maybeShowWelcome(){
+  try { if(localStorage.getItem(WC_KEY)) return; } catch(e){ return; }
+  var ov = document.getElementById('wcOverlay');
+  if(ov) ov.classList.add('show');
+}
+function wcDismiss(){
+  var ov = document.getElementById('wcOverlay');
+  if(ov) ov.classList.remove('show');
+  try { localStorage.setItem(WC_KEY, '1'); } catch(e){}
+}
+function wcStart(id){
+  wcDismiss();
+  switchMode('analyzer');
+  setTimeout(function(){
+    selectAsset(id);
+    setTimeout(function(){ if(typeof run === 'function') run(); }, 120);
+  }, 60);
+}
 function showUsageNudge(){
   var n = document.getElementById('usageNudge');
   if(!n) return;
