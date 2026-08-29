@@ -203,6 +203,25 @@ button{cursor:pointer;font-family:var(--sans)}
 body.is-pro .tc-lock{display:none}
 .tool-card.pro-locked{opacity:.7}
 body.is-pro .tool-card.pro-locked{opacity:1}
+/* Account settings */
+.set-btn{background:var(--s1,#0F1728);border:1px solid var(--b2);color:var(--w3);border-radius:7px;padding:5px 10px;font:400 12px/1 var(--mono);cursor:pointer;display:flex;align-items:center;gap:5px}
+.set-btn:hover{border-color:var(--amber);color:var(--amber2)}
+.set-overlay{position:fixed;inset:0;background:rgba(4,7,15,.82);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:250;padding:20px}
+.set-overlay.show{display:flex}
+.set-modal{background:var(--bg2,#0B1120);border:1px solid var(--b2);border-radius:16px;padding:30px;max-width:440px;width:100%;max-height:88vh;overflow-y:auto}
+.set-modal h3{font:800 22px/1.1 var(--disp-serif);color:var(--w);margin:0 0 4px}
+.set-modal .set-sub{font:400 12px/1.5 var(--mono);color:var(--w4);margin:0 0 22px}
+.set-sec{border-top:1px solid var(--b1);padding-top:18px;margin-top:18px}
+.set-sec:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.set-sec h4{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber2);margin:0 0 12px}
+.set-modal label{display:block;font:500 11px/1 var(--mono);color:var(--w3);margin:0 0 6px}
+.set-modal input{width:100%;background:var(--s1,#0F1728);border:1px solid var(--b2);border-radius:8px;padding:11px 13px;color:var(--w);font:400 13px/1 var(--mono);margin-bottom:12px}
+.set-modal input:focus{outline:none;border-color:var(--amber2)}
+.set-save{background:var(--amber);color:#0A0908;border:none;border-radius:8px;padding:10px 18px;font:600 12px/1 var(--sans);cursor:pointer}
+.set-save:disabled{opacity:.5}
+.set-msg{font:500 11px/1.4 var(--mono);margin-top:8px;min-height:14px}
+.set-msg.ok{color:var(--green)} .set-msg.err{color:var(--red)}
+.set-close{float:right;background:none;border:none;color:var(--w4);font-size:22px;cursor:pointer;line-height:1}
 </style>
 </head>
 <body>
@@ -221,7 +240,43 @@ body.is-pro .tool-card.pro-locked{opacity:1}
   </div>
   <div class="tb-right">
     <div class="user-pill" id="userPill">Loading...</div>
+    <button class="set-btn" onclick="openSettings()" title="Account settings">&#9881; Account</button>
     <button class="btn-so" onclick="signOut()">Sign out</button>
+  </div>
+</div>
+
+<!-- ACCOUNT SETTINGS MODAL -->
+<div class="set-overlay" id="setOverlay">
+  <div class="set-modal">
+    <button class="set-close" onclick="closeSettings()" aria-label="Close">&times;</button>
+    <h3>Account settings</h3>
+    <div class="set-sub" id="setCurrentEmail"></div>
+
+    <div class="set-sec">
+      <h4>Display name</h4>
+      <label>Shown in your dashboard (not public)</label>
+      <input type="text" id="setDisplayName" placeholder="e.g. Trader" maxlength="40" autocomplete="off">
+      <button class="set-save" onclick="saveDisplayName()">Save name</button>
+      <div class="set-msg" id="setNameMsg"></div>
+    </div>
+
+    <div class="set-sec">
+      <h4>Change password</h4>
+      <label>New password (min 8 characters)</label>
+      <input type="password" id="setPw1" placeholder="New password" autocomplete="new-password">
+      <label>Confirm new password</label>
+      <input type="password" id="setPw2" placeholder="Re-enter new password" autocomplete="new-password">
+      <button class="set-save" onclick="savePassword()">Update password</button>
+      <div class="set-msg" id="setPwMsg"></div>
+    </div>
+
+    <div class="set-sec">
+      <h4>Change email</h4>
+      <label>New email address</label>
+      <input type="email" id="setEmail" placeholder="you@example.com" autocomplete="off">
+      <button class="set-save" onclick="saveEmail()">Update email</button>
+      <div class="set-msg" id="setEmailMsg"></div>
+    </div>
   </div>
 </div>
 
@@ -242,7 +297,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
 <div class="page">
   <div class="welcome">
     <div class="wl-left">
-      <div class="wl-greeting" id="greeting">Good morning. <em>Ready to trade the calendar?</em></div>
+      <div class="wl-greeting" id="greeting">Good morning. <em>Ready to read the calendar?</em></div>
       <div class="wl-sub">Here&#8217;s your seasonal intelligence for <span id="monthName"></span>. Choose a tool to begin.</div>
     </div>
     <div class="wl-right">
@@ -288,33 +343,45 @@ body.is-pro .tool-card.pro-locked{opacity:1}
           <div class="tc-footer"><span class="tc-stat">2000 &#8212; 2025</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('events')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">03</div><span class="tc-badge new">19 events &#183; 26 reports</span></div></div>
-          <div class="tc-name">Event Studies &amp; Earnings</div>
-          <div class="tc-desc">Fed decisions, elections, halvings, crashes &#8212; COVID, GFC, 2025 tariff shock. Plus the post-earnings drift tracker: Day 1, +1 week, +1 month. Historical playbooks throughout.</div>
-          <div class="tc-footer"><span class="tc-stat">19 events &#183; 26 reports</span><span class="tc-arr">&#8599;</span></div>
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">03</div><span class="tc-badge new">19 events</span></div></div>
+          <div class="tc-name">Event Studies</div>
+          <div class="tc-desc">Fed decisions, elections, halvings, crashes &#8212; COVID, GFC, 2025 tariff shock. Deep historical playbooks for every major market event.</div>
+          <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('earnings')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M7.5 14.8l3-3.4 2.4 2 3.6-4.4" stroke="#00C97E" stroke-width="1.7"/><path d="M14 9h2.5v2.5" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">04</div><span class="tc-badge new">26 reports</span><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">Earnings Analysis</div>
+          <div class="tc-desc">Post-earnings drift tracker. Day 1, +1 week, +2 weeks, +1 month data. Beat vs miss scenario framework with win rates.</div>
+          <div class="tc-footer"><span class="tc-stat">Updated Jun 2026</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('screener')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">04</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">05</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Seasonal Screener</div>
-          <div class="tc-desc">Which assets are entering their historically strongest month? Ranked on current-month history, all 730+ assets.</div>
+          <div class="tc-desc">Which assets are entering their strongest seasonal window right now? Ranked by current month performance, all 730+ assets.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc5stat">730+ assets</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('watchlist')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">05</div><span class="tc-lock">&#128274; PRO</span></div></div>
-          <div class="tc-name">Watchlist &amp; Portfolio</div>
-          <div class="tc-desc">Track up to 10 assets and see where each sits in its own calendar &#8212; plus a portfolio view mapping your whole mix&#8217;s combined seasonal profile.</div>
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(240,64,80,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">06</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-name">My Watchlist</div>
+          <div class="tc-desc">Your personal seasonal dashboard. Track up to 10 assets &#8212; see this month and next month&#8217;s outlook for everything you hold.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc6stat">Set up watchlist</span><span class="tc-arr">&#8599;</span></div>
         </a>
+        <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('month')">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h10M7 20.5h10" stroke="#4DA3FF" stroke-width="1.7"/><path d="M8 3.5c0 4 3 5.5 4 8.5-1 3-4 4.5-4 8.5M16 3.5c0 4-3 5.5-4 8.5 1 3 4 4.5 4 8.5" stroke="#4DA3FF" stroke-width="1.7"/><path d="M10.2 18.5h3.6" stroke="#E89318" stroke-width="1.7"/></svg></div><div class="tc-num">07</div></div>
+          <div class="tc-name">This Month in History</div>
+          <div class="tc-desc">The crashes, rallies and legends that shaped every calendar month. Market history written as a research essay with live pattern data.</div>
+          <div class="tc-footer"><span class="tc-stat" id="tc7stat">12 months</span><span class="tc-arr">&#8599;</span></div>
+        </a>
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('pairs')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="3" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="17.5" cy="17" r="3" stroke="#E89318" stroke-width="1.7"/><path d="M8.8 9.2l6.4 5.6" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">06</div><span class="tc-lock">&#128274; PRO</span></div></div>
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="3" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="17.5" cy="17" r="3" stroke="#E89318" stroke-width="1.7"/><path d="M8.8 9.2l6.4 5.6" stroke="#00C97E" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">08</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Seasonal Correlations</div>
-          <div class="tc-desc">Compare any two assets&#8217; yearly rhythms. Find pairs that have historically moved together &#8212; and pairs whose weak months haven&#8217;t overlapped.</div>
+          <div class="tc-desc">Compare any two assets&#8217; yearly rhythms. Find pairs that move together &#8212; and pairs that hedge each other&#8217;s weakest months.</div>
           <div class="tc-footer"><span class="tc-stat">Pearson analysis</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('calendar')">
-          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="14" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M3 9h14M7 2.8v3.4M13 2.8v3.4" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="16.5" r="4.5" stroke="#E89318" stroke-width="1.7" fill="#04070F"/><path d="M17.5 14.4v2.1l1.5 1" stroke="#E89318" stroke-width="1.5"/></svg></div><div class="tc-num">07</div></div>
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="14" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M3 9h14M7 2.8v3.4M13 2.8v3.4" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="16.5" r="4.5" stroke="#E89318" stroke-width="1.7" fill="#04070F"/><path d="M17.5 14.4v2.1l1.5 1" stroke="#E89318" stroke-width="1.5"/></svg></div><div class="tc-num">09</div></div>
           <div class="tc-name">Economic Calendar</div>
-          <div class="tc-desc">Every FOMC, CPI, jobs report and earnings date counted down live, each linked to its historical playbook &#8212; plus a written market-history essay for every calendar month.</div>
+          <div class="tc-desc">Every FOMC, CPI, jobs report and earnings date counted down live &#8212; each linked to its full historical event playbook.</div>
           <div class="tc-footer"><span class="tc-stat" id="tc9stat">Next event loading...</span><span class="tc-arr">&#8599;</span></div>
         </a>
       </div>
@@ -374,14 +441,16 @@ async function initAuth() {
     if (refreshed.data && refreshed.data.session) r = refreshed;
   } catch (e) {}
   var user = r.data.session.user;
-  var name = (user.user_metadata && user.user_metadata.full_name)
-    ? user.user_metadata.full_name.split(' ')[0]
-    : user.email.split('@')[0];
+  var name = (user.user_metadata && user.user_metadata.display_name)
+    ? user.user_metadata.display_name
+    : (user.user_metadata && user.user_metadata.full_name)
+      ? user.user_metadata.full_name.split(' ')[0]
+      : 'Trader';
   name = name.charAt(0).toUpperCase() + name.slice(1);
   document.getElementById('userPill').textContent = name;
   var h = new Date().getHours();
   var tod = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
-  document.getElementById('greeting').innerHTML = 'Good ' + tod + ', ' + name + '. <em>Ready to trade the calendar?</em>';
+  document.getElementById('greeting').innerHTML = 'Good ' + tod + ', ' + name + '. <em>Ready to read the calendar?</em>';
 
   // Subscription tier — hide PRO locks and upgrade banner for Pro/Lifetime users
   var sub = user.app_metadata && user.app_metadata.subscription;
@@ -484,6 +553,63 @@ async function openBillingPortal() {
     btn.disabled = false;
   }
 }
+function openSettings(){
+  var ov = document.getElementById('setOverlay');
+  sb.auth.getUser().then(function(res){
+    var u = res && res.data && res.data.user;
+    if(u){
+      document.getElementById('setCurrentEmail').textContent = 'Signed in as ' + u.email;
+      var dn = (u.user_metadata && (u.user_metadata.display_name || '')) || '';
+      document.getElementById('setDisplayName').value = dn;
+    }
+  });
+  ['setNameMsg','setPwMsg','setEmailMsg'].forEach(function(id){ var e=document.getElementById(id); if(e){e.textContent='';e.className='set-msg';} });
+  ov.classList.add('show');
+}
+function closeSettings(){ document.getElementById('setOverlay').classList.remove('show'); }
+
+function _setMsg(id, text, ok){
+  var e = document.getElementById(id);
+  if(!e) return;
+  e.textContent = text;
+  e.className = 'set-msg ' + (ok ? 'ok' : 'err');
+}
+
+async function saveDisplayName(){
+  var name = (document.getElementById('setDisplayName').value || '').trim();
+  if(name.length > 40){ _setMsg('setNameMsg','Name too long (max 40).', false); return; }
+  try {
+    var r = await sb.auth.updateUser({ data: { display_name: name } });
+    if(r.error) throw r.error;
+    _setMsg('setNameMsg','Saved. Refreshing\u2026', true);
+    setTimeout(function(){ location.reload(); }, 900);
+  } catch(e){ _setMsg('setNameMsg', e.message || 'Could not save.', false); }
+}
+
+async function savePassword(){
+  var p1 = document.getElementById('setPw1').value;
+  var p2 = document.getElementById('setPw2').value;
+  if(p1.length < 8){ _setMsg('setPwMsg','Password must be at least 8 characters.', false); return; }
+  if(p1 !== p2){ _setMsg('setPwMsg','Passwords do not match.', false); return; }
+  try {
+    var r = await sb.auth.updateUser({ password: p1 });
+    if(r.error) throw r.error;
+    _setMsg('setPwMsg','Password updated.', true);
+    document.getElementById('setPw1').value=''; document.getElementById('setPw2').value='';
+  } catch(e){ _setMsg('setPwMsg', e.message || 'Could not update password.', false); }
+}
+
+async function saveEmail(){
+  var email = (document.getElementById('setEmail').value || '').trim();
+  if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ _setMsg('setEmailMsg','Enter a valid email address.', false); return; }
+  try {
+    var r = await sb.auth.updateUser({ email: email });
+    if(r.error) throw r.error;
+    _setMsg('setEmailMsg','Check both your old and new inbox to confirm the change.', true);
+    document.getElementById('setEmail').value='';
+  } catch(e){ _setMsg('setEmailMsg', e.message || 'Could not update email.', false); }
+}
+
 async function signOut() { await sb.auth.signOut(); window.location.href = '/auth.html'; }
 initAuth();
 
@@ -723,12 +849,12 @@ var OB_STEPS = [
   },
   {
     icon: '&#129520;', iconBg: 'rgba(77,163,255,.1)',
-    title: 'Seven tools. <em>One platform.</em>',
-    body: 'Your dashboard gives you direct access to all seven research tools. Here are the ones most people start with:',
+    title: 'Ten tools. <em>One platform.</em>',
+    body: 'Your dashboard gives you direct access to all nine research tools. Here are the ones most people start with:',
     tools: [
       {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
-      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a seasonal window across 25 years of history'},
-      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering a historically strong month'},
+      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
+      {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering strength this month'},
     ]
   },
   {
@@ -737,7 +863,7 @@ var OB_STEPS = [
     body: 'Beyond seasonality, TimingAX gives you historical playbooks for major market events and a post-earnings drift tracker:',
     tools: [
       {icon:'&#128202;', bg:'rgba(155,127,255,.1)', name:'Event Studies', desc:'19 events: Fed decisions, crashes, halvings &mdash; with playbooks'},
-      {icon:'&#128200;', bg:'rgba(0,201,126,.1)', name:'Earnings Tracker', desc:'What happened 1 week, 1 month after companies reported'},
+      {icon:'&#128200;', bg:'rgba(0,201,126,.1)', name:'Earnings Analysis', desc:'What happens 1 week, 1 month after companies report'},
       {icon:'&#128467;', bg:'rgba(232,147,24,.1)', name:'Economic Calendar', desc:'Every FOMC, CPI and jobs date counted down'},
     ]
   },
@@ -874,8 +1000,7 @@ function buildDashboard(){
   var mn=MO_NAMES[mi];
   document.getElementById('monthName').textContent=mn;
   document.getElementById('ovMonthLabel').textContent=mn+' historical averages';
-  var _tc7 = document.getElementById('tc7stat');
-  if (_tc7) _tc7.textContent = mn + ' edition';
+  document.getElementById('tc7stat').textContent=mn+' edition';
 
   var sp=PATTERNS.broadIndex[mi], tg=PATTERNS.techGrowth[mi], cr=PATTERNS.crypto[mi];
   buildRibbon(mi);
