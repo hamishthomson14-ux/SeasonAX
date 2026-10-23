@@ -12,19 +12,24 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin | TimingAX</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- tx:head -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;--bg4:#0F1728;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);--bg4:var(--tx-bg-3);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);--blue:var(--tx-info);--purple:#9B7FFF;
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh}
 a{color:inherit;text-decoration:none}
@@ -145,20 +150,16 @@ tr:last-child td{border-bottom:none}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="tb-left">
-    <div class="tb-logo">
-      <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-      <div class="tb-word">Timing<b>AX</b></div>
+<header class="tx-header tx-header--app">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <span class="tx-app-name">Admin</span>
+    <div class="tx-app-actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/dashboard.html">Dashboard</a>
+      <button class="tx-btn tx-btn--sm" onclick="signOut()">Sign out</button>
     </div>
-    <div class="tb-divider"></div>
-    <div class="tb-label">Admin</div>
   </div>
-  <div class="tb-right">
-    <a href="/dashboard.html"><button class="btn-so">Dashboard</button></a>
-    <button class="btn-so" onclick="signOut()">Sign out</button>
-  </div>
-</div>
+</header>
 
 <div class="page">
   <div id="loadingState" class="state-box">
