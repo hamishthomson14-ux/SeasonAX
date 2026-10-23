@@ -18,22 +18,27 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- tx:head -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;
-  --disp:"Syne",sans-serif;
-  --disp-serif:"Fraunces",serif;
-  --sans:"Inter",sans-serif;
+  /* Mapped onto the shared design tokens in /assets/tx.css */
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);--s4:#22324F;
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);
+  --disp:var(--tx-font-ui);
+  --disp-serif:var(--tx-font-ui);
+  --sans:var(--tx-font-ui);
 }
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
@@ -63,7 +68,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .hero-strip{padding:0 0 32px;text-align:center;border-bottom:1px solid var(--b1);margin-bottom:36px}
 .hs-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .hs-eyebrow::before,.hs-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
-.hs-title{font:800 44px/1.12 var(--disp-serif);letter-spacing:-.01em;margin-bottom:14px}
+.hs-title{font:700 clamp(32px,4.4vw,48px)/1.08 var(--disp-serif);letter-spacing:-.03em;margin-bottom:14px}
 .hs-title em{font-style:normal;color:var(--amber2)}
 .hs-sub{font-size:15px;color:var(--w3);max-width:480px;margin:0 auto}
 
@@ -103,7 +108,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .ac-sector{font:400 10px/1 var(--mono);color:var(--w4)}
 
 /* ── ANALYSIS SECTION ── */
-#analysis{margin-top:48px;scroll-margin-top:72px}
+#analysis{margin-top:48px;scroll-margin-top:124px}
 
 /* Selected header */
 .sel-header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;background:var(--bg2);border:1px solid var(--b2);border-radius:12px 12px 0 0;border-bottom:none;flex-wrap:wrap;gap:14px}
@@ -374,7 +379,7 @@ button{cursor:pointer;font-family:var(--sans)}
 }
 
 /* ── MODE SWITCHER ── */
-.mode-bar{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:0 0 24px;position:sticky;top:56px;z-index:150;background:rgba(4,7,15,.97);backdrop-filter:blur(20px);padding:22px 0 0;border-bottom:1px solid var(--b1)}
+.mode-bar{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:0 0 24px;position:sticky;top:64px;z-index:90;background:rgba(3,6,13,.94);backdrop-filter:blur(20px);padding:22px 0 0;border-bottom:1px solid var(--b1)}
 .mode-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--w4);padding:0 0 16px;font:600 13px/1 var(--sans);transition:all .18s;letter-spacing:.01em;cursor:pointer}
 .mode-tab:hover{color:var(--w2);border-bottom-color:var(--b3)}
 .mode-tab.active{color:var(--amber2);border-bottom-color:var(--amber2)}
@@ -540,9 +545,10 @@ body.is-pro .mode-divider{display:none}
   .ec-type,.ec-act{display:none}
 }
 
-.asset-card.locked{opacity:.5;position:relative}
-.asset-card.locked::after{content:'\1F512';position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
-.asset-card.locked:hover{opacity:.75}
+.asset-card.locked{position:relative;background:var(--bg)}
+.asset-card.locked .ac-ticker{color:var(--w3)}
+.asset-card.locked::after{content:'\1F512';position:absolute;top:8px;right:8px;font-size:11px;opacity:.75}
+.asset-card.locked:hover{border-color:var(--b3)}
 .tier-badge{font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-left:8px}
 .tier-badge.free{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
 .tier-badge.pro{background:rgba(232,147,24,.1);color:var(--amber2);border:1px solid rgba(232,147,24,.25)}
@@ -603,32 +609,23 @@ body.is-pro .mt-lock{display:none}
 <body>
 
 <!-- NAV -->
-<nav class="nav">
-  <div class="nav-left">
-    <svg class="nav-mark" viewBox="0 0 26 26" fill="none">
-      <rect width="26" height="26" rx="6" fill="#0F1728"/>
-      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
-      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
-      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
-    </svg>
-    <div class="nav-word">Timing<b>AX</b></div>
-    <div class="nav-div"></div>
-    <div class="nav-sub">Seasonal Analyzer</div>
-  </div>
-  <div class="nav-right">
-    <a href="/dashboard.html" class="nav-back" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
-    <div id="userMenu" style="display:none;align-items:center;gap:8px">
-      <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
-      <button class="btn-so" onclick="signOut()">Sign out</button>
-    </div>
-    <div id="loginPrompt" style="display:none">
-      <a href="/auth.html"><button class="btn-si">Sign in</button></a>
+<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header tx-header--app">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <span class="tx-app-name">Seasonal Analyzer</span>
+    <div class="tx-app-actions">
+      <a href="/dashboard.html" class="tx-btn tx-btn--ghost tx-btn--sm">&#8592; Dashboard</a>
+      <div id="userMenu" style="display:none;align-items:center;gap:8px">
+        <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
+        <button class="tx-btn tx-btn--sm" onclick="signOut()">Sign out</button>
+      </div>
+      <div id="loginPrompt" style="display:none">
+        <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Sign in</a>
+      </div>
     </div>
   </div>
-</nav>
+</header>
 
 <div class="page" role="main">
 

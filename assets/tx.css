@@ -147,6 +147,16 @@ body.tx {
   .tx-header.is-open .tx-header__actions > * { flex: 1; }
 }
 
+/* App header variant (analyzer, dashboard): product name + account controls, no menu */
+.tx-app-name { font: 500 11.5px/1 var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); padding-left: 16px; border-left: 1px solid var(--tx-border-2); white-space: nowrap; }
+.tx-app-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+@media (max-width: 760px) {
+  .tx-header--app .tx-app-name { display: none; }
+  .tx-header--app .tx-app-actions .tx-btn--ghost { padding: 0 8px; }
+  .tx-header--app .user-badge { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+@media (max-width: 420px) { .tx-header--app .tx-logo span { display: none; } }
+
 /* ---------- Ticker tape ---------- */
 .tx-ticker { position: relative; overflow: hidden; height: 32px; background: var(--tx-term-bg); border-bottom: 1px solid var(--tx-border-1); font: 500 12px/32px var(--tx-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .tx-ticker__track { display: inline-flex; animation: tx-tape 60s linear infinite; }
