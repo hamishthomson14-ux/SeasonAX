@@ -18,19 +18,24 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- tx:head -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;--bg4:#0F1728;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);--bg4:var(--tx-bg-3);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);--s4:#22324F;
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);--blue:var(--tx-info);--purple:#9B7FFF;
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -222,28 +227,30 @@ body.is-pro .tool-card.pro-locked{opacity:1}
 .set-msg{font:500 11px/1.4 var(--mono);margin-top:8px;min-height:14px}
 .set-msg.ok{color:var(--green)} .set-msg.err{color:var(--red)}
 .set-close{float:right;background:none;border:none;color:var(--w4);font-size:22px;cursor:pointer;line-height:1}
+/* App header: centre clock between name and actions; hide on small screens */
+.tx-header--app .tb-center{display:flex;align-items:center;gap:14px;margin-left:auto}
+.tx-header--app .tb-center + .tx-app-actions{margin-left:18px}
+@media (max-width:900px){.tx-header--app .tb-center{display:none}.tx-header--app .tb-center + .tx-app-actions{margin-left:auto}}
+@media (max-width:520px){.tx-header--app .user-pill{display:none}}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="tb-left">
-    <div class="tb-logo">
-      <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-      <div class="tb-word">Timing<b>AX</b></div>
+<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header tx-header--app">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <span class="tx-app-name">Dashboard</span>
+    <div class="tb-center">
+      <div class="tb-clock" id="tbClock"></div>
+      <div class="market-status" id="mktStatus"></div>
     </div>
-    <div class="tb-divider"></div>
-    <div class="tb-label">Dashboard</div>
+    <div class="tx-app-actions">
+      <div class="user-pill" id="userPill">Loading...</div>
+      <button class="tx-btn tx-btn--ghost tx-btn--sm" onclick="openSettings()" title="Account settings">&#9881; Account</button>
+      <button class="tx-btn tx-btn--sm" onclick="signOut()">Sign out</button>
+    </div>
   </div>
-  <div class="tb-center">
-    <div class="tb-clock" id="tbClock"></div>
-    <div class="market-status" id="mktStatus"></div>
-  </div>
-  <div class="tb-right">
-    <div class="user-pill" id="userPill">Loading...</div>
-    <button class="set-btn" onclick="openSettings()" title="Account settings">&#9881; Account</button>
-    <button class="btn-so" onclick="signOut()">Sign out</button>
-  </div>
-</div>
+</header>
 
 <!-- ACCOUNT SETTINGS MODAL -->
 <div class="set-overlay" id="setOverlay">
@@ -892,13 +899,13 @@ function obRender() {
 
   if (s.preview) {
     var mi = new Date().getMonth();
-    var sp = PATTERNS.broadIndex[mi], cr = PATTERNS.crypto[mi];
+    var sp = dm('sp500', mi), cr = dm('btc', mi);
     function c(v){return v>=0?'g':'r';}
-    function f(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
+    function cell(id, p, f, label, cls){ return '<div class="ob-pv-cell"><div class="ob-pv-val '+(p?cls:'')+'"'+dtag(id,mi,f)+'>'+(p?(f==='win'?p.win+'%':TX.fmtPct(p.avg,1)):SKEL)+'</div><div class="ob-pv-lbl">'+label+'</div></div>'; }
     html += '<div class="ob-preview"><div class="ob-pv-grid">' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(sp.avg) + '">' + f(sp.avg) + '</div><div class="ob-pv-lbl">S&amp;P 500 this month</div></div>' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val a">' + sp.win + '%</div><div class="ob-pv-lbl">Win rate</div></div>' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(cr.avg) + '">' + f(cr.avg) + '</div><div class="ob-pv-lbl">Bitcoin this month</div></div>' +
+      cell('sp500', sp, 'avg', 'S&amp;P 500 · '+MO_NAMES[mi]+' avg', sp && c(sp.avg)) +
+      cell('sp500', sp, 'win', 'S&amp;P 500 win rate', 'a') +
+      cell('btc', cr, 'avg', 'Bitcoin · '+MO_NAMES[mi]+' avg', cr && c(cr.avg)) +
     '</div></div>';
   }
 
@@ -950,49 +957,102 @@ function obMaybeShow() {
 function sgn(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
 function col(v){return v>=0?'g':'r';}
 
-function buildRibbon(mi){
-  // A live terminal tape: the current month's seasonal posture across the
-  // major asset classes, with a "market read" lead block. All from PATTERNS.
-  var mn = MO_NAMES[mi];
-  var assets = [
-    {tk:'S&P 500', k:'broadIndex'},
-    {tk:'NASDAQ', k:'techGrowth'},
-    {tk:'Semis', k:'semis'},
-    {tk:'Bitcoin', k:'crypto'},
-    {tk:'Gold', k:'gold'},
-    {tk:'Energy', k:'energy'},
-    {tk:'Health', k:'healthcare'},
-    {tk:'Consumer', k:'consumer'},
-    {tk:'Defense', k:'defense'},
-    {tk:'Bonds', k:'bonds'}
-  ];
-  // Lead = breadth read across these asset classes this month
-  var pos = 0, sumAvg = 0;
-  assets.forEach(function(a){ var p=PATTERNS[a.k][mi]; if(p.avg>0) pos++; sumAvg+=p.avg; });
-  var breadth = Math.round(pos/assets.length*100);
-  var avgAll = sumAvg/assets.length;
-  var read = breadth>=70?'RISK-ON':breadth<=35?'RISK-OFF':'MIXED';
-  var readCls = breadth>=70?'g':breadth<=35?'r':'a';
+// ---- Seasonal data: real per-asset figures from /api/v1/seasonality (same source as the rest of the site).
+// Classes are represented by catalogue ETFs. Skeletons until loaded; nothing invented.
+var DASH = [
+  {id:'sp500', tk:'S&P 500',          n:'Broad market'},
+  {id:'nasdaq',tk:'NASDAQ',           n:'Tech growth'},
+  {id:'btc',   tk:'Bitcoin',          n:'Crypto'},
+  {id:'gld',   tk:'Gold (GLD)',       n:'Safe haven'},
+  {id:'xlk',   tk:'Tech (XLK)',       n:'Technology'},
+  {id:'xle',   tk:'Energy (XLE)',     n:'Energy sector'},
+  {id:'xlv',   tk:'Health (XLV)',     n:'Defensive'},
+  {id:'xly',   tk:'Consumer (XLY)',   n:'Consumer'},
+  {id:'iwm',   tk:'Small caps (IWM)', n:'Russell 2000'},
+  {id:'tlt',   tk:'Bonds (TLT)',      n:'Treasuries'}
+];
+var DASH_DATA = {}, DASH_LOADING = false;
+var SKEL = '<span class="tx-skel"></span>';
+function dm(id, mi){ var d=DASH_DATA[id]; if(!d) return null; var m=d.months[mi]; return {avg:m.avgReturn, win:m.winRate, src:d.source}; }
+function dtag(id, mi, f){ return ' data-tx-sid="'+id+'" data-tx-month="'+MO_NAMES[mi].slice(0,3)+'" data-tx-field="'+f+'"'; }
+function dashLoad(){
+  if (DASH_LOADING) return;
+  if (!window.TX) { document.addEventListener('DOMContentLoaded', dashLoad); return; }
+  DASH_LOADING = true;
+  DASH.forEach(function(a){
+    TX.fetchSeasonality(a.id).then(function(d){
+      if (!d) return;
+      DASH_DATA[a.id] = d;
+      renderSeasonal(new Date().getMonth());
+      var ov = document.getElementById('obOverlay');
+      if (ov && ov.style.display === 'flex' && OB_STEPS[obStep] && OB_STEPS[obStep].preview) obRender();
+    });
+  });
+}
 
-  var cells = assets.map(function(a){
-    var p = PATTERNS[a.k][mi];
+function buildRibbon(mi){
+  var mn = MO_NAMES[mi];
+  var loaded = DASH.filter(function(a){ return dm(a.id, mi); });
+  var pos = loaded.filter(function(a){ return dm(a.id, mi).avg > 0; }).length;
+  var breadth = loaded.length ? Math.round(pos/loaded.length*100) : null;
+  var read = breadth===null ? '' : breadth>=70?'RISK-ON':breadth<=35?'RISK-OFF':'MIXED';
+  var readCls = breadth===null ? '' : breadth>=70?'g':breadth<=35?'r':'a';
+  var cells = DASH.map(function(a){
+    var p = dm(a.id, mi);
+    if (!p) return '<div class="sr-cell" style="--src:var(--b2)"><div class="sr-tk">'+a.tk+'</div><div class="sr-v"'+dtag(a.id,mi,'avg')+'>'+SKEL+'</div><div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+SKEL+'</span></div></div>';
     var b = p.avg>=0;
-    var col = b?'var(--green)':'var(--red)';
-    var sign = b?'+':'';
-    return '<div class="sr-cell" style="--src:'+col+'" onclick="window.location=\'/market-seasonality.html\'" title="'+a.tk+' '+mn+': '+sign+p.avg.toFixed(2)+'% avg, '+p.win+'% win rate">'+
+    return '<div class="sr-cell" style="--src:'+(b?'var(--green)':'var(--red)')+'" onclick="window.location=\'/seasonality/'+a.id+'\'" title="'+a.tk+' '+mn+': '+TX.fmtPct(p.avg,2)+' avg, '+p.win+'% win">'+
       '<div class="sr-tk">'+a.tk+'</div>'+
-      '<div class="sr-v '+(b?'g':'r')+'">'+sign+p.avg.toFixed(1)+'%</div>'+
-      '<div class="sr-w">'+p.win+'% win</div>'+
+      '<div class="sr-v '+(b?'g':'r')+'"'+dtag(a.id,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</div>'+
+      '<div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+p.win+'%</span> win</div>'+
     '</div>';
   }).join('');
-
   document.getElementById('seasonalRibbon').innerHTML =
     '<div class="sr-lead">'+
       '<div class="sr-lead-l">'+mn+' Market Read</div>'+
-      '<div class="sr-lead-v '+readCls+'">'+read+'</div>'+
-      '<div class="sr-w">'+breadth+'% of classes positive</div>'+
+      '<div class="sr-lead-v '+readCls+'">'+(read||SKEL)+'</div>'+
+      '<div class="sr-w">'+(breadth===null?'&nbsp;':breadth+'% of '+loaded.length+' markets positive')+'</div>'+
     '</div>'+
     '<div class="sr-track">'+cells+'</div>';
+}
+
+// Overview strip + spotlight, from the same real data.
+function renderSeasonal(mi){
+  buildRibbon(mi);
+  function setOv(id, sid, aid){
+    var p = dm(aid, mi), e = document.getElementById(id);
+    if (!p) { e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+SKEL+'</span>'; e.className='ov-val'; document.getElementById(sid).innerHTML='&nbsp;'; return; }
+    e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</span>'; e.className='ov-val '+col(p.avg);
+    document.getElementById(sid).innerHTML = '<span'+dtag(aid,mi,'win')+'>'+p.win+'%</span> win rate';
+  }
+  setOv('ov1','ov1s','sp500');
+  setOv('ov2','ov2s','nasdaq');
+  setOv('ov3','ov3s','btc');
+  var loaded = DASH.filter(function(a){ return dm(a.id, mi); });
+  if (loaded.length) {
+    var best = loaded.reduce(function(b,a){ return dm(a.id,mi).avg > dm(b.id,mi).avg ? a : b; });
+    document.getElementById('ov4').innerHTML = '<span'+dtag(best.id,mi,'avg')+'>'+TX.fmtPct(dm(best.id,mi).avg,1)+'</span>';
+    document.getElementById('ov4').className = 'ov-val '+col(dm(best.id,mi).avg);
+    document.getElementById('ov4s').textContent = best.tk+' · strongest this month';
+  } else { document.getElementById('ov4').innerHTML = SKEL; document.getElementById('ov4s').innerHTML = '&nbsp;'; }
+  var sp = dm('sp500', mi);
+  if (sp) {
+    var v = TX.verdict(sp.avg, sp.win);
+    var sig = v==='TAILWIND'?'BULLISH':v==='HEADWIND'?'BEARISH':'NEUTRAL', sc = v==='TAILWIND'?'g':v==='HEADWIND'?'r':'a';
+    document.getElementById('ov5').textContent = sig; document.getElementById('ov5').className = 'ov-val '+sc;
+    document.getElementById('ov5s').textContent = 'S&P 500 seasonal ' + v.toLowerCase();
+  } else { document.getElementById('ov5').innerHTML = SKEL; document.getElementById('ov5s').innerHTML = '&nbsp;'; }
+  var spot = loaded.slice().sort(function(a,b){ return dm(b.id,mi).avg - dm(a.id,mi).avg; }).slice(0,5);
+  document.getElementById('spList').innerHTML = spot.length ? spot.map(function(a){
+    var p = dm(a.id, mi), b = p.avg>=0;
+    return '<div class="sp-item '+(b?'bull':'bear')+'" onclick="window.location=\'/seasonality/'+a.id+'\'">'+
+      '<div class="sp-left"><div class="sp-dot"></div><div>'+
+      '<div class="sp-ticker">'+a.tk+'</div>'+
+      '<div class="sp-name">'+a.n+' · <span'+dtag(a.id,mi,'win')+'>'+p.win+'%</span> win</div>'+
+      '</div></div>'+
+      '<div class="sp-val '+(b?'g':'r')+'"'+dtag(a.id,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</div></div>';
+  }).join('') : '<div class="sp-item">'+SKEL+'</div>';
+  dashLoad();
 }
 
 function buildDashboard(){
@@ -1002,56 +1062,13 @@ function buildDashboard(){
   document.getElementById('ovMonthLabel').textContent=mn+' historical averages';
   document.getElementById('tc7stat').textContent=mn+' edition';
 
-  var sp=PATTERNS.broadIndex[mi], tg=PATTERNS.techGrowth[mi], cr=PATTERNS.crypto[mi];
-  buildRibbon(mi);
-  function setOv(id,sid,v,win){
-    var e=document.getElementById(id); e.textContent=sgn(v); e.className='ov-val '+col(v);
-    document.getElementById(sid).textContent=win+'% win rate';
-  }
-  setOv('ov1','ov1s',sp.avg,sp.win);
-  setOv('ov2','ov2s',tg.avg,tg.win);
-  setOv('ov3','ov3s',cr.avg,cr.win);
-
-  var patKeys=Object.keys(PATTERNS), best=patKeys[0];
-  patKeys.forEach(function(k){if(PATTERNS[k][mi].avg>PATTERNS[best][mi].avg)best=k;});
-  var patL={broadIndex:'Broad Market',techGrowth:'Tech Growth',crypto:'Crypto',gold:'Gold',energy:'Energy',
-    healthcare:'Healthcare',consumer:'Consumer',defense:'Defense',semis:'Semis',bonds:'Bonds',
-    speculative:'Speculative',evGrowth:'EV/Clean Energy',ukMarket:'UK Market',ukMining:'UK Mining',
-    germanMarket:'German Market',germanAuto:'German Auto',japanExport:'Japan Export',
-    chinaInternet:'China Internet',koreanTech:'Korean Tech',germanChemical:'German Chemical'};
-  document.getElementById('ov4').textContent=sgn(PATTERNS[best][mi].avg);
-  document.getElementById('ov4s').textContent=(patL[best]||best)+' pattern';
-  var sig=sp.avg>=0.8?'BULLISH':sp.avg<=-0.3?'BEARISH':'NEUTRAL';
-  var sc=sp.avg>=0.8?'g':sp.avg<=-0.3?'r':'a';
-  document.getElementById('ov5').textContent=sig; document.getElementById('ov5').className='ov-val '+sc;
-  document.getElementById('ov5s').textContent=sp.note;
+  renderSeasonal(mi);
   document.getElementById('tc5stat').textContent=mn+' leaders ranked';
 
   try{var wl=JSON.parse(localStorage.getItem('sx_watchlist')||'[]');
     document.getElementById('tc6stat').textContent=wl.length>0?wl.length+'/10 assets tracked':'Set up watchlist';}catch(e){}
 
-  // Spotlight
-  var spot=[
-    {t:'S&P 500',n:'Broad market',p:PATTERNS.broadIndex[mi]},
-    {t:'NASDAQ',n:'Tech growth',p:PATTERNS.techGrowth[mi]},
-    {t:'Bitcoin',n:'Crypto',p:PATTERNS.crypto[mi]},
-    {t:'Gold',n:'Safe haven',p:PATTERNS.gold[mi]},
-    {t:'Semis',n:'Semiconductors',p:PATTERNS.semis[mi]},
-    {t:'Energy',n:'Energy sector',p:PATTERNS.energy[mi]},
-    {t:'Healthcare',n:'Defensive',p:PATTERNS.healthcare[mi]},
-  ];
-  spot.sort(function(a,b){return b.p.avg-a.p.avg;});
   document.getElementById('spTitle').textContent=mn+' Spotlight';
-  document.getElementById('spList').innerHTML=spot.slice(0,5).map(function(s){
-    var b=s.p.avg>=0;
-    var cls=b?'bull':'bear'; var vcls=b?'g':'r';
-    return '<div class="sp-item '+cls+'" onclick="window.location=\'/market-seasonality.html\'">'+
-      '<div class="sp-left"><div class="sp-dot"></div><div>'+
-      '<div class="sp-ticker">'+s.t+'</div>'+
-      '<div class="sp-name">'+s.n+' · '+s.p.win+'% win</div>'+
-      '</div></div>'+
-      '<div class="sp-val '+vcls+'">'+sgn(s.p.avg)+'</div></div>';
-  }).join('');
 
   // Calendar
   var now=new Date();
