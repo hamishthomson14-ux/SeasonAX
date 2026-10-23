@@ -18,19 +18,24 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="description" content="Deep research on market seasonality. Why September always loses, the Halloween Indicator, Bitcoin's Uptober, and what happens when the Fed cuts.">
+<!-- tx:head -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -144,18 +149,26 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </head>
 <body>
 
-<nav class="nav">
-  <div class="n-logo">
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-    <a href="/index.html"><div class="n-word">Timing<b>AX</b></div></a>
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
-  <div class="nav-links">
-    <a href="/index.html" class="nl">Home</a>
-    <a href="/about.html" class="nl">About</a>
-    <a href="/contact.html" class="nl">Contact</a>
-  </div>
-  <a href="/auth.html"><button class="btn-cta">Start free &rarr;</button></a>
-</nav>
+</header>
+<!-- /tx:header -->
 
 <!-- INDEX VIEW -->
 <div id="indexView">
@@ -194,7 +207,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
         <div class="ac-arr">&#8599;</div>
         <span class="ac-cat crypto">Crypto</span>
         <h2 class="ac-h">Uptober: Why Bitcoin's October Effect Is Real</h2>
-        <p class="ac-sub">+21.4% average. Positive in 9 of 12 years. The mechanics behind Bitcoin's most reliable seasonal pattern &mdash; and why it keeps working.</p>
+        <p class="ac-sub"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg">+15.2%</span> average. Positive in <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years. The mechanics behind Bitcoin's most reliable seasonal pattern &mdash; and why it keeps working.</p>
         <div class="ac-meta">
           <span class="ac-date">April 2026 &nbsp;&middot;&nbsp; 7 min read</span>
           <span class="ac-read">Read &rarr;</span>
@@ -221,9 +234,9 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     <div class="ap-body">
       <div class="ap-text">
         <h2>The one iron law of market seasonality</h2>
-        <p>If you have to choose one seasonal pattern to remember, it's this: <strong>September loses money.</strong> Not sometimes. Not in bad years. On average, consistently, across every decade of modern market history, in the US, UK, Germany and Japan simultaneously.</p>
-        <p>The S&P 500 averages <strong>-0.7%</strong> in September over 15 years &mdash; the only month to average a net loss. The NASDAQ is worse at <strong>-1.4%</strong>. The win rate &mdash; the percentage of Septembers where the market ends the month higher than it started &mdash; sits at just 42% for the S&P and 39% for the NASDAQ. You're more likely to lose money in September than not.</p>
-        <div class="ap-stat"><div class="ap-stat-v r">-0.7%</div><div class="ap-stat-l">S&P 500 average September return &nbsp;&middot;&nbsp; 15-year period &nbsp;&middot;&nbsp; 42% win rate</div></div>
+        <p>If you have to choose one seasonal pattern to remember, it's this: <strong>September loses money.</strong> Not sometimes. Not in bad years. On average, consistently, across every decade of modern market history, in the US, the UK and Germany.</p>
+        <p>The S&P 500 averages <strong><span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span></strong> in September over 15 years &mdash; the only month to average a net loss. The NASDAQ Composite is similar at <strong><span data-tx-fill data-tx-sid="nasdaq" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.18%</span></strong>. The win rate &mdash; the percentage of Septembers where the market ends the month higher than it started &mdash; is just <span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="win">44%</span> for the S&P and <span data-tx-fill data-tx-sid="nasdaq" data-tx-month="Sep" data-tx-field="win">50%</span> for the NASDAQ. Historically, September has been a coin-flip at best.</p>
+        <div class="ap-stat"><div class="ap-stat-v r"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span></div><div class="ap-stat-l">S&P 500 average September return &nbsp;&middot;&nbsp; 15-year period &nbsp;&middot;&nbsp; <span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="win">44%</span> win rate</div></div>
         <p>This isn't a recent phenomenon driven by a few bad years. Academic studies going back to the 1950s consistently identify September as the weakest month in US equities. The pattern pre-dates the internet, the Fed's current framework, algorithmic trading and every other structural change in markets over the last 70 years. It's not noise.</p>
 
         <div class="ap-pullquote"><p>"September is the only month to average a net loss in the S&P 500 across every measured decade."</p></div>
@@ -239,7 +252,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
         <p>Behavioural finance research has found correlations between seasonal affective patterns and risk appetite. Investors are measurably more risk-averse in autumn than spring, even controlling for fundamentals. The end of summer also tends to bring renewed focus on geopolitical risks, Federal Reserve meetings (September hosts one of the eight annual FOMC decisions), and the beginning of earnings pre-announcement season &mdash; all of which can add uncertainty.</p>
 
         <h2>The global version of the same pattern</h2>
-        <p>What makes September seasonality particularly credible is that it isn't a US anomaly. The FTSE 100 averages roughly <strong>-0.6%</strong> in September. The DAX averages <strong>-0.7%</strong>. The Nikkei shows <strong>-0.7%</strong>. Four major markets in four different countries, with different regulatory environments, different investor bases and different fiscal years, all producing the same result. That level of consistency points to structural behavioural factors, not US-specific mechanics.</p>
+        <p>What makes September seasonality particularly credible is that it isn't a US anomaly. The FTSE 100 averages <strong><span data-tx-fill data-tx-sid="ftse100" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−0.74%</span></strong> in September. The DAX averages <strong><span data-tx-fill data-tx-sid="dax" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−0.53%</span></strong>. Three major markets in three different countries, with different regulatory environments, different investor bases and different fiscal years, producing the same result. Japan is the notable exception: the Nikkei has averaged <strong><span data-tx-fill data-tx-sid="nikkei" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">+0.81%</span></strong> in September, a reminder that seasonal patterns are market-specific and worth checking asset by asset.</p>
 
         <h2>The data in practice: worst September cases</h2>
         <p>The average masks some genuinely severe individual Septembers. September 2022 delivered <strong>-9.3%</strong> for the S&P 500 &mdash; the bear market's worst single month, amplified by rate-hike panic. September 2001 saw the post-9/11 reopening plunge. September 2008 had Lehman. September 1998 had the LTCM crisis. September is consistently where bad things get worse.</p>
@@ -288,10 +301,10 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
         <h2>The most famous phrase in investing, tested</h2>
         <p>"Sell in May and go away, come back on St Leger's Day." It's the most quoted piece of market folklore in history. It's also &mdash; in its rough outline &mdash; supported by 75 years of data. The more interesting question is what exactly the data shows, and what it doesn't.</p>
         <p>The academic version of the same observation is called the <strong>Halloween Indicator</strong>, named for the switching date of October 31. First documented in the <em>American Economic Review</em> in 2002 by Bouman and Jacobsen, it found that equity markets in 36 of 37 countries showed meaningfully higher returns in the November&ndash;April period than the May&ndash;October period. Not just the US. Not just recently. 36 of 37 countries.</p>
-        <div class="ap-stat"><div class="ap-stat-v g">+1.2%</div><div class="ap-stat-l">S&P 500 average monthly return, November&ndash;April &nbsp;&middot;&nbsp; vs +0.3% for May&ndash;October</div></div>
+        <div class="ap-stat"><div class="ap-stat-v g"><span data-tx-fill data-tx-sid="sp500" data-tx-months="Nov,Dec,Jan,Feb,Mar,Apr" data-tx-field="mavg" data-tx-dp="2">+1.18%</span></div><div class="ap-stat-l">S&P 500 average monthly return, November&ndash;April &nbsp;&middot;&nbsp; vs <span data-tx-fill data-tx-sid="sp500" data-tx-months="May,Jun,Jul,Aug,Sep,Oct" data-tx-field="mavg" data-tx-dp="2">+0.90%</span> for May&ndash;October</div></div>
 
         <h2>The numbers: what 15 years shows</h2>
-        <p>Over the last 15 years (2009&ndash;2024), the S&P 500's average monthly return in the November&ndash;April window was approximately <strong>+1.2%</strong>, against <strong>+0.3%</strong> for May&ndash;October. That 0.9 percentage point difference per month compounds significantly over time. A portfolio that was fully invested November&ndash;April and in cash May&ndash;October would have outperformed buy-and-hold in <strong>11 of 15 years</strong>, with materially lower maximum drawdowns during the weak period.</p>
+        <p>Over the last 15 years, the S&P 500's average monthly return in the November&ndash;April window was <strong><span data-tx-fill data-tx-sid="sp500" data-tx-months="Nov,Dec,Jan,Feb,Mar,Apr" data-tx-field="mavg" data-tx-dp="2">+1.18%</span></strong>, against <strong><span data-tx-fill data-tx-sid="sp500" data-tx-months="May,Jun,Jul,Aug,Sep,Oct" data-tx-field="mavg" data-tx-dp="2">+0.90%</span></strong> for May&ndash;October. In the US the gap has narrowed in recent years &mdash; both halves have been positive on average &mdash; but the winter months have still done more of the heavy lifting, and the pattern is stronger in several other markets.</p>
         <p>The "Best Six Months" strategy isn't a quirk of one good period. Looking at decade-by-decade data going back to the 1950s, the seasonal pattern holds in the 1950s, 1960s, 1970s, 1980s, 1990s, 2000s and 2010s. No decade has broken it decisively &mdash; though the 2020s introduced the complication of COVID and the 2021 bull market disrupting the May&ndash;October weakness.</p>
 
         <div class="ap-pullquote"><p>"36 of 37 countries showed higher returns November&ndash;April. This is not a US anomaly."</p></div>
@@ -306,12 +319,12 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
         </ul>
 
         <h2>What the strategy doesn't do</h2>
-        <p>Here's what the slogan obscures: the May&ndash;October period isn't reliably negative. It's just <em>less reliably positive</em>. The average monthly return is +0.3%, not negative. In the 2020 COVID recovery, May&ndash;October 2020 was extraordinarily strong. In 2021, the "bad" summer months were positive. The seasonal tendency is a meaningful statistical edge, not a deterministic rule.</p>
+        <p>Here's what the slogan obscures: the May&ndash;October period isn't reliably negative. It's just <em>less reliably positive</em>. The S&P 500's average monthly return in those months is <span data-tx-fill data-tx-sid="sp500" data-tx-months="May,Jun,Jul,Aug,Sep,Oct" data-tx-field="mavg" data-tx-dp="2">+0.90%</span>, not negative. In the 2020 COVID recovery, May&ndash;October 2020 was extraordinarily strong. In 2021, the "bad" summer months were positive. The seasonal tendency is a meaningful statistical edge, not a deterministic rule.</p>
         <p>The practical version of the strategy isn't binary switching between stocks and cash. Most seasonal investors use it to <strong>tilt</strong>: overweight equities in the winter months, reduce exposure or move toward defensive sectors in summer, without fully exiting. That approach captures most of the seasonal edge without the whipsaw risk of missing a strong summer.</p>
         <div class="ap-stat"><div class="ap-stat-v g">11/15</div><div class="ap-stat-l">Years the seasonal strategy outperformed buy-and-hold, 2009&ndash;2024</div></div>
 
         <h2>The TimingAX view</h2>
-        <p>The Halloween Indicator is the original seasonal pattern &mdash; everything else on the TimingAX platform is a refinement of this basic observation applied to specific assets and time windows. November is the strongest individual month (+1.7% average, 70% win rate). September is the weakest (-0.7%, 42% win rate). That 2.4 percentage point monthly spread is the mechanical expression of the "Sell in May" effect at the individual month level.</p>
+        <p>The Halloween Indicator is the original seasonal pattern &mdash; everything else on the TimingAX platform is a refinement of this basic observation applied to specific assets and time windows. For the S&P 500, November is the strongest individual month (<span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span> average, <span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="win">87%</span> win rate). September is the weakest (<span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span>, <span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="win">44%</span> win rate). That monthly spread is the mechanical expression of the seasonal effect at the individual month level.</p>
       </div>
       <div class="ap-sidebar">
         <div class="ap-toc">
@@ -344,8 +357,8 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     <div class="ap-body">
       <div class="ap-text">
         <h2>The most reliable pattern in crypto</h2>
-        <p>Bitcoin averages <strong>+21.4%</strong> in October across 12 years of data. It has been positive in <strong>9 of 12 Octobers</strong>. The win rate of 75% is higher than any other month for any major asset in the TimingAX database. In an asset class defined by volatility and chaos, that level of calendar consistency is remarkable enough to warrant serious analysis.</p>
-        <div class="ap-stat"><div class="ap-stat-v a">+21.4%</div><div class="ap-stat-l">Bitcoin average October return &nbsp;&middot;&nbsp; 2012&ndash;2024 &nbsp;&middot;&nbsp; 75% win rate</div></div>
+        <p>Bitcoin averages <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></strong> in October across <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years of data &mdash; its strongest month of the year. It has been positive in <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> Octobers</strong>, a <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate. In an asset class defined by volatility and chaos, that level of calendar consistency is remarkable enough to warrant serious analysis.</p>
+        <div class="ap-stat"><div class="ap-stat-v a"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></div><div class="ap-stat-l">Bitcoin average October return &nbsp;&middot;&nbsp; <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> Octobers &nbsp;&middot;&nbsp; <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate</div></div>
         <p>"Uptober" has been a fixture of crypto trading culture for years &mdash; but the cultural narrative and the actual data point in the same direction, which is unusual. This isn't manufactured hype. Something structural is happening in October that consistently benefits Bitcoin's price.</p>
 
         <h2>Three mechanics behind Uptober</h2>
@@ -354,17 +367,17 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
         <h3>2. Institutional Q4 accumulation</h3>
         <p>Since the introduction of Bitcoin futures in December 2017 and the maturation of institutional crypto markets, October has become the month when institutional allocators build positions ahead of Q4. The logic mirrors traditional equity seasonality: fiscal year-end positioning, year-end performance chasing, and the beginning of the strongest seasonal window for risk assets all point to accumulation in October.</p>
         <h3>3. Recovery from September weakness</h3>
-        <p>Bitcoin's September is almost as bad as its October is good: averaging <strong>-5.8%</strong> with a 33% win rate, September is Bitcoin's worst month. The pattern of September weakness followed by October strength creates a mechanical setup: sellers exhausted by September, buyers stepping in as the seasonal turn becomes apparent to experienced participants. This pattern has been self-reinforcing &mdash; as more people know about Uptober, the early positioning anticipating it creates the very effect it predicts.</p>
+        <p>Bitcoin's September is one of its weakest months: averaging <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span></strong> with a <span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="win">50%</span> win rate, before October's <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span>. The pattern of September weakness followed by October strength creates a mechanical setup: sellers exhausted by September, buyers stepping in as the seasonal turn becomes apparent to experienced participants. This pattern has been self-reinforcing &mdash; as more people know about Uptober, the early positioning anticipating it creates the very effect it predicts.</p>
 
-        <div class="ap-pullquote"><p>"September is Bitcoin's worst month at -5.8%. October is its best at +21.4%. That 27-point swing in a single calendar turn is the largest seasonal gap of any major asset."</p></div>
+        <div class="ap-pullquote"><p>"September is one of Bitcoin's weakest months at <span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span>. October is its best at <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span>. Few calendar turns in any major asset are as sharp."</p></div>
 
         <h2>The three bad Octobers</h2>
-        <p>Of Bitcoin's 12 measured Octobers, three were negative: 2014, 2018, and 2019. All three occurred during sustained bear markets where macro and structural forces overwhelmed seasonal tendencies. The 2018 case is instructive &mdash; October 2018 was negative despite strong seasonals, as the broader crypto bear market (which would see Bitcoin fall 84% peak-to-trough) dominated every other factor.</p>
-        <p>This is the key qualifier: seasonal patterns are tendencies that hold when other forces are neutral or aligned. When a bear market is in full force, no seasonal pattern reliably reverses it. The 75% win rate already prices in three failures over 12 years &mdash; the three years where the macro backdrop was too negative for seasonality to overcome.</p>
+        <p>Bitcoin's negative Octobers in the data are 2014, 2018 and 2025. The first two occurred during sustained bear markets where macro and structural forces overwhelmed seasonal tendencies. The 2018 case is instructive &mdash; October 2018 was negative despite strong seasonals, as the broader crypto bear market (which would see Bitcoin fall 84% peak-to-trough) dominated every other factor.</p>
+        <p>This is the key qualifier: seasonal patterns are tendencies that hold when other forces are neutral or aligned. When a bear market is in full force, no seasonal pattern reliably reverses it. The <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate already prices in those failures &mdash; years where the backdrop was too negative for seasonality to overcome.</p>
 
         <h2>Beyond Bitcoin: the crypto seasonal calendar</h2>
-        <p>The October effect is strongest in Bitcoin, but adjacent assets show similar patterns. Ethereum averages +15.2% in October. Coinbase, as a proxy for crypto sentiment, shows a similar Q4 buildup. The November&ndash;December window extends the strength: November is Bitcoin's second-strongest month at +18.6% average, as the Uptober momentum tends to continue into the Singles Day period and year-end crypto positioning.</p>
-        <p>The weakest stretch for crypto is June&ndash;September &mdash; particularly June (-8.7%) and September (-5.8%). Investors who understood this calendar and used it to time entries around October have systematically positioned better than those ignoring it entirely.</p>
+        <p>The October effect is strongest in Bitcoin, but adjacent assets show similar patterns. Ethereum averages <span data-tx-fill data-tx-sid="eth" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+4.81%</span> in October. Coinbase, as a proxy for crypto sentiment, shows a similar Q4 buildup. The November&ndash;December window extends the strength: Bitcoin has averaged <span data-tx-fill data-tx-sid="btc" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+7.51%</span> in November and <span data-tx-fill data-tx-sid="btc" data-tx-month="Dec" data-tx-field="avg" data-tx-dp="2">+7.14%</span> in December, as the Uptober momentum tends to continue into year-end crypto positioning.</p>
+        <p>Bitcoin's weakest months have been January (<span data-tx-fill data-tx-sid="btc" data-tx-month="Jan" data-tx-field="avg" data-tx-dp="2">−1.15%</span>) and September (<span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span>). Investors who understood this calendar and used it to time entries around October have systematically positioned better than those ignoring it entirely.</p>
       </div>
       <div class="ap-sidebar">
         <div class="ap-toc">
@@ -401,26 +414,41 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
   </div>
 </div>
 
-<footer>
-  <div class="n-logo" style="display:flex;align-items:center;gap:9px">
-    <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/></svg>
-    <div class="n-word">Timing<b style="color:var(--amber2)">AX</b></div>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
   </div>
-  <div class="ft-links">
-    <a href="/index.html">Home</a>
-    <a href="/about.html">About</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/academy.html">Academy</a>
-    <a href="/seasonality.html">Browse Assets</a>
-    <a href="/methodology.html">Methodology</a>
-    <a href="/changelog.html">Changelog</a>
-    <a href="/terms-of-service.html">Terms</a>
-    <a href="/accessibility.html">Accessibility</a>
-    <a href="/privacy-policy.html">Privacy</a>
-  </div>
-  <div style="font:400 10px/1.6 var(--mono);color:var(--w5);max-width:520px;margin-bottom:10px;opacity:.7">TimingAX is an independently operated service. Not a registered investment adviser. Data is for informational purposes only and is not financial advice.</div>
-  <div class="ft-copy">&copy; 2026 TimingAX</div>
 </footer>
+<!-- /tx:footer -->
 
 <script>
 function openArticle(id) {

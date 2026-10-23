@@ -65,9 +65,48 @@
       .catch(function () {});
   }
 
-  function init() { initMenu(); initTicker(); }
+  // One figure from an /api/v1/seasonality body. spec: { month: 'Sep', field, dp } or
+  // { months: 'Nov,Dec,…', field: 'mavg', dp }. field: avg | win | obs | pos (positive years) | mavg.
+  function seasonalValue(d, spec) {
+    if (!d || !d.months) return null;
+    var by = {};
+    d.months.forEach(function (m) { by[m.abbr] = m; });
+    var dp = spec.dp == null ? 1 : +spec.dp;
+    if (spec.field === 'mavg') {
+      var ms = String(spec.months || '').split(',').map(function (x) { return by[x.trim()]; });
+      if (!ms.length || ms.some(function (m) { return !m; })) return null;
+      return fmtPct(ms.reduce(function (s, m) { return s + m.avgReturn; }, 0) / ms.length, dp);
+    }
+    var m = by[spec.month];
+    if (!m) return null;
+    if (spec.field === 'win') return m.winRate + '%';
+    if (spec.field === 'obs') return String(m.observations);
+    if (spec.field === 'pos') return String(Math.round(m.winRate * m.observations / 100));
+    return fmtPct(m.avgReturn, dp);
+  }
 
-  w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER };
+  // Refresh every [data-tx-fill] figure in prose from the API. The page ships with today's real
+  // value as text (readable without JS); this keeps it current. On failure the text stays as shipped.
+  function fillSeasonal(root) {
+    var els = (root || document).querySelectorAll('[data-tx-fill][data-tx-sid]');
+    var bySid = {};
+    Array.prototype.forEach.call(els, function (e) { (bySid[e.getAttribute('data-tx-sid')] = bySid[e.getAttribute('data-tx-sid')] || []).push(e); });
+    Object.keys(bySid).forEach(function (sid) {
+      fetchSeasonality(sid).then(function (d) {
+        if (!d) return;
+        bySid[sid].forEach(function (e) {
+          var v = seasonalValue(d, { month: e.getAttribute('data-tx-month'), months: e.getAttribute('data-tx-months'),
+            field: e.getAttribute('data-tx-field'), dp: e.getAttribute('data-tx-dp') });
+          if (v != null) e.textContent = v;
+        });
+      });
+    });
+  }
+
+  function init() { initMenu(); initTicker(); fillSeasonal(); }
+
+  w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER,
+    seasonalValue: seasonalValue, fillSeasonal: fillSeasonal };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })(window);
