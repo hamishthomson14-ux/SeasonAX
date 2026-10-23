@@ -155,6 +155,11 @@ body.tx {
   .tx-header--app .tx-app-actions .tx-btn--ghost { padding: 0 8px; }
   .tx-header--app .user-badge { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
+@media (max-width: 480px) {
+  .tx-header--app .user-badge, .tx-header--app .user-pill { display: none !important; }
+  .tx-header--app .tx-app-actions { gap: 6px; }
+  .tx-header--app .tx-btn--sm { padding: 0 10px; }
+}
 @media (max-width: 420px) { .tx-header--app .tx-logo span { display: none; } }
 
 /* Shared header/footer are dropped into pages that still style bare nav/footer/header tags:

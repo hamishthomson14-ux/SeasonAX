@@ -618,28 +618,34 @@ document.addEventListener('keydown', function(e) {
 // Brand panel figures: live from /api/v1/seasonality (skeletons until loaded; nothing invented).
 document.addEventListener('DOMContentLoaded', function () {
   var AB = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var tape = document.getElementById('authTape'), skel = '<span class="tx-skel" style="min-width:1.6em"></span>';
+  var tape = document.getElementById('authTape'), skel = '<span class="tx-skel" style="min-width:1.6em"></span>', empty = skel;
+  var dash = '\u2014';
   function tapeCell(i, m) {
     var up = m && m.avgReturn >= 0;
     return '<div class="l-tc" style="--c:' + (m ? (up ? 'var(--green)' : 'var(--red)') : 'var(--b2)') + '"><span class="l-tm">' + AB[i].charAt(0) + '</span>' +
-      '<span class="l-tv ' + (m ? (up ? 'g' : 'r') : '') + '" data-tx-sid="sp500" data-tx-month="' + AB[i] + '" data-tx-field="avg">' + (m ? TX.fmtPct(m.avgReturn, 1).replace('%', '') : skel) + '</span></div>';
+      '<span class="l-tv ' + (m ? (up ? 'g' : 'r') : '') + '" data-tx-sid="sp500" data-tx-month="' + AB[i] + '" data-tx-field="avg">' + (m ? TX.fmtPct(m.avgReturn, 1).replace('%', '') : empty) + '</span></div>';
   }
   var h = ''; for (var i = 0; i < 12; i++) h += tapeCell(i, null); tape.innerHTML = h;
   var stats = document.querySelectorAll('#authStats [data-sid]');
   function stat(el, d) {
     var mo = +el.getAttribute('data-mo'), sid = el.getAttribute('data-sid'), m = d && d.months[mo];
     var a = ' data-tx-sid="' + sid + '" data-tx-month="' + AB[mo] + '"';
-    el.innerHTML = '<div class="l-stat-v ' + (m ? (m.avgReturn >= 0 ? 'g' : 'r') : '') + '"' + a + ' data-tx-field="avg">' + (m ? TX.fmtPct(m.avgReturn, 2) : skel) + '</div>' +
+    el.innerHTML = '<div class="l-stat-v ' + (m ? (m.avgReturn >= 0 ? 'g' : 'r') : '') + '"' + a + ' data-tx-field="avg">' + (m ? TX.fmtPct(m.avgReturn, 2) : empty) + '</div>' +
       '<div class="l-stat-text"><div class="l-stat-l">' + el.getAttribute('data-label') + '</div>' +
       '<div class="l-stat-s">' + (m ? m.observations + '-year average &middot; <span' + a + ' data-tx-field="win">' + m.winRate + '%</span> win rate' : '&nbsp;') + '</div></div>';
   }
   Array.prototype.forEach.call(stats, function (el) { stat(el, null); });
-  TX.fetchSeasonality('sp500').then(function (d) {
-    if (d) { var t = ''; d.months.forEach(function (m, i) { t += tapeCell(i, m); }); tape.innerHTML = t; }
+  // Unavailable (failed or modelled) data ends as a dash, never a stuck skeleton.
+  TX.fetchVerified('sp500').then(function (d) {
+    if (!d) empty = dash;
+    var t = ''; for (var i = 0; i < 12; i++) t += tapeCell(i, d && d.months[i]); tape.innerHTML = t;
     Array.prototype.forEach.call(stats, function (el) { if (el.getAttribute('data-sid') === 'sp500') stat(el, d); });
+    empty = skel;
   });
-  TX.fetchSeasonality('btc').then(function (d) {
+  TX.fetchVerified('btc').then(function (d) {
+    if (!d) empty = dash;
     Array.prototype.forEach.call(stats, function (el) { if (el.getAttribute('data-sid') === 'btc') stat(el, d); });
+    empty = skel;
   });
 });
 </script>

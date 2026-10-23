@@ -122,7 +122,7 @@
 </head>
 <body class="tx">
 <!-- tx:header -->
-<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<div class="tx-ticker" aria-label="Market prices, 5-day change (5D)"><div class="tx-ticker__track" id="ttrack"></div></div>
 <header class="tx-header">
   <div class="tx-wrap tx-header__bar">
     <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
@@ -177,7 +177,7 @@
           <div><b id="heroWorst"><span class="tx-skel"></span></b><span>Worst month</span></div>
           <div><b id="heroYears"><span class="tx-skel"></span></b><span>History</span></div>
         </div>
-        <div class="tx-term__foot"><span id="heroSource">Monthly closes · dividend-adjusted</span><a href="/market-seasonality.html">Full analysis &rarr;</a></div>
+        <div class="tx-term__foot"><span id="heroSource">Monthly closes · up to 15 years</span><a href="/market-seasonality.html">Full analysis &rarr;</a></div>
       </div>
     </div>
   </div>
@@ -187,7 +187,7 @@
 <section class="tx-wrap" style="padding:0 0 0">
   <div class="tx-statbar" style="border-top-left-radius:0;border-top-right-radius:0;max-width:1040px;margin:0 auto">
     <div class="tx-stat"><span class="tx-stat__value">733</span><span class="tx-stat__label">Global assets · US, UK, Europe, Asia</span></div>
-    <div class="tx-stat"><span class="tx-stat__value">15<span class="tx-muted">yr</span></span><span class="tx-stat__label">Real price history per asset</span></div>
+    <div class="tx-stat"><span class="tx-stat__value">15<span class="tx-muted">yr</span></span><span class="tx-stat__label">Real price history, up to</span></div>
     <div class="tx-stat"><span class="tx-stat__value">7</span><span class="tx-stat__label">Analysis tools, one platform</span></div>
     <div class="tx-stat"><span class="tx-stat__value">&pound;0</span><span class="tx-stat__label">To start · no card needed</span></div>
   </div>
@@ -229,7 +229,7 @@
       <div class="tx-card d-card" data-card="sp500" data-mo="10" data-name="S&amp;P 500"></div>
       <div class="tx-card d-card" data-card="btc" data-mo="9" data-name="Bitcoin"></div>
       <div class="tx-card d-card" data-card="nasdaq" data-mo="8" data-name="NASDAQ Composite"></div>
-      <p class="tx-note">Figures load live from the same data that powers the app: monthly closes, dividend-adjusted, up to 15 years per asset.</p>
+      <p class="tx-note">Figures load live from the same data that powers the app: real monthly closes, up to 15 years per asset.</p>
     </div>
   </div>
 </section>
@@ -415,7 +415,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var AB = MO.map(function (m) { return m.slice(0, 3); });
   var cm = new Date().getMonth();
-  var data = {}, sel = 0, done = 0, ok = 0, verified = 0;
+  var data = {}, failed = {}, sel = 0, done = 0, ok = 0, verified = 0;
+  var dash = '<span class="tx-muted">\u2014</span>';
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
   var skel = '<span class="tx-skel"></span>';
@@ -428,9 +429,10 @@ document.addEventListener('DOMContentLoaded', function () {
     ASSETS.forEach(function (a, i) {
       var d = data[a.id], m = d && d.months[cm];
       var attrs = ' data-tx-sid="' + a.id + '" data-tx-month="' + AB[cm] + '"';
-      var avg = m ? '<span class="' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' : '<span' + attrs + ' data-tx-field="avg">' + skel + '</span>';
-      var win = m ? '<span' + attrs + ' data-tx-field="win">' + m.winRate + '%</span>' : '<span' + attrs + ' data-tx-field="win">' + skel + '</span>';
-      var sig = !m ? skel : d.source !== 'verified' ? '<span class="tx-badge tx-badge--modelled">Modelled</span>'
+      var empty = failed[a.id] ? dash : skel;
+      var avg = m ? '<span class="' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' : '<span' + attrs + ' data-tx-field="avg">' + empty + '</span>';
+      var win = m ? '<span' + attrs + ' data-tx-field="win">' + m.winRate + '%</span>' : '<span' + attrs + ' data-tx-field="win">' + empty + '</span>';
+      var sig = !m ? empty : d.source !== 'verified' ? '<span class="tx-badge tx-badge--modelled">Modelled</span>'
         : (function (v) { return '<span class="tx-badge ' + BADGE[v] + '">' + v.charAt(0) + v.slice(1).toLowerCase() + '</span>'; })(TX.verdict(m.avgReturn, m.winRate));
       h += '<button type="button" role="option" aria-selected="' + (i === sel) + '" class="tx-term__row' + (i === sel ? ' is-active' : '') + '" data-i="' + i + '">' +
         '<span class="tx-term__name">' + esc(a.label) + '<small>' + esc(a.sym) + '</small></span>' + avg + win + '<span>' + sig + '</span></button>';
@@ -447,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!d) {
       for (var j = 0; j < 12; j++) { bars += '<div class="h-bar"><div class="h-bar__pos"></div><div class="h-bar__neg"></div></div>'; vals += '<span></span>'; }
       $('heroBars').innerHTML = bars; $('heroVals').innerHTML = vals;
-      ['heroBest', 'heroWorst', 'heroYears'].forEach(function (k) { $(k).innerHTML = skel; });
+      ['heroBest', 'heroWorst', 'heroYears'].forEach(function (k) { $(k).innerHTML = failed[a.id] ? dash : skel; });
       return;
     }
     var max = 0.1;
@@ -483,9 +485,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   rows(); chart(); status();
   ASSETS.forEach(function (a) {
-    TX.fetchSeasonality(a.id).then(function (d) {
+    TX.fetchVerified(a.id).then(function (d) {
       done++;
-      if (d) { data[a.id] = d; ok++; if (d.source === 'verified') verified++; }
+      if (d) { data[a.id] = d; ok++; verified++; } else failed[a.id] = true;
       rows(); chart(); status();
     });
   });
@@ -496,8 +498,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var attrs = ' data-tx-sid="' + id + '" data-tx-month="' + AB[mo] + '"';
     card.innerHTML = '<div class="tx-label"><span>' + esc(name) + ' · ' + MO[mo] + '</span><span class="tx-badge tx-badge--neutral">' + skel + '</span></div>' +
       '<p>' + esc(name) + ' has risen in <span class="tx-num"' + attrs + ' data-tx-field="win">' + skel + '</span> of ' + MO[mo] + 's, with an average move of <span class="tx-num"' + attrs + ' data-tx-field="avg">' + skel + '</span>.</p>';
-    TX.fetchSeasonality(id).then(function (d) {
-      if (!d) { card.querySelector('.tx-badge').textContent = 'Unavailable'; return; }
+    TX.fetchVerified(id).then(function (d) {
+      if (!d) {
+        card.querySelector('.tx-badge').textContent = 'Unavailable';
+        card.querySelector('p').innerHTML = 'Live figures for ' + esc(name) + ' are unavailable right now. <a href="/seasonality/' + id + '">See the full snapshot &rarr;</a>';
+        return;
+      }
       var m = d.months[mo], verdict = TX.verdict(m.avgReturn, m.winRate);
       var badge = d.source === 'verified' ? '<span class="tx-badge tx-badge--verified">&#10003; Verified · ' + m.observations + ' yrs</span>' : '<span class="tx-badge tx-badge--modelled">Modelled</span>';
       card.innerHTML = '<div class="tx-label"><span>' + esc(name) + ' · ' + MO[mo] + '</span>' + badge + '</div>' +

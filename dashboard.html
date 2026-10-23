@@ -235,7 +235,7 @@ body.is-pro .tool-card.pro-locked{opacity:1}
 </style>
 </head>
 <body>
-<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<div class="tx-ticker" aria-label="Market prices, 5-day change (5D)"><div class="tx-ticker__track" id="ttrack"></div></div>
 <header class="tx-header tx-header--app">
   <div class="tx-wrap tx-header__bar">
     <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
@@ -901,7 +901,7 @@ function obRender() {
     var mi = new Date().getMonth();
     var sp = dm('sp500', mi), cr = dm('btc', mi);
     function c(v){return v>=0?'g':'r';}
-    function cell(id, p, f, label, cls){ return '<div class="ob-pv-cell"><div class="ob-pv-val '+(p?cls:'')+'"'+dtag(id,mi,f)+'>'+(p?(f==='win'?p.win+'%':TX.fmtPct(p.avg,1)):SKEL)+'</div><div class="ob-pv-lbl">'+label+'</div></div>'; }
+    function cell(id, p, f, label, cls){ return '<div class="ob-pv-cell"><div class="ob-pv-val '+(p?cls:'')+'"'+dtag(id,mi,f)+'>'+(p?(f==='win'?p.win+'%':TX.fmtPct(p.avg,1)):ph(id))+'</div><div class="ob-pv-lbl">'+label+'</div></div>'; }
     html += '<div class="ob-preview"><div class="ob-pv-grid">' +
       cell('sp500', sp, 'avg', 'S&amp;P 500 · '+MO_NAMES[mi]+' avg', sp && c(sp.avg)) +
       cell('sp500', sp, 'win', 'S&amp;P 500 win rate', 'a') +
@@ -971,8 +971,11 @@ var DASH = [
   {id:'iwm',   tk:'Small caps (IWM)', n:'Russell 2000'},
   {id:'tlt',   tk:'Bonds (TLT)',      n:'Treasuries'}
 ];
-var DASH_DATA = {}, DASH_LOADING = false;
-var SKEL = '<span class="tx-skel"></span>';
+var DASH_DATA = {}, DASH_FAILED = {}, DASH_LOADING = false;
+var SKEL = '<span class="tx-skel"></span>', DASHMARK = '<span style="color:var(--w4)">\u2014</span>';
+// Placeholder for an asset: shimmer while loading, a dash once its data is known to be unavailable.
+function ph(id){ return DASH_FAILED[id] ? DASHMARK : SKEL; }
+function dashDone(){ return DASH.every(function(a){ return DASH_DATA[a.id] || DASH_FAILED[a.id]; }); }
 function dm(id, mi){ var d=DASH_DATA[id]; if(!d) return null; var m=d.months[mi]; return {avg:m.avgReturn, win:m.winRate, src:d.source}; }
 function dtag(id, mi, f){ return ' data-tx-sid="'+id+'" data-tx-month="'+MO_NAMES[mi].slice(0,3)+'" data-tx-field="'+f+'"'; }
 function dashLoad(){
@@ -980,9 +983,8 @@ function dashLoad(){
   if (!window.TX) { document.addEventListener('DOMContentLoaded', dashLoad); return; }
   DASH_LOADING = true;
   DASH.forEach(function(a){
-    TX.fetchSeasonality(a.id).then(function(d){
-      if (!d) return;
-      DASH_DATA[a.id] = d;
+    TX.fetchVerified(a.id).then(function(d){
+      if (d) DASH_DATA[a.id] = d; else DASH_FAILED[a.id] = true;
       renderSeasonal(new Date().getMonth());
       var ov = document.getElementById('obOverlay');
       if (ov && ov.style.display === 'flex' && OB_STEPS[obStep] && OB_STEPS[obStep].preview) obRender();
@@ -999,7 +1001,7 @@ function buildRibbon(mi){
   var readCls = breadth===null ? '' : breadth>=70?'g':breadth<=35?'r':'a';
   var cells = DASH.map(function(a){
     var p = dm(a.id, mi);
-    if (!p) return '<div class="sr-cell" style="--src:var(--b2)"><div class="sr-tk">'+a.tk+'</div><div class="sr-v"'+dtag(a.id,mi,'avg')+'>'+SKEL+'</div><div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+SKEL+'</span></div></div>';
+    if (!p) return '<div class="sr-cell" style="--src:var(--b2)"><div class="sr-tk">'+a.tk+'</div><div class="sr-v"'+dtag(a.id,mi,'avg')+'>'+ph(a.id)+'</div><div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+ph(a.id)+'</span></div></div>';
     var b = p.avg>=0;
     return '<div class="sr-cell" style="--src:'+(b?'var(--green)':'var(--red)')+'" onclick="window.location=\'/seasonality/'+a.id+'\'" title="'+a.tk+' '+mn+': '+TX.fmtPct(p.avg,2)+' avg, '+p.win+'% win">'+
       '<div class="sr-tk">'+a.tk+'</div>'+
@@ -1010,7 +1012,7 @@ function buildRibbon(mi){
   document.getElementById('seasonalRibbon').innerHTML =
     '<div class="sr-lead">'+
       '<div class="sr-lead-l">'+mn+' Market Read</div>'+
-      '<div class="sr-lead-v '+readCls+'">'+(read||SKEL)+'</div>'+
+      '<div class="sr-lead-v '+readCls+'">'+(read||(dashDone()?DASHMARK:SKEL))+'</div>'+
       '<div class="sr-w">'+(breadth===null?'&nbsp;':breadth+'% of '+loaded.length+' markets positive')+'</div>'+
     '</div>'+
     '<div class="sr-track">'+cells+'</div>';
@@ -1021,7 +1023,7 @@ function renderSeasonal(mi){
   buildRibbon(mi);
   function setOv(id, sid, aid){
     var p = dm(aid, mi), e = document.getElementById(id);
-    if (!p) { e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+SKEL+'</span>'; e.className='ov-val'; document.getElementById(sid).innerHTML='&nbsp;'; return; }
+    if (!p) { e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+ph(aid)+'</span>'; e.className='ov-val'; document.getElementById(sid).innerHTML = DASH_FAILED[aid] ? 'Unavailable' : '&nbsp;'; return; }
     e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</span>'; e.className='ov-val '+col(p.avg);
     document.getElementById(sid).innerHTML = '<span'+dtag(aid,mi,'win')+'>'+p.win+'%</span> win rate';
   }
@@ -1034,14 +1036,14 @@ function renderSeasonal(mi){
     document.getElementById('ov4').innerHTML = '<span'+dtag(best.id,mi,'avg')+'>'+TX.fmtPct(dm(best.id,mi).avg,1)+'</span>';
     document.getElementById('ov4').className = 'ov-val '+col(dm(best.id,mi).avg);
     document.getElementById('ov4s').textContent = best.tk+' · strongest this month';
-  } else { document.getElementById('ov4').innerHTML = SKEL; document.getElementById('ov4s').innerHTML = '&nbsp;'; }
+  } else { document.getElementById('ov4').innerHTML = dashDone() ? DASHMARK : SKEL; document.getElementById('ov4s').innerHTML = '&nbsp;'; }
   var sp = dm('sp500', mi);
   if (sp) {
     var v = TX.verdict(sp.avg, sp.win);
     var sig = v==='TAILWIND'?'BULLISH':v==='HEADWIND'?'BEARISH':'NEUTRAL', sc = v==='TAILWIND'?'g':v==='HEADWIND'?'r':'a';
     document.getElementById('ov5').textContent = sig; document.getElementById('ov5').className = 'ov-val '+sc;
     document.getElementById('ov5s').textContent = 'S&P 500 seasonal ' + v.toLowerCase();
-  } else { document.getElementById('ov5').innerHTML = SKEL; document.getElementById('ov5s').innerHTML = '&nbsp;'; }
+  } else { document.getElementById('ov5').innerHTML = ph('sp500'); document.getElementById('ov5s').innerHTML = '&nbsp;'; }
   var spot = loaded.slice().sort(function(a,b){ return dm(b.id,mi).avg - dm(a.id,mi).avg; }).slice(0,5);
   document.getElementById('spList').innerHTML = spot.length ? spot.map(function(a){
     var p = dm(a.id, mi), b = p.avg>=0;
@@ -1051,7 +1053,7 @@ function renderSeasonal(mi){
       '<div class="sp-name">'+a.n+' · <span'+dtag(a.id,mi,'win')+'>'+p.win+'%</span> win</div>'+
       '</div></div>'+
       '<div class="sp-val '+(b?'g':'r')+'"'+dtag(a.id,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</div></div>';
-  }).join('') : '<div class="sp-item">'+SKEL+'</div>';
+  }).join('') : '<div class="sp-item">'+(dashDone()?'Seasonal data is unavailable right now.':SKEL)+'</div>';
   dashLoad();
 }
 
