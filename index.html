@@ -20,6 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
@@ -126,7 +127,7 @@
 <header class="tx-header">
   <div class="tx-wrap tx-header__bar">
     <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-    <nav class="tx-nav" aria-label="Main">
+    <nav class="tx-nav" id="txNav" aria-label="Main">
       <a href="/market-seasonality.html">Platform</a>
       <a href="/seasonality.html">Data</a>
       <a href="/academy.html">Academy</a>
@@ -137,7 +138,7 @@
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
     </div>
-    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
 </header>
 <!-- /tx:header -->
@@ -161,12 +162,12 @@
       <div class="tx-term" id="heroTerm">
         <div class="tx-term__head">
           <span class="tx-term__title" id="heroTitle">Seasonality</span>
-          <span class="tx-term__status" id="heroStatus">Loading data</span>
+          <span class="tx-term__status" id="heroStatus"></span>
         </div>
         <div class="h-term__grid">
-          <div class="tx-term__body" id="heroRows" role="listbox" aria-label="Headline assets"></div>
-          <div class="h-chart" aria-live="polite">
-            <div class="h-chart__head"><b id="heroAsset">&nbsp;</b><span>Avg return by month</span></div>
+          <div class="tx-term__body" id="heroRows" role="group" aria-label="Headline assets"><noscript><p class="tx-note" style="padding:16px">Live figures need JavaScript. <a href="/seasonality/sp500">See the S&amp;P 500 snapshot &rarr;</a></p></noscript></div>
+          <div class="h-chart">
+            <div class="h-chart__head"><b id="heroAsset" aria-live="polite">&nbsp;</b><span>Avg return by month</span></div>
             <div class="h-vals" id="heroVals"></div>
             <div class="h-bars" id="heroBars"></div>
             <div class="h-axis" id="heroAxis"></div>
@@ -434,15 +435,18 @@ document.addEventListener('DOMContentLoaded', function () {
       var win = m ? '<span' + attrs + ' data-tx-field="win">' + m.winRate + '%</span>' : '<span' + attrs + ' data-tx-field="win">' + empty + '</span>';
       var sig = !m ? empty : d.source !== 'verified' ? '<span class="tx-badge tx-badge--modelled">Modelled</span>'
         : (function (v) { return '<span class="tx-badge ' + BADGE[v] + '">' + v.charAt(0) + v.slice(1).toLowerCase() + '</span>'; })(TX.verdict(m.avgReturn, m.winRate));
-      h += '<button type="button" role="option" aria-selected="' + (i === sel) + '" class="tx-term__row' + (i === sel ? ' is-active' : '') + '" data-i="' + i + '">' +
+      h += '<button type="button" aria-pressed="' + (i === sel) + '" class="tx-term__row' + (i === sel ? ' is-active' : '') + '" data-i="' + i + '">' +
         '<span class="tx-term__name">' + esc(a.label) + '<small>' + esc(a.sym) + '</small></span>' + avg + win + '<span>' + sig + '</span></button>';
     });
+    // Re-rendering replaces the buttons: keep keyboard focus on the same asset.
+    var f = document.activeElement, fi = f && f.closest && f.closest('#heroRows') ? f.getAttribute('data-i') : null;
     $('heroRows').innerHTML = h;
+    if (fi !== null) { var nb = $('heroRows').querySelector('[data-i="' + fi + '"]'); if (nb) nb.focus(); }
   }
 
   function chart() {
     var a = ASSETS[sel], d = data[a.id];
-    $('heroAsset').textContent = a.label;
+    if ($('heroAsset').textContent !== a.label) $('heroAsset').textContent = a.label; // announce only on change
     var axis = '', bars = '', vals = '';
     for (var i = 0; i < 12; i++) axis += '<span' + (i === cm ? ' class="is-now"' : '') + '>' + AB[i].charAt(0) + '<span class="tx-sr">' + AB[i] + '</span></span>';
     $('heroAxis').innerHTML = axis;
@@ -507,8 +511,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var m = d.months[mo], verdict = TX.verdict(m.avgReturn, m.winRate);
       var badge = d.source === 'verified' ? '<span class="tx-badge tx-badge--verified">&#10003; Verified · ' + m.observations + ' yrs</span>' : '<span class="tx-badge tx-badge--modelled">Modelled</span>';
       card.innerHTML = '<div class="tx-label"><span>' + esc(name) + ' · ' + MO[mo] + '</span>' + badge + '</div>' +
-        '<p><strong>' + esc(name) + '</strong> has risen in <span class="tx-num"' + attrs + ' data-tx-field="win">' + m.winRate + '%</span> of ' + MO[mo] + 's over the last ' + m.observations +
-        ' years, with an average move of <span class="tx-num ' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' +
+        '<p><strong>' + esc(name) + '</strong> has risen in <span class="tx-num"' + attrs + ' data-tx-field="win">' + m.winRate + '%</span> of the last ' + m.observations + ' ' + MO[mo] + 's' +
+        ', with an average move of <span class="tx-num ' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' +
         (verdict === 'NEUTRAL' ? '.' : ', a historical seasonal ' + verdict.toLowerCase() + '.') + '</p>';
     });
   });
@@ -518,7 +522,9 @@ document.addEventListener('DOMContentLoaded', function () {
 function rdStart(e) {
   e.preventDefault();
   var v = (document.getElementById('rdEmail').value || '').trim();
-  window.location.href = '/auth.html' + (v ? '?email=' + encodeURIComponent(v) : '?tab=up');
+  // Hand the email over via sessionStorage, not the URL (keeps it out of logs and history).
+  try { if (v) sessionStorage.setItem('tx_signup_email', v); } catch (err) {}
+  window.location.href = '/auth.html?tab=up';
   return false;
 }
 </script>

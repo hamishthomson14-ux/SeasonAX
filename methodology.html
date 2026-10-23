@@ -19,6 +19,7 @@
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="description" content="How TimingAX computes every seasonal stat from real price data, what VERIFIED vs MODELLED means, and the honest limits of seasonal analysis. No black boxes, observation counts shown.">
 <!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
@@ -208,7 +209,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 <header class="tx-header">
   <div class="tx-wrap tx-header__bar">
     <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-    <nav class="tx-nav" aria-label="Main">
+    <nav class="tx-nav" id="txNav" aria-label="Main">
       <a href="/market-seasonality.html">Platform</a>
       <a href="/seasonality.html">Data</a>
       <a href="/academy.html">Academy</a>
@@ -219,7 +220,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
     </div>
-    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
 </header>
 <!-- /tx:header -->

@@ -16,13 +16,20 @@
     return 'NEUTRAL';
   }
 
+  // One shared request per id per page; a failed result is dropped so a later call can retry.
+  var inflight = {};
   function fetchSeasonality(id) {
+    if (inflight[id]) return inflight[id];
+    var p;
     try {
-      return Promise.resolve(fetch('/api/v1/seasonality?id=' + encodeURIComponent(id)))
+      p = Promise.resolve(fetch('/api/v1/seasonality?id=' + encodeURIComponent(id)))
         .then(function (r) { return r && r.ok ? r.json() : null; })
         .then(function (d) { return d && d.months ? d : null; })
         .catch(function () { return null; });
-    } catch (e) { return Promise.resolve(null); }
+    } catch (e) { p = Promise.resolve(null); }
+    inflight[id] = p;
+    p.then(function (d) { if (!d) delete inflight[id]; });
+    return p;
   }
 
   // Only verified (real price) data may be shown as an asset's figures; a modelled fallback

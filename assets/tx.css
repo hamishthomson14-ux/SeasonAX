@@ -168,6 +168,12 @@ nav.tx-nav { position: static; height: auto; width: auto; padding: 0; margin: 0 
 header.tx-header { height: auto; padding: 0; margin: 0; display: block; }
 footer.tx-footer { display: block; text-align: start; font: 400 14px/1.6 var(--tx-font-ui); color: var(--tx-text-3); background: var(--tx-bg-1); border: 0; border-top: 1px solid var(--tx-border-1); padding: 64px 0 32px; margin: 0; gap: 0; }
 @media (max-width: 900px) { nav.tx-nav { display: none; } .tx-header.is-open nav.tx-nav { display: flex; margin: 6px 0 0; } }
+/* Without JavaScript the menu button can't work: show the nav as a wrapped row instead. */
+@media (max-width: 900px) {
+  html:not(.js) .tx-menu-btn { display: none; }
+  html:not(.js) .tx-header__bar { flex-wrap: wrap; height: auto; padding: 10px 0; }
+  html:not(.js) nav.tx-nav { display: flex; flex-wrap: wrap; width: 100%; order: 3; margin: 4px 0 0; }
+}
 
 /* ---------- Ticker tape ---------- */
 .tx-ticker { position: relative; overflow: hidden; height: 32px; background: var(--tx-term-bg); border-bottom: 1px solid var(--tx-border-1); font: 500 12px/32px var(--tx-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }

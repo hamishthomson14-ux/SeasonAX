@@ -21,6 +21,7 @@
 <meta name="robots" content="noindex">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
@@ -420,11 +421,13 @@ if (isRecoveryLink) {
       } else {
         showTab('in');
       }
-      // Pre-fill email if passed
+      // Pre-fill email: from the homepage "Get started" box (sessionStorage), or an older ?email= link.
+      // URLSearchParams already decodes, so no second decodeURIComponent (it threw on emails containing %).
       var email = params.get('email');
+      try { if (!email) email = sessionStorage.getItem('tx_signup_email'); sessionStorage.removeItem('tx_signup_email'); } catch (e) {}
       if (email) {
         var el = document.getElementById('su_email');
-        if (el) { el.value = decodeURIComponent(email); showTab('up'); }
+        if (el) { el.value = email; showTab('up'); }
       }
       document.getElementById('tabs').style.display = 'flex';
     }
