@@ -157,6 +157,13 @@ body.tx {
 }
 @media (max-width: 420px) { .tx-header--app .tx-logo span { display: none; } }
 
+/* Shared header/footer are dropped into pages that still style bare nav/footer/header tags:
+   reset the properties those page rules set, at higher specificity. */
+nav.tx-nav { position: static; height: auto; width: auto; padding: 0; margin: 0 auto 0 0; background: none; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: auto; justify-content: flex-start; }
+header.tx-header { height: auto; padding: 0; margin: 0; display: block; }
+footer.tx-footer { display: block; text-align: start; font: 400 14px/1.6 var(--tx-font-ui); color: var(--tx-text-3); background: var(--tx-bg-1); border: 0; border-top: 1px solid var(--tx-border-1); padding: 64px 0 32px; margin: 0; gap: 0; }
+@media (max-width: 900px) { nav.tx-nav { display: none; } .tx-header.is-open nav.tx-nav { display: flex; margin: 6px 0 0; } }
+
 /* ---------- Ticker tape ---------- */
 .tx-ticker { position: relative; overflow: hidden; height: 32px; background: var(--tx-term-bg); border-bottom: 1px solid var(--tx-border-1); font: 500 12px/32px var(--tx-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .tx-ticker__track { display: inline-flex; animation: tx-tape 60s linear infinite; }
