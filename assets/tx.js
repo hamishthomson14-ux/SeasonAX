@@ -52,7 +52,7 @@
     return rows.map(function (q) {
       var nm = esc(TICKER_NAMES[q.symbol] || String(q.symbol).toUpperCase());
       var px = q.close == null ? '—' : q.close >= 1000 ? q.close.toLocaleString('en-US', { maximumFractionDigits: 0 }) : q.close.toFixed(2);
-      var chg = q.changePct == null ? '' : fmtPct(q.changePct) + ' 5D'; // /api/prices quotes: change over its 5-day window
+      var chg = q.changePct == null ? '' : fmtPct(q.changePct);
       var cls = q.changePct == null ? '' : q.changePct >= 0 ? 'tx-up' : 'tx-down';
       return '<span class="tx-ticker__item"><span class="tx-ticker__sym">' + nm + '</span><span class="tx-ticker__px">' + px +
         '</span>' + (chg ? '<span class="' + cls + '">' + chg + '</span>' : '') + '</span>';
