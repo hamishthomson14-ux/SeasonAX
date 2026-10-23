@@ -346,8 +346,8 @@ body.is-pro .tool-card.pro-locked{opacity:1}
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('backtest')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="8" stroke="#4DA3FF" stroke-width="1.7"/><path d="M12.5 8v4.5l3 2" stroke="#4DA3FF" stroke-width="1.7"/><path d="M4.5 5.5v3.2h3.2" stroke="#E89318" stroke-width="1.7"/><path d="M4.7 8.5A8 8 0 0 1 8 5.1" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">02</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Strategy Backtest</div>
-          <div class="tc-desc">Build a seasonal entry/exit strategy and test it across 25 years. Equity curve, CAGR, win rate vs buy-and-hold.</div>
-          <div class="tc-footer"><span class="tc-stat">2000 &#8212; 2025</span><span class="tc-arr">&#8599;</span></div>
+          <div class="tc-desc">Build a seasonal entry/exit strategy and test it across up to 20 years of real prices. Equity curve, CAGR, win rate vs buy-and-hold.</div>
+          <div class="tc-footer"><span class="tc-stat">Up to 20 years</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('events')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">03</div><span class="tc-badge new">19 events</span></div></div>
@@ -860,7 +860,7 @@ var OB_STEPS = [
     body: 'Your dashboard gives you direct access to all nine research tools. Here are the ones most people start with:',
     tools: [
       {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
-      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
+      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across up to 20 years'},
       {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering strength this month'},
     ]
   },
