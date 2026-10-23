@@ -18,27 +18,30 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 function pct(v) { return (v >= 0 ? '+' : '') + v.toFixed(2) + '%'; }
+// On-page figures use a true minus sign; pct() stays as-is for titles, meta and JSON-LD.
+function dpct(v) { return pct(v).replace('-', '\u2212'); }
 // Index tickers (e.g. ^GSPC) use Yahoo's notation directly \u2014 not user-facing.
 // Show the asset name instead in titles/headings for those.
 function dispTicker(item) { return item.ticker.startsWith('^') ? item.name : item.ticker; }
 
-function renderChart(months) {
-  const W = 640, H = 200, pad = 28;
+function renderChart(months, cm) {
+  const W = 640, H = 220, pad = 20;
   const maxAbs = Math.max(0.5, ...months.map(m => Math.abs(m.avg)));
   const bw = (W - pad * 2) / 12;
-  const zero = H / 2;
+  const zero = (H - 22) / 2;
   let bars = '';
   months.forEach((m, i) => {
-    const h = (Math.abs(m.avg) / maxAbs) * (H / 2 - 24);
-    const x = pad + i * bw + bw * 0.15;
-    const w = bw * 0.7;
+    const h = Math.max(1.5, (Math.abs(m.avg) / maxAbs) * (zero - 22));
+    const x = pad + i * bw + bw * 0.16;
+    const w = bw * 0.68;
     const y = m.avg >= 0 ? zero - h : zero;
     const color = m.avg >= 0 ? '#00C97E' : '#F04050';
-    bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${color}" opacity="0.85"/>`;
-    bars += `<text x="${(x + w/2).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-family="monospace" font-size="10" fill="#4D6880">${MONTH_ABBR[i]}</text>`;
+    if (i === cm) bars += `<rect x="${(pad + i * bw + 2).toFixed(1)}" y="4" width="${(bw - 4).toFixed(1)}" height="${H - 8}" rx="4" fill="rgba(232,147,24,.07)" stroke="rgba(232,147,24,.55)" stroke-width="1"/>`;
+    bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${color}"/>`;
+    bars += `<text x="${(x + w/2).toFixed(1)}" y="${H - 8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="${i === cm ? '#F5A52F' : '#8296AD'}">${MONTH_ABBR[i]}</text>`;
   });
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="auto" role="img" aria-label="Average monthly seasonal returns chart" xmlns="http://www.w3.org/2000/svg">
-    <line x1="${pad}" y1="${zero}" x2="${W-pad}" y2="${zero}" stroke="#1E3050" stroke-width="1"/>
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Average monthly seasonal returns chart" xmlns="http://www.w3.org/2000/svg">
+    <line x1="${pad}" y1="${zero}" x2="${W-pad}" y2="${zero}" stroke="#22324F" stroke-width="1"/>
     ${bars}
   </svg>`;
 }
@@ -88,29 +91,29 @@ export default async function handler(req, res) {
   const desc = `${item.name}${tickerSuffix} seasonal performance${years ? ' over ' + years + ' years' : ''}: averages ${pct(best.avg)} in ${MONTH_NAMES[best.i]} (${best.win}% win rate) and ${pct(worst.avg)} in ${MONTH_NAMES[worst.i]}. Free seasonal chart on TimingAX.`;
   const url = `https://timingax.co.uk/seasonality/${id}`;
   const badge = source === 'real'
-    ? `<span class="badge real">&#10003; VERIFIED &middot; ${years}YR REAL DATA</span>`
-    : `<span class="badge model">MODELLED PATTERN DATA</span>`;
+    ? `<span class="tx-badge tx-badge--verified">&#10003; Verified &middot; ${years}yr real data</span>`
+    : `<span class="tx-badge tx-badge--modelled">Modelled pattern data</span>`;
 
   const dataLine = source === 'real'
     ? `These figures are computed from <strong>${years} years</strong> of actual monthly closing prices.`
     : `Real price history wasn\u2019t available for this asset, so these figures are based on a modelled seasonal pattern for its sector and region.`;
 
-  const verdict = (cur.avg >= 0.8 && cur.win >= 60) ? ['SEASONAL TAILWIND','#00C97E']
-    : (cur.avg <= -0.5 && cur.win <= 45) ? ['SEASONAL HEADWIND','#F04050']
-    : ['NEUTRAL SEASONALITY','#F5A52F'];
+  const verdict = (cur.avg >= 0.8 && cur.win >= 60) ? ['SEASONAL TAILWIND','tx-badge--tail']
+    : (cur.avg <= -0.5 && cur.win <= 45) ? ['SEASONAL HEADWIND','tx-badge--head']
+    : ['NEUTRAL SEASONALITY','tx-badge--neutral'];
 
   const related = relatedAssets(item);
 
   const tableRows = months.map((m, i) => `
-    <tr${i === cm ? ' class="cur"' : ''}>
-      <td>${MONTH_NAMES[i]}${i === cm ? ' <span class="now-tag">NOW</span>' : ''}</td>
-      <td class="${m.avg >= 0 ? 'pos' : 'neg'}">${pct(m.avg)}</td>
-      <td>${m.win}%</td>
+    <tr${i === cm ? ' class="is-now"' : ''}>
+      <td>${MONTH_NAMES[i]}${i === cm ? ' <span class="tx-badge tx-badge--now">Now</span>' : ''}</td>
+      <td class="r tx-num ${m.avg >= 0 ? 'tx-up' : 'tx-down'}" data-tx-sid="${id}" data-tx-month="${MONTH_ABBR[i]}" data-tx-field="avg">${dpct(m.avg)}</td>
+      <td class="r tx-num" data-tx-sid="${id}" data-tx-month="${MONTH_ABBR[i]}" data-tx-field="win">${m.win}%</td>
     </tr>`).join('');
 
   const relatedLinks = related.map(a => {
     const dt = dispTicker(a);
-    return `<a href="/seasonality/${a.id}" class="rel-chip">${esc(dt)}${dt !== a.name ? ` <span>${esc(a.name)}</span>` : ''}</a>`;
+    return `<a href="/seasonality/${a.id}" class="a-chip">${esc(dt)}${dt !== a.name ? ` <span>${esc(a.name)}</span>` : ''}</a>`;
   }).join('');
 
   // Build the FAQ answers from the real computed figures
@@ -179,117 +182,145 @@ export default async function handler(req, res) {
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/api/og/${id}">
+<!-- tx:head -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#04070F;--bg2:#070C18;--s1:#131E30;--amber:#E89318;--amber2:#F5A52F;--green:#00C97E;--red:#F04050;--w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--b1:#0F1E30;--b2:#162540;--mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6}
-a{color:inherit;text-decoration:none}
-.nav{height:56px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1)}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2)}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600}
-.wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px}
-.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:12px}
-h1{font:800 32px/1.2 var(--disp-serif);letter-spacing:0em;margin-bottom:8px}
-.sub{color:var(--w3);font-size:14px;margin-bottom:18px}
-.badge{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:4px;display:inline-block;margin-bottom:24px}
-.badge.real{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
-.badge.model{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
-.chart-card{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:20px;margin-bottom:24px}
-.verdict{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.1em;padding:6px 12px;border-radius:6px;margin-bottom:16px}
-.callouts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
-.callout{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:16px}
-.callout .l{font:600 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
-.callout .v{font:700 22px/1 var(--disp-serif)}
-.callout .v.pos{color:var(--green)} .callout .v.neg{color:var(--red)}
-.callout .s{font-size:12px;color:var(--w3);margin-top:4px}
-table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13.5px}
-th{text-align:left;padding:8px 10px;font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);border-bottom:2px solid var(--b1)}
-td{padding:9px 10px;border-bottom:1px solid var(--b1);color:var(--w2)}
-td.pos{color:var(--green)} td.neg{color:var(--red)}
-tr.cur td{background:rgba(232,147,24,.06)}
-.now-tag{font:700 8px/1 var(--mono);color:var(--amber2);border:1px solid rgba(232,147,24,.3);padding:2px 5px;border-radius:3px;margin-left:6px}
-.data-note{font-size:13px;color:var(--w3);background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;margin-bottom:24px}
-.cta{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:24px;text-align:center;margin-bottom:24px}
-.cta h2{font:700 20px/1.3 var(--disp-serif);margin-bottom:8px}
-.cta p{color:var(--w3);font-size:13px;margin-bottom:14px}
-.btn-amber{background:var(--amber);color:var(--bg);border:none;padding:11px 22px;border-radius:8px;font:700 13px/1 var(--sans);display:inline-block}
-.related{margin-top:8px}
-.related h3{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:10px}
-.rel-chip{display:inline-block;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:7px 12px;margin:0 6px 6px 0;font-size:12px;color:var(--w2)}
-.rel-chip span{color:var(--w4)}
-.faq{margin:36px 0;border-top:1px solid var(--b1);padding-top:28px}
-.faq h2{font-size:18px;margin:0 0 18px;color:var(--w)}
-.faq-q{font-weight:600;color:var(--w);font-size:14px;margin:18px 0 7px}
-.faq-a{color:var(--w3);font-size:13.5px;line-height:1.65}
-.disc{font-size:11px;color:var(--w4);margin-top:32px;line-height:1.7}
-footer{border-top:1px solid var(--b1);padding:20px 24px;text-align:center;font:400 11px/1.6 var(--mono);color:var(--w4)}
-footer a{color:var(--amber2)}
+.a-wrap{max-width:1040px;padding-top:40px;padding-bottom:80px}
+.a-crumb{font:500 12px var(--tx-font-mono);color:var(--tx-text-3);letter-spacing:.04em;margin-bottom:22px}
+.a-crumb a{color:var(--tx-text-3) !important}.a-crumb a:hover{color:var(--tx-text-1) !important}
+.a-title{font:700 clamp(32px,5vw,52px)/1.05 var(--tx-font-ui);letter-spacing:-.03em;margin:14px 0 8px}
+.a-title span{color:var(--tx-text-3);font-weight:600}
+.a-sub{color:var(--tx-text-3);font-size:15px;margin:0 0 18px}
+.a-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;margin-top:28px;align-items:start}
+.a-chart{padding:14px 12px 4px}
+.a-kpis{display:flex;flex-direction:column;gap:12px}
+.a-kpi .tx-label{display:block;margin-bottom:8px}
+.a-kpi b{display:block;font:600 24px/1.1 var(--tx-font-ui);letter-spacing:-.02em}
+.a-kpi small{display:block;margin-top:6px;font:500 13px var(--tx-font-mono);color:var(--tx-text-2)}
+.a-table{margin-top:28px}
+.a-note{margin-top:20px;padding:16px 18px;font-size:14px;color:var(--tx-text-2);line-height:1.65}
+.a-faq{margin-top:56px}
+.a-cta{margin-top:40px;text-align:center;padding:36px 24px;background:radial-gradient(500px 200px at 50% 100%,rgba(232,147,24,.12),transparent 70%),var(--tx-bg-1)}
+.a-cta p{color:var(--tx-text-2);max-width:56ch;margin:8px auto 20px}
+.a-rel{margin-top:40px}
+.a-chip{display:inline-flex;gap:6px;align-items:center;background:var(--tx-surface-1);border:1px solid var(--tx-border-1);border-radius:6px;padding:8px 12px;margin:0 6px 8px 0;font:500 13px var(--tx-font-mono);color:var(--tx-text-1) !important}
+.a-chip span{font-family:var(--tx-font-ui);color:var(--tx-text-3)}
+.a-chip:hover{border-color:var(--tx-border-2)}
+.a-disc{margin-top:36px}
+@media (max-width:860px){.a-grid{grid-template-columns:1fr}.a-kpis{display:grid;grid-template-columns:1fr 1fr}.a-kpis > :last-child{grid-column:1/-1}}
+@media (max-width:600px){.a-wrap{padding-top:28px}.a-table td,.a-table th{padding-left:8px;padding-right:8px}}
 </style>
 </head>
-<body>
-<nav>
-  <div class="n-word">Timing<b>AX</b></div>
-  <a href="/auth.html"><button class="btn-cta">Start free &rarr;</button></a>
-</nav>
-<div class="wrap">
-  <div class="eyebrow">Seasonality Snapshot</div>
-  <h1>${esc(item.name)}${dispTicker(item) !== item.name ? ` <span style="color:var(--w4);font-weight:600">(${esc(dispTicker(item))})</span>` : ''}</h1>
-  <div class="sub">${esc(item.sector || '')}${item.sector && item.region ? ' \u00b7 ' : ''}${esc(item.region || '')} \u00b7 ${esc(item.catSection || '')}</div>
-  ${badge}
-
-  <div class="chart-card">
-    ${renderChart(months)}
-  </div>
-
-  <div class="verdict" style="background:${verdict[1]}1a;color:${verdict[1]};border:1px solid ${verdict[1]}4d">${verdict[0]} \u2014 ${MONTH_NAMES[cm]}</div>
-
-  <div class="callouts">
-    <div class="callout">
-      <div class="l">Strongest Month</div>
-      <div class="v pos">${MONTH_NAMES[best.i]}</div>
-      <div class="s">${pct(best.avg)} avg &middot; ${best.win}% win rate</div>
+<body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
     </div>
-    <div class="callout">
-      <div class="l">Weakest Month</div>
-      <div class="v neg">${MONTH_NAMES[worst.i]}</div>
-      <div class="s">${pct(worst.avg)} avg &middot; ${worst.win}% win rate</div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap a-wrap">
+  <div class="a-crumb"><a href="/seasonality.html">Data</a> / <a href="/seasonality.html">${esc(item.catSection || 'Assets')}</a> / ${esc(dt)}</div>
+  <span class="tx-eyebrow">Seasonality snapshot</span>
+  <h1 class="a-title">${esc(item.name)}${dispTicker(item) !== item.name ? ` <span>(${esc(dispTicker(item))})</span>` : ''}</h1>
+  <p class="a-sub">${esc(item.sector || '')}${item.sector && item.region ? ' \u00b7 ' : ''}${esc(item.region || '')} \u00b7 ${esc(item.catSection || '')}</p>
+  <div class="tx-row">${badge}<span class="tx-badge ${verdict[1]}">${verdict[0]} \u2014 ${MONTH_NAMES[cm]}</span></div>
+
+  <div class="a-grid">
+    <div class="tx-term">
+      <div class="tx-term__head"><span class="tx-term__title">${esc(dt)} \u00b7 Avg return by month</span><span class="tx-term__status">${source === 'real' ? years + 'Y \u00b7 real data' : 'Modelled'}</span></div>
+      <div class="a-chart">${renderChart(months, cm)}</div>
+    </div>
+    <div class="a-kpis">
+      <div class="tx-card a-kpi"><span class="tx-label">Strongest month</span><b class="tx-up">${MONTH_NAMES[best.i]}</b><small>${dpct(best.avg)} avg &middot; ${best.win}% win rate</small></div>
+      <div class="tx-card a-kpi"><span class="tx-label">Weakest month</span><b class="tx-down">${MONTH_NAMES[worst.i]}</b><small>${dpct(worst.avg)} avg &middot; ${worst.win}% win rate</small></div>
+      <div class="tx-card a-kpi"><span class="tx-label">This month &middot; ${MONTH_NAMES[cm]}</span><b class="${cur.avg >= 0 ? 'tx-up' : 'tx-down'}">${dpct(cur.avg)}</b><small>${cur.win}% win rate &middot; ${verdict[0].toLowerCase()}</small></div>
     </div>
   </div>
 
-  <table>
-    <tr><th>Month</th><th>Avg Return</th><th>Win Rate</th></tr>
-    ${tableRows}
-  </table>
-
-  <div class="data-note">${dataLine} Past seasonal patterns are not a guarantee of future performance. See our <a href="/methodology.html" style="color:var(--amber2)">methodology</a> for how this is calculated, or visit the <a href="/academy.html" style="color:var(--amber2)">Academy</a> to learn how to read seasonal data responsibly.</div>
-
-  <div class="faq">
-    <h2>${esc(item.name)} seasonality &mdash; common questions</h2>
-    <div class="faq-q">What is ${esc(item.name)}'s best month historically?</div>
-    <div class="faq-a">${esc(faqBestA)}</div>
-    <div class="faq-q">Is ${esc(item.name)} seasonal?</div>
-    <div class="faq-a">${esc(faqSeasonalA)}</div>
-    <div class="faq-q">How does ${esc(item.name)} historically perform in ${MONTH_NAMES[cm]}?</div>
-    <div class="faq-a">${esc(faqNowA)}</div>
+  <div class="tx-card a-table" style="padding:6px 6px 0">
+    <table class="tx-table">
+      <thead><tr><th>Month</th><th class="r">Avg return</th><th class="r">Win rate</th></tr></thead>
+      <tbody>${tableRows}</tbody>
+    </table>
   </div>
 
-  <div class="cta">
-    <h2>Get the full analysis</h2>
+  <div class="tx-card a-note">${dataLine} Past seasonal patterns are not a guarantee of future performance. See our <a href="/methodology.html">methodology</a> for how this is calculated, or visit the <a href="/academy.html">Academy</a> to learn how to read seasonal data responsibly.</div>
+
+  <section class="tx-prose a-faq">
+    <h2>${esc(item.name)} seasonality: common questions</h2>
+    <h3>What is ${esc(item.name)}'s best month historically?</h3>
+    <p>${esc(faqBestA)}</p>
+    <h3>Is ${esc(item.name)} seasonal?</h3>
+    <p>${esc(faqSeasonalA)}</p>
+    <h3>How does ${esc(item.name)} historically perform in ${MONTH_NAMES[cm]}?</h3>
+    <p>${esc(faqNowA)}</p>
+  </section>
+
+  <div class="tx-card a-cta">
+    <h2 class="tx-h2" style="font-size:28px">Get the full analysis</h2>
     <p>Backtest this seasonal pattern, compare it against other assets, set alerts, and explore detrended &amp; presidential-cycle views.</p>
-    <a href="/market-seasonality.html" class="btn-amber">Open the Analyzer &rarr;</a>
+    <a href="/market-seasonality.html" class="tx-btn tx-btn--primary tx-btn--lg">Open the Analyzer &rarr;</a>
   </div>
 
-  ${related.length ? `<div class="related"><h3>Related: ${esc(item.catSection || '')}</h3>${relatedLinks}</div>` : ''}
+  ${related.length ? `<div class="a-rel"><span class="tx-label">Related: ${esc(item.catSection || '')}</span><div style="margin-top:12px">${relatedLinks}</div></div>` : ''}
 
-  <div class="disc">TimingAX is an independently operated service, not a registered investment adviser. This page is for informational purposes only and is not financial advice.</div>
-</div>
-<footer>
-  <a href="/index.html">TimingAX</a> &middot; <a href="/seasonality.html">Browse all assets</a> &middot; <a href="/methodology.html">Methodology</a>
+  <p class="tx-note a-disc">TimingAX is an independently operated service, not a registered investment adviser. This page is for informational purposes only and is not financial advice.</p>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
 </footer>
+<!-- /tx:footer -->
 <script src="/cookie-consent.js"></script>
 </body>
 </html>`;

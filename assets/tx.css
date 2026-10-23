@@ -250,5 +250,6 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 .tx-stack > * + * { margin-top: var(--tx-space-4); }
 .tx-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--tx-space-3); }
 .tx-divider { height: 1px; background: var(--tx-border-1); border: 0; margin: var(--tx-space-6) 0; }
+[hidden] { display: none !important; }
 .tx-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .tx-note { font-size: 13px; color: var(--tx-text-3); line-height: 1.6; }
