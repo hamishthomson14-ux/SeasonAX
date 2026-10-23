@@ -176,7 +176,8 @@ body.tx {
 button.tx-term__row { width: 100%; background: none; border: 0; border-bottom: 1px solid #0B1220; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 button.tx-term__row:hover, .tx-term__row.is-active { background: #07101F; }
 @media (max-width: 600px) {
-  .tx-term__row { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); gap: 8px; padding: 11px 12px; font-size: 13px; }
+  .tx-term__row { grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 10px; padding: 11px 12px; font-size: 13px; }
+  .tx-term .tx-badge { padding: 3px 6px; font-size: 9.5px; letter-spacing: .06em; }
   .tx-term__head { padding: 10px 12px; font-size: 10.5px; }
   .tx-term__name small { display: none; }
 }
