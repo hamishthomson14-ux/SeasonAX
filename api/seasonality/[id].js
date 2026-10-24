@@ -51,6 +51,7 @@ function relatedAssets(item) {
 }
 
 export default async function handler(req, res) {
+  if (req.query.view === 'compare') return compareHandler(req, res);
   const id = String(req.query.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''); // 14 catalogue ids contain _ (bp_uk)
   const item = BY_ID[id];
 
@@ -106,6 +107,8 @@ export default async function handler(req, res) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
@@ -375,6 +378,8 @@ export default async function handler(req, res) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
@@ -403,6 +408,294 @@ export default async function handler(req, res) {
 </body>
 </html>`;
 
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.status(200).send(html);
+}
+
+
+// ── /compare/<a>-vs-<b> (vercel.json rewrite → ?view=compare) ───────────────
+// Two assets' monthly calendars side by side, real data only. Canonical order is alphabetical by id.
+const PAIRS = JSON.parse(readFileSync(path.join(__dirname, '../_data/pairs.json'), 'utf8'));
+
+function pearson(x, y) {
+  const n = x.length, mx = x.reduce((a, b) => a + b, 0) / n, my = y.reduce((a, b) => a + b, 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; }
+  return sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
+}
+function corrWords(r) {
+  if (r >= 0.6) return 'Strongly similar seasonal rhythms';
+  if (r >= 0.3) return 'Somewhat similar seasonal rhythms';
+  if (r > -0.3) return 'Largely unrelated seasonal rhythms';
+  return 'Opposite seasonal rhythms';
+}
+async function realMonths(item) {
+  try {
+    const rows = await fetchMonthly(yahooSymbol(item));
+    const real = rows && computeAdaptiveMonths(rows, 15);
+    return real && real.months ? real : null;
+  } catch (e) { return null; }
+}
+function compareNotFound(res, msg) {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.status(404).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Comparison not available | TimingAX</title>
+      <meta name="robots" content="noindex"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" href="/favicon.ico">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+</head><body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap" style="padding:96px 24px;text-align:center">
+  <span class="tx-eyebrow">Compare</span>
+  <h1 class="tx-h1" style="margin:18px 0 14px;font-size:clamp(32px,5vw,52px)">Comparison not available</h1>
+  <p class="tx-lead" style="margin:0 auto 28px">${esc(msg)}</p>
+  <a class="tx-btn tx-btn--primary tx-btn--lg" href="/compare.html">Compare two assets &rarr;</a>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+</body></html>`);
+}
+
+async function compareHandler(req, res) {
+  const pair = String(req.query.id || '').toLowerCase();
+  const m = pair.match(/^([a-z0-9_]+)-vs-([a-z0-9_]+)$/);
+  if (!m) return compareNotFound(res, 'That comparison link isn’t valid.');
+  const [ia, ib] = [m[1], m[2]];
+  if (ia === ib) return compareNotFound(res, 'Pick two different assets to compare.');
+  if (!BY_ID[ia] || !BY_ID[ib]) return compareNotFound(res, 'We don’t track one of those assets.');
+  if (ia > ib) { res.setHeader('Location', `/compare/${ib}-vs-${ia}`); return res.status(301).end(); }
+  const A = BY_ID[ia], B = BY_ID[ib];
+  const [ra, rb] = await Promise.all([realMonths(A), realMonths(B)]);
+  if (!ra || !rb) return compareNotFound(res, `We need real price history for both ${A.name} and ${B.name}, and ${!ra ? A.name : B.name} doesn’t have enough yet.`);
+
+  const ma = ra.months, mb = rb.months, cm = new Date().getMonth();
+  const r = pearson(ma.map(x => x.avg), mb.map(x => x.avg));
+  const rTxt = (r >= 0 ? '+' : '−') + Math.abs(r).toFixed(2);
+  const da = dispTicker(A), db = dispTicker(B);
+  const la = da !== A.name ? `${A.name} (${da})` : A.name, lb = db !== B.name ? `${B.name} (${db})` : B.name;
+  const bwA = bestWorst(ma), bwB = bestWorst(mb);
+  const winsA = ma.filter((x, i) => x.avg >= mb[i].avg).length;
+  const nowA = ma[cm].avg >= mb[cm].avg;
+  const title = `${la} vs ${lb} Seasonality: Month-by-Month Comparison | TimingAX`;
+  const desc = `${A.name} vs ${B.name} seasonality from real price history: ${A.name}'s best month is ${MONTH_NAMES[bwA.best.i]} (${pct(bwA.best.avg)}), ${B.name}'s is ${MONTH_NAMES[bwB.best.i]} (${pct(bwB.best.avg)}). Seasonal correlation ${r.toFixed(2)}.`;
+  const url = `https://www.timingax.co.uk/compare/${ia}-vs-${ib}`;
+  const cell = (id, i, mm) => `<td class="r tx-num ${mm.avg >= 0 ? 'tx-up' : 'tx-down'}" data-tx-sid="${id}" data-tx-month="${MONTH_ABBR[i]}" data-tx-field="avg">${dpct(mm.avg)}</td><td class="r tx-num" data-tx-sid="${id}" data-tx-month="${MONTH_ABBR[i]}" data-tx-field="win">${mm.win}%</td>`;
+  const rows = ma.map((x, i) => {
+    const sa = x.avg >= mb[i].avg;
+    return `<tr data-stronger="${sa ? ia : ib}"${i === cm ? ' class="is-now"' : ''}><td>${MONTH_NAMES[i]}${i === cm ? ' <span class="tx-badge tx-badge--now">Now</span>' : ''}</td>${cell(ia, i, x)}${cell(ib, i, mb[i])}<td class="r"><span class="tx-badge ${sa ? 'tx-badge--tail' : 'tx-badge--modelled'}">${esc(sa ? da : db)}</span></td></tr>`;
+  }).join('');
+  // Paired bars
+  const W = 680, H = 220, pad = 18, bw = (W - pad * 2) / 12, zero = (H - 22) / 2;
+  const maxAbs = Math.max(0.5, ...ma.map(x => Math.abs(x.avg)), ...mb.map(x => Math.abs(x.avg)));
+  let bars = '';
+  for (let i = 0; i < 12; i++) {
+    [[ma[i], '#F5A52F', 0], [mb[i], '#4DA3FF', 1]].forEach(([mm, col, k]) => {
+      const h = Math.max(1.5, Math.abs(mm.avg) / maxAbs * (zero - 18)), x = pad + i * bw + bw * (0.14 + k * 0.38), y = mm.avg >= 0 ? zero - h : zero;
+      bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw * 0.34).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${col}"/>`;
+    });
+    bars += `<text x="${(pad + i * bw + bw / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="${i === cm ? '#F5A52F' : '#8296AD'}">${MONTH_ABBR[i]}</text>`;
+  }
+  const chart = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(A.name)} and ${esc(B.name)} average return by month"><line x1="${pad}" y1="${zero}" x2="${W - pad}" y2="${zero}" stroke="#22324F"/>${bars}</svg>`;
+  const popular = PAIRS.filter(([x, y]) => [x, y].includes(ia) || [x, y].includes(ib)).filter(([x, y]) => !(x === ia && y === ib)).slice(0, 6)
+    .map(([x, y]) => `<a class="a-chip" href="/compare/${x}-vs-${y}">${esc(BY_ID[x].name)} <span>vs</span> ${esc(BY_ID[y].name)}</a>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.c-wrap{max-width:1040px;padding-top:40px;padding-bottom:80px}
+.c-crumb{font:500 12px var(--tx-font-mono);color:var(--tx-text-3);margin-bottom:22px}
+.c-crumb a{color:var(--tx-text-3) !important}
+.c-title{font:700 clamp(30px,4.6vw,50px)/1.08 var(--tx-font-ui);letter-spacing:-.03em;margin:14px 0 10px}
+.c-title em{font-style:normal;color:var(--tx-text-3);font-weight:600}
+.c-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:28px 0 20px}
+.c-kpis b{display:block;font:600 24px/1.1 var(--tx-font-mono);margin:8px 0 6px}
+.c-kpis small{color:var(--tx-text-2);font-size:13.5px}
+.c-legend{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--tx-border-1);font:500 12px var(--tx-font-mono);color:var(--tx-text-2)}
+.c-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.c-table{margin-top:20px;padding:6px 6px 0;overflow-x:auto}
+.c-table th:nth-child(n+2),.c-table td:nth-child(n+2){text-align:right}
+.c-chips{margin-top:28px}
+.c-chips a.a-chip{display:inline-flex;gap:6px;background:var(--tx-surface-1);border:1px solid var(--tx-border-1);border-radius:6px;padding:8px 12px;margin:0 6px 8px 0;font:500 13px var(--tx-font-ui);color:var(--tx-text-1) !important}
+.c-chips a.a-chip span{color:var(--tx-text-3)}
+@media (max-width:760px){.c-kpis{grid-template-columns:1fr}.c-table .tx-table td,.c-table .tx-table th{padding:10px 7px;font-size:12.5px}}
+</style>
+</head>
+<body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap c-wrap">
+  <div class="c-crumb"><a href="/seasonality.html">Data</a> / <a href="/compare.html">Compare</a> / ${esc(da)} vs ${esc(db)}</div>
+  <span class="tx-eyebrow">Seasonality comparison</span>
+  <h1 class="c-title">${esc(A.name)} <em>vs</em> ${esc(B.name)}</h1>
+  <p class="tx-lead">How <a href="/seasonality/${ia}">${esc(A.name)}</a> and <a href="/seasonality/${ib}">${esc(B.name)}</a> have historically performed in each calendar month, from ${ra.years === rb.years ? ra.years : ra.years + ' and ' + rb.years} years of real price history.</p>
+
+  <div class="c-kpis">
+    <div class="tx-card"><span class="tx-label">Seasonal correlation</span><b data-cmp="corr">${rTxt}</b><small>${corrWords(r)}</small></div>
+    <div class="tx-card"><span class="tx-label">Stronger more often</span>${winsA === 6 ? `<b>Even</b><small>Each ahead in 6 of 12 months on average return</small>` : `<b>${esc(winsA > 6 ? da : db)}</b><small>Ahead in ${Math.max(winsA, 12 - winsA)} of 12 months on average return</small>`}</div>
+    <div class="tx-card"><span class="tx-label">This month &middot; ${MONTH_NAMES[cm]}</span><b class="${(nowA ? ma[cm].avg : mb[cm].avg) >= 0 ? 'tx-up' : 'tx-down'}">${esc(nowA ? da : db)}</b><small>Historically stronger: ${dpct(nowA ? ma[cm].avg : mb[cm].avg)} vs ${dpct(nowA ? mb[cm].avg : ma[cm].avg)}</small></div>
+  </div>
+
+  <div class="tx-term">
+    <div class="tx-term__head"><span class="tx-term__title">Avg return by month</span><span class="tx-term__status">${ra.years}Y / ${rb.years}Y real data</span></div>
+    <div style="padding:14px 12px 4px">${chart}</div>
+    <div class="c-legend"><span><i style="background:#F5A52F"></i>${esc(A.name)}</span><span><i style="background:#4DA3FF"></i>${esc(B.name)}</span></div>
+  </div>
+
+  <div class="tx-card c-table">
+    <table class="tx-table" id="cmpTable">
+      <thead><tr><th>Month</th><th>${esc(da)} avg</th><th>Win</th><th>${esc(db)} avg</th><th>Win</th><th>Stronger</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+
+  <p class="tx-note" style="margin-top:18px">${esc(A.name)}: best month ${MONTH_NAMES[bwA.best.i]} (${dpct(bwA.best.avg)}), weakest ${MONTH_NAMES[bwA.worst.i]} (${dpct(bwA.worst.avg)}). ${esc(B.name)}: best ${MONTH_NAMES[bwB.best.i]} (${dpct(bwB.best.avg)}), weakest ${MONTH_NAMES[bwB.worst.i]} (${dpct(bwB.worst.avg)}). Seasonality is a historical tendency, not a forecast. See the <a href="/methodology.html">methodology</a>.</p>
+
+  <div class="c-chips">${popular ? `<span class="tx-label">More comparisons</span><div style="margin-top:12px">${popular}</div>` : ''}
+    <div style="margin-top:16px"><a class="tx-btn tx-btn--primary" href="/compare.html">Compare any two assets &rarr;</a></div></div>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script src="/cookie-consent.js"></script>
+</body>
+</html>`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
   res.status(200).send(html);

@@ -6,4 +6,7 @@
   <sitemap>
     <loc>https://www.timingax.co.uk/sitemap-seasonality.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://www.timingax.co.uk/sitemap-compare.xml</loc>
+  </sitemap>
 </sitemapindex>
