@@ -51,7 +51,7 @@ function relatedAssets(item) {
 }
 
 export default async function handler(req, res) {
-  const id = String(req.query.id || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+  const id = String(req.query.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''); // 14 catalogue ids contain _ (bp_uk)
   const item = BY_ID[id];
 
   if (!item) {
