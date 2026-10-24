@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -65,6 +65,28 @@ export default async function handler(req, res) {
     return res.status(404).json({
       error: 'Asset not found',
       hint: 'Browse all available assets at /api/catalogue',
+    });
+  }
+
+  // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
+  // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
+  const view = String(req.query.view || 'months');
+  if (view !== 'months' && view !== 'projection') return res.status(400).json({ error: 'Unknown view. Use view=months or view=projection.' });
+  if (view === 'projection') {
+    const days = Number(req.query.days || 90);
+    if (![30, 60, 90].includes(days)) return res.status(400).json({ error: 'days must be 30, 60 or 90' });
+    let proj = null;
+    try {
+      const rows = await fetchDaily(yahooSymbol(item));
+      proj = rows && computeProjection(rows, { today: new Date(), days, years: 15 });
+    } catch (e) { proj = null; }
+    if (!proj) return res.status(404).json({ error: 'unavailable', hint: 'No real daily price history for a projection (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    return res.status(200).json({
+      id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'projection',
+      ...proj,
+      disclaimer: 'How this asset moved over the same calendar window in each of the last ' + proj.n + ' years, applied to the latest close. A historical pattern, not a forecast.',
+      generatedAt: new Date().toISOString(),
     });
   }
 

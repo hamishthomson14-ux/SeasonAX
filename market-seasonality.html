@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="/assets/tx.css">
 <script src="/assets/tx.js" defer></script>
 <!-- /tx:head -->
+<script src="/assets/projection.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -714,6 +715,7 @@ body.is-pro .mt-lock{display:none}
     <div class="analysis-body" id="analysisBody">
       <div class="analysis-empty">Hit Analyze to load the seasonal data</div>
     </div>
+    <div id="projPanel" style="margin-top:20px" hidden></div>
   </div>
   </div><!-- /modeAnalyzer -->
 
@@ -2950,6 +2952,11 @@ function paintAnalysis(item, monthsIn, source, years) {
       animateTableBars();
       refreshAlertButton();
       pill('COMPLETE','done');
+      // Seasonal projection (Pro): next 30/60/90 days from real daily history.
+      if (window.TXProjection) TXProjection.mount(document.getElementById('projPanel'), {
+        id: item.id, name: item.name || item.ticker, pro: isPro(),
+        onUpgrade: function () { showPaywall('feature', 'Seasonal Projection'); }
+      });
 }
 
 // ── Seasonal tape: the signature element — whole year in one row ──

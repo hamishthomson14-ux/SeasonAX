@@ -326,6 +326,13 @@ export default async function handler(req, res) {
     </div>
   </div>
 
+  ${source === 'real' ? `<div class="tx-term proj" id="projPreview" style="margin-top:20px">
+    <div class="tx-term__head"><span class="tx-term__title">${esc(item.name)} \u00b7 Seasonal projection</span><span class="tx-term__status">Pro</span></div>
+    <div class="proj-locked"><div class="proj-blur"><svg viewBox="0 0 760 300" width="100%" aria-hidden="true"><path d="M62,170 C200,150 300,120 420,128 S620,90 742,70 L742,40 C620,60 520,80 420,96 S200,120 62,150Z" fill="rgba(232,147,24,.25)"/><path d="M62,160 C200,140 300,110 420,112 S620,80 742,55" fill="none" stroke="#F5A52F" stroke-width="3"/></svg></div>
+      <div class="proj-cta"><span class="tx-badge tx-badge--now">Pro</span><b>Where has ${esc(item.name)} typically gone from here?</b><span>See the next 30, 60 or 90 days, drawn from up to 15 years of real price history.</span><a class="tx-btn tx-btn--primary" href="/auth.html?tab=up">Start 7-day free trial</a></div>
+    </div>
+  </div>` : ''}
+
   <div class="tx-card a-table" style="padding:6px 6px 0">
     <table class="tx-table">
       <thead><tr><th>Month</th><th class="r">Avg return</th><th class="r">Win rate</th></tr></thead>

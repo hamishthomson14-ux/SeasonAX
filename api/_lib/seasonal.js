@@ -115,3 +115,66 @@ export function bestWorst(months) {
   const sorted = months.map((m, i) => ({ ...m, i })).sort((a, b) => b.avg - a.avg);
   return { best: sorted[0], worst: sorted[sorted.length - 1] };
 }
+
+// ── Seasonal projection ─────────────────────────────────────────────────────
+// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t: msUTC, c }].
+export async function fetchDaily(sym) {
+  for (const host of YAHOO_HOSTS) {
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
+    let json = null;
+    try {
+      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
+      json = await r.json();
+    } catch (e) { continue; }
+    const result = json && json.chart && json.chart.result && json.chart.result[0];
+    const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
+    if (!result || !result.timestamp || !quote) continue;
+    const adj = result.indicators.adjclose && result.indicators.adjclose[0];
+    const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+    const rows = [];
+    for (let i = 0; i < result.timestamp.length; i++) {
+      const c = closes[i];
+      if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
+    }
+    return rows.length ? rows : null;
+  }
+  return null;
+}
+
+// How the asset moved over the next `days` calendar days from today's calendar date in each of
+// the last `years` years, as % paths from that year's start close. Per-day median, quartiles and
+// range across years. Only complete windows inside the data are used; null if under 5 years.
+export function computeProjection(rows, { today = new Date(), days = 90, years = 15 } = {}) {
+  if (!rows || rows.length < 2) return null;
+  const DAY = 864e5, MIN_YEARS = 5, MAX_GAP = 7 * DAY;
+  const last = rows[rows.length - 1];
+  const m = today.getUTCMonth(), d = today.getUTCDate(), y1 = today.getUTCFullYear();
+  const paths = [];
+  for (let y = y1 - years; y < y1; y++) {
+    const start = Date.UTC(y, m, d), end = start + days * DAY;
+    if (end > last.t) continue;                                   // window not complete in the data
+    let i = rows.findIndex((r) => r.t >= start);
+    if (i < 0 || rows[i].t - start > MAX_GAP || i === 0 && rows[0].t > start) continue; // before history / gap
+    const p0 = rows[i].c, path = [];
+    for (let k = 0; k <= days; k++) {
+      const t = start + k * DAY;
+      while (i + 1 < rows.length && rows[i + 1].t <= t) i++;
+      path.push((rows[i].c / p0 - 1) * 100);
+    }
+    paths.push({ year: y, path });
+  }
+  if (paths.length < MIN_YEARS) return null;
+  const q = (a, p) => { const s = a.slice().sort((x, z) => x - z), i = (s.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i); return s[lo] + (s[hi] - s[lo]) * (i - lo); };
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const out = { days, n: paths.length, up: 0, median: [], p25: [], p75: [], min: [], max: [],
+    from: new Date(Date.UTC(y1, m, d)).toISOString().slice(0, 10),
+    finals: paths.map((p) => ({ year: p.year, pct: r2(p.path[days]) })),
+    start: { date: new Date(last.t).toISOString().slice(0, 10), price: +last.c.toFixed(4) } };
+  out.up = paths.filter((p) => p.path[days] > 0).length;
+  for (let k = 0; k <= days; k++) {
+    const v = paths.map((p) => p.path[k]);
+    out.median.push(r2(q(v, 0.5))); out.p25.push(r2(q(v, 0.25))); out.p75.push(r2(q(v, 0.75)));
+    out.min.push(r2(Math.min.apply(null, v))); out.max.push(r2(Math.max.apply(null, v)));
+  }
+  return out;
+}
