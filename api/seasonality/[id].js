@@ -76,6 +76,7 @@ export default async function handler(req, res) {
     <nav class="tx-nav" id="txNav" aria-label="Main">
       <a href="/market-seasonality.html">Platform</a>
       <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
       <a href="/academy.html">Academy</a>
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>
@@ -295,6 +296,7 @@ export default async function handler(req, res) {
     <nav class="tx-nav" id="txNav" aria-label="Main">
       <a href="/market-seasonality.html">Platform</a>
       <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
       <a href="/academy.html">Academy</a>
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>

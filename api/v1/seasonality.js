@@ -37,6 +37,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
 const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
 
+// Run fn over items with at most `n` in flight (keeps upstream price requests polite).
+async function mapLimit(items, n, fn) {
+  const out = new Array(items.length); let next = 0;
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => {
+    while (next < items.length) { const i = next++; out[i] = await fn(items[i], i); }
+  }));
+  return out;
+}
+
+// Leaderboard sections fetch up to 76 assets: allow the Hobby maximum.
+export const config = { maxDuration: 60 };
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -45,6 +57,29 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed. Use GET.' });
 
   const { id, ticker } = req.query;
+
+  // ── ?view=leaderboard&section=<catSection> — this month's real figures for one catalogue section.
+  // The page ranks across all 30 sections; per-section requests keep each call small and CDN-cached.
+  if (req.query.view === 'leaderboard') {
+    const section = String(req.query.section || '');
+    const members = CATALOGUE.filter(a => a.catSection === section);
+    if (!members.length) return res.status(400).json({ error: 'Unknown section', sections: [...new Set(CATALOGUE.map(a => a.catSection))] });
+    const mi = new Date().getUTCMonth();
+    const results = await mapLimit(members, 8, async (item) => {
+      try {
+        const rows = await fetchMonthly(yahooSymbol(item));
+        const real = rows && computeAdaptiveMonths(rows, 15);
+        if (!real || !real.months) return null;
+        const m = real.months[mi];
+        return { id: item.id, name: item.name, ticker: item.ticker, region: item.region, section, avg: +m.avg, win: m.win, obs: m.n != null ? m.n : null, years: real.years };
+      } catch (e) { return null; }
+    });
+    const rowsOut = results.filter(Boolean);
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ view: 'leaderboard', section, month: MONTH_ABBR[mi], monthName: MONTH_NAMES[mi],
+      total: members.length, unavailable: members.length - rowsOut.length, rows: rowsOut, generatedAt: new Date().toISOString() });
+  }
+
   if (!id && !ticker) {
     return res.status(400).json({
       error: 'Provide an asset via ?id= or ?ticker=',
@@ -71,7 +106,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (view !== 'months' && view !== 'projection') return res.status(400).json({ error: 'Unknown view. Use view=months or view=projection.' });
+  if (view !== 'months' && view !== 'projection') return res.status(400).json({ error: 'Unknown view. Use view=months, projection or leaderboard.' });
   if (view === 'projection') {
     const days = Number(req.query.days || 90);
     if (![30, 60, 90].includes(days)) return res.status(400).json({ error: 'days must be 30, 60 or 90' });
