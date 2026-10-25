@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -78,6 +78,21 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
     return res.status(200).json({ view: 'leaderboard', section, month: MONTH_ABBR[mi], monthName: MONTH_NAMES[mi],
       total: members.length, unavailable: members.length - rowsOut.length, rows: rowsOut, generatedAt: new Date().toISOString() });
+  }
+
+  // ── ?view=calendar&ids=a,b,… — ICS feed of historically strong/weak months (watchlist, max 10) ──
+  if (req.query.view === 'calendar') {
+    const ids = String(req.query.ids || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
+    if (ids.length > 10) return res.status(400).json({ error: 'At most 10 assets' });
+    const items = [...new Set(ids)].map(x => CATALOGUE.find(a => a.id === x)).filter(Boolean);
+    if (!items.length) return res.status(400).json({ error: 'Provide up to 10 asset ids via ?ids=' });
+    const entries = (await mapLimit(items, 5, async (item) => {
+      try { const rows = await fetchMonthly(yahooSymbol(item)); const real = rows && computeAdaptiveMonths(rows, 15); return real && real.months ? { item, months: real.months } : null; } catch (e) { return null; }
+    })).filter(Boolean);                                      // real data only: modelled assets get no events
+    res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    res.setHeader('Content-Disposition', 'inline; filename="timingax-seasonal.ics"');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).send(buildCalendar(entries, { now: new Date() }));
   }
 
   if (!id && !ticker) {

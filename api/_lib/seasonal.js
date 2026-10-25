@@ -228,3 +228,48 @@ export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
     tom: { windowAvg: w.avg, windowWin: w.win, windows: w.obs, otherAvg4: r2(((1 + oAvg) ** 4 - 1) * 100) },
   };
 }
+
+// ── Calendar feed (ICS) ─────────────────────────────────────────────────────
+// Same rule as the asset pages and tx.js.
+export function verdictOf(avg, win) {
+  if (avg >= 0.8 && win >= 60) return 'TAILWIND';
+  if (avg <= -0.5 && win <= 45) return 'HEADWIND';
+  return 'NEUTRAL';
+}
+const icsEsc = (s) => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+function icsFold(line) {                                   // RFC 5545: max 75 octets, continuation lines start with a space
+  const out = []; let cur = '';
+  for (const ch of line) {
+    if (Buffer.byteLength(cur + ch) > (out.length ? 74 : 75)) { out.push(cur); cur = ''; }
+    cur += ch;
+  }
+  out.push(cur);
+  return out.join('\r\n ');
+}
+// entries: [{ item, months }] (months as from computeAdaptiveMonths). One all-day event per historically
+// strong (TAILWIND) or weak (HEADWIND) month over the next 12 months, with a reminder the day before.
+export function buildCalendar(entries, { now = new Date() } = {}) {
+  const stamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const ymd = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
+  const pctS = (v) => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//TimingAX//Seasonal windows//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'X-WR-CALNAME:TimingAX seasonal windows', 'X-WR-CALDESC:Historically strong and weak months for your TimingAX watchlist. A historical pattern\\, not a forecast.',
+    'REFRESH-INTERVAL;VALUE=DURATION:P1D', 'X-PUBLISHED-TTL:P1D'];
+  for (const { item, months } of entries) {
+    for (let k = 0; k < 12; k++) {
+      const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + k, 1)), end = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
+      const m = months[d.getUTCMonth()], v = verdictOf(m.avg, m.win);
+      if (v === 'NEUTRAL') continue;
+      const strong = v === 'TAILWIND', mn = MONTH_NAMES[d.getUTCMonth()];
+      lines.push('BEGIN:VEVENT', `UID:${item.id}-${d.toISOString().slice(0, 7)}@timingax.co.uk`, `DTSTAMP:${stamp}`,
+        `DTSTART;VALUE=DATE:${ymd(d)}`, `DTEND;VALUE=DATE:${ymd(end)}`, 'TRANSP:TRANSPARENT',
+        `SUMMARY:${icsEsc(`${item.name}: historically ${strong ? 'strong' : 'weak'} month (${pctS(m.avg)})`)}`,
+        `DESCRIPTION:${icsEsc(`${mn} has averaged ${pctS(m.avg)} for ${item.name}, positive in ${m.win}% of the last ${m.n} years. https://www.timingax.co.uk/seasonality/${item.id} — A historical pattern, not a forecast.`)}`,
+        `URL:https://www.timingax.co.uk/seasonality/${item.id}`,
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-P1D', `DESCRIPTION:${icsEsc(`${item.name} enters a historically ${strong ? 'strong' : 'weak'} month tomorrow`)}`, 'END:VALARM',
+        'END:VEVENT');
+    }
+  }
+  lines.push('END:VCALENDAR');
+  return lines.map(icsFold).join('\r\n') + '\r\n';
+}
