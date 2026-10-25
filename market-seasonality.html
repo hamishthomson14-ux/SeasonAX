@@ -18,22 +18,30 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<script src="/assets/projection.js" defer></script>
+<script src="/assets/patterns.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;
-  --disp:"Syne",sans-serif;
-  --disp-serif:"Fraunces",serif;
-  --sans:"Inter",sans-serif;
+  /* Mapped onto the shared design tokens in /assets/tx.css */
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);--s4:#22324F;
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);
+  --disp:var(--tx-font-ui);
+  --disp-serif:var(--tx-font-ui);
+  --sans:var(--tx-font-ui);
 }
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
@@ -63,7 +71,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .hero-strip{padding:0 0 32px;text-align:center;border-bottom:1px solid var(--b1);margin-bottom:36px}
 .hs-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .hs-eyebrow::before,.hs-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
-.hs-title{font:800 44px/1.12 var(--disp-serif);letter-spacing:-.01em;margin-bottom:14px}
+.hs-title{font:700 clamp(32px,4.4vw,48px)/1.08 var(--disp-serif);letter-spacing:-.03em;margin-bottom:14px}
 .hs-title em{font-style:normal;color:var(--amber2)}
 .hs-sub{font-size:15px;color:var(--w3);max-width:480px;margin:0 auto}
 
@@ -103,7 +111,7 @@ button{cursor:pointer;font-family:var(--sans)}
 .ac-sector{font:400 10px/1 var(--mono);color:var(--w4)}
 
 /* ── ANALYSIS SECTION ── */
-#analysis{margin-top:48px;scroll-margin-top:72px}
+#analysis{margin-top:48px;scroll-margin-top:124px}
 
 /* Selected header */
 .sel-header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 22px;background:var(--bg2);border:1px solid var(--b2);border-radius:12px 12px 0 0;border-bottom:none;flex-wrap:wrap;gap:14px}
@@ -261,13 +269,13 @@ button{cursor:pointer;font-family:var(--sans)}
 .wc-overlay.show{display:flex}
 .wc-box{background:var(--bg2,#111009);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:18px;padding:40px 34px;max-width:520px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.6)}
 .wc-eyebrow{font:600 11px/1 var(--mono,monospace);letter-spacing:.18em;color:var(--amber2,#F5A52F);text-transform:uppercase;margin-bottom:16px}
-.wc-box h2{font:700 30px/1.15 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 12px}
+.wc-box h2{font:700 30px/1.15 var(--disp-serif);color:var(--w,#F4EFE6);margin:0 0 12px}
 .wc-box h2 em{font-style:normal;color:var(--amber,#E89318)}
 .wc-box .wc-sub{font:400 14px/1.6 var(--sans);color:var(--w3,#8F887A);margin:0 0 28px}
 .wc-starters{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
 .wc-start{flex:1 1 140px;min-width:140px;background:var(--bg3,#0A0908);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:12px;padding:18px 14px;cursor:pointer;transition:all .16s;text-align:center}
 .wc-start:hover{border-color:var(--amber,#E89318);background:rgba(232,147,24,.06);transform:translateY(-2px)}
-.wc-start .wcs-tk{font:700 18px/1 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin-bottom:5px}
+.wc-start .wcs-tk{font:700 18px/1 var(--disp-serif);color:var(--w,#F4EFE6);margin-bottom:5px}
 .wc-start .wcs-nm{font:400 11px/1.3 var(--mono,monospace);color:var(--w4,#8F887A)}
 .wc-skip{background:none;border:none;color:var(--w4,#8F887A);font:500 12px/1 var(--sans);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .wc-skip:hover{color:var(--w2,#C9C2B4)}
@@ -296,14 +304,14 @@ button{cursor:pointer;font-family:var(--sans)}
 .tool-preview-peek{max-height:340px;overflow:hidden;filter:blur(3px);opacity:.5;pointer-events:none;user-select:none}
 .tool-preview-cta{position:absolute;left:50%;top:300px;transform:translateX(-50%);width:min(460px,92%);background:var(--bg2,#111009);border:1px solid var(--amber,#E89318);border-radius:14px;padding:26px 24px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.6);z-index:5}
 .tool-preview-cta .tpc-eyebrow{font:600 11px/1 var(--mono,monospace);letter-spacing:.16em;color:var(--amber2,#F5A52F);text-transform:uppercase;margin-bottom:12px}
-.tool-preview-cta h4{font:700 22px/1.2 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 10px}
+.tool-preview-cta h4{font:700 22px/1.2 var(--disp-serif);color:var(--w,#F4EFE6);margin:0 0 10px}
 .tool-preview-cta p{font:400 13px/1.6 var(--sans);color:var(--w3,#8F887A);margin:0 0 18px}
 .tool-preview-cta .tpc-btn{background:var(--amber,#E89318);color:#0A0908;border:none;font:600 14px/1 var(--sans);padding:13px 26px;border-radius:9px;cursor:pointer}
 .tool-preview-cta .tpc-sub{font:400 11px/1.4 var(--mono,monospace);color:var(--w5,#5C574C);margin-top:12px}
 .sc-preview-wrap{position:relative}
 .sc-preview-blur{filter:blur(6px);opacity:.55;pointer-events:none;user-select:none}
 .sc-preview-cta{position:absolute;left:0;right:0;bottom:0;top:38%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:22px;background:linear-gradient(to bottom,rgba(4,7,15,0),rgba(4,7,15,.82) 32%,rgba(4,7,15,.96));border-radius:0 0 12px 12px}
-.sc-preview-cta h4{font:700 19px/1.25 var(--disp-serif,Fraunces,serif);color:var(--w,#F4EFE6);margin:0 0 8px;max-width:420px}
+.sc-preview-cta h4{font:700 19px/1.25 var(--disp-serif);color:var(--w,#F4EFE6);margin:0 0 8px;max-width:420px}
 .sc-preview-cta p{font:400 12px/1.5 var(--mono,monospace);color:var(--w3,#8F887A);margin:0 0 16px;max-width:380px}
 .sc-preview-cta .scp-btn{background:var(--amber,#E89318);color:#0A0908;border:none;font:600 13px/1 var(--sans);padding:12px 22px;border-radius:8px;cursor:pointer}
 .sc-preview-cta .scp-sub{font:400 10px/1.4 var(--mono,monospace);color:var(--w5,#5C574C);margin-top:10px}
@@ -374,7 +382,7 @@ button{cursor:pointer;font-family:var(--sans)}
 }
 
 /* ── MODE SWITCHER ── */
-.mode-bar{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:0 0 24px;position:sticky;top:56px;z-index:150;background:rgba(4,7,15,.97);backdrop-filter:blur(20px);padding:22px 0 0;border-bottom:1px solid var(--b1)}
+.mode-bar{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:0 0 24px;position:sticky;top:64px;z-index:90;background:rgba(3,6,13,.94);backdrop-filter:blur(20px);padding:22px 0 0;border-bottom:1px solid var(--b1)}
 .mode-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--w4);padding:0 0 16px;font:600 13px/1 var(--sans);transition:all .18s;letter-spacing:.01em;cursor:pointer}
 .mode-tab:hover{color:var(--w2);border-bottom-color:var(--b3)}
 .mode-tab.active{color:var(--amber2);border-bottom-color:var(--amber2)}
@@ -540,9 +548,10 @@ body.is-pro .mode-divider{display:none}
   .ec-type,.ec-act{display:none}
 }
 
-.asset-card.locked{opacity:.5;position:relative}
-.asset-card.locked::after{content:'\1F512';position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
-.asset-card.locked:hover{opacity:.75}
+.asset-card.locked{position:relative;background:var(--bg)}
+.asset-card.locked .ac-ticker{color:var(--w3)}
+.asset-card.locked::after{content:'\1F512';position:absolute;top:8px;right:8px;font-size:11px;opacity:.75}
+.asset-card.locked:hover{border-color:var(--b3)}
 .tier-badge{font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-left:8px}
 .tier-badge.free{background:var(--s1);color:var(--w4);border:1px solid var(--b2)}
 .tier-badge.pro{background:rgba(232,147,24,.1);color:var(--amber2);border:1px solid rgba(232,147,24,.25)}
@@ -598,37 +607,34 @@ body.is-pro .mt-lock{display:none}
 .pf-bd-asset{flex:1 1 220px;display:flex;align-items:center;gap:8px}
 .pf-bd-stat{font-size:12px;color:var(--w3);flex-shrink:0}
 @media(max-width:640px){.pf-row{flex-wrap:wrap}.pf-bd-row{flex-direction:column;align-items:flex-start;gap:6px}}
+/* Watchlist: add-to-calendar */
+.wl-cal{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 18px;margin:0 0 16px;padding:14px 16px;border:1px solid rgba(232,147,24,.35);border-radius:10px;background:rgba(232,147,24,.06)}
+.wl-cal b{display:block;font:600 14.5px/1.3 var(--sans);color:var(--w);margin-bottom:4px}
+.wl-cal span{font-size:13px;color:var(--w3)}
+.wl-cal__btns{display:flex;flex-wrap:wrap;gap:8px}
+.wl-cal[hidden]{display:none}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="nav">
-  <div class="nav-left">
-    <svg class="nav-mark" viewBox="0 0 26 26" fill="none">
-      <rect width="26" height="26" rx="6" fill="#0F1728"/>
-      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
-      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
-      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
-    </svg>
-    <div class="nav-word">Timing<b>AX</b></div>
-    <div class="nav-div"></div>
-    <div class="nav-sub">Seasonal Analyzer</div>
-  </div>
-  <div class="nav-right">
-    <a href="/dashboard.html" class="nav-back" style="font:400 12px/1 var(--mono);color:var(--w4);transition:color .18s" onmouseover="this.style.color='var(--amber2)'" onmouseout="this.style.color='var(--w4)'">&#8592; Dashboard</a>
-    <div id="userMenu" style="display:none;align-items:center;gap:8px">
-      <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
-      <button class="btn-so" onclick="signOut()">Sign out</button>
-    </div>
-    <div id="loginPrompt" style="display:none">
-      <a href="/auth.html"><button class="btn-si">Sign in</button></a>
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header tx-header--app">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <span class="tx-app-name">Seasonal Analyzer</span>
+    <div class="tx-app-actions">
+      <a href="/dashboard.html" class="tx-btn tx-btn--ghost tx-btn--sm">&#8592; Dashboard</a>
+      <div id="userMenu" style="display:none;align-items:center;gap:8px">
+        <div class="user-badge" id="userBadge"></div><span class="tier-badge" id="tierBadge"></span>
+        <button class="tx-btn tx-btn--sm" onclick="signOut()">Sign out</button>
+      </div>
+      <div id="loginPrompt" style="display:none">
+        <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Sign in</a>
+      </div>
     </div>
   </div>
-</nav>
+</header>
 
 <div class="page" role="main">
 
@@ -716,6 +722,8 @@ body.is-pro .mt-lock{display:none}
     <div class="analysis-body" id="analysisBody">
       <div class="analysis-empty">Hit Analyze to load the seasonal data</div>
     </div>
+    <div id="projPanel" style="margin-top:20px" hidden></div>
+    <div id="patPanel" style="margin-top:20px" hidden></div>
   </div>
   </div><!-- /modeAnalyzer -->
 
@@ -856,6 +864,14 @@ The four scenarios above are the practical framework. The dangerous quadrants ar
     <div class="bt-stats" id="wlStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
     <div class="bt-panel last">
       <div class="bt-ptitle">Your seasonal dashboard</div>
+      <div class="wl-cal" id="wlCal" hidden>
+        <div><b>Add these seasonal windows to your calendar</b><span>Each watched asset's historically strong and weak months for the next year, with a reminder the day before. Updates itself daily.</span></div>
+        <div class="wl-cal__btns">
+          <a class="tx-btn tx-btn--primary tx-btn--sm" data-cal="webcal" href="#">Apple / Outlook</a>
+          <a class="tx-btn tx-btn--sm" data-cal="google" href="#" target="_blank" rel="noopener">Google Calendar</a>
+          <a class="tx-btn tx-btn--ghost tx-btn--sm" data-cal="ics" href="#" download="timingax-seasonal.ics">Download .ics</a>
+        </div>
+      </div>
       <div id="wlList"></div>
       <div class="bt-disclaimer" style="margin-top:16px">WATCHLIST — stored locally in your browser. Status lines compare the current month's historical average with next month's for each asset's seasonal pattern.</div>
     </div>
@@ -2952,6 +2968,15 @@ function paintAnalysis(item, monthsIn, source, years) {
       animateTableBars();
       refreshAlertButton();
       pill('COMPLETE','done');
+      // Seasonal projection (Pro): next 30/60/90 days from real daily history.
+      if (window.TXProjection) TXProjection.mount(document.getElementById('projPanel'), {
+        id: item.id, name: item.name || item.ticker, pro: isPro(),
+        onUpgrade: function () { showPaywall('feature', 'Seasonal Projection'); }
+      });
+      if (window.TXPatterns) TXPatterns.mount(document.getElementById('patPanel'), {
+        id: item.id, name: item.name || item.ticker, pro: isPro(),
+        onUpgrade: function () { showPaywall('feature', 'Weekly & turn-of-month patterns'); }
+      });
 }
 
 // ── Seasonal tape: the signature element — whole year in one row ──
@@ -3492,6 +3517,7 @@ function showUserMenu(user){
     tb.className = 'tier-badge ' + label.toLowerCase();
   }
   document.body.classList.toggle('is-pro', isPro());
+  if (typeof wlCalRender === 'function') wlCalRender(wlGet()); // Pro status is known only after sign-in loads
   buildBrowser(document.getElementById('searchBox') ? document.getElementById('searchBox').value : '', activeRegion, activeSector);
 }
 
@@ -3609,7 +3635,7 @@ initAuth();
 // ============================================================
 var MODE_HERO = {
   analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 730+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
-  backtest: ['Test any window. <em>25 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
+  backtest: ['Test any window. <em>20 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
   events:   ['When history repeats, <em>know the script.</em>', 'Fed decisions, elections, CPI prints, mega-cap earnings, halvings \u2014 and every major crash. How markets actually behaved, with the historical playbook for each.'],
   earnings: ['Earnings move markets. <em>Read the reaction.</em>', 'What really happened 1 week, 2 weeks and 1 month after companies reported \u2014 and the historical context for reading the next print.'],
   screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
@@ -3623,7 +3649,7 @@ var PRO_ONLY_MODES = ['backtest','earnings','watchlist','pairs','portfolio']; //
 var MODE_LABELS = { backtest:'Strategy Backtest', earnings:'Earnings Analysis', screener:'Seasonal Screener', watchlist:'Watchlist', pairs:'Seasonal Correlations', portfolio:'Portfolio Seasonality' };
 var PREVIEW_MODES = ['backtest','watchlist','portfolio']; // earnings + pairs get deeper data-preview treatment
 var PREVIEW_COPY = {
-  backtest: ['Backtest any seasonal strategy', 'Build an entry/exit rule and test it across 25 years \u2014 equity curve, CAGR and win rate vs buy-and-hold. Pro unlocks the full backtester.'],
+  backtest: ['Backtest any seasonal strategy', 'Build an entry/exit rule and test it across up to 20 years \u2014 equity curve, CAGR and win rate vs buy-and-hold. Pro unlocks the full backtester.'],
   earnings: ['See how stocks move after earnings', 'The post-earnings drift tracker across 26 real reports \u2014 Day 1, +1 week, +1 month, beat-vs-miss. Pro unlocks the full table.'],
   watchlist: ['Track your assets\u2019 calendars', 'Add up to 10 assets and see where each sits in its own seasonal year at a glance. Pro unlocks your watchlist.'],
   pairs: ['Compare any two assets\u2019 rhythms', 'Find pairs that have historically moved together \u2014 and pairs whose weak months haven\u2019t overlapped. Pro unlocks correlations.'],
@@ -5139,10 +5165,24 @@ function wlDaysToNextMonth() {
   return Math.ceil((next - now) / 86400000);
 }
 
+// "Add to calendar" (Pro): a subscribable ICS feed of the watchlist's strong/weak months.
+function wlCalRender(ids) {
+  var box = document.getElementById('wlCal');
+  if (!box) return;
+  box.hidden = !(ids.length && isPro());
+  if (box.hidden) return;
+  var feed = '/api/v1/seasonality?view=calendar&ids=' + ids.map(encodeURIComponent).join(',');
+  var webcal = 'webcal://' + location.host + feed;
+  box.querySelector('[data-cal="webcal"]').setAttribute('href', webcal);
+  box.querySelector('[data-cal="google"]').setAttribute('href', 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(webcal));
+  box.querySelector('[data-cal="ics"]').setAttribute('href', feed);
+}
+
 function wlRender() {
   var wrap = document.getElementById('wlList');
   if (!wrap) return;
   var ids = wlGet();
+  wlCalRender(ids);
 
   if (!ids.length) {
     document.getElementById('wlStats').innerHTML =

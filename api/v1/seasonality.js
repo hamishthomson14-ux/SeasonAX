@@ -30,12 +30,24 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
 const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
+
+// Run fn over items with at most `n` in flight (keeps upstream price requests polite).
+async function mapLimit(items, n, fn) {
+  const out = new Array(items.length); let next = 0;
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => {
+    while (next < items.length) { const i = next++; out[i] = await fn(items[i], i); }
+  }));
+  return out;
+}
+
+// Leaderboard sections fetch up to 76 assets: allow the Hobby maximum.
+export const config = { maxDuration: 60 };
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -45,6 +57,44 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed. Use GET.' });
 
   const { id, ticker } = req.query;
+
+  // ── ?view=leaderboard&section=<catSection> — this month's real figures for one catalogue section.
+  // The page ranks across all 30 sections; per-section requests keep each call small and CDN-cached.
+  if (req.query.view === 'leaderboard') {
+    const section = String(req.query.section || '');
+    const members = CATALOGUE.filter(a => a.catSection === section);
+    if (!members.length) return res.status(400).json({ error: 'Unknown section', sections: [...new Set(CATALOGUE.map(a => a.catSection))] });
+    const mi = new Date().getUTCMonth();
+    const results = await mapLimit(members, 8, async (item) => {
+      try {
+        const rows = await fetchMonthly(yahooSymbol(item));
+        const real = rows && computeAdaptiveMonths(rows, 15);
+        if (!real || !real.months) return null;
+        const m = real.months[mi];
+        return { id: item.id, name: item.name, ticker: item.ticker, region: item.region, section, avg: +m.avg, win: m.win, obs: m.n != null ? m.n : null, years: real.years };
+      } catch (e) { return null; }
+    });
+    const rowsOut = results.filter(Boolean);
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ view: 'leaderboard', section, month: MONTH_ABBR[mi], monthName: MONTH_NAMES[mi],
+      total: members.length, unavailable: members.length - rowsOut.length, rows: rowsOut, generatedAt: new Date().toISOString() });
+  }
+
+  // ── ?view=calendar&ids=a,b,… — ICS feed of historically strong/weak months (watchlist, max 10) ──
+  if (req.query.view === 'calendar') {
+    const ids = String(req.query.ids || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
+    if (ids.length > 10) return res.status(400).json({ error: 'At most 10 assets' });
+    const items = [...new Set(ids)].map(x => CATALOGUE.find(a => a.id === x)).filter(Boolean);
+    if (!items.length) return res.status(400).json({ error: 'Provide up to 10 asset ids via ?ids=' });
+    const entries = (await mapLimit(items, 5, async (item) => {
+      try { const rows = await fetchMonthly(yahooSymbol(item)); const real = rows && computeAdaptiveMonths(rows, 15); return real && real.months ? { item, months: real.months } : null; } catch (e) { return null; }
+    })).filter(Boolean);                                      // real data only: modelled assets get no events
+    res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    res.setHeader('Content-Disposition', 'inline; filename="timingax-seasonal.ics"');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).send(buildCalendar(entries, { now: new Date() }));
+  }
+
   if (!id && !ticker) {
     return res.status(400).json({
       error: 'Provide an asset via ?id= or ?ticker=',
@@ -65,6 +115,37 @@ export default async function handler(req, res) {
     return res.status(404).json({
       error: 'Asset not found',
       hint: 'Browse all available assets at /api/catalogue',
+    });
+  }
+
+  // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
+  // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
+  const view = String(req.query.view || 'months');
+  if (!['months', 'projection', 'patterns'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns or leaderboard.' });
+  // ── ?view=patterns — best/worst weeks of the year + turn-of-month, from real daily prices ──
+  if (view === 'patterns') {
+    let pat = null;
+    try { const rows = await fetchDaily(yahooSymbol(item)); pat = rows && computePatterns(rows, { today: new Date(), years: 15 }); } catch (e) { pat = null; }
+    if (!pat) return res.status(404).json({ error: 'unavailable', hint: 'Needs at least 5 years of real daily prices (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'patterns', ...pat,
+      disclaimer: 'Averages over the last ' + pat.years + ' years of real daily prices. A historical pattern, not a forecast.', generatedAt: new Date().toISOString() });
+  }
+  if (view === 'projection') {
+    const days = Number(req.query.days || 90);
+    if (![30, 60, 90].includes(days)) return res.status(400).json({ error: 'days must be 30, 60 or 90' });
+    let proj = null;
+    try {
+      const rows = await fetchDaily(yahooSymbol(item));
+      proj = rows && computeProjection(rows, { today: new Date(), days, years: 15 });
+    } catch (e) { proj = null; }
+    if (!proj) return res.status(404).json({ error: 'unavailable', hint: 'No real daily price history for a projection (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    return res.status(200).json({
+      id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'projection',
+      ...proj,
+      disclaimer: 'How this asset moved over the same calendar window in each of the last ' + proj.n + ' years, applied to the latest close. A historical pattern, not a forecast.',
+      generatedAt: new Date().toISOString(),
     });
   }
 

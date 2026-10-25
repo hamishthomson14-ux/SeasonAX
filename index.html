@@ -19,865 +19,519 @@
 <meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-:root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;--bg4:#0F1728;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:'IBM Plex Mono',monospace;
-  --disp:'Syne',sans-serif;--disp-serif:'Fraunces',serif;
-  --sans:'Inter',sans-serif;
-}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:var(--sans)}
-::selection{background:rgba(232,147,24,.2)}
+/* Homepage-only layout. Shared components live in /assets/tx.css. */
+.h-hero{position:relative;padding:64px 0 0;overflow:hidden}
+.h-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 60% at 50% 20%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 20%,#000 30%,transparent 75%);pointer-events:none}
+.h-copy{position:relative;text-align:center;max-width:1040px;margin:0 auto}
+.h-copy .tx-h1{font-size:clamp(38px,5.6vw,68px)}
+.h-copy .tx-h1{margin:22px 0 22px}
+.h-copy .tx-lead{margin:0 auto}
+.h-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px}
+.h-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;margin-top:18px;font:500 12px var(--tx-font-mono);color:var(--tx-text-3);letter-spacing:.04em}
+.h-trust span::before{content:'\2713';color:var(--tx-up);margin-right:7px}
+.h-term{position:relative;max-width:1040px;margin:52px auto 0}
+.h-term::before{content:'';position:absolute;left:10%;right:10%;top:-40px;height:200px;background:radial-gradient(closest-side,rgba(232,147,24,.16),transparent);filter:blur(20px);pointer-events:none}
+.h-term .tx-term{position:relative;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:0}
+.h-term__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.h-term__grid > :first-child{border-right:1px solid var(--tx-border-1)}
+.h-chart{padding:18px 18px 12px;display:flex;flex-direction:column;gap:14px}
+.h-chart__head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12px;color:var(--tx-text-3);letter-spacing:.06em;text-transform:uppercase}
+.h-chart__head b{color:var(--tx-text-1);font-weight:600;letter-spacing:0;text-transform:none;font-size:14px}
+.h-bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;height:168px;align-items:stretch}
+.h-bar{position:relative;display:flex;flex-direction:column;justify-content:center}
+.h-bar__pos,.h-bar__neg{flex:1;position:relative}
+.h-bar i{position:absolute;left:0;right:0;display:block;border-radius:2px;min-height:2px;transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.h-bar__pos i{bottom:0}
+.h-bar__neg i{top:0}
+.h-bar__neg{border-top:1px solid var(--tx-border-2)}
+.h-bar__pos i{background:var(--tx-up)}
+.h-bar__neg i{background:var(--tx-down)}
+.h-bar.is-now::after{content:'';position:absolute;inset:-4px -2px;border:1px solid rgba(232,147,24,.6);border-radius:4px;pointer-events:none}
+.h-axis{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;font-size:10px;color:var(--tx-text-3);text-align:center}
+.h-axis span.is-now{color:var(--tx-amber-2)}
+.h-vals{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;font-size:10px;text-align:center}
+.h-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--tx-border-1)}
+.h-kpis > div{padding:12px 18px;border-right:1px solid var(--tx-border-1)}
+.h-kpis > div:last-child{border-right:0}
+.h-kpis b{display:block;font-size:17px;font-weight:600;color:var(--tx-text-1)}
+.h-kpis span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx-text-3)}
+@media (max-width:900px){.h-term__grid{grid-template-columns:1fr}.h-term__grid > :first-child{border-right:0;border-bottom:1px solid var(--tx-border-1)}}
+@media (max-width:600px){.h-hero{padding-top:56px}.h-term{margin-top:44px}.h-bars{height:120px;gap:3px}.h-vals{display:none}.h-kpis > div{padding:10px 12px}.h-kpis b{font-size:15px}}
 
-/* TICKER */
-.ticker{height:34px;overflow:hidden;border-bottom:1px solid var(--b1);background:var(--bg2);position:relative}
-.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
-.ticker::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent)}
-.ticker::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent)}
-.t-track{display:flex;align-items:center;height:100%;white-space:nowrap;animation:tscroll 50s linear infinite}
-@keyframes tscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.t-item{display:inline-flex;align-items:center;gap:5px;padding:0 18px;font:500 11px/1 var(--mono);border-right:1px solid var(--b1)}
-.t-sym{color:var(--amber2)}.t-px{color:var(--w4);font-weight:400}
-.t-up{color:var(--green)}.t-dn{color:var(--red)}
+.f-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--tx-border-1);border:1px solid var(--tx-border-1);border-radius:var(--tx-radius);overflow:hidden;margin-top:48px}
+.f-item{background:var(--tx-bg-1);padding:28px 24px;display:flex;flex-direction:column;gap:10px;transition:background .2s}
+.f-item:hover{background:var(--tx-bg-2)}
+.f-item__n{font:500 11px var(--tx-font-mono);color:var(--tx-amber-2);letter-spacing:.12em}
+.f-item h3{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.f-item p{margin:0;font-size:14.5px;line-height:1.6;color:var(--tx-text-2)}
+.f-item--cta{background:linear-gradient(160deg,rgba(232,147,24,.12),var(--tx-bg-1) 60%);justify-content:space-between}
+@media (max-width:1000px){.f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.f-grid{grid-template-columns:1fr}}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:200;height:56px;padding:0 48px;display:flex;align-items:center;gap:8px;background:rgba(4,7,15,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1)}
-.n-logo{display:flex;align-items:center;gap:9px;margin-right:auto}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2);font-weight:800}
-.n-links{display:flex;gap:2px;margin-right:20px}
-.n-link{padding:6px 12px;font-size:13px;color:var(--w3);border-radius:5px;transition:all .15s}
-.n-link:hover{color:var(--w);background:rgba(255,255,255,.05)}
-.btn-ghost{background:none;border:1px solid var(--b2);color:var(--w3);padding:7px 15px;border-radius:6px;font-size:13px;transition:all .18s;margin-right:6px}
-.btn-ghost:hover{border-color:var(--s4);color:var(--w)}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;transition:all .18s}
-.btn-cta:hover{background:var(--amber2);box-shadow:0 4px 20px rgba(232,147,24,.3)}
+.d-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:64px;align-items:start}
+.d-claim{font:700 clamp(30px,3.8vw,46px)/1.08 var(--tx-font-ui);letter-spacing:-.03em;margin:16px 0 20px}
+.d-claim em{font-style:normal;color:var(--tx-amber-2)}
+.d-cards{display:flex;flex-direction:column;gap:14px}
+.d-card{padding:20px 22px}
+.d-card .tx-label{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
+.d-card p{margin:0;color:var(--tx-text-2);font-size:15.5px;line-height:1.65}
+.d-card p strong{color:var(--tx-text-1);font-weight:600}
+.d-card .tx-num{font-weight:600}
+@media (max-width:900px){.d-grid{grid-template-columns:1fr;gap:40px}}
 
-/* HERO */
-.hero{position:relative;min-height:calc(100vh - 90px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 48px 0;overflow:hidden;text-align:center}
-.h-dotgrid{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 20%,transparent 80%);z-index:0}
-.h-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(232,147,24,.06),transparent 65%);pointer-events:none;z-index:0}
-.h-inner{position:relative;z-index:1;max-width:900px}
-.h-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(232,147,24,.07);border:1px solid rgba(232,147,24,.2);border-radius:100px;padding:5px 14px 5px 8px;font:500 11px/1 var(--mono);color:var(--amber2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}
-.h-pulse{width:6px;height:6px;border-radius:50%;background:var(--amber2);animation:kp 2s ease-in-out infinite}
-@keyframes kp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
-.h-h1{font:800 82px/1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:10px}
-.h-h1 .a{color:var(--amber2)}
-.h-h1 .d{color:var(--w3);font-size:54px;display:block;margin-top:8px;font-weight:700}
-.h-sub{font-size:19px;color:var(--w2);max-width:560px;margin:24px auto 0;line-height:1.68;font-weight:400}
-.h-sub strong{color:var(--w);font-weight:500}
-.h-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:28px 0 36px}
-.h-pill{display:flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b2);border-radius:100px;padding:7px 16px;font:500 12px/1 var(--mono)}
-.hp-v{font-size:16px;font-weight:600}
-.hp-v.g{color:var(--green)}.hp-v.r{color:var(--red)}.hp-v.a{color:var(--amber2)}
-.hp-l{color:var(--w4);font-size:11px}
-.h-ctas{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
-.btn-hero{background:var(--amber);color:var(--bg);border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:all .2s}
-.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,147,24,.3)}
-.btn-hero2{background:none;border:1px solid var(--s4);color:var(--w2);padding:14px 26px;border-radius:8px;font-size:15px;transition:all .2s}
-.btn-hero2:hover{border-color:var(--s4);background:rgba(255,255,255,.04);color:var(--w)}
-.h-trust{font:400 12px/1 var(--mono);color:var(--w5);letter-spacing:.05em;margin-bottom:60px}
-.h-trust span{margin:0 8px}
+.p-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:880px;margin:48px auto 0}
+.p-card{display:flex;flex-direction:column;padding:32px}
+.p-card--pro{border-color:rgba(232,147,24,.5);background:linear-gradient(180deg,rgba(232,147,24,.08),var(--tx-bg-1) 45%);position:relative}
+.p-tier{font:500 11px var(--tx-font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tx-text-3)}
+.p-card--pro .p-tier{color:var(--tx-amber-2)}
+.p-amt{font:600 48px/1 var(--tx-font-mono);letter-spacing:-.03em;margin:16px 0 6px}
+.p-amt small{font-size:16px;color:var(--tx-text-3);font-weight:500;letter-spacing:0}
+.p-per{font-size:14px;color:var(--tx-text-3);min-height:44px}
+.p-alt{background:none;border:0;padding:0;margin-top:6px;color:var(--tx-amber-2);font:500 13px var(--tx-font-ui);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.p-feats{list-style:none;margin:22px 0 28px;padding:22px 0 0;border-top:1px solid var(--tx-border-1);display:flex;flex-direction:column;gap:11px;font-size:14.5px;flex:1}
+.p-feats li{display:flex;gap:10px;color:var(--tx-text-2)}
+.p-feats li::before{content:'\2713';color:var(--tx-up);font-weight:700}
+.p-feats li.off{color:var(--tx-text-3)}
+.p-feats li.off::before{content:'\2014';color:var(--tx-text-3)}
+.p-fine{margin-top:12px;text-align:center;font-size:12.5px;color:var(--tx-text-3)}
+@media (max-width:760px){.p-grid{grid-template-columns:1fr}}
 
-/* APP WINDOW MOCKUP */
-.h-window{position:relative;width:100%;max-width:1120px;margin:0 auto;z-index:1}
-.hw-fade{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(transparent,var(--bg));z-index:2;pointer-events:none}
-.hw-glow{position:absolute;bottom:-40px;left:15%;right:15%;height:80px;background:radial-gradient(ellipse,rgba(232,147,24,.14),transparent 70%);filter:blur(16px)}
-.app-win{background:var(--bg3);border:1px solid var(--s3);border-radius:16px;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03);position:relative;z-index:1}
-.aw-chrome{background:var(--bg4);border-bottom:1px solid var(--b1);padding:11px 18px;display:flex;align-items:center;gap:8px}
-.awd{width:11px;height:11px;border-radius:50%}
-.aw-url{flex:1;background:var(--s1);border:1px solid var(--b1);border-radius:5px;padding:5px 12px;font:400 11px/1 var(--mono);color:var(--w4);margin:0 14px}
-/* tabs mockup */
-.aw-tabs{background:var(--bg2);border-bottom:1px solid var(--b1);padding:10px 18px;display:flex;gap:6px;overflow:hidden}
-.aw-tab{padding:6px 14px;border-radius:6px;font:500 11px/1 var(--sans);white-space:nowrap;border:1px solid transparent;transition:all .15s}
-.aw-tab.on{background:var(--amber);color:var(--bg);border-color:var(--amber)}
-.aw-tab.off{background:var(--s1);color:var(--w4);border-color:var(--b2)}
-/* inner two-col */
-.aw-body2{display:grid;grid-template-columns:260px 1fr;height:420px}
-.aw-sb{background:var(--bg2);border-right:1px solid var(--b1);overflow:hidden}
-.aw-sb-s{padding:10px;border-bottom:1px solid var(--b1)}
-.aw-sb-inp{width:100%;background:var(--s1);border:1px solid var(--b1);color:var(--w3);padding:7px 10px;font:400 11px/1 var(--mono);border-radius:5px}
-.aw-sb-h{padding:9px 12px 5px;font:600 9px/1 var(--mono);letter-spacing:.16em;color:var(--amber2);text-transform:uppercase;border-bottom:1px solid var(--b1)}
-.aw-sb-r{padding:7px 12px;display:flex;align-items:center;gap:8px;border-left:2px solid transparent;transition:background .12s}
-.aw-sb-r.on{background:rgba(232,147,24,.07);border-left-color:var(--amber2)}
-.aw-tk{font:600 10px/1 var(--mono);color:var(--amber2);width:42px;flex-shrink:0}
-.aw-nm{font-size:11px;color:var(--w2)}.aw-sc{font-size:10px;color:var(--w4)}
-.aw-main2{display:flex;flex-direction:column;overflow:hidden}
-.aw-top{padding:11px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
-.aw-atk{font:600 20px/1 var(--mono);color:var(--amber2)}
-.aw-anm{font-size:12px;color:var(--w4);margin-top:3px}
-.aw-go{background:var(--amber);color:var(--bg);border:none;padding:6px 14px;border-radius:4px;font:700 11px/1 var(--mono)}
-.aw-panels{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
-.aw-p{padding:14px 16px;border-right:1px solid var(--b1);overflow:hidden}
-.aw-p:last-child{border-right:none}
-.aw-pt{font:500 9px/1 var(--mono);letter-spacing:.14em;color:var(--w4);text-transform:uppercase;margin-bottom:11px}
-.w-hm{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:3px}
-.w-hm-r{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
-.hmc{border-radius:4px;padding:7px 3px;text-align:center}
-.hmc-m{font:400 8px/1 var(--mono);color:rgba(255,255,255,.3);margin-bottom:3px}
-.hmc-v{font:700 10px/1 var(--mono)}
-.w-bars{display:flex;flex-direction:column;gap:5px}
-.wb{display:grid;grid-template-columns:22px 1fr 42px;align-items:center;gap:6px}
-.wb-m{font:400 9px/1 var(--mono);color:var(--w4);text-align:right}
-.wb-t{height:13px;background:var(--s1);border-radius:2px;overflow:hidden}
-.wb-f{height:100%;border-radius:2px}
-.wb-v{font:600 9px/1 var(--mono);text-align:right}
+.q-list{max-width:820px;margin:40px auto 0;border-top:1px solid var(--tx-border-1)}
+.q-list details{border-bottom:1px solid var(--tx-border-1)}
+.q-list summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:22px 0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.q-list summary::-webkit-details-marker{display:none}
+.q-list summary::after{content:'+';font:400 22px/1 var(--tx-font-mono);color:var(--tx-amber-2);transition:transform .2s}
+.q-list details[open] summary::after{transform:rotate(45deg)}
+.q-list .q-a{padding:0 0 22px;color:var(--tx-text-2);line-height:1.7;max-width:70ch}
 
-/* PROOF BAR */
-.proof-bar{border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);background:var(--bg2)}
-.pb-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
-.pb-s{padding:26px 20px;border-right:1px solid var(--b1);text-align:center;transition:background .2s}
-.pb-s:last-child{border-right:none}
-.pb-s:hover{background:var(--s1)}
-.pb-n{font:600 36px/1 var(--mono);letter-spacing:-.02em;color:var(--w);margin-bottom:6px}
-.pb-n em{font-style:normal;color:var(--amber2);font-size:20px}
-.pb-l{font-size:12px;color:var(--w4);line-height:1.5}
-
-/* SECTIONS */
-.section{max-width:1200px;margin:0 auto;padding:100px 48px}
-.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:'';width:18px;height:1px;background:var(--amber2);opacity:.4}
-.sec-h{font:800 52px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
-.sec-h em{font-style:normal;color:var(--amber2)}
-.sec-p{font-size:17px;color:var(--w3);max-width:520px;line-height:1.72}
-
-/* 9 FEATURES GRID */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-top:56px}
-.feat{background:var(--bg);padding:36px 30px;position:relative;transition:background .18s}
-.feat:hover{background:var(--bg2)}
-.feat:hover .feat-arr{color:var(--amber2);transform:translate(3px,-3px)}
-.feat-n{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--w5);margin-bottom:20px}
-.feat-ico{font-size:24px;display:block;margin-bottom:16px}
-.feat h3{font-size:16px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px;color:var(--w)}
-.feat p{font-size:13px;color:var(--w3);line-height:1.7}
-.feat-arr{position:absolute;right:26px;bottom:26px;color:var(--w5);font-size:15px;transition:all .2s}
-.feat-new{position:absolute;top:16px;right:16px;font:600 8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(232,147,24,.1);color:var(--amber2);border:1px solid rgba(232,147,24,.2);padding:2px 6px;border-radius:3px}
-
-/* REAL DATA SECTION */
-.rd{background:var(--bg2);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:100px 48px}
-.rd-inner{max-width:1200px;margin:0 auto}
-.rd-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px}
-.rd-claim{font:800 42px/1.05 var(--disp-serif);letter-spacing:-.01em;margin-bottom:22px}
-.rd-claim em{font-style:normal;color:var(--amber2)}
-.rd-body{font-size:16px;color:var(--w3);line-height:1.75;margin-bottom:28px}
-.rd-body strong{color:var(--w);font-weight:500}
-.rd-cta{display:flex;gap:10px;align-items:stretch}
-.rd-input{flex:1;background:var(--s1);border:1px solid var(--s3);color:var(--w);padding:12px 14px;font:400 14px/1 var(--body);border-radius:7px;outline:none;transition:border-color .18s}
-.rd-input:focus{border-color:var(--amber2)}
-.rd-input::placeholder{color:var(--w4)}
-.rd-note{font:400 11px/1 var(--mono);color:var(--w5);margin-top:11px;letter-spacing:.04em}
-.rd-right{display:flex;flex-direction:column;gap:14px}
-.data-card{background:var(--bg);border:1px solid var(--b2);border-radius:10px;padding:22px 24px;transition:border-color .18s,transform .18s}
-.data-card:hover{border-color:var(--s4);transform:translateY(-2px)}
-.dc-eyebrow{font:500 9px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--w5);margin-bottom:10px}
-.dc-body{font-size:14px;color:var(--w2);line-height:1.68}
-.dc-body strong{color:var(--amber2);font-family:var(--mono)}
-.dc-src{font:400 10px/1 var(--mono);color:var(--w5);margin-top:10px;padding-top:10px;border-top:1px solid var(--b1)}
-
-/* PRICING */
-.pricing{max-width:1200px;margin:0 auto;padding:100px 48px}
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-top:56px}
-.price-grid-2{grid-template-columns:repeat(2,1fr);max-width:760px;margin-left:auto;margin-right:auto}
-.pc-fine{font:400 11px/1.4 var(--mono);color:var(--w4);text-align:center;margin-top:12px}
-.pc{background:var(--bg);padding:40px 32px;position:relative;transition:background .18s}
-.pc:hover{background:var(--bg2)}
-.pc.hot{background:var(--bg2)}
-.pc.hot:hover{background:var(--bg3)}
-.pc-line{position:absolute;top:0;left:0;right:0;height:1.5px}
-.pc-tier{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;margin-bottom:22px}
-.pc-amt{font:600 52px/1 var(--mono);letter-spacing:-.03em;margin-bottom:4px;color:var(--w)}
-.pc-amt sup{font-size:20px;font-weight:400;color:var(--w3);vertical-align:super}
-.pc-amt sub{font-size:14px;font-weight:400;color:var(--w3)}
-.pc-per{font-size:13px;color:var(--w4);margin-bottom:30px}
-.pc-div{height:1px;background:var(--b1);margin-bottom:28px}
-.pc-feats{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
-.pc-feats li{font-size:14px;color:var(--w3);display:flex;gap:9px;align-items:flex-start;line-height:1.5}
-.pc-feats li .y{color:var(--green);flex-shrink:0;margin-top:1px}
-.pc-feats li .n{color:var(--b2);flex-shrink:0;margin-top:1px}
-.pc-feats li.off{opacity:.38}
-.pc-btn{width:100%;padding:13px;border-radius:7px;font-size:14px;font-weight:600;letter-spacing:.01em;transition:all .18s;border:none}
-.pc-btn.g{background:none;border:1px solid var(--s4);color:var(--w3)}
-.pc-btn.g:hover{border-color:var(--amber2);color:var(--w)}
-.pc-btn.p{background:var(--amber);color:var(--bg)}
-.pc-btn.p:hover{background:var(--amber2);box-shadow:0 4px 18px rgba(232,147,24,.28)}
-
-/* FAQ */
-.faq{background:var(--bg2);border-top:1px solid var(--b1);padding:100px 48px}
-.faq-inner{max-width:740px;margin:0 auto}
-details{border-bottom:1px solid var(--b1)}
-details summary{padding:21px 0;font-size:16px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;list-style:none;letter-spacing:-.01em;transition:color .18s;user-select:none}
-details summary::-webkit-details-marker{display:none}
-details summary:hover,details[open] summary{color:var(--amber2)}
-.fi{font:300 20px/1 var(--mono);color:var(--w4);transition:transform .25s;flex-shrink:0}
-details[open] .fi{transform:rotate(45deg);color:var(--amber2)}
-.fa{padding:0 0 22px;font-size:15px;color:var(--w3);line-height:1.78;max-width:640px}
-
-/* CTA */
-.cta{position:relative;padding:120px 48px;text-align:center;overflow:hidden}
-.cta-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 60% 90% at 50% 100%,black,transparent);pointer-events:none;opacity:.4}
-.cta-gl{position:absolute;bottom:-80px;left:50%;transform:translateX(-50%);width:600px;height:500px;background:radial-gradient(ellipse,rgba(232,147,24,.1),transparent 65%);pointer-events:none}
-.cta-in{position:relative;z-index:1;max-width:680px;margin:0 auto}
-.cta-h{font:800 68px/1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:22px}
-.cta-h em{font-style:normal;color:var(--amber2)}
-.cta-p{font-size:18px;color:var(--w3);line-height:1.7;margin-bottom:44px}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-.cta-note{font:400 12px/1 var(--mono);color:var(--w5);letter-spacing:.06em}
-.cta-note span{margin:0 8px}
-
-/* FOOTER */
-footer{background:var(--bg2);border-top:1px solid var(--b1);padding:64px 48px 36px}
-.ft-inner{max-width:1200px;margin:0 auto}
-.ft-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:48px;margin-bottom:52px}
-.ft-brand p{font-size:13px;color:var(--w4);line-height:1.72;max-width:260px;margin-top:14px}
-.ft-col h5{font:600 9px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--w5);margin-bottom:16px}
-.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-.ft-col a{font-size:13px;color:var(--w4);transition:color .18s}
-.ft-col a:hover{color:var(--amber2)}
-.ft-bot{border-top:1px solid var(--b1);padding-top:26px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
-.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
-.ft-disc{font-size:11px;color:var(--w5);max-width:480px;line-height:1.65;text-align:right;opacity:.65}
-.ft-logo-row{display:flex;align-items:center;gap:9px}
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .nav{padding:0 24px}.n-links{display:none}
-  .h-window{display:none}
-  .h-h1{font-size:48px}.h-h1 .d{font-size:34px}
-  .cta-h{font-size:42px}
-  .sec-h{font-size:36px}
-  .feat-grid,.price-grid{grid-template-columns:1fr}
-  .rd-grid{grid-template-columns:1fr}
-  .ft-grid{grid-template-columns:1fr 1fr}
-  .pb-inner{grid-template-columns:repeat(3,1fr)}
-  .pb-s:nth-child(4),.pb-s:nth-child(5){display:none}
-  .section,.rd,.faq-inner,.pricing,.cta,.ft-inner{padding-left:24px;padding-right:24px}
-}
-
-/* ── LIVE HERO DEMO ── */
-.demo-card{background:var(--bg3);border:1px solid var(--s3);border-radius:16px;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.03);position:relative;z-index:1;max-width:1120px;margin:0 auto}
-.demo-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--b1);background:var(--bg4)}
-.demo-title{display:flex;align-items:center;gap:9px}
-.demo-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:kp 2s infinite}
-.demo-title-txt{font:600 13px/1 var(--sans);color:var(--w2)}
-.demo-badge{font:700 9px/1 var(--mono);letter-spacing:.12em;padding:4px 10px;border-radius:4px;background:var(--s1);color:var(--w4);border:1px solid var(--b2);transition:all .3s}
-.demo-badge.real{background:rgba(0,201,126,.1);color:var(--green);border-color:rgba(0,201,126,.3)}
-.demo-chips{display:flex;gap:7px;padding:14px 22px;border-bottom:1px solid var(--b1);flex-wrap:wrap;background:var(--bg2)}
-.demo-tape{display:flex;gap:1px;background:var(--b1);border-bottom:1px solid var(--b1)}
-.demo-tape-c{flex:1 1 0;min-width:0;background:var(--bg3);padding:8px 2px 7px;text-align:center;position:relative;overflow:hidden}
-.demo-tape-c::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--dtc,transparent)}
-.demo-tape-m{font:500 8px/1 var(--mono);color:var(--w4);letter-spacing:.02em;margin-bottom:4px;text-transform:uppercase}
-.demo-tape-v{font:600 10px/1 var(--mono);letter-spacing:-.02em;white-space:nowrap}
-.demo-tape-v.g{color:var(--green)}.demo-tape-v.r{color:var(--red)}
-.demo-tape-c.cur{background:rgba(232,147,24,.08)}.demo-tape-c.cur .demo-tape-m{color:var(--amber2)}
-.demo-chip{background:var(--s1);border:1px solid var(--b2);color:var(--w3);padding:7px 15px;border-radius:100px;font:500 12px/1 var(--sans);cursor:pointer;transition:all .18s}
-.demo-chip:hover{border-color:var(--s4);color:var(--w)}
-.demo-chip.on{background:rgba(232,147,24,.12);border-color:var(--amber2);color:var(--amber2);font-weight:600}
-.demo-body{display:grid;grid-template-columns:1fr 240px;min-height:300px}
-.demo-chart{display:flex;align-items:flex-end;gap:8px;padding:30px 26px 18px;border-right:1px solid var(--b1)}
-.demo-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
-.demo-bar-area{flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
-.demo-bar{width:68%;max-width:34px;border-radius:4px 4px 2px 2px;transform-origin:bottom;animation:demoRise .55s cubic-bezier(.34,1.3,.5,1) backwards}
-@keyframes demoRise{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
-.demo-val{font:600 10px/1 var(--mono);margin-bottom:6px;opacity:0;animation:demoFade .4s ease forwards}
-@keyframes demoFade{to{opacity:1}}
-.demo-mo{font:500 9px/1 var(--mono);color:var(--w4);margin-top:8px;text-transform:uppercase;letter-spacing:.06em}
-.demo-side{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:24px 22px}
-.demo-stat-v{font:700 26px/1 var(--mono);letter-spacing:-.02em;margin-bottom:4px}
-.demo-stat-v.g{color:var(--green)}.demo-stat-v.r{color:var(--red)}.demo-stat-v.a{color:var(--amber2)}
-.demo-stat-l{font:400 10px/1.4 var(--mono);color:var(--w4);text-transform:uppercase;letter-spacing:.08em}
-.demo-open{font:600 13px/1 var(--sans);color:var(--amber2);margin-top:6px;transition:color .15s}
-.demo-open:hover{color:var(--amber)}
-@media(max-width:900px){.demo-body{grid-template-columns:1fr}.demo-chart{border-right:none;border-bottom:1px solid var(--b1);min-height:230px}.demo-side{flex-direction:row;flex-wrap:wrap;gap:14px}.demo-mo{font-size:7px}}
-
-/* ── SCROLL MOTION ── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
-.reveal.in{opacity:1;transform:none}
-.reveal-stagger>*{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
-.reveal-stagger.in>*{opacity:1;transform:none}
-.reveal-stagger.in>*:nth-child(1){transition-delay:.0s}
-.reveal-stagger.in>*:nth-child(2){transition-delay:.07s}
-.reveal-stagger.in>*:nth-child(3){transition-delay:.14s}
-.reveal-stagger.in>*:nth-child(4){transition-delay:.21s}
-.reveal-stagger.in>*:nth-child(5){transition-delay:.28s}
-.reveal-stagger.in>*:nth-child(6){transition-delay:.35s}
-.reveal-stagger.in>*:nth-child(7){transition-delay:.42s}
-.reveal-stagger.in>*:nth-child(8){transition-delay:.49s}
-.reveal-stagger.in>*:nth-child(9){transition-delay:.56s}
-@media(prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;transition:none}.demo-bar{animation:none}.demo-val{opacity:1;animation:none}}
-
-/* ── SVG FEATURE ICONS ── */
-.feat-svg{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-
-.cred{border-top:1px solid var(--b1);padding:90px 48px;background:var(--bg)}
-.cred-inner{max-width:1000px;margin:0 auto;text-align:center}
-.cred-h{font:800 44px/1.05 var(--disp-serif);letter-spacing:-.01em;margin-bottom:14px}
-.cred-h em{font-style:normal;color:var(--amber2)}
-.cred-sub{font-size:16px;color:var(--w3);max-width:520px;margin:0 auto 48px;line-height:1.65}
-.cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
-.cred-card{background:var(--bg2);border:1px solid var(--b2);border-radius:12px;padding:26px 24px;transition:border-color .2s,transform .2s}
-.cred-card:hover{border-color:var(--b3);transform:translateY(-2px)}
-.cred-ico{width:44px;height:44px;border-radius:10px;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.cred-card h3{font:600 16px/1.2 var(--disp-serif);letter-spacing:-.01em;margin-bottom:9px;color:var(--w)}
-.cred-card p{font-size:13px;color:var(--w3);line-height:1.65}
-@media(max-width:900px){.cred{padding:60px 24px}.cred-h{font-size:32px}.cred-grid{grid-template-columns:1fr}}
-/* Verifiable proof bar — real, checkable numbers (not popularity claims) */
-.cred-stats{display:flex;gap:1px;background:var(--b1);border:1px solid var(--b2);border-radius:12px;overflow:hidden;margin:0 auto 40px;max-width:680px}
-.cred-stat{flex:1 1 0;min-width:0;background:var(--bg2);padding:22px 14px;text-align:center}
-.cred-stat-v{font:700 26px/1 var(--mono);letter-spacing:-.02em;color:var(--amber2)}
-.cred-stat-v.g{color:var(--green)}
-.cred-stat-l{font:400 9px/1.3 var(--mono);color:var(--w4);letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
-@media(max-width:620px){.cred-stats{flex-wrap:wrap}.cred-stat{flex:1 1 50%}.cred-stat-v{font-size:21px}}
-/* Email capture band */
-.nl{padding:84px 32px;border-top:1px solid var(--b1);text-align:center}
-.nl-inner{max-width:620px;margin:0 auto}
-.nl-h{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin:0 0 14px}
-.nl-h em{font-style:normal;color:var(--amber2)}
-.nl-sub{font-size:15px;color:var(--w3);line-height:1.65;max-width:520px;margin:0 auto 30px}
-.nl-form{display:flex;gap:10px;max-width:480px;margin:0 auto;flex-wrap:wrap}
-.nl-input{flex:1 1 240px;min-width:0;background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:14px 16px;font:400 14px/1 Inter,sans-serif;color:var(--w);outline:none;transition:border-color .18s}
-.nl-input:focus{border-color:var(--amber2)}
-.nl-btn{flex:0 0 auto;background:var(--amber);color:var(--bg);border:none;border-radius:8px;padding:14px 24px;font:700 13px/1 var(--mono);cursor:pointer;transition:all .18s}
-.nl-btn:hover{background:var(--amber2);transform:translateY(-1px)}
-.nl-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.nl-msg{font:400 12px/1.4 var(--mono);color:var(--red);margin-top:12px;min-height:16px}
-.nl-success{font:500 14px/1.5 Inter,sans-serif;color:var(--green);margin-top:8px}
-@media(max-width:620px){.nl{padding:60px 24px}.nl-h{font-size:28px}.nl-btn{flex:1 1 100%}}
+.c-band{text-align:center;padding:96px 0;background:radial-gradient(700px 300px at 50% 100%,rgba(232,147,24,.12),transparent 70%)}
+.c-band .tx-h2{font-size:clamp(34px,5vw,60px)}
+.nl-box{max-width:640px;margin:0 auto;text-align:center}
+.nl-box .tx-inline-form{margin:28px auto 0}
+.nl-msg{margin-top:12px;color:var(--tx-down);font-size:14px;min-height:1px}
+.nl-success{margin-top:18px;color:var(--tx-up);font-weight:600}
 </style>
 </head>
-<body>
-
-<div class="ticker" aria-hidden="true"><div class="t-track" id="ttrack"></div></div>
-
-<nav>
-  <div class="n-logo">
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-      <rect width="26" height="26" rx="6" fill="#0F1728"/>
-      <polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="19" cy="7" r="1.8" fill="#E89318"/>
-      <rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/>
-      <rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/>
-      <rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/>
-    </svg>
-    <div class="n-word">Timing<b>AX</b></div>
+<body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
-  <div class="n-links">
-    <a href="#features" class="n-link">Features</a>
-    <a href="#data" class="n-link">Data</a>
-    <a href="#pricing" class="n-link">Pricing</a>
-    <a href="#faq" class="n-link">FAQ</a>
-    <a href="/about.html" class="n-link">About</a>
-  </div>
-  <a href="/auth.html"><button class="btn-ghost">Log in</button></a>
-  <a href="/auth.html"><button class="btn-cta">Start free &rarr;</button></a>
-</nav>
+</header>
+<!-- /tx:header -->
 
+<main>
 <!-- HERO -->
-<section class="hero">
-  <div class="h-dotgrid" aria-hidden="true"></div>
-  <div class="h-glow" aria-hidden="true"></div>
-  <div class="h-inner">
-    <div class="h-kicker"><span class="h-pulse"></span>Professional Seasonal Intelligence &mdash; 2026</div>
-    <h1 class="h-h1">Every market<br>has a <span class="a">calendar</span>.<span class="d">Learn to read it.</span></h1>
-    <p class="h-sub">Timing is the variable nobody has data for. TimingAX turns <strong>15 years of real price history</strong> into a clear seasonal read on <strong>733 global assets</strong> &mdash; so your research runs on evidence, not gut.</p>
-    <div class="h-pills">
-      <div class="h-pill"><span class="hp-v r">-0.7%</span><span class="hp-l">S&amp;P 500 avg September</span></div>
-      <div class="h-pill"><span class="hp-v g">+1.7%</span><span class="hp-l">S&amp;P 500 avg November</span></div>
-      <div class="h-pill"><span class="hp-v a">+21.4%</span><span class="hp-l">Bitcoin avg October</span></div>
-      <div class="h-pill"><span class="hp-v g">70%</span><span class="hp-l">S&amp;P November win rate</span></div>
-    </div>
-    <div class="h-ctas">
-      <a href="/auth.html"><button class="btn-hero">Start free &rarr;</button></a>
-      <a href="/market-seasonality.html"><button class="btn-hero2">Open the app</button></a>
-    </div>
-    <div class="h-trust"><span>&#10003; Free forever tier</span><span>&#10003; No credit card</span><span>&#10003; Cancel anytime</span></div>
-  </div>
-  <div class="h-window reveal">
-    <div class="hw-glow" aria-hidden="true"></div>
-    <div class="demo-card">
-      <div class="demo-head">
-        <div class="demo-title">
-          <span class="demo-live-dot"></span>
-          <span class="demo-title-txt">Try it &mdash; live seasonal analysis</span>
-        </div>
-        <div class="demo-badge" id="demoBadge">MODELLED</div>
+<section class="h-hero">
+  <div class="tx-wrap">
+    <div class="h-copy">
+      <span class="tx-eyebrow">Market seasonality intelligence</span>
+      <h1 class="tx-h1">Every market has a calendar.<br><em>Learn to read it.</em></h1>
+      <p class="tx-lead">Timing is the variable nobody has data for. TimingAX turns <strong>15 years of real price history</strong> into a clear seasonal read on <strong>733 global assets</strong>, so your research runs on evidence, not gut.</p>
+      <div class="h-ctas">
+        <a class="tx-btn tx-btn--primary tx-btn--lg" href="/auth.html">Start free &rarr;</a>
+        <a class="tx-btn tx-btn--lg" href="/market-seasonality.html">Open the app</a>
       </div>
-      <div class="demo-chips" id="demoChips"></div>
-      <div class="demo-tape" id="demoTape"></div>
-      <div class="demo-body">
-        <div class="demo-chart" id="demoChart"></div>
-        <div class="demo-side">
-          <div class="demo-stat">
-            <div class="demo-stat-v g" id="demoBest">&mdash;</div>
-            <div class="demo-stat-l">Best month</div>
-          </div>
-          <div class="demo-stat">
-            <div class="demo-stat-v r" id="demoWorst">&mdash;</div>
-            <div class="demo-stat-l">Worst month</div>
-          </div>
-          <div class="demo-stat">
-            <div class="demo-stat-v a" id="demoWin">&mdash;</div>
-            <div class="demo-stat-l">Best month win rate</div>
-          </div>
-          <a href="/market-seasonality.html" class="demo-open">Full analysis &rarr;</a>
+      <div class="h-trust"><span>Free forever tier</span><span>No credit card</span><span>Cancel anytime</span></div>
+    </div>
+
+    <div class="h-term">
+      <div class="tx-term" id="heroTerm">
+        <div class="tx-term__head">
+          <span class="tx-term__title" id="heroTitle">Seasonality</span>
+          <span class="tx-term__status" id="heroStatus"></span>
         </div>
+        <div class="h-term__grid">
+          <div class="tx-term__body" id="heroRows" role="group" aria-label="Headline assets"><noscript><p class="tx-note" style="padding:16px">Live figures need JavaScript. <a href="/seasonality/sp500">See the S&amp;P 500 snapshot &rarr;</a></p></noscript></div>
+          <div class="h-chart">
+            <div class="h-chart__head"><b id="heroAsset" aria-live="polite">&nbsp;</b><span>Avg return by month</span></div>
+            <div class="h-vals" id="heroVals"></div>
+            <div class="h-bars" id="heroBars"></div>
+            <div class="h-axis" id="heroAxis"></div>
+          </div>
+        </div>
+        <div class="h-kpis" data-tx-api>
+          <div><b id="heroBest"><span class="tx-skel"></span></b><span>Best month</span></div>
+          <div><b id="heroWorst"><span class="tx-skel"></span></b><span>Worst month</span></div>
+          <div><b id="heroYears"><span class="tx-skel"></span></b><span>History</span></div>
+        </div>
+        <div class="tx-term__foot"><span id="heroSource">Monthly closes · up to 15 years</span><a href="/market-seasonality.html">Full analysis &rarr;</a></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PROOF BAR -->
-<div class="proof-bar">
-  <div class="pb-inner reveal">
-    <div class="pb-s"><div class="pb-n" id="c1">0<em>+</em></div><div class="pb-l">Global assets &mdash; US, UK, Germany, Asia</div></div>
-    <div class="pb-s"><div class="pb-n">7</div><div class="pb-l">Professional analysis tools in one platform</div></div>
-    <div class="pb-s"><div class="pb-n" id="c2">0<em>yr</em></div><div class="pb-l">Maximum seasonal history per asset</div></div>
-    <div class="pb-s"><div class="pb-n" id="c3">0<em>%</em></div><div class="pb-l">November win rate, S&amp;P 500, 15 years</div></div>
-    <div class="pb-s"><div class="pb-n">&pound;0</div><div class="pb-l">To start &mdash; free tier, no card ever needed</div></div>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<section class="section" id="features">
-  <div class="eyebrow">Seven Professional Tools</div>
-  <h2 class="sec-h">Everything a serious<br>investor needs. <em>One platform.</em></h2>
-  <p class="sec-p" style="margin-bottom:0">Every tool built around one principle: from data to decision in under 60 seconds.</p>
-  <div class="feat-grid reveal-stagger">
-    <div class="feat"><div class="feat-n">01</div><div class="feat-svg" style="background:rgba(232,147,24,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5" stroke="#E89318" stroke-width="1.7"/><path d="M3 9h18" stroke="#E89318" stroke-width="1.7"/><path d="M8 2.8v3.4M16 2.8v3.4" stroke="#E89318" stroke-width="1.7"/><path d="M7 16.5l3-3 2.2 1.8 4-4.3" stroke="#00C97E" stroke-width="1.7"/></svg></div><h3>Seasonal Analyzer</h3><p>15 years of monthly patterns for any of 730+ assets. Calendar wheel, heatmap, bar charts and full AI written analysis. S&P to Bitcoin to Samsung.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">02</div><div class="feat-svg" style="background:rgba(77,163,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="8" stroke="#4DA3FF" stroke-width="1.7"/><path d="M12.5 8v4.5l3 2" stroke="#4DA3FF" stroke-width="1.7"/><path d="M4.5 5.5v3.2h3.2" stroke="#E89318" stroke-width="1.7"/><path d="M4.7 8.5A8 8 0 0 1 8 5.1" stroke="#E89318" stroke-width="1.7"/></svg></div><h3>Strategy Backtest</h3><p>Test any seasonal window &mdash; buy first day of October, sell last day of December &mdash; across 25 years. Equity curve, win rate, CAGR vs buy-and-hold.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">03</div><div class="feat-svg" style="background:rgba(155,127,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><h3>Event Studies &amp; Earnings</h3><p>19 deep-researched events &mdash; Fed decisions, tariff shocks, elections, halvings, Black Monday, COVID, the 2025 Liberation Day crash &mdash; plus a live earnings tracker following 26 real reports at Day 1, +1W, +2W and +1M. Each with its full historical playbook.</p><div class="feat-arr">&#8599;</div><div class="feat-new">Updated 2026</div></div>
-    <div class="feat"><div class="feat-n">04</div><div class="feat-svg" style="background:rgba(232,147,24,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5" stroke="#E89318" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="#E89318" stroke-width="1.7"/><path d="M8 12.5v-2M10.5 12.5V8.5M13 12.5v-3" stroke="#00C97E" stroke-width="1.7"/></svg></div><h3>Seasonal Screener</h3><p>Pick any month and instantly see which assets are entering their historically strongest window &mdash; and which are entering their historically weakest. Ranked, scored, filterable.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">05</div><div class="feat-svg" style="background:rgba(240,64,80,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-3.8L5.5 21V4.5a1 1 0 0 1 1-1z" stroke="#F04050" stroke-width="1.7"/><path d="M12 7.2l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5 2.2-.3z" fill="#E89318"/></svg></div><h3>Watchlist &amp; Portfolio</h3><p>Track up to 10 assets with live status flags for each one&apos;s historically strong and weak months &mdash; plus a portfolio view that maps your whole mix&apos;s combined seasonal calendar.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">06</div><div class="feat-svg" style="background:rgba(155,127,255,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="7" r="3" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="17.5" cy="17" r="3" stroke="#E89318" stroke-width="1.7"/><path d="M8.8 9.2l6.4 5.6" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="7" r="1.3" fill="#243A52"/><circle cx="6.5" cy="17" r="1.3" fill="#243A52"/></svg></div><h3>Seasonal Correlations</h3><p>Compare any two assets&apos; yearly rhythms. Pearson seasonal correlation, side-by-side monthly charts, best joint months and divergence windows. Find true hedges.</p><div class="feat-arr">&#8599;</div></div>
-    <div class="feat"><div class="feat-n">07</div><div class="feat-svg" style="background:rgba(0,201,126,.09)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="14" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M3 9h14M7 2.8v3.4M13 2.8v3.4" stroke="#00C97E" stroke-width="1.7"/><circle cx="17.5" cy="16.5" r="4.5" stroke="#E89318" stroke-width="1.7" fill="#04070F"/><path d="M17.5 14.4v2.1l1.5 1" stroke="#E89318" stroke-width="1.5"/></svg></div><h3>Economic Calendar</h3><p>Every FOMC decision, CPI print, jobs report and major earnings date &mdash; counted down, each linking to its historical playbook. Plus a written market-history essay for every month of the year.</p><div class="feat-arr">&#8599;</div></div>
+<section class="tx-wrap" style="padding:0 0 0">
+  <div class="tx-statbar" style="border-top-left-radius:0;border-top-right-radius:0;max-width:1040px;margin:0 auto">
+    <div class="tx-stat"><span class="tx-stat__value">733</span><span class="tx-stat__label">Global assets · US, UK, Europe, Asia</span></div>
+    <div class="tx-stat"><span class="tx-stat__value">15<span class="tx-muted">yr</span></span><span class="tx-stat__label">Real price history, up to</span></div>
+    <div class="tx-stat"><span class="tx-stat__value">7</span><span class="tx-stat__label">Analysis tools, one platform</span></div>
+    <div class="tx-stat"><span class="tx-stat__value">&pound;0</span><span class="tx-stat__label">To start · no card needed</span></div>
   </div>
 </section>
 
-<!-- DATA SECTION -->
-<div class="rd" id="data">
-  <div class="rd-inner">
-    <div class="eyebrow">The Data</div>
-    <div class="rd-grid reveal">
-      <div>
-        <div class="rd-claim">We&apos;re new.<br>The data isn&apos;t.<br><em>15 years speaks<br>for itself.</em></div>
-        <p class="rd-body">We won&apos;t insult your intelligence with invented testimonials. TimingAX is a new product. What we have is <strong>15 years of verifiable price history</strong> showing the same patterns repeat across every market cycle &mdash; including the tariff shock of 2025, the AI earnings supercycle, and the rate-hike bear of 2022.<br><br>The data is the proof. Try it free.</p>
-        <div class="rd-cta">
-          <input class="rd-input" id="rdEmail" type="email" placeholder="your@email.com">
-          <a href="/auth.html"><button class="btn-hero" style="padding:12px 20px;font-size:14px;white-space:nowrap">Get started &rarr;</button></a>
-        </div>
-        <div class="rd-note">&#10003; Free forever tier &nbsp;&middot;&nbsp; &#10003; No credit card &nbsp;&middot;&nbsp; &#10003; Cancel anytime</div>
-      </div>
-      <div class="rd-right">
-        <div class="data-card">
-          <div class="dc-eyebrow">Verified &middot; S&amp;P 500 &middot; 2009&ndash;2024</div>
-          <div class="dc-body">Buying the S&P at the start of November and selling at end of April outperformed buy-and-hold in <strong>11 of 15 years</strong>, with significantly lower maximum drawdowns during the summer periods.</div>
-          <div class="dc-src">Based on 15-year monthly return analysis &middot; 180 observations</div>
-        </div>
-        <div class="data-card">
-          <div class="dc-eyebrow">Verified &middot; Bitcoin &middot; 2012&ndash;2025</div>
-          <div class="dc-body">Bitcoin closed October higher in <strong>9 of 12 years</strong>. The <strong>+21.4%</strong> average return is more than 4&times; the average of the other 11 months combined. The 2024 halving cycle confirmed the pattern once more.</div>
-          <div class="dc-src">Based on 12-year monthly return analysis &middot; 144 observations</div>
-        </div>
-        <div class="data-card">
-          <div class="dc-eyebrow">Verified &middot; NASDAQ &middot; 2009&ndash;2024</div>
-          <div class="dc-body">September has been NASDAQ&apos;s worst month in <strong>12 of 15 years</strong>. The <strong>-1.4%</strong> average is not an outlier effect &mdash; the median September is also negative, confirming a genuine structural seasonal tendency.</div>
-          <div class="dc-src">Based on 15-year monthly return analysis &middot; 180 observations</div>
-        </div>
-      </div>
+<!-- FEATURES -->
+<section class="tx-section" id="features" style="border-top:0">
+  <div class="tx-wrap">
+    <span class="tx-eyebrow">Seven professional tools</span>
+    <h2 class="tx-h2" style="margin-top:16px">Everything a serious investor needs.<br><em>One platform.</em></h2>
+    <p class="tx-lead">Every tool built around one principle: from data to decision in under 60 seconds.</p>
+    <div class="f-grid">
+      <div class="f-item"><span class="f-item__n">01 · ANALYZER</span><h3>Seasonal Analyzer</h3><p>15 years of monthly patterns for any of 733 assets. Calendar wheel, heatmap, bar charts and full AI written analysis. S&amp;P to Bitcoin to Samsung.</p></div>
+      <div class="f-item"><span class="f-item__n">02 · BACKTEST</span><h3>Strategy Backtest</h3><p>Test any seasonal window, such as buying the first day of October and selling the last day of December, across up to 20 years of real prices. Equity curve, win rate, CAGR vs buy-and-hold.</p></div>
+      <div class="f-item"><span class="f-item__n">03 · EVENTS</span><h3>Event Studies &amp; Earnings</h3><p>19 deep-researched events (Fed decisions, tariff shocks, elections, halvings, Black Monday, COVID, the 2025 Liberation Day crash) plus a live earnings tracker following 26 real reports at Day 1, +1W, +2W and +1M.</p></div>
+      <div class="f-item"><span class="f-item__n">04 · SCREENER</span><h3>Seasonal Screener</h3><p>Pick any month and instantly see which assets are entering their historically strongest window, and which their weakest. Ranked, scored, filterable.</p></div>
+      <div class="f-item"><span class="f-item__n">05 · WATCHLIST</span><h3>Watchlist &amp; Portfolio</h3><p>Track up to 10 assets with live status flags for each one&rsquo;s historically strong and weak months, plus a portfolio view of your whole mix&rsquo;s combined seasonal calendar.</p></div>
+      <div class="f-item"><span class="f-item__n">06 · CORRELATIONS</span><h3>Seasonal Correlations</h3><p>Compare any two assets&rsquo; yearly rhythms. Pearson seasonal correlation, side-by-side monthly charts, best joint months and divergence windows.</p></div>
+      <div class="f-item"><span class="f-item__n">07 · CALENDAR</span><h3>Economic Calendar</h3><p>Every FOMC decision, CPI print, jobs report and major earnings date, counted down, each linking to its historical playbook. Plus a market-history essay for every month.</p></div>
+      <div class="f-item f-item--cta"><h3>See it on real data</h3><p>Open the analyzer and pick any asset. No account needed to look around.</p><a class="tx-btn tx-btn--primary" href="/market-seasonality.html">Open the app &rarr;</a></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CREDIBILITY BAND -->
-<div class="cred reveal">
-  <div class="cred-inner">
-    <div class="eyebrow" style="justify-content:center;text-align:center">Why trust the numbers</div>
-    <h2 class="cred-h">No invented reviews.<br><em>Just verifiable data.</em></h2>
-    <p class="cred-sub">We're a new, independent product &mdash; so instead of fake testimonials, here's exactly why the analysis holds up.</p>
-    <div class="cred-stats">
-      <div class="cred-stat"><div class="cred-stat-v">734</div><div class="cred-stat-l">Global Assets</div></div>
-      <div class="cred-stat"><div class="cred-stat-v g">98%</div><div class="cred-stat-l">On Real Price Data</div></div>
-      <div class="cred-stat"><div class="cred-stat-v">15<span style="font-size:15px">yr</span></div><div class="cred-stat-l">History Per Asset</div></div>
-      <div class="cred-stat"><div class="cred-stat-v">10</div><div class="cred-stat-l">Analysis Tools</div></div>
+<!-- DATA -->
+<section class="tx-section" id="data">
+  <div class="tx-wrap d-grid">
+    <div>
+      <span class="tx-eyebrow">The data</span>
+      <div class="d-claim">We&rsquo;re new.<br>The data isn&rsquo;t.<br><em>15 years speaks for itself.</em></div>
+      <p class="tx-lead" style="font-size:17px">We won&rsquo;t insult your intelligence with invented testimonials. TimingAX is a new product. What we have is <strong>15 years of verifiable price history</strong> showing the same patterns repeat across every market cycle, including the tariff shock of 2025, the AI earnings supercycle, and the rate-hike bear of 2022. The data is the proof. Try it free.</p>
+      <form class="tx-inline-form" id="rdForm" style="margin-top:28px" onsubmit="return rdStart(event)">
+        <input class="tx-input" id="rdEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email address">
+        <button class="tx-btn tx-btn--primary" id="rdGo" type="submit">Get started &rarr;</button>
+      </form>
+      <div class="h-trust" style="justify-content:flex-start"><span>Free forever tier</span><span>No credit card</span><span>Cancel anytime</span></div>
     </div>
-    <div class="cred-grid">
-      <div class="cred-card">
-        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00C97E" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h3>Real price history</h3>
-        <p>98% of the catalogue is computed from actual monthly closing prices &mdash; up to 15 years per asset. When you analyze, you see a <strong style="color:var(--green)">VERIFIED</strong> badge confirming real data.</p>
-      </div>
-      <div class="cred-card">
-        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E89318" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/><path d="M8 11.5l2 2 3.5-3.5"/></svg></div>
-        <h3>Observation counts shown</h3>
-        <p>No black boxes. Each statistic shows how many years and observations it's based on, so you can judge its reliability yourself rather than taking a number on faith.</p>
-      </div>
-      <div class="cred-card">
-        <div class="cred-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9B7FFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/><path d="M5 8v8l7 5 7-5V8"/></svg></div>
-        <h3>Honest about limits</h3>
-        <p>Every briefing states plainly that seasonality is a tendency, not a guarantee. We'd rather you trust us long-term than oversell a single number today.</p>
-      </div>
+    <div class="d-cards" id="dataCards" data-tx-api>
+      <div class="tx-card d-card" data-card="sp500" data-mo="10" data-name="S&amp;P 500"></div>
+      <div class="tx-card d-card" data-card="btc" data-mo="9" data-name="Bitcoin"></div>
+      <div class="tx-card d-card" data-card="nasdaq" data-mo="8" data-name="NASDAQ Composite"></div>
+      <p class="tx-note">Figures load live from the same data that powers the app: real monthly closes, up to 15 years per asset.</p>
     </div>
   </div>
-</div>
+</section>
+
+<!-- WHY TRUST -->
+<section class="tx-section">
+  <div class="tx-wrap">
+    <div class="tx-center">
+      <span class="tx-eyebrow">Why trust the numbers</span>
+      <h2 class="tx-h2" style="margin-top:16px">No invented reviews.<br><em>Just verifiable data.</em></h2>
+      <p class="tx-lead">We&rsquo;re a new, independent product, so instead of fake testimonials, here&rsquo;s exactly why the analysis holds up.</p>
+    </div>
+    <div class="tx-grid tx-grid--3" style="margin-top:48px">
+      <div class="tx-card"><span class="tx-badge tx-badge--verified">&#10003; Verified</span><h3 class="tx-h3" style="margin-top:16px">Real price history</h3><p class="tx-muted" style="margin:0">Statistics are computed from actual monthly closing prices, up to 15 years per asset. When you analyze, a VERIFIED badge confirms real data; anything modelled is labelled MODELLED.</p></div>
+      <div class="tx-card"><span class="tx-badge tx-badge--neutral">Observations shown</span><h3 class="tx-h3" style="margin-top:16px">No black boxes</h3><p class="tx-muted" style="margin:0">Each statistic shows how many years and observations it&rsquo;s based on, so you can judge its reliability yourself rather than taking a number on faith.</p></div>
+      <div class="tx-card"><span class="tx-badge tx-badge--modelled">Honest limits</span><h3 class="tx-h3" style="margin-top:16px">A tendency, not a promise</h3><p class="tx-muted" style="margin:0">Every briefing states plainly that seasonality is a tendency, not a guarantee. We&rsquo;d rather you trust us long-term than oversell a single number today.</p></div>
+    </div>
+  </div>
+</section>
 
 <!-- PRICING -->
-<section class="pricing" id="pricing">
-  <div class="eyebrow">Pricing</div>
-  <h2 class="sec-h">Simple pricing.<br><em>No dark patterns.</em></h2>
-  <p class="sec-p" style="margin-bottom:0">One click to cancel. No retention screens. No &ldquo;are you sure?&rdquo; loops.</p>
-  <div class="price-grid price-grid-2 reveal-stagger">
-    <div class="pc">
-      <div class="pc-tier">Free</div>
-      <div class="pc-amt"><sup>&pound;</sup>0</div>
-      <div class="pc-per">Free forever &middot; no card needed</div>
-      <div class="pc-div"></div>
-      <ul class="pc-feats">
-        <li><span class="y">&#10003;</span>5 analyses per month</li>
-        <li><span class="y">&#10003;</span>Index funds &amp; ETFs universe</li>
-        <li><span class="y">&#10003;</span>15-year history window</li>
-        <li><span class="y">&#10003;</span>Event Studies (free)</li>
-        <li><span class="y">&#10003;</span>Economic Calendar (free)</li>
-        <li class="off"><span class="n">&mdash;</span>Individual stocks &amp; crypto</li>
-        <li class="off"><span class="n">&mdash;</span>Screener &amp; Watchlist</li>
-        <li class="off"><span class="n">&mdash;</span>Backtest &amp; Earnings tracker</li>
-      </ul>
-      <a href="/auth.html"><button class="pc-btn g">Create free account</button></a>
+<section class="tx-section" id="pricing">
+  <div class="tx-wrap">
+    <div class="tx-center">
+      <span class="tx-eyebrow">Pricing</span>
+      <h2 class="tx-h2" style="margin-top:16px">Simple pricing.<br><em>No dark patterns.</em></h2>
+      <p class="tx-lead">One click to cancel. No retention screens. No &ldquo;are you sure?&rdquo; loops.</p>
     </div>
-    <div class="pc hot">
-      <div class="pc-line" style="background:var(--amber)"></div>
-      <div class="pc-tier">Pro &middot; 7-Day Free Trial</div>
-      <div class="pc-amt"><sup>&pound;</sup>19<sub>.99/mo</sub></div>
-      <div class="pc-per">Free for 7 days, then &pound;19.99/mo &middot; cancel anytime<br>
-          <button style="background:none;border:none;color:var(--amber2);font:500 12px/1 var(--mono);cursor:pointer;margin-top:8px;padding:0;text-decoration:underline" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Or go annual &mdash; &pound;149/yr (save &pound;91)</button></div>
-      <div class="pc-div"></div>
-      <ul class="pc-feats">
-        <li><span class="y">&#10003;</span>Unlimited analyses</li>
-        <li><span class="y">&#10003;</span>All 733 global assets</li>
-        <li><span class="y">&#10003;</span>1&ndash;20 year history windows</li>
-        <li><span class="y">&#10003;</span>All 7 platform tools</li>
-        <li><span class="y">&#10003;</span>Screener + Watchlist</li>
-        <li><span class="y">&#10003;</span>25-year strategy backtest</li>
-        <li><span class="y">&#10003;</span>Email seasonal alerts</li>
-        <li><span class="y">&#10003;</span>Priority support</li>
-      </ul>
-      <button class="pc-btn p" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Start 7-day free trial</button>
-      <div class="pc-fine">No charge today &middot; we&rsquo;ll email you before the trial ends</div>
+    <div class="p-grid">
+      <div class="tx-card p-card">
+        <span class="p-tier">Free</span>
+        <div class="p-amt">&pound;0</div>
+        <div class="p-per">Free forever &middot; no card needed</div>
+        <ul class="p-feats">
+          <li>5 analyses per month</li>
+          <li>Index funds &amp; ETFs universe</li>
+          <li>15-year history window</li>
+          <li>Event Studies (free)</li>
+          <li>Economic Calendar (free)</li>
+          <li class="off">Individual stocks &amp; crypto</li>
+          <li class="off">Screener &amp; Watchlist</li>
+          <li class="off">Backtest &amp; Earnings tracker</li>
+        </ul>
+        <a class="tx-btn tx-btn--lg" href="/auth.html">Create free account</a>
+      </div>
+      <div class="tx-card p-card p-card--pro">
+        <span class="p-tier">Pro &middot; 7-day free trial</span>
+        <div class="p-amt">&pound;19.99<small>/mo</small></div>
+        <div class="p-per">Free for 7 days, then &pound;19.99/mo &middot; cancel anytime<br>
+          <button class="p-alt" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Or go annual &mdash; &pound;149/yr (save &pound;91)</button></div>
+        <ul class="p-feats">
+          <li>Unlimited analyses</li>
+          <li>All 733 global assets</li>
+          <li>1&ndash;20 year history windows</li>
+          <li>All 7 platform tools</li>
+          <li>Screener + Watchlist</li>
+          <li>20-year strategy backtest</li>
+          <li>Email seasonal alerts</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="tx-btn tx-btn--primary tx-btn--lg" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Start 7-day free trial</button>
+        <div class="p-fine">No charge today &middot; we&rsquo;ll email you before the trial ends</div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<div class="faq" id="faq">
-  <div class="faq-inner">
-    <div class="eyebrow">Questions</div>
-    <h2 class="sec-h" style="margin-bottom:48px">Answered <em>honestly.</em></h2>
-    <details open>
-      <summary>Is seasonal data actually reliable? <span class="fi">+</span></summary>
-      <div class="fa">Seasonal patterns are statistical tendencies, not guarantees. Any individual year can and will deviate. The value is context: a 70% win rate over 15 years is useful background alongside other analysis &mdash; never a promise about any single year. Every TimingAX output includes explicit caveats. Use it as one tool among several.</div>
-    </details>
-    <details>
-      <summary>Where does the data come from? <span class="fi">+</span></summary>
-      <div class="fa">Seasonal patterns are derived from historical monthly return data compiled from major financial sources and academic research. We always show observation counts and time periods so you know exactly what each figure covers. No black boxes.</div>
-    </details>
-    <details>
-      <summary>Can I really cancel anytime? <span class="fi">+</span></summary>
-      <div class="fa">Yes. One click in account settings. No retention screens, no &ldquo;tell us why&rdquo; loops, no delay. You keep Pro access until the end of your billing period.</div>
-    </details>
-    <details>
-      <summary>What&apos;s being built next? <span class="fi">+</span></summary>
-      <div class="fa">Email alerts when a watchlist asset enters a historically strong or weak month, deeper per-asset histories, and a mobile app. Pro subscribers get early access and vote on priority order.</div>
-    </details>
-    <details>
-      <summary>Is my data safe? <span class="fi">+</span></summary>
-      <div class="fa">Authentication is handled by Supabase with industry-standard encryption and row-level security. Payments are processed by Stripe with full PCI DSS compliance &mdash; we never see your card details. We do not sell your data to third parties.</div>
-    </details>
-    <details>
-      <summary>Does the free tier ever expire? <span class="fi">+</span></summary>
-      <div class="fa">No. The free tier is genuinely free forever. Five analyses per month, index funds and ETFs, Event Studies and Economic Calendar &mdash; unlimited time, no card ever required.</div>
-    </details>
+<section class="tx-section" id="faq">
+  <div class="tx-wrap">
+    <div class="tx-center">
+      <span class="tx-eyebrow">Questions</span>
+      <h2 class="tx-h2" style="margin-top:16px">Answered <em>honestly.</em></h2>
+    </div>
+    <div class="q-list">
+      <details open>
+        <summary>Is seasonal data actually reliable?</summary>
+        <div class="q-a">Seasonal patterns are statistical tendencies, not guarantees. Any individual year can and will deviate. The value is context: a 70% win rate over 15 years is useful background alongside other analysis &mdash; never a promise about any single year. Every TimingAX output includes explicit caveats. Use it as one tool among several.</div>
+      </details>
+      <details>
+        <summary>Where does the data come from?</summary>
+        <div class="q-a">Seasonal patterns are derived from historical monthly return data compiled from major financial sources and academic research. We always show observation counts and time periods so you know exactly what each figure covers. No black boxes.</div>
+      </details>
+      <details>
+        <summary>Can I really cancel anytime?</summary>
+        <div class="q-a">Yes. One click in account settings. No retention screens, no &ldquo;tell us why&rdquo; loops, no delay. You keep Pro access until the end of your billing period.</div>
+      </details>
+      <details>
+        <summary>What&rsquo;s being built next?</summary>
+        <div class="q-a">Email alerts when a watchlist asset enters a historically strong or weak month, deeper per-asset histories, and a mobile app. Pro subscribers get early access and vote on priority order.</div>
+      </details>
+      <details>
+        <summary>Is my data safe?</summary>
+        <div class="q-a">Authentication is handled by Supabase with industry-standard encryption and row-level security. Payments are processed by Stripe with full PCI DSS compliance &mdash; we never see your card details. We do not sell your data to third parties.</div>
+      </details>
+      <details>
+        <summary>Does the free tier ever expire?</summary>
+        <div class="q-a">No. The free tier is genuinely free forever. Five analyses per month, index funds and ETFs, Event Studies and Economic Calendar &mdash; unlimited time, no card ever required.</div>
+      </details>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- CTA -->
-<section class="cta">
-  <div class="cta-dg" aria-hidden="true"></div>
-  <div class="cta-gl" aria-hidden="true"></div>
-  <div class="cta-in">
-    <div class="eyebrow" style="justify-content:center">Get started today</div>
-    <div class="cta-h">Stop guessing.<br><em>See the data.</em></div>
-    <p class="cta-p">15 years of data. 733 assets. 7 tools. Every market&rsquo;s calendar, ready to read.</p>
-    <div class="cta-btns">
-      <a href="/auth.html"><button class="btn-hero" style="font-size:16px;padding:16px 36px">Create free account &rarr;</button></a>
-      <a href="/market-seasonality.html"><button class="btn-hero2" style="font-size:16px;padding:16px 28px">Open the app</button></a>
+<section class="c-band">
+  <div class="tx-wrap">
+    <span class="tx-eyebrow">Get started today</span>
+    <h2 class="tx-h2" style="margin-top:16px">Stop guessing.<br><em>See the data.</em></h2>
+    <p class="tx-lead" style="margin:0 auto">15 years of data. 733 assets. 7 tools. Every market&rsquo;s calendar, ready to read.</p>
+    <div class="h-ctas">
+      <a class="tx-btn tx-btn--primary tx-btn--lg" href="/auth.html">Create free account &rarr;</a>
+      <a class="tx-btn tx-btn--lg" href="/market-seasonality.html">Open the app</a>
     </div>
-    <div class="cta-note"><span>&#10003; Free forever</span><span>&#10003; No credit card</span><span>&#10003; Cancel anytime</span></div>
   </div>
 </section>
 
 <!-- EMAIL CAPTURE -->
-<section class="nl">
-  <div class="nl-inner">
-    <div class="eyebrow" style="justify-content:center;text-align:center">The Monthly Brief</div>
-    <h2 class="nl-h">The seasonal picture &mdash;<br><em>at the start of every month.</em></h2>
-    <p class="nl-sub">One email at the start of each month: the assets entering their historically strongest and weakest seasonal windows, straight from the data. No spam, no sales pitch, unsubscribe anytime.</p>
-    <div class="nl-form" id="nlForm">
-      <input type="email" id="nlEmail" class="nl-input" placeholder="you@example.com" autocomplete="email">
-      <button class="nl-btn" id="nlBtn" onclick="submitNewsletter()">Get the monthly brief</button>
+<section class="tx-section">
+  <div class="tx-wrap nl-box">
+    <span class="tx-eyebrow">The monthly brief</span>
+    <h2 class="tx-h2" style="margin-top:16px">The seasonal picture,<br><em>at the start of every month.</em></h2>
+    <p class="tx-lead" style="margin:0 auto">One email at the start of each month: the assets entering their historically strongest and weakest seasonal windows, straight from the data. No spam, no sales pitch, unsubscribe anytime.</p>
+    <div class="tx-inline-form" id="nlForm">
+      <input type="email" id="nlEmail" class="tx-input" placeholder="you@example.com" autocomplete="email" aria-label="Email address">
+      <button class="tx-btn tx-btn--primary" id="nlBtn" onclick="submitNewsletter()">Get the monthly brief</button>
     </div>
     <div class="nl-msg" id="nlMsg"></div>
     <div class="nl-success" id="nlSuccess" style="display:none">&#10003; You&rsquo;re in. Watch for the first seasonal brief at the start of next month.</div>
   </div>
 </section>
+</main>
 
-<!-- FOOTER -->
-<footer>
-  <div class="ft-inner">
-    <div class="ft-grid">
-      <div class="ft-brand">
-        <div class="ft-logo-row">
-          <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-          <div class="n-word">Timing<b style="color:var(--amber2)">AX</b></div>
-        </div>
-        <p>Professional market seasonality intelligence for self-directed investors. 730+ global assets. 7 analytical tools. Updated 2026.</p>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
       </div>
-      <div class="ft-col"><h5>Product</h5><ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="/market-seasonality.html">Open app</a></li><li><a href="/academy.html">Academy</a></li><li><a href="/seasonality.html">Browse Assets</a></li><li><a href="/methodology.html">Methodology</a></li><li><a href="/api-docs.html">API &amp; Developers</a></li><li><a href="/changelog.html">Changelog</a></li></ul></div>
-      <div class="ft-col"><h5>Company</h5><ul><li><a href="/about.html">About</a></li><li><a href="/blog.html">Blog</a></li><li><a href="/contact.html">Contact</a></li></ul></div>
-      <div class="ft-col"><h5>Legal</h5><ul><li><a href="/accessibility.html">Accessibility</a></li><li><a href="/privacy-policy.html">Privacy policy</a></li><li><a href="/terms-of-service.html">Terms of service</a></li><li><a href="/terms-of-service.html">Disclaimer</a></li></ul></div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
     </div>
-    <div class="ft-bot">
-      <div class="ft-copy">&copy; 2026 TimingAX &middot; All rights reserved</div>
-      <div class="ft-disc">Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
     </div>
   </div>
 </footer>
+<!-- /tx:footer -->
 
 <script>
-var TK=[
-  {s:'SPY',p:'608.14',c:'+0.8%',u:1},{s:'QQQ',p:'530.22',c:'+1.1%',u:1},
-  {s:'AAPL',p:'221.55',c:'+0.6%',u:1},{s:'TSLA',p:'342.18',c:'-1.2%',u:0},
-  {s:'NVDA',p:'137.42',c:'+2.3%',u:1},{s:'MSFT',p:'458.30',c:'+0.4%',u:1},
-  {s:'BTC',p:'107,420',c:'+1.8%',u:1},{s:'META',p:'629.44',c:'+1.2%',u:1},
-  {s:'AMZN',p:'224.88',c:'+0.7%',u:1},{s:'GLD',p:'311.10',c:'+0.3%',u:1},
-  {s:'PLTR',p:'142.33',c:'-0.9%',u:0},{s:'AMD',p:'162.55',c:'+1.4%',u:1},
-  {s:'ORCL',p:'188.72',c:'+0.5%',u:1},{s:'JPM',p:'271.44',c:'+0.6%',u:1},
-  {s:'HSBA.L',p:'841p',c:'+0.4%',u:1},{s:'AZN.L',p:'12,840p',c:'-0.3%',u:0},
-  {s:'TSM',p:'188.30',c:'+2.1%',u:1},{s:'SAP.DE',p:'287.40',c:'+0.8%',u:1},
-  {s:'ETH',p:'2,641',c:'+3.2%',u:1},{s:'^FTSE',p:'8,742',c:'+0.5%',u:1}
-];
-var tt=[...TK,...TK];
-document.getElementById('ttrack').innerHTML=tt.map(function(t){
-  return '<span class="t-item"><span class="t-sym">'+t.s+'</span><span class="t-px">'+t.p+'</span><span class="'+(t.u?'t-up':'t-dn')+'">'+t.c+'</span></span>';
-}).join('');
-
-
-// Animated counters
-function animCount(id,target,dur){
-  var el=document.getElementById(id); if(!el) return;
-  var em=el.querySelector('em'); var suffix=em?em.outerHTML:'';
-  var t0=performance.now();
-  var step=function(now){
-    var p=Math.min((now-t0)/(dur||1600),1);
-    var e=1-Math.pow(1-p,3);
-    el.innerHTML=Math.round(e*target)+suffix;
-    if(p<1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
-var io=new IntersectionObserver(function(entries){
-  if(entries[0].isIntersecting){
-    animCount('c1',734); animCount('c2',20); animCount('c3',70);
-    io.disconnect();
-  }
-},{threshold:.4});
-var pb=document.querySelector('.pb-inner');
-if(pb) io.observe(pb);
-
 // ============================================================
-// LIVE HERO DEMO — instant render from embedded stats,
-// then upgraded with REAL price data via /api/prices.
+// HERO TERMINAL — real seasonality for the current month from
+// /api/v1/seasonality. Skeletons until data arrives; nothing invented.
 // ============================================================
-var DEMO_ASSETS = [
-  { id:'sp500',  label:'S&P 500',   sym:'^spx',
-    m:[1.1,0.1,1.2,1.5,0.3,0.1,1.4,-0.2,-0.7,0.9,1.7,1.5], win:[67,53,67,73,60,53,73,47,42,60,70,67] },
-  { id:'nasdaq', label:'NASDAQ',    sym:'^ndq',
-    m:[1.9,0.4,1.1,1.6,0.8,0.6,2.1,-0.3,-1.4,1.0,2.0,1.2], win:[67,53,60,67,60,60,73,47,39,60,73,60] },
-  { id:'btc',    label:'Bitcoin',   sym:'btcusd',
-    m:[3.1,7.8,4.2,9.4,2.1,-8.7,3.4,-2.6,-5.8,21.4,18.6,4.9], win:[58,67,58,67,50,33,58,42,33,75,67,58] },
-  { id:'gld',    label:'Gold',      sym:'gld.us',
-    m:[2.1,0.4,-0.3,0.8,0.1,0.3,1.2,1.4,0.6,0.7,0.5,1.1], win:[67,53,47,60,53,53,60,67,53,60,53,60] },
-  { id:'nvda',   label:'Nvidia',    sym:'nvda.us',
-    m:[3.2,2.8,1.4,2.1,4.8,2.2,2.6,1.9,-2.1,2.4,4.2,1.8], win:[60,60,53,60,73,60,60,60,40,60,67,53] },
-  { id:'ftse',   label:'FTSE 100',  sym:'^ukx',
-    m:[0.3,0.8,0.6,1.6,0.2,-0.8,1.1,-0.4,-0.6,0.5,1.2,1.9], win:[53,60,60,73,53,40,60,47,47,53,60,73] }
-];
-var DEMO_MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var demoSel = 0;
-var demoRealCache = {};
+document.addEventListener('DOMContentLoaded', function () {
+  var ASSETS = [
+    { id: 'sp500', label: 'S&P 500', sym: '^GSPC' },
+    { id: 'nasdaq', label: 'NASDAQ Comp.', sym: '^IXIC' },
+    { id: 'btc', label: 'Bitcoin', sym: 'BTC-USD' },
+    { id: 'gld', label: 'Gold', sym: 'GLD' },
+    { id: 'nvda', label: 'Nvidia', sym: 'NVDA' },
+    { id: 'ftse100', label: 'FTSE 100', sym: '^FTSE' }
+  ];
+  var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var AB = MO.map(function (m) { return m.slice(0, 3); });
+  var cm = new Date().getMonth();
+  var data = {}, failed = {}, sel = 0, done = 0, ok = 0, verified = 0;
+  var dash = '<span class="tx-muted">\u2014</span>';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+  var skel = '<span class="tx-skel"></span>';
+  var BADGE = { TAILWIND: 'tx-badge--tail', HEADWIND: 'tx-badge--head', NEUTRAL: 'tx-badge--neutral' };
 
-function demoRender(monthVals, winVals, isReal) {
-  var chart = document.getElementById('demoChart');
-  if (!chart) return;
-  var maxAbs = 0.1;
-  for (var i = 0; i < 12; i++) maxAbs = Math.max(maxAbs, Math.abs(monthVals[i]));
-  var html = '';
-  for (var j = 0; j < 12; j++) {
-    var v = monthVals[j];
-    var hPct = Math.max(8, Math.round(Math.abs(v) / maxAbs * 100));
-    var col = v >= 0 ? 'var(--green)' : 'var(--red)';
-    var op = 0.45 + (Math.abs(v) / maxAbs) * 0.55;
-    html += '<div class="demo-col">' +
-      '<div class="demo-bar-area">' +
-        '<div class="demo-val" style="color:' + col + ';animation-delay:' + (j*45+250) + 'ms">' + (v>=0?'+':'') + v.toFixed(1) + '</div>' +
-        '<div class="demo-bar" style="height:' + hPct + '%;background:' + col + ';opacity:' + op.toFixed(2) + ';animation-delay:' + (j*45) + 'ms"></div>' +
-      '</div>' +
-      '<div class="demo-mo">' + DEMO_MO[j] + '</div>' +
-    '</div>';
-  }
-  chart.innerHTML = html;
+  $('heroTitle').textContent = 'Seasonality · ' + MO[cm];
 
-  var bi = 0, wi = 0;
-  for (var k = 1; k < 12; k++) {
-    if (monthVals[k] > monthVals[bi]) bi = k;
-    if (monthVals[k] < monthVals[wi]) wi = k;
-  }
-  document.getElementById('demoBest').textContent = DEMO_MO[bi] + ' +' + monthVals[bi].toFixed(1) + '%';
-  document.getElementById('demoWorst').textContent = DEMO_MO[wi] + ' ' + monthVals[wi].toFixed(1) + '%';
-  document.getElementById('demoWin').textContent = (winVals && winVals[bi] ? winVals[bi] : '—') + '%';
-
-  var badge = document.getElementById('demoBadge');
-  if (badge) {
-    if (isReal) { badge.textContent = 'VERIFIED — REAL DATA'; badge.className = 'demo-badge real'; }
-    else { badge.textContent = 'LOADING REAL DATA…'; badge.className = 'demo-badge'; }
-  }
-
-  // Signature seasonal tape — whole year at a glance, matches the app
-  var tape = document.getElementById('demoTape');
-  if (tape) {
-    var curMo = new Date().getMonth();
-    var th = '';
-    for (var t = 0; t < 12; t++) {
-      var tv = monthVals[t];
-      var pos = tv >= 0;
-      var tcol = pos ? 'var(--green)' : 'var(--red)';
-      var tnorm = Math.abs(tv) / maxAbs;
-      th += '<div class="demo-tape-c' + (t === curMo ? ' cur' : '') + '" style="--dtc:' + tcol + '">' +
-        '<div class="demo-tape-m">' + DEMO_MO[t] + '</div>' +
-        '<div class="demo-tape-v ' + (pos ? 'g' : 'r') + '" style="opacity:' + (0.55 + tnorm * 0.45).toFixed(2) + '">' + (pos ? '+' : '') + tv.toFixed(1) + '</div>' +
-      '</div>';
-    }
-    tape.innerHTML = th;
-  }
-}
-
-function demoUpgradeReal(idx) {
-  var a = DEMO_ASSETS[idx];
-  if (demoRealCache[a.sym]) {
-    if (demoSel === idx) demoRender(demoRealCache[a.sym].m, demoRealCache[a.sym].win, true);
-    return;
-  }
-  fetch('/api/prices?s=' + encodeURIComponent(a.sym))
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if (!data || !data.monthly || data.monthly.length < 36) return;
-      var byM = [[],[],[],[],[],[],[],[],[],[],[],[]];
-      var cutoff = new Date().getFullYear() - 15;
-      for (var i = 1; i < data.monthly.length; i++) {
-        var p = data.monthly[i-1], q = data.monthly[i];
-        var dt = new Date(q.d);
-        if (dt.getFullYear() < cutoff || !isFinite(p.c) || p.c <= 0) continue;
-        var ret = ((q.c - p.c) / p.c) * 100;
-        if (isFinite(ret) && Math.abs(ret) < 95) byM[dt.getMonth()].push(ret);
-      }
-      var mv = [], wv = [];
-      for (var mm = 0; mm < 12; mm++) {
-        var arr = byM[mm];
-        if (arr.length < 5) return; // not enough — keep modelled
-        var s = 0, w = 0;
-        for (var x = 0; x < arr.length; x++) { s += arr[x]; if (arr[x] > 0) w++; }
-        mv.push(+(s/arr.length).toFixed(1));
-        wv.push(Math.round(w/arr.length*100));
-      }
-      demoRealCache[a.sym] = { m: mv, win: wv };
-      if (demoSel === idx) demoRender(mv, wv, true);
-    })
-    .catch(function(){});
-}
-
-function demoSelect(idx) {
-  demoSel = idx;
-  var chips = document.querySelectorAll('.demo-chip');
-  for (var i = 0; i < chips.length; i++) chips[i].classList.toggle('on', i === idx);
-  var a = DEMO_ASSETS[idx];
-  if (demoRealCache[a.sym]) {
-    demoRender(demoRealCache[a.sym].m, demoRealCache[a.sym].win, true);
-  } else {
-    demoRender(a.m, a.win, false);
-    demoUpgradeReal(idx);
-  }
-}
-
-(function initDemo(){
-  var wrap = document.getElementById('demoChips');
-  if (!wrap) return;
-  var html = '';
-  for (var i = 0; i < DEMO_ASSETS.length; i++) {
-    html += '<button class="demo-chip' + (i===0?' on':'') + '" onclick="demoSelect(' + i + ')">' + DEMO_ASSETS[i].label + '</button>';
-  }
-  wrap.innerHTML = html;
-  demoSelect(0);
-})();
-
-// ============================================================
-// SCROLL REVEAL
-// ============================================================
-(function(){
-  var els = document.querySelectorAll('.reveal, .reveal-stagger');
-  if (!('IntersectionObserver' in window)) {
-    for (var i = 0; i < els.length; i++) els[i].classList.add('in');
-    return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  function rows() {
+    var h = '<div class="tx-term__row tx-term__row--head"><span>Asset</span><span>Avg ' + AB[cm] + '</span><span>Win</span><span>Signal</span></div>';
+    ASSETS.forEach(function (a, i) {
+      var d = data[a.id], m = d && d.months[cm];
+      var attrs = ' data-tx-sid="' + a.id + '" data-tx-month="' + AB[cm] + '"';
+      var empty = failed[a.id] ? dash : skel;
+      var avg = m ? '<span class="' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' : '<span' + attrs + ' data-tx-field="avg">' + empty + '</span>';
+      var win = m ? '<span' + attrs + ' data-tx-field="win">' + m.winRate + '%</span>' : '<span' + attrs + ' data-tx-field="win">' + empty + '</span>';
+      var sig = !m ? empty : d.source !== 'verified' ? '<span class="tx-badge tx-badge--modelled">Modelled</span>'
+        : (function (v) { return '<span class="tx-badge ' + BADGE[v] + '">' + v.charAt(0) + v.slice(1).toLowerCase() + '</span>'; })(TX.verdict(m.avgReturn, m.winRate));
+      h += '<button type="button" aria-pressed="' + (i === sel) + '" class="tx-term__row' + (i === sel ? ' is-active' : '') + '" data-i="' + i + '">' +
+        '<span class="tx-term__name">' + esc(a.label) + '<small>' + esc(a.sym) + '</small></span>' + avg + win + '<span>' + sig + '</span></button>';
     });
-  }, { threshold: 0.12 });
-  for (var j = 0; j < els.length; j++) io.observe(els[j]);
-})();
+    // Re-rendering replaces the buttons: keep keyboard focus on the same asset.
+    var f = document.activeElement, fi = f && f.closest && f.closest('#heroRows') ? f.getAttribute('data-i') : null;
+    $('heroRows').innerHTML = h;
+    if (fi !== null) { var nb = $('heroRows').querySelector('[data-i="' + fi + '"]'); if (nb) nb.focus(); }
+  }
 
-// ============================================================
-// LIVE TICKER — real quotes via /api/prices, static fallback
-// ============================================================
-(function(){
-  var SYMS = ['^spx','^ndq','^dji','aapl.us','msft.us','nvda.us','tsla.us','amzn.us','meta.us','gld.us','btcusd','^ukx','^dax'];
-  var NAMES = {'^spx':'S&P 500','^ndq':'NASDAQ','^dji':'DOW','aapl.us':'AAPL','msft.us':'MSFT','nvda.us':'NVDA','tsla.us':'TSLA','amzn.us':'AMZN','meta.us':'META','gld.us':'GLD','btcusd':'BTC','^ukx':'FTSE 100','^dax':'DAX'};
-  fetch('/api/prices?quotes=' + SYMS.join(','))
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if (!data || !data.quotes || data.quotes.length < 4) return;
-      var items = data.quotes.map(function(q){
-        var nm = NAMES[q.symbol] || q.symbol.toUpperCase();
-        var up = q.changePct === null ? true : q.changePct >= 0;
-        var chg = q.changePct === null ? '' : (up?'+':'') + q.changePct.toFixed(1) + '%';
-        var px = q.close >= 1000 ? q.close.toLocaleString('en-US',{maximumFractionDigits:0}) : q.close.toFixed(2);
-        return '<span class="t-item"><span class="t-sym">' + nm + '</span><span class="t-px">' + px + '</span><span class="' + (up?'t-up':'t-dn') + '">' + chg + '</span></span>';
-      }).join('');
-      var track = document.getElementById('ttrack');
-      if (track && items) track.innerHTML = items + items;
-    })
-    .catch(function(){});
-})();
+  function chart() {
+    var a = ASSETS[sel], d = data[a.id];
+    if ($('heroAsset').textContent !== a.label) $('heroAsset').textContent = a.label; // announce only on change
+    var axis = '', bars = '', vals = '';
+    for (var i = 0; i < 12; i++) axis += '<span' + (i === cm ? ' class="is-now"' : '') + '>' + AB[i].charAt(0) + '<span class="tx-sr">' + AB[i] + '</span></span>';
+    $('heroAxis').innerHTML = axis;
+    if (!d) {
+      for (var j = 0; j < 12; j++) { bars += '<div class="h-bar"><div class="h-bar__pos"></div><div class="h-bar__neg"></div></div>'; vals += '<span></span>'; }
+      $('heroBars').innerHTML = bars; $('heroVals').innerHTML = vals;
+      ['heroBest', 'heroWorst', 'heroYears'].forEach(function (k) { $(k).innerHTML = failed[a.id] ? dash : skel; });
+      return;
+    }
+    var max = 0.1;
+    d.months.forEach(function (m) { max = Math.max(max, Math.abs(m.avgReturn)); });
+    d.months.forEach(function (m, i) {
+      var h = Math.round(Math.abs(m.avgReturn) / max * 100);
+      var up = m.avgReturn >= 0;
+      bars += '<div class="h-bar' + (i === cm ? ' is-now' : '') + '" title="' + MO[i] + ' ' + TX.fmtPct(m.avgReturn, 2) + ' · ' + m.winRate + '% win">' +
+        '<div class="h-bar__pos">' + (up ? '<i style="height:' + h + '%"></i>' : '') + '</div>' +
+        '<div class="h-bar__neg">' + (up ? '' : '<i style="height:' + h + '%"></i>') + '</div></div>';
+      vals += '<span class="' + (up ? 'tx-up' : 'tx-down') + '" data-tx-sid="' + a.id + '" data-tx-month="' + AB[i] + '" data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 1).replace('%', '') + '</span>';
+    });
+    $('heroBars').innerHTML = bars; $('heroVals').innerHTML = vals;
+    $('heroBest').innerHTML = '<span class="tx-up">' + esc(d.best.month.slice(0, 3)) + ' ' + TX.fmtPct(d.best.avgReturn, 2) + '</span>';
+    $('heroWorst').innerHTML = '<span class="tx-down">' + esc(d.worst.month.slice(0, 3)) + ' ' + TX.fmtPct(d.worst.avgReturn, 2) + '</span>';
+    $('heroYears').textContent = d.source === 'verified' ? d.years + ' yrs' : 'Modelled';
+  }
+
+  function status() {
+    var s = $('heroStatus');
+    if (done < ASSETS.length && !ok) { s.textContent = 'Loading data'; s.className = 'tx-term__status'; return; }
+    if (!ok) { s.textContent = 'Data unavailable'; s.className = 'tx-term__status'; return; }
+    s.textContent = verified === ok ? 'Real data' : 'Real + modelled data';
+    s.className = 'tx-term__status is-live';
+  }
+
+  $('heroRows').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-i]');
+    if (!b) return;
+    sel = +b.getAttribute('data-i');
+    rows(); chart();
+  });
+
+  rows(); chart(); status();
+  ASSETS.forEach(function (a) {
+    TX.fetchVerified(a.id).then(function (d) {
+      done++;
+      if (d) { data[a.id] = d; ok++; verified++; } else failed[a.id] = true;
+      rows(); chart(); status();
+    });
+  });
+
+  // "The data" cards — sentences built from the same API.
+  Array.prototype.forEach.call(document.querySelectorAll('#dataCards [data-card]'), function (card) {
+    var id = card.getAttribute('data-card'), mo = +card.getAttribute('data-mo'), name = card.getAttribute('data-name');
+    var attrs = ' data-tx-sid="' + id + '" data-tx-month="' + AB[mo] + '"';
+    card.innerHTML = '<div class="tx-label"><span>' + esc(name) + ' · ' + MO[mo] + '</span><span class="tx-badge tx-badge--neutral">' + skel + '</span></div>' +
+      '<p>' + esc(name) + ' has risen in <span class="tx-num"' + attrs + ' data-tx-field="win">' + skel + '</span> of ' + MO[mo] + 's, with an average move of <span class="tx-num"' + attrs + ' data-tx-field="avg">' + skel + '</span>.</p>';
+    TX.fetchVerified(id).then(function (d) {
+      if (!d) {
+        card.querySelector('.tx-badge').textContent = 'Unavailable';
+        card.querySelector('p').innerHTML = 'Live figures for ' + esc(name) + ' are unavailable right now. <a href="/seasonality/' + id + '">See the full snapshot &rarr;</a>';
+        return;
+      }
+      var m = d.months[mo], verdict = TX.verdict(m.avgReturn, m.winRate);
+      var badge = d.source === 'verified' ? '<span class="tx-badge tx-badge--verified">&#10003; Verified · ' + m.observations + ' yrs</span>' : '<span class="tx-badge tx-badge--modelled">Modelled</span>';
+      card.innerHTML = '<div class="tx-label"><span>' + esc(name) + ' · ' + MO[mo] + '</span>' + badge + '</div>' +
+        '<p><strong>' + esc(name) + '</strong> has risen in <span class="tx-num"' + attrs + ' data-tx-field="win">' + m.winRate + '%</span> of the last ' + m.observations + ' ' + MO[mo] + 's' +
+        ', with an average move of <span class="tx-num ' + (m.avgReturn >= 0 ? 'tx-up' : 'tx-down') + '"' + attrs + ' data-tx-field="avg">' + TX.fmtPct(m.avgReturn, 2) + '</span>' +
+        (verdict === 'NEUTRAL' ? '.' : ', a historical seasonal ' + verdict.toLowerCase() + '.') + '</p>';
+    });
+  });
+});
+
+// "Get started" — carry the typed email into the sign-up form.
+function rdStart(e) {
+  e.preventDefault();
+  var v = (document.getElementById('rdEmail').value || '').trim();
+  // Hand the email over via sessionStorage, not the URL (keeps it out of logs and history).
+  try { if (v) sessionStorage.setItem('tx_signup_email', v); } catch (err) {}
+  window.location.href = '/auth.html?tab=up';
+  return false;
+}
 </script>
+
 <script>
 // ── Newsletter capture → Supabase newsletter_subscribers ──
 (function(){

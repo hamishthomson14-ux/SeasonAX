@@ -9,6 +9,10 @@
     {
       "source": "/seasonality/:id",
       "destination": "/api/seasonality/:id"
+    },
+    {
+      "source": "/compare/:pair",
+      "destination": "/api/seasonality/:pair?view=compare"
     }
   ],
   "headers": [

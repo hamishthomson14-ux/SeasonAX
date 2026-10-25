@@ -18,17 +18,23 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="description" content="Get in touch with the TimingAX team. Support, press, partnerships, and feedback.">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
 :root{
-  --bg:#04070F;--bg2:#070C18;--s1:#131E30;--s2:#192639;--s3:#1F2F45;
-  --amber:#E89318;--amber2:#F5A52F;--green:#00C97E;--red:#F04050;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);--green:var(--tx-up);--red:var(--tx-down);
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -112,13 +118,27 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </head>
 <body>
 
-<nav class="nav">
-  <div class="n-logo">
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-    <a href="/index.html"><div class="n-word">Timing<b>AX</b></div></a>
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
-  <a href="/auth.html"><button class="btn-cta">Start free &rarr;</button></a>
-</nav>
+</header>
+<!-- /tx:header -->
 
 <div class="page">
 
@@ -233,26 +253,43 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 
 </div>
 
-<footer>
-  <div style="display:flex;align-items:center;gap:9px">
-    <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-    <div class="n-word">Timing<b style="color:var(--amber2)">AX</b></div>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
   </div>
-  <div class="ft-links">
-    <a href="/index.html">Home</a>
-    <a href="/about.html">About</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/academy.html">Academy</a>
-    <a href="/seasonality.html">Browse Assets</a>
-    <a href="/methodology.html">Methodology</a>
-    <a href="/changelog.html">Changelog</a>
-    <a href="/terms-of-service.html">Terms</a>
-    <a href="/accessibility.html">Accessibility</a>
-    <a href="/privacy-policy.html">Privacy</a>
-  </div>
-  <div style="font:400 10px/1.6 var(--mono);color:var(--w5);max-width:520px;margin-bottom:10px;opacity:.7">TimingAX is an independently operated service. Not a registered investment adviser. Data is for informational purposes only and is not financial advice.</div>
-  <div class="ft-copy">&copy; 2026 TimingAX</div>
 </footer>
+<!-- /tx:footer -->
 
 <script>
 var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';

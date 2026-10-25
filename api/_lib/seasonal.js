@@ -115,3 +115,161 @@ export function bestWorst(months) {
   const sorted = months.map((m, i) => ({ ...m, i })).sort((a, b) => b.avg - a.avg);
   return { best: sorted[0], worst: sorted[sorted.length - 1] };
 }
+
+// ── Seasonal projection ─────────────────────────────────────────────────────
+// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t: msUTC, c }].
+export async function fetchDaily(sym) {
+  for (const host of YAHOO_HOSTS) {
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
+    let json = null;
+    try {
+      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
+      json = await r.json();
+    } catch (e) { continue; }
+    const result = json && json.chart && json.chart.result && json.chart.result[0];
+    const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
+    if (!result || !result.timestamp || !quote) continue;
+    const adj = result.indicators.adjclose && result.indicators.adjclose[0];
+    const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+    const rows = [];
+    for (let i = 0; i < result.timestamp.length; i++) {
+      const c = closes[i];
+      if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
+    }
+    return rows.length ? rows : null;
+  }
+  return null;
+}
+
+// How the asset moved over the next `days` calendar days from today's calendar date in each of
+// the last `years` years, as % paths from that year's start close. Per-day median, quartiles and
+// range across years. Only complete windows inside the data are used; null if under 5 years.
+export function computeProjection(rows, { today = new Date(), days = 90, years = 15 } = {}) {
+  if (!rows || rows.length < 2) return null;
+  const DAY = 864e5, MIN_YEARS = 5, MAX_GAP = 7 * DAY;
+  const last = rows[rows.length - 1];
+  const m = today.getUTCMonth(), d = today.getUTCDate(), y1 = today.getUTCFullYear();
+  const paths = [];
+  for (let y = y1 - years; y < y1; y++) {
+    const start = Date.UTC(y, m, d), end = start + days * DAY;
+    if (end > last.t) continue;                                   // window not complete in the data
+    let i = rows.findIndex((r) => r.t >= start);
+    if (i < 0 || rows[i].t - start > MAX_GAP || i === 0 && rows[0].t > start) continue; // before history / gap
+    const p0 = rows[i].c, path = [];
+    for (let k = 0; k <= days; k++) {
+      const t = start + k * DAY;
+      while (i + 1 < rows.length && rows[i + 1].t <= t) i++;
+      path.push((rows[i].c / p0 - 1) * 100);
+    }
+    paths.push({ year: y, path });
+  }
+  if (paths.length < MIN_YEARS) return null;
+  const q = (a, p) => { const s = a.slice().sort((x, z) => x - z), i = (s.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i); return s[lo] + (s[hi] - s[lo]) * (i - lo); };
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const out = { days, n: paths.length, up: 0, median: [], p25: [], p75: [], min: [], max: [],
+    from: new Date(Date.UTC(y1, m, d)).toISOString().slice(0, 10),
+    finals: paths.map((p) => ({ year: p.year, pct: r2(p.path[days]) })),
+    start: { date: new Date(last.t).toISOString().slice(0, 10), price: +last.c.toFixed(4) } };
+  out.up = paths.filter((p) => p.path[days] > 0).length;
+  for (let k = 0; k <= days; k++) {
+    const v = paths.map((p) => p.path[k]);
+    out.median.push(r2(q(v, 0.5))); out.p25.push(r2(q(v, 0.25))); out.p75.push(r2(q(v, 0.75)));
+    out.min.push(r2(Math.min.apply(null, v))); out.max.push(r2(Math.max.apply(null, v)));
+  }
+  return out;
+}
+
+// ── Weekly and turn-of-month patterns (from daily closes) ───────────────────
+// ISO-8601 week number (1–53) of a UTC timestamp.
+export function isoWeek(t) {
+  const d = new Date(t); const day = (d.getUTCDay() + 6) % 7;            // Mon=0
+  const th = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3); // Thursday of this week
+  const y = new Date(th).getUTCFullYear();
+  return 1 + Math.floor((th - Date.UTC(y, 0, 4) + ((new Date(Date.UTC(y, 0, 4)).getUTCDay() + 6) % 7) * 864e5) / (7 * 864e5));
+}
+function isoYear(t) { const d = new Date(t), day = (d.getUTCDay() + 6) % 7; return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3)).getUTCFullYear(); }
+
+// Over the last `years` years of daily closes: average return + win rate for each ISO week of the year
+// (week 53 folded into 52), and the turn-of-month window (last trading day + first 3 of the next month)
+// against the typical 4-day stretch on other days. null when under 5 years of data.
+export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
+  if (!rows || rows.length < 2) return null;
+  const DAY = 864e5, cutoff = Date.UTC(today.getUTCFullYear() - years, today.getUTCMonth(), today.getUTCDate());
+  let s = rows.findIndex((r) => r.t >= cutoff); if (s < 0) return null;
+  const startT = Math.max(rows[0].t, cutoff), last = rows[rows.length - 1].t;
+  const span = (last - startT) / (365.25 * DAY);
+  if (span < 5) return null;
+  const R = rows.slice(Math.max(0, s - 1));                               // one close before the window as a base
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const stat = (a) => a.length ? { avg: r2(a.reduce((x, y) => x + y, 0) / a.length), win: Math.round(a.filter((x) => x > 0).length / a.length * 100), obs: a.length } : { avg: null, win: null, obs: 0 };
+
+  // Weekly: last close of each ISO week vs the previous week's last close.
+  const weekLast = [];
+  for (const r of R) { const k = isoYear(r.t) * 100 + isoWeek(r.t); if (weekLast.length && weekLast[weekLast.length - 1].k === k) weekLast[weekLast.length - 1].c = r.c; else weekLast.push({ k, w: isoWeek(r.t), c: r.c, t: r.t }); }
+  const byWeek = Array.from({ length: 52 }, () => []);
+  for (let i = 1; i < weekLast.length; i++) if (weekLast[i].t >= cutoff) byWeek[Math.min(weekLast[i].w, 52) - 1].push((weekLast[i].c / weekLast[i - 1].c - 1) * 100);
+  const weeks = byWeek.map((a, i) => ({ week: i + 1, ...stat(a) }));
+  const ranked = weeks.filter((w) => w.obs >= 5).sort((a, b) => b.avg - a.avg);
+
+  // Turn of the month on the daily series.
+  const tomDay = new Uint8Array(R.length), windows = [];
+  for (let i = 1; i + 3 < R.length; i++) {
+    if (new Date(R[i].t).getUTCMonth() === new Date(R[i + 1].t).getUTCMonth() || R[i].t < cutoff) continue;
+    windows.push((R[i + 3].c / R[i - 1].c - 1) * 100);                     // close before the last day -> 3rd day of next month
+    for (let k = 0; k < 4; k++) tomDay[i + k] = 1;
+  }
+  const other = [];
+  for (let i = 1; i < R.length; i++) if (!tomDay[i] && R[i].t >= cutoff) other.push(R[i].c / R[i - 1].c - 1);
+  const oAvg = other.length ? other.reduce((x, y) => x + y, 0) / other.length : 0;
+  const w = stat(windows);
+  return {
+    years: Math.min(years, Math.round(span)),
+    weeks, bestWeeks: ranked.slice(0, 3), worstWeeks: ranked.slice(-3).reverse(),
+    tom: { windowAvg: w.avg, windowWin: w.win, windows: w.obs, otherAvg4: r2(((1 + oAvg) ** 4 - 1) * 100) },
+  };
+}
+
+// ── Calendar feed (ICS) ─────────────────────────────────────────────────────
+// Same rule as the asset pages and tx.js.
+export function verdictOf(avg, win) {
+  if (avg >= 0.8 && win >= 60) return 'TAILWIND';
+  if (avg <= -0.5 && win <= 45) return 'HEADWIND';
+  return 'NEUTRAL';
+}
+const icsEsc = (s) => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+function icsFold(line) {                                   // RFC 5545: max 75 octets, continuation lines start with a space
+  const out = []; let cur = '';
+  for (const ch of line) {
+    if (Buffer.byteLength(cur + ch) > (out.length ? 74 : 75)) { out.push(cur); cur = ''; }
+    cur += ch;
+  }
+  out.push(cur);
+  return out.join('\r\n ');
+}
+// entries: [{ item, months }] (months as from computeAdaptiveMonths). One all-day event per historically
+// strong (TAILWIND) or weak (HEADWIND) month over the next 12 months, with a reminder the day before.
+export function buildCalendar(entries, { now = new Date() } = {}) {
+  const stamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const ymd = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
+  const pctS = (v) => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//TimingAX//Seasonal windows//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'X-WR-CALNAME:TimingAX seasonal windows', 'X-WR-CALDESC:Historically strong and weak months for your TimingAX watchlist. A historical pattern\\, not a forecast.',
+    'REFRESH-INTERVAL;VALUE=DURATION:P1D', 'X-PUBLISHED-TTL:P1D'];
+  for (const { item, months } of entries) {
+    for (let k = 0; k < 12; k++) {
+      const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + k, 1)), end = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
+      const m = months[d.getUTCMonth()], v = verdictOf(m.avg, m.win);
+      if (v === 'NEUTRAL') continue;
+      const strong = v === 'TAILWIND', mn = MONTH_NAMES[d.getUTCMonth()];
+      lines.push('BEGIN:VEVENT', `UID:${item.id}-${d.toISOString().slice(0, 7)}@timingax.co.uk`, `DTSTAMP:${stamp}`,
+        `DTSTART;VALUE=DATE:${ymd(d)}`, `DTEND;VALUE=DATE:${ymd(end)}`, 'TRANSP:TRANSPARENT',
+        `SUMMARY:${icsEsc(`${item.name}: historically ${strong ? 'strong' : 'weak'} month (${pctS(m.avg)})`)}`,
+        `DESCRIPTION:${icsEsc(`${mn} has averaged ${pctS(m.avg)} for ${item.name}, positive in ${m.win}% of the last ${m.n} years. https://www.timingax.co.uk/seasonality/${item.id} — A historical pattern, not a forecast.`)}`,
+        `URL:https://www.timingax.co.uk/seasonality/${item.id}`,
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-P1D', `DESCRIPTION:${icsEsc(`${item.name} enters a historically ${strong ? 'strong' : 'weak'} month tomorrow`)}`, 'END:VALARM',
+        'END:VEVENT');
+    }
+  }
+  lines.push('END:VCALENDAR');
+  return lines.map(icsFold).join('\r\n') + '\r\n';
+}

@@ -18,19 +18,25 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@700;800&family=Fraunces:opsz,wght@9..144,600..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
 :root{
-  --bg:#04070F;--bg2:#070C18;--bg3:#0B1120;--bg4:#0F1728;
-  --s1:#131E30;--s2:#192639;--s3:#1F2F45;--s4:#263858;
-  --amber:#E89318;--amber2:#F5A52F;
-  --green:#00C97E;--red:#F04050;--blue:#4DA3FF;--purple:#9B7FFF;
-  --w:#EDF2FA;--w2:#C4D0DF;--w3:#8FA3B8;--w4:#4D6880;--w5:#243A52;
-  --b1:#0F1E30;--b2:#162540;--b3:#1E3050;
-  --mono:"IBM Plex Mono",monospace;--disp:"Syne",sans-serif;--disp-serif:"Fraunces",serif;--sans:"Inter",sans-serif;
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);--bg4:var(--tx-bg-3);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);--s4:#22324F;
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);--blue:var(--tx-info);--purple:#9B7FFF;
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
 }
 body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -222,28 +228,30 @@ body.is-pro .tool-card.pro-locked{opacity:1}
 .set-msg{font:500 11px/1.4 var(--mono);margin-top:8px;min-height:14px}
 .set-msg.ok{color:var(--green)} .set-msg.err{color:var(--red)}
 .set-close{float:right;background:none;border:none;color:var(--w4);font-size:22px;cursor:pointer;line-height:1}
+/* App header: centre clock between name and actions; hide on small screens */
+.tx-header--app .tb-center{display:flex;align-items:center;gap:14px;margin-left:auto}
+.tx-header--app .tb-center + .tx-app-actions{margin-left:18px}
+@media (max-width:900px){.tx-header--app .tb-center{display:none}.tx-header--app .tb-center + .tx-app-actions{margin-left:auto}}
+@media (max-width:520px){.tx-header--app .user-pill{display:none}}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="tb-left">
-    <div class="tb-logo">
-      <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg>
-      <div class="tb-word">Timing<b>AX</b></div>
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header tx-header--app">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <span class="tx-app-name">Dashboard</span>
+    <div class="tb-center">
+      <div class="tb-clock" id="tbClock"></div>
+      <div class="market-status" id="mktStatus"></div>
     </div>
-    <div class="tb-divider"></div>
-    <div class="tb-label">Dashboard</div>
+    <div class="tx-app-actions">
+      <div class="user-pill" id="userPill">Loading...</div>
+      <button class="tx-btn tx-btn--ghost tx-btn--sm" onclick="openSettings()" title="Account settings">&#9881; Account</button>
+      <button class="tx-btn tx-btn--sm" onclick="signOut()">Sign out</button>
+    </div>
   </div>
-  <div class="tb-center">
-    <div class="tb-clock" id="tbClock"></div>
-    <div class="market-status" id="mktStatus"></div>
-  </div>
-  <div class="tb-right">
-    <div class="user-pill" id="userPill">Loading...</div>
-    <button class="set-btn" onclick="openSettings()" title="Account settings">&#9881; Account</button>
-    <button class="btn-so" onclick="signOut()">Sign out</button>
-  </div>
-</div>
+</header>
 
 <!-- ACCOUNT SETTINGS MODAL -->
 <div class="set-overlay" id="setOverlay">
@@ -339,8 +347,8 @@ body.is-pro .tool-card.pro-locked{opacity:1}
         <a href="/market-seasonality.html" class="tool-card pro-locked" onclick="lsSet('backtest')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(77,163,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="8" stroke="#4DA3FF" stroke-width="1.7"/><path d="M12.5 8v4.5l3 2" stroke="#4DA3FF" stroke-width="1.7"/><path d="M4.5 5.5v3.2h3.2" stroke="#E89318" stroke-width="1.7"/><path d="M4.7 8.5A8 8 0 0 1 8 5.1" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">02</div><span class="tc-lock">&#128274; PRO</span></div></div>
           <div class="tc-name">Strategy Backtest</div>
-          <div class="tc-desc">Build a seasonal entry/exit strategy and test it across 25 years. Equity curve, CAGR, win rate vs buy-and-hold.</div>
-          <div class="tc-footer"><span class="tc-stat">2000 &#8212; 2025</span><span class="tc-arr">&#8599;</span></div>
+          <div class="tc-desc">Build a seasonal entry/exit strategy and test it across up to 20 years of real prices. Equity curve, CAGR, win rate vs buy-and-hold.</div>
+          <div class="tc-footer"><span class="tc-stat">Up to 20 years</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/market-seasonality.html" class="tool-card" onclick="lsSet('events')">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(155,127,255,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5h4l2.2-6 3.6 11 2.6-7.5 1.6 2.5h5" stroke="#9B7FFF" stroke-width="1.7"/><circle cx="12.3" cy="17.5" r="1.4" fill="#E89318"/></svg></div><div style="text-align:right"><div class="tc-num">03</div><span class="tc-badge new">19 events</span></div></div>
@@ -631,203 +639,6 @@ updateClock();setInterval(updateClock,30000);
 function lsSet(mode){ localStorage.setItem('sax_mode', mode); }
 function quickGo(id){ localStorage.setItem('sax_mode','analyzer'); localStorage.setItem('sax_preselect',id); window.location.href='/market-seasonality.html'; }
 
-const PATTERNS = {
-  // Large-cap tech growth
-  techGrowth: [
-    {m:"Jan",avg:2.4,win:66,note:"January effect strongest in mega-cap tech"},
-    {m:"Feb",avg:0.6,win:55,note:"Earnings reports drive mixed results"},
-    {m:"Mar",avg:1.1,win:61,note:"End of quarter tech rebalancing"},
-    {m:"Apr",avg:2.0,win:67,note:"Earnings season catalyst"},
-    {m:"May",avg:0.3,win:54,note:"Rotation trade begins; gains fade"},
-    {m:"Jun",avg:-0.3,win:47,note:"Rate concerns weigh on growth"},
-    {m:"Jul",avg:2.3,win:68,note:"Strong Q2 earnings month"},
-    {m:"Aug",avg:0.7,win:56,note:"Slight strength on AI/tech momentum"},
-    {m:"Sep",avg:-1.4,win:39,note:"Worst month; risk-off selling"},
-    {m:"Oct",avg:0.9,win:58,note:"Q3 earnings recover losses"},
-    {m:"Nov",avg:2.5,win:73,note:"Strongest month; holiday + tech rally"},
-    {m:"Dec",avg:1.9,win:71,note:"Year-end tech positioning"}
-  ],
-  // Broad market index
-  broadIndex: [
-    {m:"Jan",avg:1.1,win:62,note:"January effect; new year positioning"},
-    {m:"Feb",avg:0.1,win:52,note:"Often flat; earnings season winds down"},
-    {m:"Mar",avg:1.2,win:65,note:"Q1 end window-dressing lifts prices"},
-    {m:"Apr",avg:1.5,win:68,note:"Historically strongest spring month"},
-    {m:"May",avg:0.3,win:57,note:"Sell in May effect moderates gains"},
-    {m:"Jun",avg:0.1,win:52,note:"Summer doldrums; low conviction"},
-    {m:"Jul",avg:1.4,win:64,note:"Mid-year rally; Q2 earnings"},
-    {m:"Aug",avg:-0.2,win:47,note:"Low volume; pullback risk"},
-    {m:"Sep",avg:-0.7,win:42,note:"Historically worst month of the year"},
-    {m:"Oct",avg:0.9,win:59,note:"Bear killer; volatile but recovers"},
-    {m:"Nov",avg:1.7,win:70,note:"Post-election & holiday rally"},
-    {m:"Dec",avg:1.5,win:72,note:"Santa Claus rally; year-end dressing"}
-  ],
-  // EV / high-volatility growth
-  evGrowth: [
-    {m:"Jan",avg:5.2,win:68,note:"New year growth optimism surge"},
-    {m:"Feb",avg:2.1,win:57,note:"Delivery numbers drive volatility"},
-    {m:"Mar",avg:1.4,win:54,note:"Q1 production updates move shares"},
-    {m:"Apr",avg:3.8,win:62,note:"Q1 delivery beats historically"},
-    {m:"May",avg:-3.1,win:42,note:"Risk-off rotation hits growth hard"},
-    {m:"Jun",avg:-2.4,win:40,note:"Summer selloff in speculative names"},
-    {m:"Jul",avg:4.1,win:63,note:"Delivery numbers + earnings catalyst"},
-    {m:"Aug",avg:1.8,win:55,note:"Battery/tech announcements move shares"},
-    {m:"Sep",avg:-3.7,win:36,note:"Worst month; macro headwinds"},
-    {m:"Oct",avg:2.2,win:57,note:"Q3 earnings catalyst"},
-    {m:"Nov",avg:5.8,win:70,note:"Strong seasonality; momentum stocks surge"},
-    {m:"Dec",avg:3.1,win:63,note:"Year-end rebalancing into growth"}
-  ],
-  // Financials / banks
-  financials: [
-    {m:"Jan",avg:1.8,win:64,note:"New year positioning in cyclicals"},
-    {m:"Feb",avg:0.6,win:55,note:"Q4 earnings reports; dividend focus"},
-    {m:"Mar",avg:0.4,win:54,note:"Rate expectations drive bank stocks"},
-    {m:"Apr",avg:1.9,win:66,note:"Q1 earnings season; loan growth data"},
-    {m:"May",avg:0.2,win:52,note:"Mixed; rate curve sensitivity"},
-    {m:"Jun",avg:0.5,win:54,note:"Fed meeting outcomes drive moves"},
-    {m:"Jul",avg:1.6,win:63,note:"Q2 earnings; net interest margin focus"},
-    {m:"Aug",avg:-0.3,win:48,note:"Summer lull in financial trading"},
-    {m:"Sep",avg:-0.8,win:43,note:"Risk-off hurts financials"},
-    {m:"Oct",avg:1.4,win:62,note:"Q3 earnings beat expectations historically"},
-    {m:"Nov",avg:2.2,win:70,note:"Strong month; rate expectations lift banks"},
-    {m:"Dec",avg:1.1,win:64,note:"Year-end tax-loss reversal"}
-  ],
-  // Energy / oil
-  energy: [
-    {m:"Jan",avg:2.1,win:63,note:"Heating demand & cold weather premium"},
-    {m:"Feb",avg:0.8,win:55,note:"OPEC meeting season; supply news"},
-    {m:"Mar",avg:1.5,win:61,note:"Spring driving season demand builds"},
-    {m:"Apr",avg:1.2,win:59,note:"Gasoline demand peak approaches"},
-    {m:"May",avg:0.9,win:57,note:"Summer driving season pricing"},
-    {m:"Jun",avg:-0.4,win:47,note:"Refinery maintenance; mixed supply"},
-    {m:"Jul",avg:0.3,win:52,note:"Peak summer demand; price plateau"},
-    {m:"Aug",avg:-0.7,win:45,note:"Demand concerns emerge; weak month"},
-    {m:"Sep",avg:-1.2,win:41,note:"End of driving season; demand falls"},
-    {m:"Oct",avg:0.6,win:54,note:"Heating oil demand builds"},
-    {m:"Nov",avg:1.4,win:61,note:"OPEC cuts; winter demand premium"},
-    {m:"Dec",avg:0.8,win:56,note:"Year-end energy demand; cold snap risk"}
-  ],
-  // Consumer / retail
-  consumer: [
-    {m:"Jan",avg:0.4,win:54,note:"Post-holiday hangover; returns season"},
-    {m:"Feb",avg:0.9,win:58,note:"Valentine's & Presidents Day sales"},
-    {m:"Mar",avg:1.3,win:62,note:"Spring refresh drives consumer spending"},
-    {m:"Apr",avg:1.6,win:65,note:"Easter, spring break; strong sales"},
-    {m:"May",avg:0.7,win:57,note:"Mother's Day; mid-spring spending"},
-    {m:"Jun",avg:0.2,win:52,note:"Summer slump in retail begins"},
-    {m:"Jul",avg:1.1,win:60,note:"Amazon Prime Day; summer sales surge"},
-    {m:"Aug",avg:1.3,win:62,note:"Back-to-school; strong retail month"},
-    {m:"Sep",avg:-0.3,win:48,note:"Post back-to-school lull"},
-    {m:"Oct",avg:0.8,win:57,note:"Halloween; early holiday prep"},
-    {m:"Nov",avg:2.4,win:73,note:"Black Friday / Cyber Monday surge"},
-    {m:"Dec",avg:2.1,win:75,note:"Strongest month; holiday shopping peak"}
-  ],
-  // Healthcare / pharma
-  healthcare: [
-    {m:"Jan",avg:1.2,win:62,note:"New year health insurance renewals"},
-    {m:"Feb",avg:0.8,win:57,note:"Q4 pharma earnings; pipeline updates"},
-    {m:"Mar",avg:0.6,win:55,note:"FDA approval cycles; mixed results"},
-    {m:"Apr",avg:1.0,win:59,note:"Q1 earnings; drug pricing news"},
-    {m:"May",avg:0.5,win:54,note:"ASCO conference; oncology catalysts"},
-    {m:"Jun",avg:0.3,win:52,note:"Summer clinical trial data"},
-    {m:"Jul",avg:0.9,win:58,note:"Q2 earnings; hospital utilization data"},
-    {m:"Aug",avg:0.4,win:53,note:"Historically defensive; modest gains"},
-    {m:"Sep",avg:-0.2,win:48,note:"Slight weakness; political drug pricing"},
-    {m:"Oct",avg:1.1,win:61,note:"Q3 earnings; insurance enrollment"},
-    {m:"Nov",avg:1.6,win:68,note:"Strong defensives amid equity rally"},
-    {m:"Dec",avg:1.3,win:65,note:"Year-end defensive positioning"}
-  ],
-  // Small-cap speculative (AI, crypto miners, SPACs)
-  speculative: [
-    {m:"Jan",avg:8.4,win:68,note:"Speculative January surge; retail FOMO"},
-    {m:"Feb",avg:4.2,win:57,note:"Momentum names carry January gains"},
-    {m:"Mar",avg:-2.1,win:43,note:"Profit-taking after early gains"},
-    {m:"Apr",avg:3.1,win:56,note:"Earnings season hype for growth names"},
-    {m:"May",avg:-4.8,win:38,note:"Brutal May selloff in speculative names"},
-    {m:"Jun",avg:-5.2,win:35,note:"Worst month; risk-off hits hardest here"},
-    {m:"Jul",avg:5.1,win:61,note:"Relief rally; FOMO re-entry"},
-    {m:"Aug",avg:2.3,win:54,note:"Retail trader activity boosts names"},
-    {m:"Sep",avg:-6.1,win:33,note:"Worst seasonal month for speculative"},
-    {m:"Oct",avg:4.2,win:59,note:"Crypto / AI hype cycles often restart"},
-    {m:"Nov",avg:9.8,win:71,note:"Strongest month; momentum stocks surge"},
-    {m:"Dec",avg:3.4,win:58,note:"Year-end chase for high-beta names"}
-  ],
-  // Gold / commodities
-  gold: [
-    {m:"Jan",avg:1.8,win:64,note:"New year safe-haven & jewelry demand"},
-    {m:"Feb",avg:1.2,win:61,note:"Valentine's season jewelry demand"},
-    {m:"Mar",avg:-0.5,win:46,note:"Profit-taking after Q1 strength"},
-    {m:"Apr",avg:0.8,win:57,note:"Indian wedding season demand"},
-    {m:"May",avg:0.5,win:54,note:"Modest gains as equities weaken"},
-    {m:"Jun",avg:-0.7,win:44,note:"Weakest month; equity strength reduces safe-haven"},
-    {m:"Jul",avg:0.3,win:52,note:"Flat to slight gains in summer"},
-    {m:"Aug",avg:1.5,win:63,note:"Historically strong; geopolitical risk"},
-    {m:"Sep",avg:1.2,win:60,note:"Festival demand from India & China"},
-    {m:"Oct",avg:0.6,win:55,note:"Diwali demand; mixed signals"},
-    {m:"Nov",avg:0.2,win:51,note:"Often flat as equities rally"},
-    {m:"Dec",avg:-0.3,win:47,note:"Year-end profit-taking by funds"}
-  ],
-  // Crypto
-  crypto: [
-    {m:"Jan",avg:14.2,win:70,note:"Strong new year rally historically"},
-    {m:"Feb",avg:9.8,win:65,note:"Momentum continues post-January"},
-    {m:"Mar",avg:8.5,win:63,note:"Spring bull runs common"},
-    {m:"Apr",avg:12.1,win:68,note:"Historically one of the best months"},
-    {m:"May",avg:-5.2,win:40,note:"'Sell in May' extreme in crypto"},
-    {m:"Jun",avg:-8.7,win:35,note:"Worst month; summer selloffs"},
-    {m:"Jul",avg:8.3,win:62,note:"Mid-year recovery after June lows"},
-    {m:"Aug",avg:3.1,win:55,note:"Modest summer gains"},
-    {m:"Sep",avg:-5.8,win:38,note:"Crypto follows equity weakness"},
-    {m:"Oct",avg:21.4,win:75,note:"'Uptober' — historically best month"},
-    {m:"Nov",avg:18.6,win:72,note:"Bull runs peak; halving cycles"},
-    {m:"Dec",avg:5.2,win:58,note:"Mixed; profit-taking vs Santa rally"}
-  ],
-  // Bonds / treasuries
-  bonds: [
-    {m:"Jan",avg:0.8,win:60,note:"Flight to safety in new year"},
-    {m:"Feb",avg:0.3,win:53,note:"Modest gains as equities peak"},
-    {m:"Mar",avg:-0.6,win:44,note:"Rate hike fears weigh on bonds"},
-    {m:"Apr",avg:-0.4,win:46,note:"Equity strength reduces bond demand"},
-    {m:"May",avg:0.9,win:61,note:"Bonds rally as equities weaken"},
-    {m:"Jun",avg:0.5,win:55,note:"Summer safety trade begins"},
-    {m:"Jul",avg:0.2,win:52,note:"Mixed; Fed meeting outcomes"},
-    {m:"Aug",avg:1.1,win:62,note:"Summer safety demand"},
-    {m:"Sep",avg:-0.3,win:47,note:"Equity weakness doesn't always help"},
-    {m:"Oct",avg:-0.5,win:44,note:"Risk-on October hurts bonds"},
-    {m:"Nov",avg:-0.8,win:41,note:"Equity rally pressures treasuries"},
-    {m:"Dec",avg:0.4,win:54,note:"Year-end safe-haven demand"}
-  ],
-  // Defense / industrials
-  defense: [
-    {m:"Jan",avg:1.4,win:62,note:"Budget cycle; new year defense spending"},
-    {m:"Feb",avg:0.9,win:58,note:"Q4 earnings; contract announcements"},
-    {m:"Mar",avg:1.1,win:60,note:"Geopolitical risk premium builds"},
-    {m:"Apr",avg:1.0,win:59,note:"Q1 earnings; backlog growth focus"},
-    {m:"May",avg:0.7,win:56,note:"Relatively defensive in May selloff"},
-    {m:"Jun",avg:0.5,win:54,note:"Congressional budget season"},
-    {m:"Jul",avg:0.8,win:57,note:"Q2 earnings; program updates"},
-    {m:"Aug",avg:0.6,win:55,note:"Holds up well in summer doldrums"},
-    {m:"Sep",avg:-0.4,win:47,note:"Slight weakness with broader market"},
-    {m:"Oct",avg:1.2,win:62,note:"Q3 earnings; geopolitical catalysts"},
-    {m:"Nov",avg:1.8,win:68,note:"Defense spending optimism; strong month"},
-    {m:"Dec",avg:1.4,win:65,note:"Year-end defense contract awards"}
-  ],
-  // Semiconductors
-  semis: [
-    {m:"Jan",avg:3.1,win:67,note:"CES & AI chip demand drives January"},
-    {m:"Feb",avg:1.2,win:58,note:"Q4 fab utilization reports"},
-    {m:"Mar",avg:1.8,win:63,note:"PC/server refresh cycle begins"},
-    {m:"Apr",avg:2.4,win:66,note:"Q1 earnings; data center demand"},
-    {m:"May",avg:-0.8,win:46,note:"Supply chain concerns resurface"},
-    {m:"Jun",avg:-1.1,win:43,note:"Inventory correction fears"},
-    {m:"Jul",avg:2.8,win:67,note:"Q2 earnings; AI GPU demand"},
-    {m:"Aug",avg:1.4,win:60,note:"Chip demand forecasts; Nvidia effect"},
-    {m:"Sep",avg:-1.8,win:38,note:"Worst month; inventory cycle fears"},
-    {m:"Oct",avg:1.5,win:62,note:"Q3 earnings; forward guidance"},
-    {m:"Nov",avg:3.2,win:72,note:"Strongest month; AI capex spend"},
-    {m:"Dec",avg:2.1,win:68,note:"Year-end tech spending; chip orders"}
-  ]
-};
 var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var MF_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -853,7 +664,7 @@ var OB_STEPS = [
     body: 'Your dashboard gives you direct access to all nine research tools. Here are the ones most people start with:',
     tools: [
       {icon:'&#128197;', bg:'rgba(232,147,24,.1)', name:'Seasonal Analyzer', desc:'Pick any asset, see its 15-year monthly pattern'},
-      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across 25 years'},
+      {icon:'&#9201;', bg:'rgba(77,163,255,.1)', name:'Strategy Backtest', desc:'Test a buy/sell window across up to 20 years'},
       {icon:'&#128269;', bg:'rgba(0,201,126,.1)', name:'Seasonal Screener', desc:'See what’s entering strength this month'},
     ]
   },
@@ -892,13 +703,13 @@ function obRender() {
 
   if (s.preview) {
     var mi = new Date().getMonth();
-    var sp = PATTERNS.broadIndex[mi], cr = PATTERNS.crypto[mi];
+    var sp = dm('sp500', mi), cr = dm('btc', mi);
     function c(v){return v>=0?'g':'r';}
-    function f(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
+    function cell(id, p, f, label, cls){ return '<div class="ob-pv-cell"><div class="ob-pv-val '+(p?cls:'')+'"'+dtag(id,mi,f)+'>'+(p?(f==='win'?p.win+'%':TX.fmtPct(p.avg,1)):ph(id))+'</div><div class="ob-pv-lbl">'+label+'</div></div>'; }
     html += '<div class="ob-preview"><div class="ob-pv-grid">' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(sp.avg) + '">' + f(sp.avg) + '</div><div class="ob-pv-lbl">S&amp;P 500 this month</div></div>' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val a">' + sp.win + '%</div><div class="ob-pv-lbl">Win rate</div></div>' +
-      '<div class="ob-pv-cell"><div class="ob-pv-val ' + c(cr.avg) + '">' + f(cr.avg) + '</div><div class="ob-pv-lbl">Bitcoin this month</div></div>' +
+      cell('sp500', sp, 'avg', 'S&amp;P 500 · '+MO_NAMES[mi]+' avg', sp && c(sp.avg)) +
+      cell('sp500', sp, 'win', 'S&amp;P 500 win rate', 'a') +
+      cell('btc', cr, 'avg', 'Bitcoin · '+MO_NAMES[mi]+' avg', cr && c(cr.avg)) +
     '</div></div>';
   }
 
@@ -950,49 +761,104 @@ function obMaybeShow() {
 function sgn(v){return (v>=0?'+':'')+Number(v).toFixed(1)+'%';}
 function col(v){return v>=0?'g':'r';}
 
-function buildRibbon(mi){
-  // A live terminal tape: the current month's seasonal posture across the
-  // major asset classes, with a "market read" lead block. All from PATTERNS.
-  var mn = MO_NAMES[mi];
-  var assets = [
-    {tk:'S&P 500', k:'broadIndex'},
-    {tk:'NASDAQ', k:'techGrowth'},
-    {tk:'Semis', k:'semis'},
-    {tk:'Bitcoin', k:'crypto'},
-    {tk:'Gold', k:'gold'},
-    {tk:'Energy', k:'energy'},
-    {tk:'Health', k:'healthcare'},
-    {tk:'Consumer', k:'consumer'},
-    {tk:'Defense', k:'defense'},
-    {tk:'Bonds', k:'bonds'}
-  ];
-  // Lead = breadth read across these asset classes this month
-  var pos = 0, sumAvg = 0;
-  assets.forEach(function(a){ var p=PATTERNS[a.k][mi]; if(p.avg>0) pos++; sumAvg+=p.avg; });
-  var breadth = Math.round(pos/assets.length*100);
-  var avgAll = sumAvg/assets.length;
-  var read = breadth>=70?'RISK-ON':breadth<=35?'RISK-OFF':'MIXED';
-  var readCls = breadth>=70?'g':breadth<=35?'r':'a';
+// ---- Seasonal data: real per-asset figures from /api/v1/seasonality (same source as the rest of the site).
+// Classes are represented by catalogue ETFs. Skeletons until loaded; nothing invented.
+var DASH = [
+  {id:'sp500', tk:'S&P 500',          n:'Broad market'},
+  {id:'nasdaq',tk:'NASDAQ',           n:'Tech growth'},
+  {id:'btc',   tk:'Bitcoin',          n:'Crypto'},
+  {id:'gld',   tk:'Gold (GLD)',       n:'Safe haven'},
+  {id:'xlk',   tk:'Tech (XLK)',       n:'Technology'},
+  {id:'xle',   tk:'Energy (XLE)',     n:'Energy sector'},
+  {id:'xlv',   tk:'Health (XLV)',     n:'Defensive'},
+  {id:'xly',   tk:'Consumer (XLY)',   n:'Consumer'},
+  {id:'iwm',   tk:'Small caps (IWM)', n:'Russell 2000'},
+  {id:'tlt',   tk:'Bonds (TLT)',      n:'Treasuries'}
+];
+var DASH_DATA = {}, DASH_FAILED = {}, DASH_LOADING = false;
+var SKEL = '<span class="tx-skel"></span>', DASHMARK = '<span style="color:var(--w4)">\u2014</span>';
+// Placeholder for an asset: shimmer while loading, a dash once its data is known to be unavailable.
+function ph(id){ return DASH_FAILED[id] ? DASHMARK : SKEL; }
+function dashDone(){ return DASH.every(function(a){ return DASH_DATA[a.id] || DASH_FAILED[a.id]; }); }
+function dm(id, mi){ var d=DASH_DATA[id]; if(!d) return null; var m=d.months[mi]; return {avg:m.avgReturn, win:m.winRate, src:d.source}; }
+function dtag(id, mi, f){ return ' data-tx-sid="'+id+'" data-tx-month="'+MO_NAMES[mi].slice(0,3)+'" data-tx-field="'+f+'"'; }
+function dashLoad(){
+  if (DASH_LOADING) return;
+  if (!window.TX) { document.addEventListener('DOMContentLoaded', dashLoad); return; }
+  DASH_LOADING = true;
+  DASH.forEach(function(a){
+    TX.fetchVerified(a.id).then(function(d){
+      if (d) DASH_DATA[a.id] = d; else DASH_FAILED[a.id] = true;
+      renderSeasonal(new Date().getMonth());
+      var ov = document.getElementById('obOverlay');
+      if (ov && ov.style.display === 'flex' && OB_STEPS[obStep] && OB_STEPS[obStep].preview) obRender();
+    });
+  });
+}
 
-  var cells = assets.map(function(a){
-    var p = PATTERNS[a.k][mi];
+function buildRibbon(mi){
+  var mn = MO_NAMES[mi];
+  var loaded = DASH.filter(function(a){ return dm(a.id, mi); });
+  var pos = loaded.filter(function(a){ return dm(a.id, mi).avg > 0; }).length;
+  var breadth = loaded.length ? Math.round(pos/loaded.length*100) : null;
+  var read = breadth===null ? '' : breadth>=70?'RISK-ON':breadth<=35?'RISK-OFF':'MIXED';
+  var readCls = breadth===null ? '' : breadth>=70?'g':breadth<=35?'r':'a';
+  var cells = DASH.map(function(a){
+    var p = dm(a.id, mi);
+    if (!p) return '<div class="sr-cell" style="--src:var(--b2)"><div class="sr-tk">'+a.tk+'</div><div class="sr-v"'+dtag(a.id,mi,'avg')+'>'+ph(a.id)+'</div><div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+ph(a.id)+'</span></div></div>';
     var b = p.avg>=0;
-    var col = b?'var(--green)':'var(--red)';
-    var sign = b?'+':'';
-    return '<div class="sr-cell" style="--src:'+col+'" onclick="window.location=\'/market-seasonality.html\'" title="'+a.tk+' '+mn+': '+sign+p.avg.toFixed(2)+'% avg, '+p.win+'% win rate">'+
+    return '<div class="sr-cell" style="--src:'+(b?'var(--green)':'var(--red)')+'" onclick="window.location=\'/seasonality/'+a.id+'\'" title="'+a.tk+' '+mn+': '+TX.fmtPct(p.avg,2)+' avg, '+p.win+'% win">'+
       '<div class="sr-tk">'+a.tk+'</div>'+
-      '<div class="sr-v '+(b?'g':'r')+'">'+sign+p.avg.toFixed(1)+'%</div>'+
-      '<div class="sr-w">'+p.win+'% win</div>'+
+      '<div class="sr-v '+(b?'g':'r')+'"'+dtag(a.id,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</div>'+
+      '<div class="sr-w"><span'+dtag(a.id,mi,'win')+'>'+p.win+'%</span> win</div>'+
     '</div>';
   }).join('');
-
   document.getElementById('seasonalRibbon').innerHTML =
     '<div class="sr-lead">'+
       '<div class="sr-lead-l">'+mn+' Market Read</div>'+
-      '<div class="sr-lead-v '+readCls+'">'+read+'</div>'+
-      '<div class="sr-w">'+breadth+'% of classes positive</div>'+
+      '<div class="sr-lead-v '+readCls+'">'+(read||(dashDone()?DASHMARK:SKEL))+'</div>'+
+      '<div class="sr-w">'+(breadth===null?'&nbsp;':breadth+'% of '+loaded.length+' markets positive')+'</div>'+
     '</div>'+
     '<div class="sr-track">'+cells+'</div>';
+}
+
+// Overview strip + spotlight, from the same real data.
+function renderSeasonal(mi){
+  buildRibbon(mi);
+  function setOv(id, sid, aid){
+    var p = dm(aid, mi), e = document.getElementById(id);
+    if (!p) { e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+ph(aid)+'</span>'; e.className='ov-val'; document.getElementById(sid).innerHTML = DASH_FAILED[aid] ? 'Unavailable' : '&nbsp;'; return; }
+    e.innerHTML = '<span'+dtag(aid,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</span>'; e.className='ov-val '+col(p.avg);
+    document.getElementById(sid).innerHTML = '<span'+dtag(aid,mi,'win')+'>'+p.win+'%</span> win rate';
+  }
+  setOv('ov1','ov1s','sp500');
+  setOv('ov2','ov2s','nasdaq');
+  setOv('ov3','ov3s','btc');
+  var loaded = DASH.filter(function(a){ return dm(a.id, mi); });
+  if (loaded.length) {
+    var best = loaded.reduce(function(b,a){ return dm(a.id,mi).avg > dm(b.id,mi).avg ? a : b; });
+    document.getElementById('ov4').innerHTML = '<span'+dtag(best.id,mi,'avg')+'>'+TX.fmtPct(dm(best.id,mi).avg,1)+'</span>';
+    document.getElementById('ov4').className = 'ov-val '+col(dm(best.id,mi).avg);
+    document.getElementById('ov4s').textContent = best.tk+' · strongest this month';
+  } else { document.getElementById('ov4').innerHTML = dashDone() ? DASHMARK : SKEL; document.getElementById('ov4s').innerHTML = '&nbsp;'; }
+  var sp = dm('sp500', mi);
+  if (sp) {
+    var v = TX.verdict(sp.avg, sp.win);
+    var sig = v==='TAILWIND'?'BULLISH':v==='HEADWIND'?'BEARISH':'NEUTRAL', sc = v==='TAILWIND'?'g':v==='HEADWIND'?'r':'a';
+    document.getElementById('ov5').textContent = sig; document.getElementById('ov5').className = 'ov-val '+sc;
+    document.getElementById('ov5s').textContent = 'S&P 500 seasonal ' + v.toLowerCase();
+  } else { document.getElementById('ov5').innerHTML = ph('sp500'); document.getElementById('ov5s').innerHTML = '&nbsp;'; }
+  var spot = loaded.slice().sort(function(a,b){ return dm(b.id,mi).avg - dm(a.id,mi).avg; }).slice(0,5);
+  document.getElementById('spList').innerHTML = spot.length ? spot.map(function(a){
+    var p = dm(a.id, mi), b = p.avg>=0;
+    return '<div class="sp-item '+(b?'bull':'bear')+'" onclick="window.location=\'/seasonality/'+a.id+'\'">'+
+      '<div class="sp-left"><div class="sp-dot"></div><div>'+
+      '<div class="sp-ticker">'+a.tk+'</div>'+
+      '<div class="sp-name">'+a.n+' · <span'+dtag(a.id,mi,'win')+'>'+p.win+'%</span> win</div>'+
+      '</div></div>'+
+      '<div class="sp-val '+(b?'g':'r')+'"'+dtag(a.id,mi,'avg')+'>'+TX.fmtPct(p.avg,1)+'</div></div>';
+  }).join('') : '<div class="sp-item">'+(dashDone()?'Seasonal data is unavailable right now.':SKEL)+'</div>';
+  dashLoad();
 }
 
 function buildDashboard(){
@@ -1002,66 +868,43 @@ function buildDashboard(){
   document.getElementById('ovMonthLabel').textContent=mn+' historical averages';
   document.getElementById('tc7stat').textContent=mn+' edition';
 
-  var sp=PATTERNS.broadIndex[mi], tg=PATTERNS.techGrowth[mi], cr=PATTERNS.crypto[mi];
-  buildRibbon(mi);
-  function setOv(id,sid,v,win){
-    var e=document.getElementById(id); e.textContent=sgn(v); e.className='ov-val '+col(v);
-    document.getElementById(sid).textContent=win+'% win rate';
-  }
-  setOv('ov1','ov1s',sp.avg,sp.win);
-  setOv('ov2','ov2s',tg.avg,tg.win);
-  setOv('ov3','ov3s',cr.avg,cr.win);
-
-  var patKeys=Object.keys(PATTERNS), best=patKeys[0];
-  patKeys.forEach(function(k){if(PATTERNS[k][mi].avg>PATTERNS[best][mi].avg)best=k;});
-  var patL={broadIndex:'Broad Market',techGrowth:'Tech Growth',crypto:'Crypto',gold:'Gold',energy:'Energy',
-    healthcare:'Healthcare',consumer:'Consumer',defense:'Defense',semis:'Semis',bonds:'Bonds',
-    speculative:'Speculative',evGrowth:'EV/Clean Energy',ukMarket:'UK Market',ukMining:'UK Mining',
-    germanMarket:'German Market',germanAuto:'German Auto',japanExport:'Japan Export',
-    chinaInternet:'China Internet',koreanTech:'Korean Tech',germanChemical:'German Chemical'};
-  document.getElementById('ov4').textContent=sgn(PATTERNS[best][mi].avg);
-  document.getElementById('ov4s').textContent=(patL[best]||best)+' pattern';
-  var sig=sp.avg>=0.8?'BULLISH':sp.avg<=-0.3?'BEARISH':'NEUTRAL';
-  var sc=sp.avg>=0.8?'g':sp.avg<=-0.3?'r':'a';
-  document.getElementById('ov5').textContent=sig; document.getElementById('ov5').className='ov-val '+sc;
-  document.getElementById('ov5s').textContent=sp.note;
+  renderSeasonal(mi);
   document.getElementById('tc5stat').textContent=mn+' leaders ranked';
 
   try{var wl=JSON.parse(localStorage.getItem('sx_watchlist')||'[]');
     document.getElementById('tc6stat').textContent=wl.length>0?wl.length+'/10 assets tracked':'Set up watchlist';}catch(e){}
 
-  // Spotlight
-  var spot=[
-    {t:'S&P 500',n:'Broad market',p:PATTERNS.broadIndex[mi]},
-    {t:'NASDAQ',n:'Tech growth',p:PATTERNS.techGrowth[mi]},
-    {t:'Bitcoin',n:'Crypto',p:PATTERNS.crypto[mi]},
-    {t:'Gold',n:'Safe haven',p:PATTERNS.gold[mi]},
-    {t:'Semis',n:'Semiconductors',p:PATTERNS.semis[mi]},
-    {t:'Energy',n:'Energy sector',p:PATTERNS.energy[mi]},
-    {t:'Healthcare',n:'Defensive',p:PATTERNS.healthcare[mi]},
-  ];
-  spot.sort(function(a,b){return b.p.avg-a.p.avg;});
   document.getElementById('spTitle').textContent=mn+' Spotlight';
-  document.getElementById('spList').innerHTML=spot.slice(0,5).map(function(s){
-    var b=s.p.avg>=0;
-    var cls=b?'bull':'bear'; var vcls=b?'g':'r';
-    return '<div class="sp-item '+cls+'" onclick="window.location=\'/market-seasonality.html\'">'+
-      '<div class="sp-left"><div class="sp-dot"></div><div>'+
-      '<div class="sp-ticker">'+s.t+'</div>'+
-      '<div class="sp-name">'+s.n+' · '+s.p.win+'% win</div>'+
-      '</div></div>'+
-      '<div class="sp-val '+vcls+'">'+sgn(s.p.avg)+'</div></div>';
-  }).join('');
 
   // Calendar
   var now=new Date();
+  // Official schedules only (checked 2026-10-23): FOMC — federalreserve.gov/monetarypolicy/fomccalendars.htm
+  // (decision 2:00pm ET on the final day; 2027 dates tentative until confirmed); CPI and Nonfarm Payrolls —
+  // bls.gov/schedule (8:30am ET). Earnings dates are left out until companies confirm them. Refresh this list
+  // when it runs low — the widget says so rather than showing past events.
   var evts=[
-    {d:new Date('2026-06-17T19:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2026-07-03T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2026-07-15T12:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2026-07-22T20:00:00Z'),n:'Tesla Q2 Earnings',t:'earn'},
-    {d:new Date('2026-07-29T19:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2026-08-26T20:00:00Z'),n:'Nvidia Q2 Earnings',t:'earn'},
+    {d:new Date('2026-10-28T18:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2026-11-06T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2026-11-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2026-12-04T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2026-12-09T19:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2026-12-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-01-08T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-01-13T13:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-01-27T19:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2027-02-05T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-02-11T13:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-03-05T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-03-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-03-17T18:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2027-04-02T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-04-13T12:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-04-28T18:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2027-05-07T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-05-12T12:30:00Z'),n:'CPI Inflation',t:'data'},
+    {d:new Date('2027-06-04T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
+    {d:new Date('2027-06-09T18:00:00Z'),n:'FOMC Decision',t:'fed'},
+    {d:new Date('2027-06-10T12:30:00Z'),n:'CPI Inflation',t:'data'},
   ].filter(function(e){return e.d>now;}).slice(0,5);
   document.getElementById('cwList').innerHTML=evts.map(function(e){
     var a=new Date(now.getFullYear(),now.getMonth(),now.getDate());
@@ -1072,7 +915,7 @@ function buildDashboard(){
       '<div class="cw-date"><div class="cw-mo">'+MO_AB[e.d.getMonth()]+'</div><div class="cw-day">'+e.d.getDate()+'</div></div>'+
       '<div style="flex:1"><div class="cw-name">'+e.n+'</div><div class="cw-days">'+dstr+'</div></div>'+
       '<div class="cw-type '+e.t+'">'+e.t.toUpperCase()+'</div></div>';
-  }).join('');
+  }).join('') || '<div class="cw-item"><div class="cw-name">No scheduled events loaded &mdash; calendar update due.</div></div>';
   if(evts.length>0){var na=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     var nb=new Date(evts[0].d.getFullYear(),evts[0].d.getMonth(),evts[0].d.getDate());
     var nd=Math.max(0,Math.round((nb-na)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}

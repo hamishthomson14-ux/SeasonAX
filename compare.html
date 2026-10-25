@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Seasonality — Any Two Assets Side by Side | TimingAX</title>
+<meta name="description" content="Compare the monthly seasonal patterns of any two of 733 stocks, indices, ETFs and crypto, side by side, from real price history.">
+<link rel="canonical" href="https://www.timingax.co.uk/compare.html">
+<meta property="og:title" content="Compare Seasonality — Any Two Assets Side by Side | TimingAX">
+<meta property="og:description" content="Two assets' seasonal calendars, month by month, from real price history.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.timingax.co.uk/compare.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.cp-hero { padding: 56px 0 24px; max-width: 760px; }
+.cp-hero .tx-h1 { font-size: clamp(34px, 5vw, 56px); margin: 16px 0 14px; }
+.cp-form { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; gap: 10px; align-items: end; margin-top: 8px; }
+.cp-form .tx-field { margin: 0; }
+.cp-vs { font: 600 13px var(--tx-font-mono); color: var(--tx-text-3); padding-bottom: 14px; }
+.cp-err { color: var(--tx-down); font-size: 14px; min-height: 22px; margin-top: 10px; }
+.cp-pairs { margin: 40px 0 80px; }
+.cp-pairs a { display: inline-flex; gap: 6px; background: var(--tx-surface-1); border: 1px solid var(--tx-border-1); border-radius: 6px; padding: 9px 13px; margin: 0 6px 8px 0; font: 500 13.5px var(--tx-font-ui); color: var(--tx-text-1) !important; }
+.cp-pairs a span { color: var(--tx-text-3); }
+.cp-pairs a:hover { border-color: rgba(232,147,24,.5); }
+@media (max-width: 640px) { .cp-form { grid-template-columns: 1fr; } .cp-vs { padding: 0; text-align: center; } }
+</style>
+</head>
+<body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap">
+  <section class="cp-hero">
+    <span class="tx-eyebrow">Compare</span>
+    <h1 class="tx-h1">Any two assets, <em>side by side.</em></h1>
+    <p class="tx-lead">Pick two of our 733 assets to see their seasonal calendars month by month: which has historically been stronger when, and how closely their yearly rhythms move together.</p>
+  </section>
+  <form class="tx-card cp-form" id="cmpForm" autocomplete="off">
+    <div class="tx-field"><label for="cmpA">First asset</label><input class="tx-input" id="cmpA" list="cmpList" placeholder="e.g. Apple or AAPL" required></div>
+    <span class="cp-vs">VS</span>
+    <div class="tx-field"><label for="cmpB">Second asset</label><input class="tx-input" id="cmpB" list="cmpList" placeholder="e.g. Microsoft or MSFT" required></div>
+    <button class="tx-btn tx-btn--primary tx-btn--lg" id="cmpGo" type="submit">Compare &rarr;</button>
+    <datalist id="cmpList"></datalist>
+  </form>
+  <div class="cp-err" id="cmpErr" role="alert"></div>
+  <section class="cp-pairs">
+    <span class="tx-label">Popular comparisons</span>
+    <div style="margin-top:14px">
+<!-- txgen:pairs -->
+      <a href="/compare/aapl-vs-msft">Apple <span>vs</span> Microsoft</a>
+      <a href="/compare/amd-vs-nvda">AMD <span>vs</span> Nvidia</a>
+      <a href="/compare/nasdaq-vs-sp500">NASDAQ Composite <span>vs</span> S&amp;P 500</a>
+      <a href="/compare/btc-vs-eth">Bitcoin <span>vs</span> Ethereum</a>
+      <a href="/compare/gld-vs-slv">SPDR Gold Shares <span>vs</span> iShares Silver</a>
+      <a href="/compare/rivn-vs-tsla">Rivian <span>vs</span> Tesla</a>
+      <a href="/compare/googl-vs-meta">Alphabet <span>vs</span> Meta Platforms</a>
+      <a href="/compare/amzn-vs-wmt">Amazon <span>vs</span> Walmart</a>
+      <a href="/compare/bac-vs-jpm">Bank of America <span>vs</span> JPMorgan Chase</a>
+      <a href="/compare/cvx-vs-xom">Chevron <span>vs</span> ExxonMobil</a>
+      <a href="/compare/ko-vs-pep">Coca-Cola <span>vs</span> PepsiCo</a>
+      <a href="/compare/qqq-vs-spy">Invesco NASDAQ-100 <span>vs</span> SPDR S&amp;P 500 ETF</a>
+      <a href="/compare/ftse100-vs-sp500">FTSE 100 <span>vs</span> S&amp;P 500</a>
+      <a href="/compare/dax-vs-ftse100">DAX 40 <span>vs</span> FTSE 100</a>
+      <a href="/compare/nikkei-vs-sp500">Nikkei 225 <span>vs</span> S&amp;P 500</a>
+      <a href="/compare/nio-vs-tsla">NIO <span>vs</span> Tesla</a>
+      <a href="/compare/dis-vs-nflx">Walt Disney <span>vs</span> Netflix</a>
+      <a href="/compare/ma-vs-v">Mastercard <span>vs</span> Visa</a>
+      <a href="/compare/amd-vs-intc">AMD <span>vs</span> Intel</a>
+      <a href="/compare/nvda-vs-tsmc">Nvidia <span>vs</span> TSMC</a>
+      <a href="/compare/crm-vs-orcl">Salesforce <span>vs</span> Oracle</a>
+      <a href="/compare/hd-vs-low">Home Depot <span>vs</span> Lowe's Companies</a>
+      <a href="/compare/mcd-vs-sbux">McDonald's <span>vs</span> Starbucks</a>
+      <a href="/compare/mrk-vs-pfe">Merck <span>vs</span> Pfizer</a>
+      <a href="/compare/btc-vs-gld">Bitcoin <span>vs</span> SPDR Gold Shares</a>
+      <a href="/compare/btc-vs-mstr">Bitcoin <span>vs</span> MicroStrategy</a>
+      <a href="/compare/btc-vs-coin">Bitcoin <span>vs</span> Coinbase</a>
+      <a href="/compare/lmt-vs-rtx">Lockheed Martin <span>vs</span> RTX (Raytheon)</a>
+      <a href="/compare/ba-vs-lmt">Boeing <span>vs</span> Lockheed Martin</a>
+      <a href="/compare/iwm-vs-spy">iShares Russell 2000 <span>vs</span> SPDR S&amp;P 500 ETF</a>
+      <a href="/compare/spy-vs-tlt">SPDR S&amp;P 500 ETF <span>vs</span> iShares 20yr Treasury</a>
+      <a href="/compare/xle-vs-xlk">Energy SPDR <span>vs</span> Technology SPDR</a>
+      <a href="/compare/bp_uk-vs-shel">BP <span>vs</span> Shell</a>
+      <a href="/compare/azn-vs-gsk">AstraZeneca <span>vs</span> GSK</a>
+      <a href="/compare/barc-vs-hsba">Barclays <span>vs</span> HSBC Holdings</a>
+      <a href="/compare/msft-vs-sap">Microsoft <span>vs</span> SAP</a>
+      <a href="/compare/aapl-vs-samsung">Apple <span>vs</span> Samsung Electronics</a>
+      <a href="/compare/alibaba-vs-jd">Alibaba <span>vs</span> JD.com</a>
+      <a href="/compare/toyota-vs-tsla">Toyota <span>vs</span> Tesla</a>
+<!-- /txgen:pairs -->
+    </div>
+  </section>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var cat = [], byKey = {};
+  var norm = function (s) { return String(s || '').trim().toLowerCase(); };
+  fetch('/api/catalogue').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }).then(function (list) {
+    cat = list;
+    var opts = '';
+    list.forEach(function (a) {
+      var label = a.ticker && a.ticker.charAt(0) !== '^' ? a.name + ' (' + a.ticker + ')' : a.name;
+      [label, a.name, a.ticker, a.id].forEach(function (k) { if (k && !byKey[norm(k)]) byKey[norm(k)] = a.id; });
+      opts += '<option value="' + label.replace(/"/g, '&quot;') + '">';
+    });
+    document.getElementById('cmpList').innerHTML = opts;
+  });
+  document.getElementById('cmpForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = byKey[norm(document.getElementById('cmpA').value)], b = byKey[norm(document.getElementById('cmpB').value)];
+    var err = document.getElementById('cmpErr');
+    if (!a || !b) { err.textContent = 'Pick both assets from the list (start typing a name or ticker).'; return; }
+    if (a === b) { err.textContent = 'Pick two different assets.'; return; }
+    var x = a < b ? a : b, y = a < b ? b : a;
+    window.location.href = '/compare/' + x + '-vs-' + y;
+  });
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

@@ -43,6 +43,22 @@ async function fetchChart(sym, range, interval) {
   return { result: null, debug: last };
 }
 
+// Ticker change vs the previous trading session's close. Yahoo's meta.chartPreviousClose is the
+// close BEFORE the requested range (5 days back), so it gave a ~5-day move; use the daily bars instead.
+export function dailyChange(result) {
+  const price = result && result.meta && result.meta.regularMarketPrice;
+  const closes = result && result.indicators && result.indicators.quote && result.indicators.quote[0] && result.indicators.quote[0].close;
+  if (!isFinite(price) || !Array.isArray(closes)) return null;
+  const valid = closes.filter(c => c != null && isFinite(c));
+  const last = closes[closes.length - 1];
+  // If today's bar has no close yet, the last valid close IS the previous session's.
+  const todayOpen = last == null || !isFinite(last);
+  if (valid.length < (todayOpen ? 1 : 2)) return null;
+  const prev = valid[valid.length - (todayOpen ? 1 : 2)];
+  if (!prev) return null;
+  return +(((price - prev) / prev) * 100).toFixed(2);
+}
+
 function cacheGet(key, ttl) {
   const hit = CACHE.get(key);
   if (hit && Date.now() - hit.t < ttl) return hit.v;
@@ -68,10 +84,8 @@ export default async function handler(req, res) {
           const { result } = await fetchChart(sym, '5d', '1d');
           if (!result || !result.meta) continue;
           const price = result.meta.regularMarketPrice;
-          const prevClose = result.meta.chartPreviousClose != null ? result.meta.chartPreviousClose : result.meta.previousClose;
           if (!isFinite(price)) continue;
-          const chg = (isFinite(prevClose) && prevClose) ? ((price - prevClose) / prevClose) * 100 : null;
-          out.push({ symbol: sym, close: price, changePct: isFinite(chg) ? +chg.toFixed(2) : null });
+          out.push({ symbol: sym, close: price, changePct: dailyChange(result) });
         }
         cacheSet(key, out);
       }

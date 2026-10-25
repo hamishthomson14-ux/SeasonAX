@@ -21,17 +21,22 @@
     - Set viewport to the format size (e.g. 1080x1080)
     - Wait for selector: "#stage.ready"  (the page adds .ready when data + fonts are loaded)
 -->
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
 <style>
 :root{
-  --bg:#0A0908; --bg2:#111009;
-  --amber:#E89318; --amber2:#F5A52F;
-  --green:#3FBF7F; --red:#E5484D;
-  --w:#F4EFE6; --w2:#C9C2B4; --w3:#8F887A; --w5:#5C574C;
-  --b1:rgba(232,147,24,.16); --b2:rgba(232,147,24,.32);
-  --mono:'IBM Plex Mono',monospace; --serif:'Fraunces',serif;
+  --bg:var(--tx-bg-0); --bg2:var(--tx-bg-1);
+  --amber:var(--tx-amber); --amber2:var(--tx-amber-2);
+  --green:var(--tx-up); --red:var(--tx-down);
+  --w:var(--tx-text-1); --w2:var(--tx-text-2); --w3:var(--tx-text-2); --w5:#6B839E;
+  --b1:var(--tx-border-1); --b2:var(--tx-border-2);
+  --mono:var(--tx-font-mono); --serif:var(--tx-font-ui);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:#000;height:100%}
