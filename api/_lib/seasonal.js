@@ -178,3 +178,53 @@ export function computeProjection(rows, { today = new Date(), days = 90, years =
   }
   return out;
 }
+
+// ── Weekly and turn-of-month patterns (from daily closes) ───────────────────
+// ISO-8601 week number (1–53) of a UTC timestamp.
+export function isoWeek(t) {
+  const d = new Date(t); const day = (d.getUTCDay() + 6) % 7;            // Mon=0
+  const th = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3); // Thursday of this week
+  const y = new Date(th).getUTCFullYear();
+  return 1 + Math.floor((th - Date.UTC(y, 0, 4) + ((new Date(Date.UTC(y, 0, 4)).getUTCDay() + 6) % 7) * 864e5) / (7 * 864e5));
+}
+function isoYear(t) { const d = new Date(t), day = (d.getUTCDay() + 6) % 7; return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3)).getUTCFullYear(); }
+
+// Over the last `years` years of daily closes: average return + win rate for each ISO week of the year
+// (week 53 folded into 52), and the turn-of-month window (last trading day + first 3 of the next month)
+// against the typical 4-day stretch on other days. null when under 5 years of data.
+export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
+  if (!rows || rows.length < 2) return null;
+  const DAY = 864e5, cutoff = Date.UTC(today.getUTCFullYear() - years, today.getUTCMonth(), today.getUTCDate());
+  let s = rows.findIndex((r) => r.t >= cutoff); if (s < 0) return null;
+  const startT = Math.max(rows[0].t, cutoff), last = rows[rows.length - 1].t;
+  const span = (last - startT) / (365.25 * DAY);
+  if (span < 5) return null;
+  const R = rows.slice(Math.max(0, s - 1));                               // one close before the window as a base
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const stat = (a) => a.length ? { avg: r2(a.reduce((x, y) => x + y, 0) / a.length), win: Math.round(a.filter((x) => x > 0).length / a.length * 100), obs: a.length } : { avg: null, win: null, obs: 0 };
+
+  // Weekly: last close of each ISO week vs the previous week's last close.
+  const weekLast = [];
+  for (const r of R) { const k = isoYear(r.t) * 100 + isoWeek(r.t); if (weekLast.length && weekLast[weekLast.length - 1].k === k) weekLast[weekLast.length - 1].c = r.c; else weekLast.push({ k, w: isoWeek(r.t), c: r.c, t: r.t }); }
+  const byWeek = Array.from({ length: 52 }, () => []);
+  for (let i = 1; i < weekLast.length; i++) if (weekLast[i].t >= cutoff) byWeek[Math.min(weekLast[i].w, 52) - 1].push((weekLast[i].c / weekLast[i - 1].c - 1) * 100);
+  const weeks = byWeek.map((a, i) => ({ week: i + 1, ...stat(a) }));
+  const ranked = weeks.filter((w) => w.obs >= 5).sort((a, b) => b.avg - a.avg);
+
+  // Turn of the month on the daily series.
+  const tomDay = new Uint8Array(R.length), windows = [];
+  for (let i = 1; i + 3 < R.length; i++) {
+    if (new Date(R[i].t).getUTCMonth() === new Date(R[i + 1].t).getUTCMonth() || R[i].t < cutoff) continue;
+    windows.push((R[i + 3].c / R[i - 1].c - 1) * 100);                     // close before the last day -> 3rd day of next month
+    for (let k = 0; k < 4; k++) tomDay[i + k] = 1;
+  }
+  const other = [];
+  for (let i = 1; i < R.length; i++) if (!tomDay[i] && R[i].t >= cutoff) other.push(R[i].c / R[i - 1].c - 1);
+  const oAvg = other.length ? other.reduce((x, y) => x + y, 0) / other.length : 0;
+  const w = stat(windows);
+  return {
+    years: Math.min(years, Math.round(span)),
+    weeks, bestWeeks: ranked.slice(0, 3), worstWeeks: ranked.slice(-3).reverse(),
+    tom: { windowAvg: w.avg, windowWin: w.win, windows: w.obs, otherAvg4: r2(((1 + oAvg) ** 4 - 1) * 100) },
+  };
+}

@@ -238,6 +238,20 @@ button.tx-term__row:hover, .tx-term__row.is-active { background: #07101F; }
   .proj .tx-term__foot { flex-direction: column; }
 }
 
+/* ---------- Weekly & turn-of-month (assets/patterns.js) ---------- */
+.pat-head { padding: 14px 16px 0; }
+.pat-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--tx-border-1); }
+.pat-lists > div { padding: 12px 16px; }
+.pat-lists > div:first-child { border-right: 1px solid var(--tx-border-1); }
+.pat-lists ol { list-style: none; margin: 8px 0 0; padding: 0; }
+.pat-lists li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid #0B1220; font-family: var(--tx-font-mono); font-size: 13.5px; }
+.pat-lists li:last-child { border-bottom: 0; }
+.pat-lists li small { color: var(--tx-text-3); margin-left: 6px; }
+.pat-lists li em { font-style: normal; color: var(--tx-text-3); font-size: 12px; }
+.pat-tom { border-top: 1px solid var(--tx-border-1); padding-top: 12px; }
+.pat-tom > .tx-label { display: block; padding: 0 16px 4px; }
+@media (max-width: 600px) { .pat-lists { grid-template-columns: 1fr; } .pat-lists > div:first-child { border-right: 0; border-bottom: 1px solid var(--tx-border-1); } }
+
 /* ---------- Cards, stats ---------- */
 .tx-card { background: linear-gradient(180deg, var(--tx-surface-1), var(--tx-bg-1)); border: 1px solid var(--tx-border-1); border-radius: var(--tx-radius); padding: var(--tx-space-5); }
 .tx-card--hover { transition: border-color .2s, transform .2s; }
