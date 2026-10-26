@@ -2638,6 +2638,7 @@ var YEAR_FILTER_PRESETS = {
 var CUR_RAW_ROWS = null; // cached raw monthly price rows for the current asset (real data only)
 
 function recomputeView() {
+  if (!CUR_MONTHS) return;   // no verified data for the selected asset: nothing to recompute
   var detrend = document.getElementById('detrendChk') && document.getElementById('detrendChk').checked;
   var filterKey = document.getElementById('yearFilterSel') ? document.getElementById('yearFilterSel').value : 'all';
   var preset = YEAR_FILTER_PRESETS[filterKey] || YEAR_FILTER_PRESETS.all;
@@ -2723,17 +2724,13 @@ function getManyMonthsResolved(ids, years, cb) {
 }
 
 function setDataBadge(source, nYears) {
+  // Analyses are only drawn from real price data (assets without it show renderNoData instead).
   lastDataSource = source;
   var b = document.getElementById('dataSourceBadge');
   if (!b) return;
   b.style.display = 'inline-block';
-  if (source === 'real') {
-    b.innerHTML = '&#10003; VERIFIED &middot; REAL PRICE DATA' + (nYears ? ' &middot; ' + nYears + 'YR' : '');
-    b.className = 'data-badge real';
-  } else {
-    b.innerHTML = 'MODELLED PATTERN DATA';
-    b.className = 'data-badge model';
-  }
+  b.innerHTML = '&#10003; VERIFIED &middot; REAL PRICE DATA' + (nYears ? ' &middot; ' + nYears + 'YR' : '');
+  b.className = 'data-badge real';
 }
 
 function getMonths(id) {
@@ -2759,14 +2756,22 @@ function run() {
   btn.disabled=true;
   pill('FETCHING REAL DATA...','loading');
 
-  // Try real price data first; fall back to the model with an honest badge.
+  // Real price data only: without it, say so and show no figures.
   fetchRealMonths(item, years, function(real){
-    if (real) {
-      renderRun(item, real.months, 'real', real.years);
-    } else {
-      renderRun(item, getMonths(selectedId), 'model', years);
-    }
+    if (real) renderRun(item, real.months, 'real', real.years);
+    else renderNoData(item);
   });
+}
+
+function renderNoData(item) {
+  CUR_ITEM = item; CUR_MONTHS = null; CUR_SOURCE = null; CUR_YEARS = null;
+  var b = document.getElementById('dataSourceBadge'); if (b) b.style.display = 'none';
+  ['projPanel', 'patPanel'].forEach(function (k) { var e = document.getElementById(k); if (e) { e.innerHTML = ''; e.hidden = true; } });
+  document.getElementById('analysisBody').innerHTML = '<div class="analysis-empty" style="text-align:left;line-height:1.7">' +
+    '<strong style="color:var(--w)">No verified price history for ' + item.name + ' (' + item.ticker + ').</strong><br>' +
+    'We only show seasonal figures computed from real prices, so nothing is shown for this asset. This can happen after a takeover, merger, delisting or change of ticker, or when the price source is temporarily unavailable.</div>';
+  document.getElementById('goBtn').disabled = false;
+  pill('NO DATA', 'done');
 }
 
 function generateBriefing(item, months, source, years, detrend) {
@@ -4155,10 +4160,8 @@ function wlRender() {
 
 var WL_MONTHS = {};
 function wlMonthsFor(id) {
-  if (WL_MONTHS[id] && WL_MONTHS[id].months) return WL_MONTHS[id].months;
-  // fallback to model pattern via scPattern using the item
-  for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === id) return scPattern(CATALOGUE[i]);
-  return null;
+  // Real price history only; null means no verified data (never a model).
+  return WL_MONTHS[id] && WL_MONTHS[id].source === 'real' && WL_MONTHS[id].months ? WL_MONTHS[id].months : null;
 }
 
 function wlRenderWith(ids, map) {
@@ -4172,28 +4175,35 @@ function wlRenderWith(ids, map) {
     return null;
   }).filter(Boolean);
 
-  var anyReal = ids.some(function(id){ return map[id] && map[id].source === 'real'; });
-
-  // Stats
-  var sumNow = 0, best = items[0], worst = items[0];
-  items.forEach(function(it) {
+  // Stats: assets with verified data only
+  var realItems = items.filter(function (it) { return wlMonthsFor(it.id); });
+  var sumNow = 0, best = realItems[0], worst = realItems[0];
+  realItems.forEach(function(it) {
     var p = wlMonthsFor(it.id);
     sumNow += p[nowM].avg;
-    if (wlMonthsFor(it.id)[nowM].avg > wlMonthsFor(best.id)[nowM].avg) best = it;
-    if (wlMonthsFor(it.id)[nowM].avg < wlMonthsFor(worst.id)[nowM].avg) worst = it;
+    if (p[nowM].avg > wlMonthsFor(best.id)[nowM].avg) best = it;
+    if (p[nowM].avg < wlMonthsFor(worst.id)[nowM].avg) worst = it;
   });
-  var avgNow = sumNow / items.length;
+  var avgNow = realItems.length ? sumNow / realItems.length : null;
   document.getElementById('wlStats').innerHTML =
     '<div class="bts"><div class="bts-v" style="color:var(--w)">' + items.length + '/' + WL_MAX + '</div><div class="bts-l">Assets tracked</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:' + (avgNow >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgNow >= 0 ? '+' : '') + avgNow.toFixed(1) + '%</div><div class="bts-l">Portfolio avg \u00b7 ' + MF_LONG[nowM] + '</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + best.ticker + '</div><div class="bts-l">Strongest this month</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + worst.ticker + '</div><div class="bts-l">Weakest this month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:' + (avgNow === null ? 'var(--w4)' : avgNow >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgNow === null ? '\u2014' : (avgNow >= 0 ? '+' : '\u2212') + Math.abs(avgNow).toFixed(2) + '%') + '</div><div class="bts-l">Average ' + MF_LONG[nowM].slice(0,3) + ' return</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (best ? best.ticker : '\u2014') + '</div><div class="bts-l">Strongest this month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (worst ? worst.ticker : '\u2014') + '</div><div class="bts-l">Weakest this month</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + days + 'd</div><div class="bts-l">Until ' + MF_LONG[nextM] + '</div></div>' +
-    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal ? 'real' : 'model') + '">' + (anyReal ? '\u2713 REAL PRICE DATA' : 'MODELLED DATA') + '</span></div>';
+    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge real">\u2713 REAL PRICE DATA ONLY \u00b7 ' + realItems.length + ' of ' + items.length + ' with verified history</span></div>';
 
   var html = '';
   items.forEach(function(it) {
     var p = wlMonthsFor(it.id);
+    var badge0 = it.region ? '<span class="region-badge region-' + it.region.toLowerCase() + '">' + it.region + '</span>' : '';
+    if (!p) {
+      html += '<div class="wl-row" data-id="' + it.id + '">' +
+        '<div class="wl-id"><span class="ea-tk">' + it.ticker + '</span><div class="ea-nm">' + it.name + ' ' + badge0 + '</div></div>' +
+        '<div class="wl-status" style="color:var(--w4);flex:2">— No verified price history, so no figures are shown.</div>' +
+        '<div class="wl-actions"><button class="wl-x" onclick="wlRemove(\'' + it.id + '\')">×</button></div></div>';
+      return;
+    }
     var cur = p[nowM], nxt = p[nextM];
     var curCol = cur.avg >= 0 ? 'var(--green)' : 'var(--red)';
     var nxtCol = nxt.avg >= 0 ? 'var(--green)' : 'var(--red)';
@@ -4202,7 +4212,7 @@ function wlRenderWith(ids, map) {
     else if (nxt.avg < cur.avg && nxt.avg < -0.3) { status = 'Entering weakness in ' + days + 'd'; sCol = 'var(--red)'; }
     else { status = 'Seasonal trend steady'; sCol = 'var(--w4)'; }
     var badge = it.region ? '<span class="region-badge region-' + it.region.toLowerCase() + '">' + it.region + '</span>' : '';
-    html += '<div class="wl-row">' +
+    html += '<div class="wl-row" data-id="' + it.id + '">' +
       '<div class="wl-id"><span class="ea-tk">' + it.ticker + '</span><div class="ea-nm">' + it.name + ' ' + badge + '</div></div>' +
       '<div class="wl-cell"><div class="wl-cl">' + MF_LONG[nowM].slice(0,3) + ' avg</div><div class="wl-cv" style="color:' + curCol + '">' + (cur.avg >= 0 ? '+' : '') + cur.avg.toFixed(1) + '%</div><div class="wl-cw">' + cur.win + '% win</div></div>' +
       '<div class="wl-cell"><div class="wl-cl">' + MF_LONG[nextM].slice(0,3) + ' avg</div><div class="wl-cv" style="color:' + nxtCol + '">' + (nxt.avg >= 0 ? '+' : '') + nxt.avg.toFixed(1) + '%</div><div class="wl-cw">' + nxt.win + '% win</div></div>' +
@@ -4649,27 +4659,28 @@ function pfRecompute() {
   document.getElementById('pfBriefing').innerHTML = '<div class="analysis-empty" style="border:none;padding:20px 0">Loading real price data for ' + ids.length + ' holdings\u2026</div>';
 
   getManyMonthsResolved(ids, 15, function(map) {
-    var totalW = holdings.reduce(function(s,h){ return s + (h.weight || 0); }, 0);
-    if (totalW <= 0) totalW = holdings.length; // fallback: equal-weight if all zero
+    // Real price history only: holdings without it are left out and named; weights are renormalised over the rest.
+    var inc = holdings.filter(function (h) { return map[h.id] && map[h.id].source === 'real' && map[h.id].months; });
+    var out = holdings.filter(function (h) { return inc.indexOf(h) < 0; }).map(function (h) { return (pfItem(h.id) || {}).ticker || h.id; });
+    var badge = document.getElementById('pfDataBadge');
+    badge.className = 'data-badge real';
+    badge.innerHTML = '&#10003; REAL PRICE DATA ONLY' + (out.length ? ' &middot; Left out (no verified price history): ' + out.join(', ') + '.' : '');
+    if (!inc.length) {
+      document.getElementById('pfBriefing').innerHTML = '<div class="analysis-empty" style="border:none;padding:20px 0">None of these holdings has verified price history, so no figures are shown.</div>';
+      ['pfWheel', 'pfBars', 'pfCards', 'pfBreakdown', 'pfStats'].forEach(function (k) { var e = document.getElementById(k); if (e) e.innerHTML = ''; });
+      return;
+    }
+    var raw = inc.map(function (h) { var w = parseFloat(h.weight); return isFinite(w) && w > 0 ? w : 0; });
+    var totalW = raw.reduce(function (a, b) { return a + b; }, 0);
+    var W = raw.map(function (w) { return totalW > 0 ? w / totalW : 1 / inc.length; });
 
     var portfolio = [];
     for (var m = 0; m < 12; m++) {
       var avgSum = 0, winSum = 0;
-      holdings.forEach(function(h) {
-        var res = map[h.id];
-        if (!res || !res.months) return;
-        var w = (totalW > 0 ? (h.weight || (totalW/holdings.length)) / totalW : 1/holdings.length);
-        avgSum += res.months[m].avg * w;
-        winSum += res.months[m].win * w;
-      });
+      inc.forEach(function(h, k) { avgSum += map[h.id].months[m].avg * W[k]; winSum += map[h.id].months[m].win * W[k]; });
       portfolio.push({ m: MO[m], avg: +avgSum.toFixed(2), win: Math.round(winSum), n: null, note: '' });
     }
-
-    var realCount = ids.filter(function(id){ return map[id] && map[id].source === 'real'; }).length;
-    var badge = document.getElementById('pfDataBadge');
-    if (realCount === ids.length) { badge.innerHTML = '&#10003; ALL HOLDINGS VERIFIED'; badge.className = 'data-badge real'; }
-    else if (realCount > 0) { badge.innerHTML = realCount + '/' + ids.length + ' HOLDINGS VERIFIED'; badge.className = 'data-badge model'; }
-    else { badge.innerHTML = 'MODELLED DATA'; badge.className = 'data-badge model'; }
+    rankNotes(portfolio);
 
     var detrend = document.getElementById('pfDetrendChk') && document.getElementById('pfDetrendChk').checked;
     var displayMonths = detrend ? detrendMonths(portfolio) : portfolio;
@@ -4697,14 +4708,14 @@ function pfRecompute() {
 
     // Holding-by-holding breakdown table
     var bRows = '';
-    holdings.forEach(function(h) {
+    inc.forEach(function(h, k) {
       var it = pfItem(h.id);
       var res = map[h.id];
-      if (!it || !res || !res.months) return;
-      var w = (totalW > 0 ? (h.weight || 0) / totalW : 1/holdings.length);
+      if (!it) return;
+      var w = W[k];
       var hSorted = res.months.slice().sort(function(a,b){ return b.avg - a.avg; });
       var contrib = res.months[nowM].avg * w;
-      var srcBadge = res.source === 'real' ? '<span class="data-badge real" style="font-size:8px">VERIFIED</span>' : '<span class="data-badge model" style="font-size:8px">MODELLED</span>';
+      var srcBadge = '<span class="data-badge real" style="font-size:8px">VERIFIED</span>';
       bRows += '<div class="pf-bd-row">' +
         '<div class="pf-bd-asset"><span class="ea-tk">' + it.ticker + '</span> <span class="ea-nm">' + it.name + '</span> ' + srcBadge + '</div>' +
         '<div class="pf-bd-stat">' + (w*100).toFixed(0) + '% weight</div>' +
@@ -4718,7 +4729,8 @@ function pfRecompute() {
     // Briefing
     var best = sorted[0], worst = sorted[11];
     var curMonth = portfolio[nowM];
-    var heaviest = holdings.slice().sort(function(a,b){ return (b.weight||0) - (a.weight||0); })[0];
+    var hk = 0; W.forEach(function (w, k) { if (w > W[hk]) hk = k; });
+    var heaviest = inc[hk];
     var heaviestItem = pfItem(heaviest.id);
     var verdict, vcol;
     if (curMonth.avg >= 0.8 && curMonth.win >= 60) { verdict = 'SEASONAL TAILWIND'; vcol = 'var(--green)'; }
@@ -4727,18 +4739,15 @@ function pfRecompute() {
 
     var p1 = (detrend
       ? 'With the portfolio\u2019s overall trend removed, '
-      : 'Based on a weighted blend of your ' + holdings.length + ' holdings, ') +
+      : 'Based on a weighted blend of your ' + inc.length + ' holdings with verified price history, ') +
       'your portfolio\u2019s strongest seasonal month is <strong>' + best.m + '</strong> (' + (best.avg>=0?'+':'') + best.avg.toFixed(2) + sfx + '), and its weakest is <strong>' + worst.m + '</strong> (' + worst.avg.toFixed(2) + sfx + ').';
 
-    var p2 = 'Your largest position is <strong>' + (heaviestItem ? heaviestItem.ticker : '') + '</strong> at ' + ((totalW>0?(heaviest.weight||0)/totalW:0)*100).toFixed(0) + '% of the portfolio \u2014 its own seasonal pattern has an outsized influence on the overall result above.';
+    var p2 = 'Your largest position is <strong>' + (heaviestItem ? heaviestItem.ticker : '') + '</strong> at ' + (W[hk]*100).toFixed(0) + '% of the portfolio \u2014 its own seasonal pattern has an outsized influence on the overall result above.';
 
     var p3 = '<span style="color:' + vcol + ';font-weight:700">' + verdict + (detrend?' (RELATIVE)':'') + '</span> for ' + MF_LONG[nowM] + ' \u2014 the portfolio\u2019s blended average for this month is ' + (curMonth.avg>=0?'+':'') + curMonth.avg.toFixed(2) + '%.';
 
-    var p4 = realCount === ids.length
-      ? 'All ' + ids.length + ' holdings are computed from <strong>real historical price data</strong>.'
-      : realCount > 0
-        ? realCount + ' of ' + ids.length + ' holdings use real price data; the rest fall back to modelled sector patterns.'
-        : 'These holdings currently use modelled sector patterns rather than real price history.';
+    var p4 = 'All figures come from <strong>real historical price data</strong> for ' + inc.length + ' of ' + ids.length + ' holdings' +
+      (out.length ? '; left out (no verified price history): ' + out.join(', ') + '.' : '.');
 
     document.getElementById('pfBriefing').innerHTML =
       '<p>' + p1 + '</p><p>' + p2 + '</p><p>' + p3 + '</p>' +
