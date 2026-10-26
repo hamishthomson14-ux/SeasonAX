@@ -266,9 +266,9 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       </div>
       <div class="tl-item">
         <div class="tl-dot"></div>
-        <div class="tl-date">What's next</div>
-        <div class="tl-h">2026 &mdash; Real prices + mobile app</div>
-        <div class="tl-p">Real-time historical price integration (replacing the seasonal model with actual price data), mobile app, email alerts when your watchlist assets enter historically strong windows, and API access for developers.</div>
+        <div class="tl-date">October 2026</div>
+        <div class="tl-h">2026 &mdash; Real prices everywhere</div>
+        <div class="tl-p">Every figure on the platform is now computed from real closing prices or an official record: seasonal averages, backtests, projections, correlations, the market events library and the track record. Watchlist email alerts and a public data API went live.</div>
       </div>
     </div>
   </div>
@@ -278,28 +278,28 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     <div class="s-label">Methodology</div>
     <h2 class="s-h">What's <em>under the hood.</em></h2>
     <div class="s-body">
-      <p>TimingAX's seasonal patterns are derived from historical monthly return data and cross-referenced against academic finance research on market seasonality. We're transparent about how it works because transparency is non-negotiable for a financial data product.</p>
+      <p>Every figure on TimingAX is computed from real closing prices or taken from an official record, and the exact method is published on our <a href="/data.html" style="color:var(--amber2)">Data &amp; methodology</a> page. We&rsquo;re transparent about how it works because transparency is non-negotiable for a financial data product.</p>
     </div>
     <div class="sources-grid">
       <div class="src-card">
         <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128200;</div>
-        <div class="src-name">Monthly return data</div>
-        <div class="src-desc">15-year average monthly returns compiled from major financial data sources. Observation counts shown for every data point.</div>
+        <div class="src-name">Real closing prices</div>
+        <div class="src-desc">Daily closing prices from Yahoo Finance (adjusted closes where Yahoo provides them), up to 20 years per asset. Monthly averages use up to 15 years; observation counts are shown for every figure.</div>
       </div>
       <div class="src-card">
         <div class="src-icon" style="background:rgba(0,201,126,.08)">&#128218;</div>
-        <div class="src-name">Academic research</div>
-        <div class="src-desc">Seasonal patterns cross-referenced against peer-reviewed finance literature including the Halloween Indicator, January Effect and pre-FOMC drift studies.</div>
+        <div class="src-name">Official event dates</div>
+        <div class="src-desc">Fed rate changes from the Federal Reserve (federalreserve.gov), CPI and jobs-report dates from the Bureau of Labor Statistics (bls.gov), US election days from federal law, Bitcoin halvings from the blockchain &mdash; each linked to its source.</div>
       </div>
       <div class="src-card">
         <div class="src-icon" style="background:rgba(77,163,255,.08)">&#127760;</div>
-        <div class="src-name">Regional modelling</div>
-        <div class="src-desc">UK, German and Asian seasonal patterns modelled with region-specific adjustments: Japanese fiscal year-end, Chinese New Year effect, German auto cycle, UK mining and resource seasonality.</div>
+        <div class="src-name">No estimates</div>
+        <div class="src-desc">If we don&rsquo;t have real price history for an asset, we say so and show no figures for it. Nothing on the platform is filled in from a model.</div>
       </div>
       <div class="src-card">
         <div class="src-icon" style="background:rgba(155,127,255,.08)">&#9201;</div>
-        <div class="src-name">Backtest simulation</div>
-        <div class="src-desc">Strategy backtests use a deterministic simulation engine seeded from the seasonal model. Results are clearly labelled as model-based, not real historical price data.</div>
+        <div class="src-name">Real backtests</div>
+        <div class="src-desc">Strategy backtests buy and sell at actual closing prices on the trading days you choose, compound the results and count only windows that have finished.</div>
       </div>
       <div class="src-card">
         <div class="src-icon" style="background:rgba(232,64,74,.08)">&#9888;</div>
@@ -309,7 +309,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       <div class="src-card">
         <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128260;</div>
         <div class="src-name">Regular updates</div>
-        <div class="src-desc">Event Studies and Earnings Analysis data is updated as new events occur. The patterns themselves are reviewed annually. Last updated: June 2026.</div>
+        <div class="src-desc">Figures recompute from the latest prices (cached for up to an hour). Event dates are checked against their official schedules.</div>
       </div>
     </div>
   </div>
@@ -336,8 +336,8 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       <div class="principle">
         <div class="pr-n">03</div>
         <div>
-          <div class="pr-t">Simulated data is labelled as simulated.</div>
-          <div class="pr-d">Our backtests are generated from the seasonal model, not real historical price data. This is disclosed prominently on every backtest result. When real price data is integrated (on the roadmap), it will be clearly distinguished from modelled data.</div>
+          <div class="pr-t">Real data or nothing.</div>
+          <div class="pr-d">Every number comes from real prices or an official record. Where we don&rsquo;t have real data for an asset, we say so instead of estimating &mdash; no simulated backtests, no modelled patterns, no invented figures.</div>
         </div>
       </div>
       <div class="principle">

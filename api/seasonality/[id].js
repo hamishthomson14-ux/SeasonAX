@@ -7,11 +7,10 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst, fetchMonthly, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import { yahooSymbol, computeAdaptiveMonths, bestWorst, fetchMonthly, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
-const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
 const BY_ID = Object.fromEntries(CATALOGUE.map(a => [a.id, a]));
 
 function esc(s) {
@@ -156,7 +155,10 @@ export default async function handler(req, res) {
     }
   } catch (e) { /* fall through to model */ }
 
-  if (!months) months = getModelMonths(item, PATTERNS);
+  // Real price history only: without it there is no seasonal page (never modelled figures).
+  if (!months) return notAvailable(res, { title: `${item.name}: no verified price history`, eyebrow: 'Seasonality',
+    msg: `There is no verified price history for ${item.name} (${dispTicker(item)}), and we only show seasonal figures computed from real prices. This can happen after a takeover, merger, delisting or change of ticker.`,
+    cta: ['/seasonality.html', 'Browse assets with real data'] });
 
   const { best, worst } = bestWorst(months);
   const now = new Date();
@@ -450,8 +452,11 @@ async function realMonths(item) {
   } catch (e) { return null; }
 }
 function compareNotFound(res, msg) {
+  return notAvailable(res, { title: 'Comparison not available', eyebrow: 'Compare', msg, cta: ['/compare.html', 'Compare two assets'] });
+}
+function notAvailable(res, { title, eyebrow, msg, cta }) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.status(404).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Comparison not available | TimingAX</title>
+  res.status(404).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${esc(title)} | TimingAX</title>
       <meta name="robots" content="noindex"><meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="icon" href="/favicon.ico">
 <!-- tx:head -->
@@ -485,10 +490,10 @@ function compareNotFound(res, msg) {
 </header>
 <!-- /tx:header -->
 <main class="tx-wrap" style="padding:96px 24px;text-align:center">
-  <span class="tx-eyebrow">Compare</span>
-  <h1 class="tx-h1" style="margin:18px 0 14px;font-size:clamp(32px,5vw,52px)">Comparison not available</h1>
+  <span class="tx-eyebrow">${esc(eyebrow)}</span>
+  <h1 class="tx-h1" style="margin:18px 0 14px;font-size:clamp(32px,5vw,52px)">${esc(title)}</h1>
   <p class="tx-lead" style="margin:0 auto 28px">${esc(msg)}</p>
-  <a class="tx-btn tx-btn--primary tx-btn--lg" href="/compare.html">Compare two assets &rarr;</a>
+  <a class="tx-btn tx-btn--primary tx-btn--lg" href="${cta[0]}">${esc(cta[1])} &rarr;</a>
 </main>
 <!-- tx:footer -->
 <footer class="tx-footer">
@@ -546,7 +551,7 @@ async function compareHandler(req, res) {
   if (ia > ib) { res.setHeader('Location', `/compare/${ib}-vs-${ia}`); return res.status(301).end(); }
   const A = BY_ID[ia], B = BY_ID[ib];
   const [ra, rb] = await Promise.all([realMonths(A), realMonths(B)]);
-  if (!ra || !rb) return compareNotFound(res, `We need real price history for both ${A.name} and ${B.name}, and ${!ra ? A.name : B.name} doesn’t have enough yet.`);
+  if (!ra || !rb) return compareNotFound(res, `There is no verified price history for ${!ra ? A.name : B.name}, and we only compare assets using real prices.`);
 
   const ma = ra.months, mb = rb.months, cm = new Date().getMonth();
   const r = pearson(ma.map(x => x.avg), mb.map(x => x.avg));
