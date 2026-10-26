@@ -92,7 +92,7 @@ export default async function handler(req, res) {
 <main class="tx-wrap" style="padding:96px 24px;text-align:center">
   <span class="tx-eyebrow">404 &middot; Unknown asset</span>
   <h1 class="tx-h1" style="margin:18px 0 14px;font-size:clamp(34px,5vw,56px)">Asset not found</h1>
-  <p class="tx-lead" style="margin:0 auto 28px">We don&rsquo;t have seasonality data for that link. Browse all 733 assets instead.</p>
+  <p class="tx-lead" style="margin:0 auto 28px">We don&rsquo;t have seasonality data for that link. Browse 700+ assets instead.</p>
   <a class="tx-btn tx-btn--primary tx-btn--lg" href="/seasonality.html">Browse all assets &rarr;</a>
 </main>
 <!-- tx:footer -->
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     <div class="tx-footer__grid">
       <div class="tx-footer__brand">
         <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
       </div>
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
@@ -381,7 +381,7 @@ export default async function handler(req, res) {
     <div class="tx-footer__grid">
       <div class="tx-footer__brand">
         <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
       </div>
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
@@ -501,7 +501,7 @@ function notAvailable(res, { title, eyebrow, msg, cta }) {
     <div class="tx-footer__grid">
       <div class="tx-footer__brand">
         <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
       </div>
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
@@ -685,7 +685,7 @@ async function compareHandler(req, res) {
     <div class="tx-footer__grid">
       <div class="tx-footer__brand">
         <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
-        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
       </div>
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
