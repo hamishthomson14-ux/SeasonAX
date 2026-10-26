@@ -656,7 +656,7 @@ body.is-pro .mt-lock{display:none}
   <div class="hero-strip">
     <div class="hs-eyebrow">Global Market Seasonality Intelligence</div>
     <h1 class="hs-title">Pick any market. <em>See its calendar.</em></h1>
-    <p class="hs-sub">Seasonal patterns across 730+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
+    <p class="hs-sub">Seasonal patterns across 700+ stocks, ETFs, indices and crypto — US, UK, Germany and Asia. Click any asset to reveal its monthly data.</p>
   </div>
 
   <div class="legal-strip"><b>Historical data for information and education only.</b> Not investment advice or a personal recommendation. Past performance does not guarantee future results. Capital at risk.</div>
@@ -788,7 +788,7 @@ body.is-pro .mt-lock{display:none}
   <!-- SEASONAL SCREENER MODE -->
   <div id="modeScreener" style="display:none">
     <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <a class="tx-btn tx-btn--sm" href="/scanner.html" style="order:99;margin-left:auto">Full scanner: all 733 assets &rarr;</a>
+      <a class="tx-btn tx-btn--sm" href="/scanner.html" style="order:99;margin-left:auto">Full scanner: 700+ assets &rarr;</a>
       <div class="bt-label" style="margin:0">Screen month</div>
       <select class="bt-select" id="scMonth" style="max-width:180px"></select>
       <div class="bt-label" style="margin:0">Min win rate</div>
@@ -3578,20 +3578,20 @@ function showPaywall(reason, toolName){
   var sub = document.getElementById('pwSub');
   if(reason === 'asset'){
     if(title) title.textContent = 'This asset is part of Pro';
-    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 733 assets \u2014 individual stocks, crypto and every regional market.';
+    if(sub) sub.innerHTML = 'The free tier includes major indices &amp; ETFs only. Upgrade to Pro (\u00a319.99/mo) to unlock all 700+ assets with real data \u2014 individual stocks, crypto and every regional market.';
   } else if(reason === 'signup'){
     if(title) title.textContent = 'Create a free account to analyze';
     if(sub) sub.innerHTML = 'TimingAX is free to start \u2014 no card needed. Sign up to run <strong>5 seasonal analyses every month</strong> across our index &amp; ETF universe, plus Event Studies and the Economic Calendar.';
   } else if(reason === 'tool'){
     if(title) title.textContent = (toolName || 'This tool') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 733 assets and every other tool.';
+    if(sub) sub.innerHTML = 'The free tier covers the Seasonal Analyzer (limited), Event Studies and the Economic Calendar. Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this tool') + ' plus all 700+ assets with real data and every other tool.';
   } else if(reason === 'feature'){
     if(title) title.textContent = (toolName || 'This feature') + ' is a Pro feature';
-    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 733 assets and every other tool.';
+    if(sub) sub.innerHTML = 'Upgrade to Pro (\u00a319.99/mo) to unlock ' + (toolName || 'this feature') + ', plus all 700+ assets with real data and every other tool.';
   } else {
     if(title) title.textContent = 'That\u2019s your 5 free analyses this month';
     var ctx = lastAnalyzedName ? ('You were just looking at <strong>' + lastAnalyzedName + '</strong>. ') : '';
-    if(sub) sub.innerHTML = ctx + 'Start a <strong>7-day free Pro trial</strong> \u2014 unlimited analyses across all 733 assets, plus Backtest, Screener, Correlations and Watchlist. Cancel anytime, no charge in the trial.';
+    if(sub) sub.innerHTML = ctx + 'Start a <strong>7-day free Pro trial</strong> \u2014 unlimited analyses across all 700+ assets with real data, plus Backtest, Screener, Correlations and Watchlist. Cancel anytime, no charge in the trial.';
   }
   // Adapt buttons + usage line to context
   var pwPrimary = document.getElementById('pwPrimary');
@@ -3633,7 +3633,7 @@ initAuth();
 // MODE SWITCHER
 // ============================================================
 var MODE_HERO = {
-  analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 730+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
+  analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 700+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
   backtest: ['Test any window. <em>On real prices.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
   events:   ['When history repeats, <em>know the record.</em>', 'Fed rate cuts and hikes, US elections and Bitcoin halvings \u2014 official dates, real prices, and how markets actually moved before and after each one.'],
   screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
@@ -3990,7 +3990,7 @@ function applyScreenerPreviewGate(){
     cta.className = 'sc-preview-cta';
     cta.innerHTML =
       '<h4>' + blurred + ' more ranked below</h4>' +
-      '<p>You can see the top 3. Pro reveals the full ranking across 730+ assets \u2014 plus Backtest, Watchlist and every tool.</p>' +
+      '<p>You can see the top 3. Pro reveals the full ranking across 700+ assets \u2014 plus Backtest, Watchlist and every tool.</p>' +
       '<button class="scp-btn" onclick="pwScreenerUpgrade(this)">Reveal full ranking \u2014 free 7-day trial</button>' +
       '<div class="scp-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
     col.parentNode.appendChild(cta);
