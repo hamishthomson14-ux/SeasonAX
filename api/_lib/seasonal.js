@@ -391,3 +391,49 @@ export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new D
     days: { up: moves.filter((m) => m.ret > 0).sort((a, b) => b.ret - a.ret).slice(0, 3), down: moves.filter((m) => m.ret < 0).sort((a, b) => a.ret - b.ret).slice(0, 3) },
   };
 }
+
+// Seasonal window backtest from real daily closes (oldest first, [{t, c}]). Each year: buy at the close of the
+// first/last trading day of buyM, sell at the close of the first/last trading day of sellM — in the next year when
+// the window crosses New Year. Only windows whose exit has happened are used; nothing is filled in. Returns compound.
+export function computeBacktest(rows, { buyM, buyDay = 'first', sellM, sellDay = 'last', from = 0, to = 9999, now = new Date() } = {}) {
+  if (!rows || !rows.length) return null;
+  const r2 = (v) => Math.round(v * 100) / 100, iso = (t) => new Date(t).toISOString().slice(0, 10);
+  const byYM = new Map();                                  // 'YYYY-M' -> [first row, last row] of that month
+  for (const r of rows) {
+    const d = new Date(r.t), k = d.getUTCFullYear() + '-' + d.getUTCMonth(), e = byYM.get(k);
+    if (e) e[1] = r; else byYM.set(k, [r, r]);
+  }
+  const lastT = rows[rows.length - 1].t, nowT = now.getTime();
+  const pick = (y, m, which) => {
+    const e = byYM.get(y + '-' + m); if (!e) return null;
+    if (rows[0].t >= Date.UTC(y, m, 1)) return null;    // data starts inside this month: its first trading day isn't in the data
+    if (which === 'first') return e[0];
+    // The last trading day is only known once the month is over.
+    const monthEnd = Date.UTC(y, m + 1, 1);
+    return lastT >= monthEnd ? e[1] : null;           // a later trading day in the data proves the month is over
+  };
+  const exitYearOffset = sellM > buyM || (sellM === buyM && buyDay === 'first' && sellDay === 'last') ? 0 : 1;
+  const firstYear = new Date(rows[0].t).getUTCFullYear(), windows = [];
+  for (let y = Math.max(from, firstYear); y <= to; y++) {
+    const a = pick(y, buyM, buyDay), b = pick(y + exitYearOffset, sellM, sellDay);
+    if (!a || !b || b.t <= a.t || b.t > nowT) continue;
+    windows.push({ year: y, entry: iso(a.t), exit: iso(b.t), a: a.c, b: b.c, raw: (b.c / a.c - 1) * 100 });
+  }
+  if (!windows.length) return null;
+  let eq = 1; const equity = [];
+  const first = windows[0], last = windows[windows.length - 1];
+  for (const w of windows) { eq *= 1 + w.raw / 100; equity.push({ date: w.exit, strategy: r2((eq - 1) * 100), buyHold: r2((w.b / first.a - 1) * 100) }); }
+  const spanYears = (Date.parse(last.exit) - Date.parse(first.entry)) / (365.25 * 864e5);
+  const best = windows.reduce((p, w) => (w.raw > p.raw ? w : p)), worst = windows.reduce((p, w) => (w.raw < p.raw ? w : p));
+  return {
+    windows: windows.map((w) => ({ year: w.year, entry: w.entry, exit: w.exit, ret: r2(w.raw) })),
+    equity,
+    summary: {
+      n: windows.length, wins: windows.filter((w) => w.raw > 0).length, from: first.year, to: last.year,
+      total: r2((eq - 1) * 100), buyHold: r2((last.b / first.a - 1) * 100),
+      cagr: spanYears > 0 ? r2((Math.pow(eq, 1 / spanYears) - 1) * 100) : null,
+      avg: r2(windows.reduce((s, w) => s + w.raw, 0) / windows.length),
+      best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) },
+    },
+  };
+}

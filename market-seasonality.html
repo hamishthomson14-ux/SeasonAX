@@ -3628,7 +3628,7 @@ initAuth();
 // ============================================================
 var MODE_HERO = {
   analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 730+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
-  backtest: ['Test any window. <em>20 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
+  backtest: ['Test any window. <em>On real prices.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
   events:   ['When history repeats, <em>know the record.</em>', 'Fed rate cuts and hikes, US elections and Bitcoin halvings \u2014 official dates, real prices, and how markets actually moved before and after each one.'],
   screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
   watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
@@ -3703,80 +3703,17 @@ function btInit() {
   document.getElementById('btBuyMonth').innerHTML = buyHtml;
   document.getElementById('btSellMonth').innerHTML = sellHtml;
 
-  // Years 2000-2025
-  var fy = '', ty = '';
-  for (var y = 2000; y <= 2025; y++) {
-    fy += '<option value="' + y + '"' + (y === 2000 ? ' selected' : '') + '>' + y + '</option>';
-    ty += '<option value="' + y + '"' + (y === 2025 ? ' selected' : '') + '>' + y + '</option>';
+  // Daily price history starts in late 2006 (20 years); windows that haven't finished are left out by the API.
+  var fy = '', ty = '', lastY = new Date().getFullYear();
+  for (var y = 2006; y <= lastY; y++) {
+    fy += '<option value="' + y + '"' + (y === 2006 ? ' selected' : '') + '>' + y + '</option>';
+    ty += '<option value="' + y + '"' + (y === lastY ? ' selected' : '') + '>' + y + '</option>';
   }
   document.getElementById('btFromYear').innerHTML = fy;
   document.getElementById('btToYear').innerHTML = ty;
 }
 
-function btHash(str) {
-  var h = 2166136261;
-  for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
-function btRng(seed) {
-  return function() {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-function btGauss(rng) {
-  var u = 0, v = 0;
-  while (u === 0) u = rng();
-  while (v === 0) v = rng();
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
-function btSigma(pattern) {
-  var mean = 0; pattern.forEach(function(m){ mean += m.avg; }); mean /= 12;
-  var v = 0; pattern.forEach(function(m){ v += (m.avg - mean) * (m.avg - mean); }); v /= 12;
-  return Math.max(Math.sqrt(v) * 2.6, 2.0);
-}
-function btMonthlyReturn(assetId, year, mi, pattern, sigma) {
-  var rng = btRng(btHash(assetId + '|' + year + '|' + mi));
-  return pattern[mi].avg + btGauss(rng) * sigma;
-}
-function btWindowMonths(buyM, sellM, buyDay, sellDay) {
-  var out = [], i = buyM, guard = 0;
-  while (guard++ <= 12) { out.push(i); if (i === sellM) break; i = (i + 1) % 12; }
-  if (buyDay === 'last') out.shift();   // enter at end of buy month -> skip it
-  if (sellDay === 'first' && out.length) out.pop(); // exit at start of sell month -> skip it
-  return out;
-}
-
-// Build a real per-year, per-month return map for backtesting from actual prices.
-// cb({map, source}) where map[year][monthIndex] = pct return that month.
-var BT_REAL_CACHE = {};
-function btFetchRealReturns(item, cb) {
-  var sym = yahooSymbol(item);
-  if (!sym) { cb({ map: null, source: 'model' }); return; }
-  if (BT_REAL_CACHE[sym]) { cb({ map: BT_REAL_CACHE[sym], source: 'real' }); return; }
-  fetch('/api/prices?s=' + encodeURIComponent(sym))
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if (!data || !data.monthly || data.monthly.length < 36) { cb({ map: null, source: 'model' }); return; }
-      var map = {};
-      for (var i = 1; i < data.monthly.length; i++) {
-        var p = data.monthly[i-1], q = data.monthly[i];
-        if (!isFinite(p.c) || p.c <= 0) continue;
-        var dt = new Date(q.d);
-        var ret = ((q.c - p.c) / p.c) * 100;
-        if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-        var yr = dt.getFullYear(), mo = dt.getMonth();
-        if (!map[yr]) map[yr] = {};
-        map[yr][mo] = ret;
-      }
-      BT_REAL_CACHE[sym] = map;
-      cb({ map: map, source: 'real' });
-    })
-    .catch(function(){ cb({ map: null, source: 'model' }); });
-}
-
+// Backtests come only from real daily closes (/api/v1/seasonality?view=backtest). Nothing is simulated or filled in.
 function runBacktest() {
   if (!checkUsageLimit()) return;
   var assetId = document.getElementById('btAsset').value;
@@ -3788,153 +3725,77 @@ function runBacktest() {
   var y0 = parseInt(document.getElementById('btFromYear').value, 10);
   var y1 = parseInt(document.getElementById('btToYear').value, 10);
   if (y1 < y0) { var tmp = y0; y0 = y1; y1 = tmp; }
-
   var item = null;
   for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === assetId) { item = CATALOGUE[i]; break; }
   if (!item) return;
-  var pattern = PATTERNS[item.pattern || 'broadIndex'] || PATTERNS.broadIndex;
-  var sigma = btSigma(pattern);
-  var winMonths = btWindowMonths(buyM, sellM, buyDay, sellDay);
 
-  var res = document.getElementById('btResults');
-  if (winMonths.length === 0) {
-    res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Your buy/sell window is empty \u2014 widen the dates.</div>';
-    return;
-  }
+  var res = document.getElementById('btResults'), btn = document.getElementById('btGoBtn');
+  var MS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var empty = function (state, msg) { res.dataset.state = state; res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">' + msg + '</div>'; };
+  btn.disabled = true; btn.textContent = 'Fetching real prices...'; res.dataset.state = 'loading';
+  var url = '/api/v1/seasonality?id=' + encodeURIComponent(assetId) + '&view=backtest&buy=' + (buyM + 1) + '&buyDay=' + buyDay + '&sell=' + (sellM + 1) + '&sellDay=' + sellDay + '&from=' + y0 + '&to=' + y1;
+  fetch(url).then(function (r) { return r.status === 404 ? { missing: true } : r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (d) {
+    btn.disabled = false; btn.textContent = 'Run Backtest';
+    if (d && d.missing) return empty('unavailable', 'No backtest for ' + item.ticker + ': it needs real daily prices for at least one completed window in this range, and we never simulate one.');
+    if (!d) return empty('error', 'Real price data is unavailable right now, so no backtest is shown. Please try again.');
+    var s = d.summary;
+    function col(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
+    function sgn(v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; }
+    function day(iso) { var t = new Date(iso + 'T00:00:00Z'); return t.getUTCDate() + ' ' + MS[t.getUTCMonth()] + ' ' + t.getUTCFullYear(); }
+    var stratLabel = (buyDay === 'first' ? 'First' : 'Last') + ' trading day of ' + MS[buyM] + ' → ' + sellDay + ' trading day of ' + MS[sellM];
 
-  var btn = document.getElementById('btGoBtn');
-  btn.disabled = true;
-  btn.textContent = 'Fetching real data...';
-
-  btFetchRealReturns(item, function(real){
-    var realMap = real.map;
-    var dataSource = real.source;
-    btn.textContent = 'Run Backtest';
-    // Per-month return: real if available for that year/month, else synthetic model.
-    function monthRet(y, mi) {
-      if (realMap && realMap[y] && typeof realMap[y][mi] === 'number') return realMap[y][mi];
-      return btMonthlyReturn(assetId, y, mi, pattern, sigma);
+    // Equity curve: growth of 100 at each window's exit, strategy vs buy and hold from the first entry.
+    var pts = [{ s: 100, b: 100, date: d.windows[0].entry }].concat(d.equity.map(function (e) { return { s: 100 + e.strategy, b: 100 + e.buyHold, date: e.date }; }));
+    var W = 860, H = 240, pad = 36, vals = [];
+    pts.forEach(function (p) { vals.push(p.s, p.b); });
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals); if (hi - lo < 1) hi = lo + 1;
+    function px(k) { return pad + (W - pad * 2) * k / Math.max(1, pts.length - 1); }
+    function py(v) { return H - pad - (H - pad * 2) * (v - lo) / (hi - lo); }
+    function line(key) { return pts.map(function (p, k) { return (k ? 'L' : 'M') + px(k).toFixed(1) + ' ' + py(p[key]).toFixed(1); }).join(''); }
+    var grid = '';
+    for (var g = 0; g <= 4; g++) {
+      var gv = lo + (hi - lo) * g / 4, gy = py(gv).toFixed(1);
+      grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>' +
+        '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
     }
-    setTimeout(function() {
-    try {
-      var years = [], stratEq = [100], bhEq = [100];
-      var wins = 0, best = null, worst = null;
-      // If using real data, clamp the year range to what we actually have.
-      if (realMap) {
-        var realYears = Object.keys(realMap).map(Number);
-        var minY = Math.min.apply(null, realYears), maxY = Math.max.apply(null, realYears);
-        if (y0 < minY) y0 = minY;
-        if (y1 > maxY) y1 = maxY;
-      }
-      for (var y = y0; y <= y1; y++) {
-        var r = 0;
-        winMonths.forEach(function(mi){ r += monthRet(y, mi); });
-        var bh = 0;
-        for (var mi2 = 0; mi2 < 12; mi2++) bh += monthRet(y, mi2);
-        years.push({ year: y, ret: r, bh: bh });
-        if (r > 0) wins++;
-        if (!best || r > best.ret) best = { year: y, ret: r };
-        if (!worst || r < worst.ret) worst = { year: y, ret: r };
-        stratEq.push(stratEq[stratEq.length - 1] * (1 + r / 100));
-        bhEq.push(bhEq[bhEq.length - 1] * (1 + bh / 100));
-      }
-      var n = years.length;
-      var finalS = stratEq[stratEq.length - 1], finalB = bhEq[bhEq.length - 1];
-      var totalRet = (finalS / 100 - 1) * 100;
-      var bhTotal = (finalB / 100 - 1) * 100;
-      var cagr = (Math.pow(Math.max(finalS, 0.01) / 100, 1 / n) - 1) * 100;
-      var winRate = Math.round(wins / n * 100);
-      var edge = totalRet - bhTotal;
+    grid += '<text x="' + pad + '" y="' + (H - 8) + '" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + day(pts[0].date) + '</text>' +
+      '<text x="' + (W - pad) + '" y="' + (H - 8) + '" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + day(pts[pts.length - 1].date) + '</text>';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
+      '<path d="' + line('b') + '" fill="none" stroke="#4D6880" stroke-width="1.5" stroke-dasharray="4 3"/>' +
+      '<path d="' + line('s') + '" fill="none" stroke="#E89318" stroke-width="2"/></svg>';
 
-      var mNamesS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var stratLabel = (buyDay === 'first' ? 'First' : 'Last') + ' trading day of ' + mNamesS[buyM] +
-        ' \u2192 ' + (sellDay === 'last' ? 'last' : 'first') + ' trading day of ' + mNamesS[sellM];
+    var maxAbs = Math.max.apply(null, d.windows.map(function (w) { return Math.abs(w.ret); }).concat([0.01]));
+    var yrHtml = d.windows.map(function (w) {
+      return '<div class="bt-yr" data-year="' + w.year + '" data-entry="' + w.entry + '" data-exit="' + w.exit + '">' +
+        '<div class="bt-yr-l" style="flex-basis:auto;min-width:150px;text-align:left">' + day(w.entry) + ' → ' + day(w.exit) + '</div>' +
+        '<div class="bt-yr-t"><div class="bt-yr-f" style="width:0%;background:' + col(w.ret) + ';opacity:.72" data-w="' + (Math.abs(w.ret) / maxAbs * 100).toFixed(0) + '"></div></div>' +
+        '<div class="bt-yr-v" style="color:' + col(w.ret) + '" data-k="ret">' + sgn(w.ret) + '</div></div>';
+    }).join('');
 
-      function col(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
-      function sgn(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
-
-      // ── Equity curve SVG ──
-      var W = 860, H = 240, pad = 36;
-      var allVals = stratEq.concat(bhEq);
-      var lo = Math.min.apply(null, allVals), hi = Math.max.apply(null, allVals);
-      if (hi - lo < 1) hi = lo + 1;
-      function px(idx) { return pad + (W - pad * 2) * idx / (stratEq.length - 1); }
-      function py(v) { return H - pad - (H - pad * 2) * (v - lo) / (hi - lo); }
-      function line(arr) {
-        var d = '';
-        arr.forEach(function(v, idx) { d += (idx === 0 ? 'M' : 'L') + px(idx).toFixed(1) + ' ' + py(v).toFixed(1); });
-        return d;
-      }
-      var grid = '';
-      for (var g = 0; g <= 4; g++) {
-        var gv = lo + (hi - lo) * g / 4;
-        var gy = py(gv).toFixed(1);
-        grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>';
-        grid += '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
-      }
-      grid += '<text x="' + pad + '" y="' + (H - 8) + '" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y0 + '</text>';
-      grid += '<text x="' + (W - pad) + '" y="' + (H - 8) + '" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y1 + '</text>';
-      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
-        '<path d="' + line(bhEq) + '" fill="none" stroke="#4D6880" stroke-width="1.5" stroke-dasharray="4 3"/>' +
-        '<path d="' + line(stratEq) + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
-        '</svg>';
-
-      // ── Year bars ──
-      var maxAbs = 1;
-      years.forEach(function(yy){ if (Math.abs(yy.ret) > maxAbs) maxAbs = Math.abs(yy.ret); });
-      var yrHtml = '';
-      years.forEach(function(yy) {
-        var w = (Math.abs(yy.ret) / maxAbs * 100).toFixed(0);
-        yrHtml += '<div class="bt-yr">' +
-          '<div class="bt-yr-l">' + yy.year + '</div>' +
-          '<div class="bt-yr-t"><div class="bt-yr-f" style="width:0%;background:' + col(yy.ret) + ';opacity:.72" data-w="' + w + '"></div></div>' +
-          '<div class="bt-yr-v" style="color:' + col(yy.ret) + '">' + sgn(yy.ret) + '</div>' +
-        '</div>';
-      });
-
-      res.innerHTML =
-        '<div class="kpi-rail kpi-rail-6">' +
-          '<div class="kpi"><div class="kpi-l">Total Return</div><div class="kpi-v ' + (totalRet>=0?'p':'n') + '">' + sgn(totalRet) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">CAGR</div><div class="kpi-v ' + (cagr>=0?'p':'n') + '">' + sgn(cagr) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Win Rate</div><div class="kpi-v a">' + winRate + '%</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Best Year</div><div class="kpi-v p">' + best.year + ' ' + sgn(best.ret) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Worst Year</div><div class="kpi-v n">' + worst.year + ' ' + sgn(worst.ret) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">vs Buy &amp; Hold</div><div class="kpi-v ' + (edge>=0?'p':'n') + '">' + sgn(edge) + '</div></div>' +
-        '</div>' +
-        '<div class="term-tabs" id="btTabs">' +
-          '<button class="term-tab active" data-tab="equity" onclick="btSwitchTab(\'equity\')">Equity Curve</button>' +
-          '<button class="term-tab" data-tab="years" onclick="btSwitchTab(\'years\')">Year by Year</button>' +
-        '</div>' +
-        '<div class="term-panel show" data-panel="equity">' +
-          '<div class="term-chartwrap">' +
-            '<div class="cp-title">' + item.ticker + ' \u00b7 ' + stratLabel + ' \u00b7 Growth of 100</div>' +
-            svg +
-            '<div class="bt-legend">' +
-              '<span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span>' +
-              '<span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span>' +
-            '</div>' +
-            '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from TimingAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="term-panel" data-panel="years">' +
-          '<div class="term-chartwrap">' +
-            '<div class="cp-title">Year-by-Year Strategy Returns</div>' +
-            '<div class="bt-yrgrid">' + yrHtml + '</div>' +
-          '</div>' +
-        '</div>';
-
-      setTimeout(function() {
-        document.querySelectorAll('.bt-yr-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
-      }, 80);
-
-      trackAnalysis();
-    } catch (e) {
-      console.error(e);
-      res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Backtest error \u2014 check console.</div>';
-    } finally {
-      btn.disabled = false;
-    }
-    }, 350);
+    res.innerHTML =
+      '<div class="kpi-rail kpi-rail-6">' +
+        '<div class="kpi"><div class="kpi-l">Total return</div><div class="kpi-v ' + (s.total >= 0 ? 'p' : 'n') + '" data-bt="total">' + sgn(s.total) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">CAGR</div><div class="kpi-v ' + (s.cagr >= 0 ? 'p' : 'n') + '" data-bt="cagr">' + (s.cagr === null ? '—' : sgn(s.cagr)) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Windows up</div><div class="kpi-v a" data-bt="win">' + s.wins + ' of ' + s.n + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Best window</div><div class="kpi-v p" data-bt="best">' + s.best.year + ' ' + sgn(s.best.ret) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Worst window</div><div class="kpi-v n" data-bt="worst">' + s.worst.year + ' ' + sgn(s.worst.ret) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Buy &amp; hold, same span</div><div class="kpi-v ' + (s.buyHold >= 0 ? 'p' : 'n') + '" data-bt="buyHold">' + sgn(s.buyHold) + '</div></div>' +
+      '</div>' +
+      '<div class="term-tabs" id="btTabs">' +
+        '<button class="term-tab active" data-tab="equity" onclick="btSwitchTab(\'equity\')">Equity Curve</button>' +
+        '<button class="term-tab" data-tab="years" onclick="btSwitchTab(\'years\')">Every window</button>' +
+      '</div>' +
+      '<div class="term-panel show" data-panel="equity"><div class="term-chartwrap">' +
+        '<div class="cp-title">' + item.ticker + ' · ' + stratLabel + ' · Growth of 100</div>' + svg +
+        '<div class="bt-legend"><span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span><span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span></div>' +
+        '<div class="bt-disclaimer">✓ REAL BACKTEST — ' + d.method + ' ' + s.n + ' completed windows, ' + s.from + '–' + s.to + '. Excludes trading costs and taxes. Past performance does not guarantee future results.</div>' +
+      '</div></div>' +
+      '<div class="term-panel" data-panel="years"><div class="term-chartwrap">' +
+        '<div class="cp-title">Every window (entry close → exit close)</div><div class="bt-yrgrid">' + yrHtml + '</div>' +
+      '</div></div>';
+    res.dataset.state = 'done';
+    setTimeout(function () { document.querySelectorAll('.bt-yr-f').forEach(function (el) { el.style.width = el.dataset.w + '%'; }); }, 80);
+    trackAnalysis();
   });
 }
 
