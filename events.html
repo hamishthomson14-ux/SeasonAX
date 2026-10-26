@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Events Library — How Markets Moved Around Fed Decisions, Elections and Halvings | TimingAX</title>
+<meta name="description" content="How the S&amp;P 500, NASDAQ, gold, Treasuries, FTSE 100 and Bitcoin moved before and after Fed rate cuts and hikes, US elections and Bitcoin halvings — official dates, real prices.">
+<link rel="canonical" href="https://www.timingax.co.uk/events.html">
+<meta property="og:title" content="Market Events Library | TimingAX">
+<meta property="og:description" content="Markets around Fed decisions, elections and halvings — official dates, real prices.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.timingax.co.uk/events.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.ev-hero { padding: 56px 0 20px; max-width: 820px; }
+.ev-hero .tx-h1 { font-size: clamp(34px, 5vw, 56px); margin: 16px 0 14px; }
+.ev-types { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.ev-types button { font: 600 13px var(--tx-font-ui); padding: 9px 14px; border-radius: 6px; border: 1px solid var(--tx-border-2); background: var(--tx-surface-1); color: var(--tx-text-2); cursor: pointer; }
+.ev-types button[aria-pressed="true"] { color: var(--tx-amber-2); border-color: rgba(232,147,24,.55); background: rgba(232,147,24,.08); }
+.ev-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+.ev-bar select { min-height: 40px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--tx-border-2); background: var(--tx-bg-1); color: var(--tx-text-1); font: 500 14px var(--tx-font-ui); }
+.ev-t { width: 100%; border-collapse: collapse; font-family: var(--tx-font-mono); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.ev-t th { font: 500 10.5px var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--tx-border-2); white-space: nowrap; }
+.ev-t th:first-child, .ev-t td:first-child { text-align: left; }
+.ev-t td { padding: 9px 12px; border-bottom: 1px solid #0B1220; text-align: right; white-space: nowrap; }
+.ev-scroll { overflow-x: auto; }
+.ev-scroll .ev-t { min-width: 620px; }
+.ev-sec { margin-top: 20px; }
+.ev-note { margin: 0; padding: 12px 16px; border-top: 1px solid var(--tx-border-1); color: var(--tx-text-3); font-size: 13px; }
+@media (max-width: 600px) { .ev-sum td, .ev-sum th { padding: 9px 6px; font-size: 12px; } }
+</style>
+</head>
+<body class="tx" data-ev-state="loading">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap">
+  <section class="ev-hero">
+    <span class="tx-eyebrow">Market events library</span>
+    <h1 class="tx-h1">How markets moved <em>around the big events.</em></h1>
+    <p class="tx-lead">Fed rate cuts and hikes, US elections and Bitcoin halvings: every date comes from an official record, every move from real daily prices.</p>
+  </section>
+  <div class="ev-types" role="group" aria-label="Event type" id="evTypes"></div>
+  <div class="ev-bar"><label class="tx-label" for="evAsset">Market</label>
+    <select id="evAsset"><option value="sp500">S&amp;P 500</option><option value="nasdaq">NASDAQ Composite</option><option value="gld">Gold (GLD)</option><option value="tlt">US Treasuries 20y+ (TLT)</option><option value="ftse100">FTSE 100</option><option value="btc">Bitcoin</option></select></div>
+
+  <div class="tx-term ev-sec"><div class="tx-term__head"><span class="tx-term__title" id="evTitle">Summary</span><span class="tx-term__status" id="evN"></span></div>
+    <table class="ev-t ev-sum"><thead><tr><th></th><th>Month before</th><th>Day 1</th><th>Week 1</th><th>Month 1</th><th>Month 3</th></tr></thead>
+      <tbody>
+        <tr><td>Average</td><td data-ev="avg-before"></td><td data-ev="avg-d1"></td><td data-ev="avg-w1"></td><td data-ev="avg-m1"></td><td data-ev="avg-m3"></td></tr>
+        <tr><td>Times up</td><td data-ev="up-before"></td><td data-ev="up-d1"></td><td data-ev="up-w1"></td><td data-ev="up-m1"></td><td data-ev="up-m3"></td></tr>
+      </tbody></table>
+    <p class="ev-note"><span id="evNote"></span> Source: <a id="evSource" href="#" rel="noopener">official record</a>.</p></div>
+
+  <div class="tx-term ev-sec"><div class="tx-term__head"><span class="tx-term__title">Every event</span><span class="tx-term__status">Newest first</span></div>
+    <div class="ev-scroll"><table class="ev-t"><thead><tr><th>Date</th><th id="evDetailHead">Detail</th><th>Month before</th><th>Day 1</th><th>Week 1</th><th>Month 1</th><th>Month 3</th></tr></thead><tbody id="evRows"></tbody></table></div></div>
+
+  <p class="tx-note" style="margin:24px 0 72px">Moves are measured from the close on the last trading day before each event: day 1, 5, 21 and 63 trading days on; &ldquo;month before&rdquo; is the 21 trading days leading in. A dash means the window hasn&rsquo;t finished yet or the market has no price data for it. History, not a forecast. <a href="/data.html">Data &amp; methodology</a>.</p>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var pct = function (v) { return v === null || v === undefined ? '—' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; };
+  var cls = function (v) { return v === null || v === undefined ? '' : v >= 0 ? 'tx-up' : 'tx-down'; };
+  var q = new URLSearchParams(location.search), type = q.get('type') || 'fed-cut', id = q.get('id') || 'sp500', types = [], token = 0;
+  if ([].some.call($('evAsset').options, function (o) { return o.value === id; })) $('evAsset').value = id;
+  function detail(e) { return e.bp ? (type === 'fed-cut' ? '−' : '+') + e.bp + 'bp → ' + e.level + '%' : e.block ? 'Block ' + e.block.toLocaleString('en-US') : 'Election Day'; }
+  function load() {
+    var my = ++token; id = $('evAsset').value;
+    history.replaceState(null, '', '/events.html?type=' + type + '&id=' + id);
+    document.body.dataset.evState = 'loading';
+    [].forEach.call($('evTypes').children, function (b) { b.setAttribute('aria-pressed', b.dataset.type === type ? 'true' : 'false'); });
+    fetch('/api/v1/seasonality?view=events&type=' + type + '&id=' + id).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (d) {
+      if (my !== token) return;
+      var t = types.find(function (x) { return x.id === type; }) || {};
+      $('evTitle').textContent = (t.name || 'Events') + ' · ' + $('evAsset').selectedOptions[0].textContent;
+      if (!d) {
+        document.querySelectorAll('[data-ev]').forEach(function (e) { e.textContent = '—'; e.className = ''; });
+        $('evRows').innerHTML = '<tr><td colspan="7" style="text-align:left">No real price data for this market around these events.</td></tr>';
+        $('evN').textContent = ''; document.body.dataset.evState = 'error'; return;
+      }
+      ['before', 'd1', 'w1', 'm1', 'm3'].forEach(function (k) {
+        var s = d.summary[k], a = document.querySelector('[data-ev="avg-' + k + '"]');
+        a.textContent = pct(s.avg); a.className = cls(s.avg);
+        document.querySelector('[data-ev="up-' + k + '"]').textContent = s.up === null ? '—' : s.up + '%';
+      });
+      $('evN').textContent = d.events.length + ' events measured';
+      $('evNote').textContent = d.type.note;
+      $('evSource').href = d.type.source;
+      $('evDetailHead').textContent = type.indexOf('fed') === 0 ? 'Change → target' : type === 'btc-halving' ? 'Block' : 'Detail';
+      $('evRows').innerHTML = d.events.slice().reverse().map(function (e) {
+        return '<tr data-date="' + e.date + '"><td>' + e.date + '</td><td>' + detail(e) + '</td>' +
+          ['before', 'd1', 'w1', 'm1', 'm3'].map(function (k) { return '<td class="' + cls(e[k]) + '" data-k="' + k + '">' + pct(e[k]) + '</td>'; }).join('') + '</tr>';
+      }).join('');
+      document.body.dataset.evState = 'done';
+    });
+  }
+  fetch('/api/v1/seasonality?view=events').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (d) {
+    if (!d) { $('evRows').innerHTML = '<tr><td colspan="7">The events library is unavailable right now.</td></tr>'; document.body.dataset.evState = 'error'; return; }
+    types = d.types;
+    if (!types.some(function (t) { return t.id === type; })) type = 'fed-cut';
+    $('evTypes').innerHTML = types.map(function (t) { return '<button type="button" data-type="' + t.id + '" aria-pressed="false">' + t.name + ' <span class="tx-muted">(' + t.count + ')</span></button>'; }).join('');
+    [].forEach.call($('evTypes').children, function (b) { b.addEventListener('click', function () { type = b.dataset.type; if (type === 'btc-halving' && $('evAsset').value === 'sp500') $('evAsset').value = 'btc'; load(); }); });
+    $('evAsset').addEventListener('change', load);
+    load();
+  });
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

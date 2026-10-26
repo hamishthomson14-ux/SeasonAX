@@ -109,6 +109,7 @@ export default async function handler(req, res) {
         <li><a href="/seasonality.html">Browse assets</a></li>
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
@@ -385,6 +386,7 @@ export default async function handler(req, res) {
         <li><a href="/seasonality.html">Browse assets</a></li>
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
@@ -501,6 +503,7 @@ function compareNotFound(res, msg) {
         <li><a href="/seasonality.html">Browse assets</a></li>
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
@@ -684,6 +687,7 @@ async function compareHandler(req, res) {
         <li><a href="/seasonality.html">Browse assets</a></li>
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>

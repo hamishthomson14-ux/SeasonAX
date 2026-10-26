@@ -333,3 +333,28 @@ export function computeThisDay(rows, { month, day, years = 20, now = new Date() 
     avg: tr.length ? r2(tr.reduce((a, b) => a + b.change, 0) / tr.length) : null,
     best: by((x, y) => x > y), worst: by((x, y) => x < y) } };
 }
+
+// ── Event studies ───────────────────────────────────────────────────────────
+// For each event date: % moves measured from the close on the last trading day before the event.
+// d1/w1/m1/m3 = close on the 1st/5th/21st/63rd trading day on or after the event date;
+// before = the 21 trading days leading up to that base close. null when a window runs past the data.
+export function computeEventStudy(rows, dates) {
+  const W = { d1: 1, w1: 5, m1: 21, m3: 63 }, r2 = (v) => Math.round(v * 100) / 100;
+  const events = [];
+  for (const date of dates) {
+    const t = Date.parse(date + 'T00:00:00Z'), i = rows.findIndex((r) => r.t >= t);
+    if (i < 1 || rows[i].t - t > 7 * 864e5) continue;            // before the data, or a gap
+    const base = rows[i - 1].c, e = { date };
+    for (const [k, n] of Object.entries(W)) e[k] = rows[i + n - 1] ? (rows[i + n - 1].c / base - 1) * 100 : null;
+    e.before = i - 22 >= 0 ? (base / rows[i - 22].c - 1) * 100 : null;
+    events.push(e);
+  }
+  const summary = {};
+  for (const k of ['before', 'd1', 'w1', 'm1', 'm3']) {
+    const v = events.map((e) => e[k]).filter((x) => x !== null), s = [...v].sort((a, b) => a - b);
+    const med = v.length ? (v.length % 2 ? s[(v.length - 1) / 2] : (s[v.length / 2 - 1] + s[v.length / 2]) / 2) : null;
+    summary[k] = { n: v.length, avg: v.length ? r2(v.reduce((a, b) => a + b, 0) / v.length) : null, median: med === null ? null : r2(med),
+      up: v.length ? Math.round(v.filter((x) => x > 0).length / v.length * 100) : null };
+  }
+  return { events, summary };
+}
