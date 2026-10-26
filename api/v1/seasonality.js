@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -124,7 +124,16 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track or leaderboard.' });
+  // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
+  if (view === 'track') {
+    let tr = null;
+    try { const rows = await fetchMonthly(yahooSymbol(item)); tr = rows && computeTrackRecord(rows, { now: new Date(), months: 36 }); } catch (e) { tr = null; }
+    if (!tr || !tr.records.some((x) => x.verdict)) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly history (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'track', ...tr,
+      disclaimer: 'Each month\'s signal uses only the 15 years before that month; the outcome is the month\'s actual return. Neutral months are not scored.', generatedAt: new Date().toISOString() });
+  }
   // ── ?view=patterns — best/worst weeks of the year + turn-of-month, from real daily prices ──
   if (view === 'patterns') {
     let pat = null;

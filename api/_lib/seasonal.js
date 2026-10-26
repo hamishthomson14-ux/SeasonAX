@@ -273,3 +273,38 @@ export function buildCalendar(entries, { now = new Date() } = {}) {
   lines.push('END:VCALENDAR');
   return lines.map(icsFold).join('\r\n') + '\r\n';
 }
+
+// ── Track record (out-of-sample) ────────────────────────────────────────────
+// For each of the last `months` complete months: the seasonal verdict for that calendar month using ONLY
+// the 15 years before it (min 5), and the month's actual return. hit: tailwind & up, headwind & down;
+// neutral months are not scored. rows: monthly closes as from fetchMonthly.
+export function computeTrackRecord(rows, { now = new Date(), months = 36, lookback = 15 } = {}) {
+  const ret = {};
+  for (let i = 1; i < rows.length; i++) {
+    const p = rows[i - 1].c, c = rows[i].c, r = (c - p) / p * 100;
+    if (isFinite(r) && p > 0 && Math.abs(r) <= 95) ret[rows[i].d.slice(0, 7)] = r;
+  }
+  const r2 = (v) => Math.round(v * 100) / 100, ym = (y, m) => `${y}-${String(m + 1).padStart(2, '0')}`;
+  const records = [];
+  for (let k = 1; k <= months; k++) {
+    const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - k, 1)), y = t.getUTCFullYear(), m = t.getUTCMonth();
+    const actual = ret[ym(y, m)];
+    const past = []; for (let py = y - lookback; py < y; py++) if (ret[ym(py, m)] != null) past.push(ret[ym(py, m)]);
+    const rec = { ym: ym(y, m), actual: actual == null ? null : r2(actual), n: past.length, avg: null, win: null, verdict: null, hit: null };
+    if (past.length >= 5 && actual != null) {
+      rec.avg = r2(past.reduce((a, b) => a + b, 0) / past.length);
+      rec.win = Math.round(past.filter((x) => x > 0).length / past.length * 100);
+      rec.verdict = verdictOf(rec.avg, rec.win);
+      if (rec.verdict !== 'NEUTRAL') rec.hit = rec.verdict === 'TAILWIND' ? actual > 0 : actual < 0;
+    }
+    records.push(rec);
+  }
+  const scored = records.filter((x) => x.hit !== null), withActual = records.filter((x) => x.actual != null);
+  const group = (v) => { const g = records.filter((x) => x.verdict === v); return { count: g.length, avgActual: g.length ? r2(g.reduce((a, b) => a + b.actual, 0) / g.length) : null }; };
+  return { records, summary: {
+    signals: scored.length, hits: scored.filter((x) => x.hit).length,
+    hitRate: scored.length ? Math.round(scored.filter((x) => x.hit).length / scored.length * 100) : null,
+    tailwind: group('TAILWIND'), headwind: group('HEADWIND'), neutral: group('NEUTRAL'),
+    baseUpRate: withActual.length ? Math.round(withActual.filter((x) => x.actual > 0).length / withActual.length * 100) : null,
+  } };
+}
