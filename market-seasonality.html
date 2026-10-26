@@ -2514,7 +2514,7 @@ function bars(months, sfx) {
         '<div class="bt"><div class="bf" style="width:0%;background:'+col+';opacity:.72" data-w="'+w+'"></div></div>'+
         '<div class="bv '+(m.avg>=0?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+sfx+'</div>'+
       '</div>'+
-      '<div class="bsub">WIN RATE '+m.win+'% &middot; '+m.note+'</div>'+
+      '<div class="bsub">WIN RATE '+m.win+'%'+(m.note?' &middot; '+m.note:'')+'</div>'+
     '</div>';
   });
   return html+'</div>';
@@ -2649,9 +2649,7 @@ function recomputeView() {
     var yearsForCompute = preset.years || CUR_YEARS;
     var filtered = computeRealMonths(CUR_RAW_ROWS, yearsForCompute, preset.fn, preset.minObs);
     if (filtered) {
-      var patKey = (CUR_ITEM.pattern) || 'broadIndex';
-      var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
-      for (var i = 0; i < 12; i++) filtered[i].note = pat[i].note || '';
+      rankNotes(filtered);
       baseMonths = filtered;
       filterApplied = true;
       if (warnEl) warnEl.style.display = 'none';
@@ -2680,10 +2678,7 @@ function fetchRealMonths(item, yearsWanted, cb) {
       if (!data || !data.monthly || data.monthly.length < 24) { CUR_RAW_ROWS = null; cb(null); return; }
       var resolved = computeAdaptiveRealMonths(data.monthly, yearsWanted);
       if (resolved) {
-        // Preserve the model's written notes per month for colour
-        var patKey = (item.pattern) || 'broadIndex';
-        var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
-        for (var i = 0; i < 12; i++) resolved.months[i].note = pat[i].note || '';
+        rankNotes(resolved.months);   // labels from this asset's own figures, never the written model
         REAL_CACHE[ck] = resolved;
         REAL_RAW_ROWS_CACHE[sym] = data.monthly;
         CUR_RAW_ROWS = data.monthly;
@@ -2745,7 +2740,7 @@ function getMonths(id) {
   for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===id){item=CATALOGUE[i];break;} }
   var patKey=(item&&item.pattern)||'broadIndex';
   var pat=PATTERNS[patKey]||PATTERNS.broadIndex;
-  return JSON.parse(JSON.stringify(pat));
+  return rankNotes(JSON.parse(JSON.stringify(pat)));   // modelled numbers keep their MODELLED badge; the written notes are never shown
 }
 
 // ============================================================
@@ -2797,7 +2792,7 @@ function generateBriefing(item, months, source, years, detrend) {
   if (detrend) verdict += ' (RELATIVE)';
 
   var dataLine = (source === 'real'
-    ? 'Computed from <strong>' + (cur.n || best.n || '15+') + ' years</strong> of actual monthly closing prices.'
+    ? 'Computed from actual monthly closing prices' + (cur.n ? ': <strong>' + cur.n + ' observations of ' + MOF[cm] + '</strong>, counting this month with its latest close.' : '.')
     : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).')
     + (detrend ? ' Values shown are <strong>detrended</strong> \u2014 each month\u2019s return relative to ' + name + '\u2019s own average month, with the overall trend removed.' : '');
 
@@ -2808,8 +2803,7 @@ function generateBriefing(item, months, source, years, detrend) {
     '</strong> (' + pct(best.avg) + ', ' + best.win + '% win rate), followed by ' + MOF[best2.i] + ' (' + pct(best2.avg) +
     '). The weakest is <strong>' + MOF[worst.i] + '</strong> (' + pct(worst.avg) + ', ' + worst.win +
     '% win rate). That is a ' + spread + ' percentage-point spread between the best and worst months \u2014 ' +
-    (Math.abs(spread) > 4 ? 'a wide seasonal dispersion that has historically rewarded calendar-aware positioning.' :
-     'a relatively contained seasonal range, suggesting calendar effects are secondary to other drivers for this asset.');
+    (Math.abs(spread) > 4 ? 'a wide gap between its best and worst months.' : 'a relatively narrow gap between its best and worst months.');
 
   var p2 = 'Right now, in <strong>' + MOF[cm] + '</strong>, ' + name + ' sits in ' + strength(cur.win) +
     ' seasonal month: a ' + pct(cur.avg) + ' historical average with a ' + cur.win + '% win rate' +
@@ -2841,6 +2835,15 @@ function detrendMonths(months) {
   return months.map(function(m){
     return { m: m.m, win: m.win, n: m.n, note: m.note, avg: +(m.avg - overall).toFixed(2), rawAvg: m.avg, overall: +overall.toFixed(2) };
   });
+}
+
+// Month labels computed from the asset's own averages: its two strongest and two weakest months.
+function rankNotes(months) {
+  var order = months.map(function (m, i) { return { i: i, a: m.avg }; }).sort(function (x, y) { return y.a - x.a; }).map(function (x) { return x.i; });
+  months.forEach(function (m) { m.note = ''; });
+  months[order[0]].note = 'strongest month'; months[order[1]].note = '2nd strongest';
+  months[order[11]].note = 'weakest month'; months[order[10]].note = '2nd weakest';
+  return months;
 }
 
 var CUR_ITEM=null, CUR_MONTHS=null, CUR_SOURCE=null, CUR_YEARS=null, CUR_YEAR_FILTER=null;
