@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computeBacktest, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair or leaderboard.' });
   if (view === 'events') {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
@@ -188,6 +188,19 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'backtest', ...b,
       method: 'Buy at the close of the chosen trading day of the buy month and sell at the close of the chosen trading day of the sell month (the next year if the window crosses New Year). Only completed windows. Returns compound; buy and hold runs from the first entry to the last exit. Yahoo Finance daily closes (adjusted closes where Yahoo provides them).',
+      generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=pair&with=<id> — seasonal correlation + actual monthly-return correlation, real data only ──
+  if (view === 'pair') {
+    const other = CATALOGUE.find(a => a.id === String(req.query.with || '').toLowerCase());
+    if (!other) return res.status(400).json({ error: 'Provide the second asset via &with=' });
+    let p = null;
+    try { const [ra, rb] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchMonthly(yahooSymbol(other))]); p = ra && rb && computePairStats(ra, rb, { now: new Date() }); } catch (e) { p = null; }
+    if (!p) return res.status(404).json({ error: 'unavailable', hint: 'Both assets need real price history; nothing is computed from a model.' });
+    const side = (it, x) => ({ id: it.id, ticker: it.ticker, name: it.name, years: x.years, months: x.months.map((m, i) => ({ month: MONTH_NAMES[i], avgReturn: m.avg, winRate: m.win, observations: m.n })) });
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    return res.status(200).json({ source: 'verified', view: 'pair', a: side(item, p.a), b: side(other, p.b), seasonal: p.seasonal, returns: p.returns,
+      method: 'Seasonal correlation: Pearson correlation of the two assets\' 12 monthly average returns. Monthly-return correlation: Pearson correlation of their actual monthly returns over the completed months they share in the last 15 calendar years.',
       generatedAt: new Date().toISOString() });
   }
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──

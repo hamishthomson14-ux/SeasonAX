@@ -824,7 +824,7 @@ body.is-pro .mt-lock{display:none}
     <div class="bt-panel last">
       <div class="bt-ptitle" id="scShiftTitle">Momentum swings</div>
       <div class="sc-shifts" id="scShifts"></div>
-      <div class="bt-disclaimer" style="margin-top:16px">SCREENER — rankings reflect historical seasonal averages by pattern group, not predictions. Multiple assets share a pattern group; "+N similar" indicates peers with the same seasonal profile.</div>
+      <div class="bt-disclaimer" style="margin-top:16px">SCREENER &mdash; ranks a fixed set of 24 liquid markets by each one&rsquo;s own average return for the month, from real monthly closes (the same figures as their asset pages); markets without real price history are left out. History, not predictions. For every asset, use the full scanner.</div>
     </div>
   </div>
 
@@ -898,7 +898,8 @@ body.is-pro .mt-lock{display:none}
       <div class="bt-label" style="margin:14px 0 8px">Notable pairs</div>
       <div class="ea-filters" id="prPresets" style="margin-bottom:0"></div>
     </div>
-    <div id="prResults" style="display:none"><div style="text-align:right;margin-bottom:8px"><span class="data-badge model" id="prDataBadge" style="display:none"></span></div>
+    <div id="prMsg" class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)" hidden></div>
+    <div id="prResults" style="display:none"><div style="text-align:right;margin-bottom:8px"><span class="data-badge real" id="prDataBadge">&#10003; REAL PRICE DATA</span></div>
       <div class="bt-stats" id="prStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
       <div class="bt-panel">
         <div class="bt-ptitle">Monthly seasonal rhythm — side by side</div>
@@ -908,7 +909,7 @@ body.is-pro .mt-lock{display:none}
       <div class="bt-panel last">
         <div class="ai-header"><span class="ai-badge">Pair Intelligence</span><span class="ai-title">What the correlation means</span></div>
         <div class="aitxt" id="prText"></div>
-        <div class="bt-disclaimer" style="margin-top:16px">CORRELATION — computed across the 12 monthly seasonal averages of each asset's pattern group. Seasonal correlation is not price correlation; it measures calendar rhythm alignment only.</div>
+        <div class="bt-disclaimer" style="margin-top:16px">CORRELATION &mdash; seasonal correlation is the Pearson correlation of the two assets&rsquo; 12 monthly average returns (the same averages as their asset pages): it compares calendars, not prices. Monthly-return correlation uses their actual monthly returns over the completed months they share in the last 15 calendar years. Real price data only. Describes the past; not a forecast.</div>
       </div>
     </div>
     </div><!-- /prPairView -->
@@ -923,7 +924,7 @@ body.is-pro .mt-lock{display:none}
           <div class="hm-lg-bar" id="prMxLegend"></div>
           <span>Same seasons</span>
         </div>
-        <div class="bt-disclaimer" style="margin-top:16px">Each cell is the correlation between two assets&rsquo; 12-month seasonal rhythms. Green = aligned calendars, red = opposite calendars. Seasonal correlation is not price correlation.</div>
+        <div class="bt-disclaimer" style="margin-top:16px">Each cell is the Pearson correlation between two assets&rsquo; 12 monthly average returns, from real prices; assets without real price history are left out. Green = aligned calendars, red = opposite calendars. This compares calendars, not prices.</div>
       </div>
     </div>
   </div><!-- /modePairs -->
@@ -3836,37 +3837,16 @@ function esInit() {
 // ============================================================
 function scPattern(item) { return PATTERNS[item.pattern || 'broadIndex'] || PATTERNS.broadIndex; }
 
-function scAssetsByPattern(patKey) {
-  return CATALOGUE.filter(function(it){ return !it.section && (it.pattern || 'broadIndex') === patKey; });
-}
-
-function scRank(monthIdx, dir) {
-  var pats = Object.keys(PATTERNS).map(function(k) {
-    return { k: k, avg: PATTERNS[k][monthIdx].avg, win: PATTERNS[k][monthIdx].win, note: PATTERNS[k][monthIdx].note };
-  });
-  pats.sort(function(a, b){ return dir * (b.avg - a.avg); });
-  var rows = [];
-  pats.forEach(function(p) {
-    if (rows.length >= 12) return;
-    var assets = scAssetsByPattern(p.k);
-    var take = assets.slice(0, 3);
-    take.forEach(function(a, i) {
-      if (rows.length < 12) rows.push({ item: a, avg: p.avg, win: p.win, more: (i === take.length - 1 && assets.length > 3) ? assets.length - 3 : 0 });
-    });
-  });
-  return rows;
-}
-
 function scRow(r, rank) {
   var col = r.avg >= 0 ? 'var(--green)' : 'var(--red)';
   var sign = r.avg >= 0 ? '+' : '';
   var badge = r.item.region ? '<span class="region-badge region-' + r.item.region.toLowerCase() + '">' + r.item.region + '</span>' : '';
-  var more = r.more ? '<span class="sc-more">+' + r.more + ' similar</span>' : '';
-  return '<div class="sc-row">' +
+  var at = ' data-tx-sid="' + r.item.id + '" data-tx-month="' + MF_LONG[r.mi].slice(0, 3) + '"';
+  return '<div class="sc-row" data-id="' + r.item.id + '">' +
     '<div class="sc-rank">' + rank + '</div>' +
-    '<div class="sc-id"><span class="ea-tk">' + r.item.ticker + '</span><span class="ea-nm"> ' + r.item.name + '</span> ' + badge + more + '</div>' +
-    '<div class="sc-win"><div class="sc-winbar"><div style="width:' + r.win + '%;height:100%;background:' + col + ';opacity:.5;border-radius:2px"></div></div><span>' + r.win + '%</span></div>' +
-    '<div class="sc-avg" style="color:' + col + '">' + sign + Number(r.avg).toFixed(1) + '%</div>' +
+    '<div class="sc-id"><span class="ea-tk">' + r.item.ticker + '</span><span class="ea-nm"> ' + r.item.name + '</span> ' + badge + '</div>' +
+    '<div class="sc-win"><div class="sc-winbar"><div style="width:' + r.win + '%;height:100%;background:' + col + ';opacity:.5;border-radius:2px"></div></div><span' + at + ' data-tx-field="win">' + r.win + '%</span></div>' +
+    '<div class="sc-avg" style="color:' + col + '"' + at + ' data-tx-field="avg">' + (r.avg >= 0 ? '+' : '\u2212') + Math.abs(r.avg).toFixed(2) + '%</div>' +
     '<button class="sc-go" onclick="scGo(\'' + r.item.id + '\')"><span class="sc-go-lbl">Analyze </span>\u2192</button>' +
   '</div>';
 }
@@ -3884,7 +3864,7 @@ function scGo(id) {
 }
 
 // Curated liquid universe with real price data — used for the real-data screener.
-var SC_UNIVERSE = ['sp500','nasdaq','dowjones','russell2000','spy','qqq','nvda','aapl','msft','tsla','amzn','meta','gld','slv','btc','eth','ftse100','dax','nikkei','xle','xlf','xlk','xlv','tlt'];
+var SC_UNIVERSE = ['sp500','nasdaq','dow','russell','spy','qqq','nvda','aapl','msft','tsla','amzn','meta','gld','slv','btc','eth','ftse100','dax','nikkei','xle','xlf','xlk','xlv','tlt'];
 var SC_REAL_CACHE = null;
 
 function scBuildReal(monthIdx) {
@@ -3904,12 +3884,10 @@ function scBuildReal(monthIdx) {
 function scRenderReal(monthIdx, nextIdx, map) {
   var rows = [];
   Object.keys(map).forEach(function(id){
-    var res = map[id]; if (!res || !res.months) return;
-    var it = res.item;
-    rows.push({ item: it, avg: res.months[monthIdx].avg, win: res.months[monthIdx].win,
-                next: res.months[nextIdx].avg, source: res.source });
+    var res = map[id]; if (!res || !res.months || res.source !== 'real') return;   // real price history only
+    rows.push({ item: res.item, mi: monthIdx, avg: res.months[monthIdx].avg, win: res.months[monthIdx].win, next: res.months[nextIdx].avg });
   });
-  var anyReal = rows.some(function(r){ return r.source === 'real'; });
+  var tie = function (a, b) { return a.item.id < b.item.id ? -1 : 1; };
   // Apply user filters (win-rate floor + region)
   var minWinEl = document.getElementById('scMinWin');
   var regionEl = document.getElementById('scRegion');
@@ -3920,8 +3898,8 @@ function scRenderReal(monthIdx, nextIdx, map) {
     if(region && r.item.region !== region) return false;
     return true;
   });
-  var strong = filtered.slice().sort(function(a,b){return b.avg-a.avg;}).slice(0,12);
-  var weak   = filtered.slice().sort(function(a,b){return a.avg-b.avg;}).slice(0,12);
+  var strong = filtered.slice().sort(function(a,b){return b.avg-a.avg || tie(a,b);}).slice(0,12);
+  var weak   = filtered.slice().sort(function(a,b){return a.avg-b.avg || tie(a,b);}).slice(0,12);
 
   var sH='', wH='';
   strong.forEach(function(r,i){ sH += scRow(r, i+1); });
@@ -3935,26 +3913,28 @@ function scRenderReal(monthIdx, nextIdx, map) {
 
   // Momentum shifts (real)
   var shifts = rows.map(function(r){ return { item:r.item, delta:r.next-r.avg, next:r.next }; })
-                   .sort(function(a,b){return b.delta-a.delta;}).slice(0,6);
+                   .sort(function(a,b){return b.delta-a.delta || tie(a,b);}).slice(0,6);
   var shH='';
   shifts.forEach(function(s){
     var col = s.delta>=0?'var(--green)':'var(--red)';
-    shH += '<div class="sc-shift"><div><span class="ea-tk">'+s.item.ticker+'</span><span class="ea-nm"> '+s.item.name+'</span></div>'+
-      '<div class="sc-shift-d" style="color:'+col+'">'+(s.delta>=0?'+':'')+s.delta.toFixed(1)+'pp swing</div>'+
-      '<div class="ea-nm">'+MF_LONG[nextIdx]+' avg: '+(s.next>=0?'+':'')+s.next.toFixed(1)+'%</div></div>';
+    shH += '<div class="sc-shift" data-id="'+s.item.id+'"><div><span class="ea-tk">'+s.item.ticker+'</span><span class="ea-nm"> '+s.item.name+'</span></div>'+
+      '<div class="sc-shift-d" style="color:'+col+'">'+(s.delta>=0?'+':'\u2212')+Math.abs(s.delta).toFixed(2)+' pts</div>'+
+      '<div class="ea-nm">'+MF_LONG[nextIdx]+' avg: <span data-tx-sid="'+s.item.id+'" data-tx-month="'+MF_LONG[nextIdx].slice(0,3)+'" data-tx-field="avg">'+(s.next>=0?'+':'\u2212')+Math.abs(s.next).toFixed(2)+'%</span></div></div>';
   });
   document.getElementById('scShifts').innerHTML = shH;
-  document.getElementById('scShiftTitle').textContent = 'Biggest momentum swings into ' + MF_LONG[nextIdx];
+  document.getElementById('scShiftTitle').textContent = 'Biggest seasonal improvement into ' + MF_LONG[nextIdx];
 
   // Stats strip
-  var pos = rows.filter(function(r){return r.avg>0;}).length;
+  var pos = rows.filter(function(r){return r.avg>0;}).length, f2 = function (v) { return (v >= 0 ? '+' : '\u2212') + Math.abs(v).toFixed(2) + '%'; };
+  var top = rows.slice().sort(function(a,b){return b.avg-a.avg || tie(a,b);}), n = rows.length;
   document.getElementById('scStats').innerHTML =
-    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + rows.length + '</div><div class="bts-l">Assets screened</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + n + ' of ' + Object.keys(map).length + '</div><div class="bts-l">Assets with real data</div></div>' +
     '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[monthIdx] + '</div><div class="bts-l">Screening month</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + Math.round(pos/rows.length*100) + '%</div><div class="bts-l">Assets positive</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (strong[0]?strong[0].item.ticker+' +'+strong[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Strongest asset</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (weak[0]?weak[0].item.ticker+' '+weak[0].avg.toFixed(1)+'%':'-') + '</div><div class="bts-l">Weakest asset</div></div>' +
-    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge ' + (anyReal?'real':'model') + '">' + (anyReal?'\u2713 REAL PRICE DATA \u00b7 LIQUID UNIVERSE':'MODELLED DATA') + '</span></div>';
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + (n ? Math.round(pos / n * 100) + '%' : '\u2014') + '</div><div class="bts-l">Positive on average</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (top[0] ? top[0].item.ticker + ' ' + f2(top[0].avg) : '\u2014') + '</div><div class="bts-l">Strongest asset</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (top[n - 1] ? top[n - 1].item.ticker + ' ' + f2(top[n - 1].avg) : '\u2014') + '</div><div class="bts-l">Weakest asset</div></div>' +
+    '<div class="bts" style="grid-column:1/-1;text-align:center"><span class="data-badge real">\u2713 REAL PRICE DATA ONLY</span></div>';
+  document.getElementById('modeScreener').dataset.scState = 'done';
 }
 
 function applyToolPreviewGate(mode){
@@ -4027,55 +4007,6 @@ function scBuild() {
   if (st) st.innerHTML = '<div class="bts" style="grid-column:1/-1"><div class="bts-v" style="color:var(--w3)">Loading real price data\u2026</div></div>';
   scBuildReal(monthIdx);
   return;
-}
-
-function scBuildModel(monthIdx) {
-  var nextIdx = (monthIdx + 1) % 12;
-  // Stats
-  var patKeys = Object.keys(PATTERNS);
-  var pos = patKeys.filter(function(k){ return PATTERNS[k][monthIdx].avg > 0; }).length;
-  var bestK = patKeys[0], worstK = patKeys[0];
-  patKeys.forEach(function(k) {
-    if (PATTERNS[k][monthIdx].avg > PATTERNS[bestK][monthIdx].avg) bestK = k;
-    if (PATTERNS[k][monthIdx].avg < PATTERNS[worstK][monthIdx].avg) worstK = k;
-  });
-  var bestA = scAssetsByPattern(bestK)[0], worstA = scAssetsByPattern(worstK)[0];
-  var nAssets = CATALOGUE.filter(function(it){ return !it.section; }).length;
-  document.getElementById('scStats').innerHTML =
-    '<div class="bts"><div class="bts-v" style="color:var(--w)">' + nAssets + '</div><div class="bts-l">Assets screened</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[monthIdx] + '</div><div class="bts-l">Screening month</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + Math.round(pos / patKeys.length * 100) + '%</div><div class="bts-l">Patterns positive</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (bestA ? bestA.ticker : '-') + ' +' + PATTERNS[bestK][monthIdx].avg.toFixed(1) + '%</div><div class="bts-l">Strongest pattern</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (worstA ? worstA.ticker : '-') + ' ' + PATTERNS[worstK][monthIdx].avg.toFixed(1) + '%</div><div class="bts-l">Weakest pattern</div></div>';
-
-  // Strong / weak lists
-  var strong = scRank(monthIdx, 1), weak = scRank(monthIdx, -1);
-  var sH = '', wH = '';
-  strong.forEach(function(r, i){ sH += scRow(r, i + 1); });
-  weak.forEach(function(r, i){ wH += scRow(r, i + 1); });
-  document.getElementById('scStrong').innerHTML = sH;
-  document.getElementById('scWeak').innerHTML = wH;
-  document.getElementById('scStrongTitle').textContent = 'Historically strongest in ' + MF_LONG[monthIdx];
-  document.getElementById('scWeakTitle').textContent = 'Historically weakest in ' + MF_LONG[monthIdx];
-  applyScreenerPreviewGate();
-
-  // Momentum shifts into next month
-  var shifts = patKeys.map(function(k) {
-    return { k: k, delta: PATTERNS[k][nextIdx].avg - PATTERNS[k][monthIdx].avg, next: PATTERNS[k][nextIdx].avg };
-  }).sort(function(a, b){ return b.delta - a.delta; }).slice(0, 6);
-  var shH = '';
-  shifts.forEach(function(s) {
-    var a = scAssetsByPattern(s.k)[0];
-    if (!a) return;
-    var col = s.delta >= 0 ? 'var(--green)' : 'var(--red)';
-    shH += '<div class="sc-shift">' +
-      '<div><span class="ea-tk">' + a.ticker + '</span><span class="ea-nm"> ' + a.name + '</span></div>' +
-      '<div class="sc-shift-d" style="color:' + col + '">' + (s.delta >= 0 ? '+' : '') + s.delta.toFixed(1) + 'pp swing</div>' +
-      '<div class="ea-nm">' + MF_LONG[nextIdx] + ' avg: ' + (s.next >= 0 ? '+' : '') + s.next.toFixed(1) + '%</div>' +
-    '</div>';
-  });
-  document.getElementById('scShifts').innerHTML = shH;
-  document.getElementById('scShiftTitle').textContent = 'Biggest momentum swings into ' + MF_LONG[nextIdx];
 }
 
 function scInit() {
@@ -4392,74 +4323,82 @@ function prPearson(a, b) {
   return cov / Math.sqrt(va * vb);
 }
 
-function prInterpret(r, tA, tB) {
-  if (r >= 0.75) return 'STRONGLY ALIGNED \u2014 ' + tA + ' and ' + tB + ' run on the same seasonal engine. They rise and fall in the same months, so holding both doubles your exposure to one calendar rhythm rather than diversifying it. Their strong months compound \u2014 and so do their weak ones.';
-  if (r >= 0.35) return 'MODERATELY ALIGNED \u2014 ' + tA + ' and ' + tB + ' share a broad seasonal direction but diverge in specific months. The divergence months below are where pair trades and rebalancing have historically had the most edge.';
-  if (r >= -0.35) return 'INDEPENDENT RHYTHMS \u2014 ' + tA + ' and ' + tB + ' march to different calendars. This is genuine seasonal diversification: one\u2019s weak window is often the other\u2019s neutral or strong window, smoothing the combined equity curve.';
-  return 'OPPOSITE SEASONS \u2014 ' + tA + ' tends to be strong exactly when ' + tB + ' is weak. Historically this is the most valuable kind of pair: rotating between them by calendar, or holding both, has hedged each one\u2019s worst months with the other\u2019s best.';
+function prDescribe(r, tA, tB) {
+  if (r >= 0.75) return 'Closely aligned calendars: ' + tA + ' and ' + tB + ' have tended to be strong and weak in the same months.';
+  if (r >= 0.35) return 'Partly aligned calendars: ' + tA + ' and ' + tB + ' share a broad seasonal direction but differ in some months.';
+  if (r >= -0.35) return 'Little calendar relationship: the strong and weak months of ' + tA + ' and ' + tB + ' have not lined up consistently.';
+  return 'Opposite calendars: the stronger months of ' + tA + ' have tended to be the weaker months of ' + tB + '.';
 }
+function prDescribeReturns(r) {
+  if (r >= 0.75) return 'moved closely together';
+  if (r >= 0.35) return 'moved somewhat together';
+  if (r > -0.35) return 'shown little relationship';
+  return 'tended to move in opposite directions';
+}
+var PR_CACHE = {}, prToken = 0;
+function prGet(url) {
+  if (!PR_CACHE[url]) PR_CACHE[url] = fetch(url).then(function (r) { return r.status === 404 ? { missing: true } : r.ok ? r.json() : null; }).catch(function () { return null; })
+    .then(function (d) { if (!d) delete PR_CACHE[url]; return d; });
+  return PR_CACHE[url];
+}
+function prF2(v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2); }
 
 function prRun() {
-  var idA = document.getElementById('prA').value;
-  var idB = document.getElementById('prB').value;
-  var iA = prItem(idA), iB = prItem(idB);
+  var idA = document.getElementById('prA').value, idB = document.getElementById('prB').value;
+  var iA = prItem(idA), iB = prItem(idB), box = document.getElementById('modePairs'), my = ++prToken;
   if (!iA || !iB) return;
-  getManyMonthsResolved([idA, idB], 15, function(map){
-    var srcA = map[idA] && map[idA].source === 'real';
-    var srcB = map[idB] && map[idB].source === 'real';
-    var bothReal = srcA && srcB;
-    var badge = document.getElementById('prDataBadge');
-    if (badge) {
-      if (bothReal) { badge.innerHTML = '&#10003; REAL DATA'; badge.className = 'data-badge real'; badge.style.display='inline-block'; }
-      else { badge.innerHTML = 'PARTIAL / MODELLED'; badge.className = 'data-badge model'; badge.style.display='inline-block'; }
+  box.dataset.prState = 'loading'; box.dataset.prKey = '';
+  var msg = document.getElementById('prMsg'), resEl = document.getElementById('prResults');
+  prGet('/api/v1/seasonality?id=' + encodeURIComponent(idA) + '&view=pair&with=' + encodeURIComponent(idB)).then(function (d) {
+    if (my !== prToken) return;
+    box.dataset.prKey = idA + ':' + idB;
+    if (!d || d.missing) {
+      resEl.style.display = 'none'; msg.hidden = false;
+      msg.textContent = d && d.missing
+        ? 'No comparison for ' + iA.ticker + ' and ' + iB.ticker + ': both need real price history, and we never compute one from a model.'
+        : 'Real price data is unavailable right now, so no comparison is shown. Please try again.';
+      box.dataset.prState = d ? 'unavailable' : 'error';
+      return;
     }
-    prRender(idA, idB, iA, iB, map[idA].months, map[idB].months);
+    msg.hidden = true;
+    prRender(iA, iB, d);
+    box.dataset.prState = 'done';
   });
 }
 
-function prRender(idA, idB, iA, iB, pA, pB) {
-  var avgsA = pA.map(function(m){ return m.avg; });
-  var avgsB = pB.map(function(m){ return m.avg; });
-  var r = prPearson(avgsA, avgsB);
-
-  // Best joint month, biggest divergence
+function prRender(iA, iB, d) {
+  var avgsA = d.a.months.map(function (m) { return m.avgReturn; }), avgsB = d.b.months.map(function (m) { return m.avgReturn; });
+  var r = d.seasonal, ret = d.returns;
   var bestJoint = 0, bigDiv = 0;
   for (var i = 1; i < 12; i++) {
     if (avgsA[i] + avgsB[i] > avgsA[bestJoint] + avgsB[bestJoint]) bestJoint = i;
     if (Math.abs(avgsA[i] - avgsB[i]) > Math.abs(avgsA[bigDiv] - avgsB[bigDiv])) bigDiv = i;
   }
   var rCol = r >= 0.35 ? 'var(--green)' : (r <= -0.35 ? 'var(--purple, #9B7FFF)' : 'var(--amber2)');
-
+  var MS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var ym = function (k) { return MS[+k.slice(5, 7) - 1] + ' ' + k.slice(0, 4); };
   document.getElementById('prStats').innerHTML =
-    '<div class="bts"><div class="bts-v" style="color:' + rCol + '">' + r.toFixed(2) + '</div><div class="bts-l">Seasonal correlation</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + iA.ticker + '</div><div class="bts-l">Asset A</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:#4DA3FF">' + iB.ticker + '</div><div class="bts-l">Asset B</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + MF_LONG[bestJoint].slice(0,3) + '</div><div class="bts-l">Best joint month</div></div>' +
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[bigDiv].slice(0,3) + '</div><div class="bts-l">Biggest divergence</div></div>';
-
-  // Grouped bars
+    '<div class="bts"><div class="bts-v" style="color:' + rCol + '" data-pr="seasonal">' + prF2(r) + '</div><div class="bts-l">Seasonal correlation</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--w)" data-pr="returns">' + (ret ? prF2(ret.r) : '—') + '</div><div class="bts-l" data-pr="returnsLabel">Monthly-return correlation' + (ret ? ' · ' + ret.n + ' months (' + ym(ret.from) + '–' + ym(ret.to) + ')' : '') + '</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + iA.ticker + ' / <span style="color:#4DA3FF">' + iB.ticker + '</span></div><div class="bts-l">Assets</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--green)">' + MS[bestJoint] + '</div><div class="bts-l">Best combined month</div></div>' +
+    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MS[bigDiv] + '</div><div class="bts-l">Biggest difference</div></div>';
   var mx = 0.5;
-  avgsA.concat(avgsB).forEach(function(v){ if (Math.abs(v) > mx) mx = Math.abs(v); });
+  avgsA.concat(avgsB).forEach(function (v) { if (Math.abs(v) > mx) mx = Math.abs(v); });
   var html = '';
   for (var m = 0; m < 12; m++) {
-    var wA = (Math.abs(avgsA[m]) / mx * 100).toFixed(0);
-    var wB = (Math.abs(avgsB[m]) / mx * 100).toFixed(0);
-    var cA = avgsA[m] >= 0 ? '#E89318' : '#F04050';
-    var cB = avgsB[m] >= 0 ? '#4DA3FF' : '#F04050';
-    html += '<div class="pr-mrow">' +
-      '<div class="pr-ml">' + MF_LONG[m].slice(0,3) + '</div>' +
-      '<div class="pr-bars">' +
-        '<div class="pr-bt"><div class="pr-bf" style="width:' + wA + '%;background:' + cA + ';opacity:.8"></div></div>' +
-        '<div class="pr-bt"><div class="pr-bf" style="width:' + wB + '%;background:' + cB + ';opacity:.8"></div></div>' +
-      '</div>' +
-      '<div class="pr-mv"><span style="color:' + (avgsA[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgsA[m] >= 0 ? '+' : '') + avgsA[m].toFixed(1) + '</span> / <span style="color:' + (avgsB[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (avgsB[m] >= 0 ? '+' : '') + avgsB[m].toFixed(1) + '</span></div>' +
-    '</div>';
+    var cA = avgsA[m] >= 0 ? '#E89318' : '#F04050', cB = avgsB[m] >= 0 ? '#4DA3FF' : '#F04050';
+    html += '<div class="pr-mrow" data-month="' + m + '"><div class="pr-ml">' + MS[m] + '</div><div class="pr-bars">' +
+      '<div class="pr-bt"><div class="pr-bf" style="width:' + (Math.abs(avgsA[m]) / mx * 100).toFixed(0) + '%;background:' + cA + ';opacity:.8"></div></div>' +
+      '<div class="pr-bt"><div class="pr-bf" style="width:' + (Math.abs(avgsB[m]) / mx * 100).toFixed(0) + '%;background:' + cB + ';opacity:.8"></div></div></div>' +
+      '<div class="pr-mv"><span data-k="a" style="color:' + (avgsA[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + prF2(avgsA[m]) + '%</span> / <span data-k="b" style="color:' + (avgsB[m] >= 0 ? 'var(--green)' : 'var(--red)') + '">' + prF2(avgsB[m]) + '%</span></div></div>';
   }
   document.getElementById('prChart').innerHTML = html;
   document.getElementById('prLegend').innerHTML =
-    '<span><span class="bt-ld" style="background:#E89318"></span>' + iA.ticker + '</span>' +
-    '<span><span class="bt-ld" style="background:#4DA3FF"></span>' + iB.ticker + '</span>';
-  document.getElementById('prText').innerHTML = prInterpret(r, iA.name, iB.name);
+    '<span><span class="bt-ld" style="background:#E89318"></span>' + iA.ticker + '</span><span><span class="bt-ld" style="background:#4DA3FF"></span>' + iB.ticker + '</span>';
+  document.getElementById('prText').textContent = prDescribe(r, iA.name, iB.name) +
+    (ret ? ' Separately, their actual monthly returns have ' + prDescribeReturns(ret.r) + ' (correlation ' + prF2(ret.r) + ' over ' + ret.n + ' months).' : '') +
+    ' Correlation describes the past; it is not a forecast.';
   document.getElementById('prResults').style.display = 'block';
   applyPairsPreviewGate();
 }
@@ -4504,41 +4443,37 @@ function prCorrColor(r){
 function prBuildMatrix(){
   var mx = document.getElementById('prMatrix');
   if(!mx) return;
-  mx.innerHTML = '<div class="analysis-empty">Loading real price data\u2026</div>';
-  getManyMonthsResolved(PR_MATRIX_BASKET, 15, function(map){
-    var ids = PR_MATRIX_BASKET.filter(function(id){ return map[id] && map[id].months; });
-    var items = ids.map(function(id){ return { id:id, it:map[id].item, avgs: map[id].months.map(function(m){return m.avg;}) }; });
-    // header row
+  mx.dataset.state = 'loading';
+  mx.innerHTML = '<div class="analysis-empty">Loading real price data…</div>';
+  Promise.all(PR_MATRIX_BASKET.map(function (id) { return prGet('/api/v1/seasonality?id=' + id); })).then(function (ds) {
+    // Real price history only: assets whose data is modelled or unavailable are left out.
+    var items = [];
+    ds.forEach(function (d, k) { if (d && d.source === 'verified') items.push({ id: PR_MATRIX_BASKET[k], t: d.ticker, avgs: d.months.map(function (m) { return m.avgReturn; }) }); });
+    var r2 = function (a, b) { var v = prPearson(a, b); return Math.round(v * 100) / 100; };
     var html = '<div class="hm-row"><div class="hm-corner"></div>';
-    items.forEach(function(a){ html += '<div class="hm-chl">'+ (a.it.ticker||a.id) +'</div>'; });
+    items.forEach(function (a) { html += '<div class="hm-chl">' + a.t + '</div>'; });
     html += '</div>';
-    var sumAbs = 0, cnt = 0, maxPair=null, maxR=-2, minPair=null, minR=2;
-    items.forEach(function(a){
-      html += '<div class="hm-row"><div class="hm-rl">'+ (a.it.ticker||a.id) +'</div>';
-      items.forEach(function(b){
-        if(a.id === b.id){ html += '<div class="hm-cell diag">\u2014</div>'; return; }
-        var r = prPearson(a.avgs, b.avgs);
-        if(a.id < b.id){ sumAbs += Math.abs(r); cnt++;
-          if(r>maxR){maxR=r; maxPair=[a.it.ticker,b.it.ticker];}
-          if(r<minR){minR=r; minPair=[a.it.ticker,b.it.ticker];}
-        }
-        html += '<div class="hm-cell" style="background:'+prCorrColor(r)+'" title="'+(a.it.ticker)+' vs '+(b.it.ticker)+': '+r.toFixed(2)+'">'+r.toFixed(1)+'</div>';
+    var sumAbs = 0, cnt = 0, maxPair = null, maxR = -2, minPair = null, minR = 2;
+    items.forEach(function (a) {
+      html += '<div class="hm-row"><div class="hm-rl">' + a.t + '</div>';
+      items.forEach(function (b) {
+        if (a.id === b.id) { html += '<div class="hm-cell diag">—</div>'; return; }
+        var r = r2(a.avgs, b.avgs);
+        if (a.id < b.id) { sumAbs += Math.abs(r); cnt++; if (r > maxR) { maxR = r; maxPair = [a.t, b.t]; } if (r < minR) { minR = r; minPair = [a.t, b.t]; } }
+        html += '<div class="hm-cell" data-a="' + a.id + '" data-b="' + b.id + '" style="background:' + prCorrColor(r) + '" title="' + a.t + ' vs ' + b.t + ': ' + r.toFixed(2) + '">' + r.toFixed(1).replace('-', '−') + '</div>';
       });
       html += '</div>';
     });
-    mx.innerHTML = html;
-    // legend gradient
+    mx.innerHTML = items.length > 1 ? html : '<div class="analysis-empty">Real price data is unavailable right now.</div>';
     var lg = document.getElementById('prMxLegend');
-    if(lg){ var g=''; for(var s=-1;s<=1.0001;s+=0.2){ g += '<div style="flex:1;background:'+prCorrColor(s)+'"></div>'; } lg.innerHTML = g; }
-    // stats
+    if (lg) { var g = ''; for (var s = -1; s <= 1.0001; s += 0.2) g += '<div style="flex:1;background:' + prCorrColor(s) + '"></div>'; lg.innerHTML = g; }
     var st = document.getElementById('prMxStats');
-    if(st){
-      st.innerHTML =
-        '<div class="bts"><div class="bts-v" style="color:var(--w)">'+items.length+'</div><div class="bts-l">Assets compared</div></div>'+
-        '<div class="bts"><div class="bts-v" style="color:var(--amber2)">'+(cnt?(sumAbs/cnt).toFixed(2):'-')+'</div><div class="bts-l">Avg |correlation|</div></div>'+
-        '<div class="bts"><div class="bts-v" style="color:var(--green)">'+(maxPair?maxPair[0]+'/'+maxPair[1]:'-')+'</div><div class="bts-l">Most aligned ('+maxR.toFixed(2)+')</div></div>'+
-        '<div class="bts"><div class="bts-v" style="color:var(--red)">'+(minPair?minPair[0]+'/'+minPair[1]:'-')+'</div><div class="bts-l">Most opposite ('+minR.toFixed(2)+')</div></div>';
-    }
+    if (st) st.innerHTML =
+      '<div class="bts"><div class="bts-v" style="color:var(--w)">' + items.length + '</div><div class="bts-l">Assets with real data</div></div>' +
+      '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + (cnt ? (sumAbs / cnt).toFixed(2) : '—') + '</div><div class="bts-l">Avg |correlation|</div></div>' +
+      '<div class="bts"><div class="bts-v" style="color:var(--green)">' + (maxPair ? maxPair[0] + '/' + maxPair[1] : '—') + '</div><div class="bts-l">Most aligned' + (maxPair ? ' (' + prF2(maxR) + ')' : '') + '</div></div>' +
+      '<div class="bts"><div class="bts-v" style="color:var(--red)">' + (minPair ? minPair[0] + '/' + minPair[1] : '—') + '</div><div class="bts-l">Most opposite' + (minPair ? ' (' + prF2(minR) + ')' : '') + '</div></div>';
+    mx.dataset.state = 'done';
   });
 }
 

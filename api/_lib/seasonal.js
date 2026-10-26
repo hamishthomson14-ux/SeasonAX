@@ -437,3 +437,35 @@ export function computeBacktest(rows, { buyM, buyDay = 'first', sellM, sellDay =
     },
   };
 }
+
+// Two assets from real monthly closes: (1) seasonal correlation = Pearson of their 12 monthly averages (the same
+// averages as the asset pages); (2) price co-movement = Pearson of their actual monthly returns over the shared
+// completed months of the last 15 calendar years. null when either asset lacks real history.
+export function computePairStats(rowsA, rowsB, { now = new Date() } = {}) {
+  const pear = (a, b) => {
+    const n = a.length, ma = a.reduce((s, x) => s + x, 0) / n, mb = b.reduce((s, x) => s + x, 0) / n;
+    let c = 0, va = 0, vb = 0;
+    for (let i = 0; i < n; i++) { c += (a[i] - ma) * (b[i] - mb); va += (a[i] - ma) ** 2; vb += (b[i] - mb) ** 2; }
+    return va && vb ? Math.round((c / Math.sqrt(va * vb)) * 100) / 100 : null;
+  };
+  const A = rowsA && computeAdaptiveMonths(rowsA, 15), B = rowsB && computeAdaptiveMonths(rowsB, 15);
+  if (!A || !B) return null;
+  const from = now.getUTCFullYear() - 15, curYM = now.toISOString().slice(0, 7);
+  const rets = (rows) => {
+    const out = new Map();
+    for (let i = 1; i < rows.length; i++) {
+      const p = rows[i - 1], c = rows[i], ym = c.d.slice(0, 7), y = +ym.slice(0, 4), m = +ym.slice(5, 7);
+      const prevYM = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`;
+      if (p.d.slice(0, 7) !== prevYM || y < from || ym >= curYM || !(p.c > 0)) continue;   // consecutive, in window, completed
+      const r = (c.c / p.c - 1) * 100;
+      if (isFinite(r) && Math.abs(r) <= 95) out.set(ym, r);
+    }
+    return out;
+  };
+  const ra = rets(rowsA), rb = rets(rowsB), keys = [...ra.keys()].filter((k) => rb.has(k)).sort();
+  return {
+    a: A, b: B,
+    seasonal: pear(A.months.map((m) => m.avg), B.months.map((m) => m.avg)),
+    returns: keys.length >= 24 ? { r: pear(keys.map((k) => ra.get(k)), keys.map((k) => rb.get(k))), n: keys.length, from: keys[0], to: keys[keys.length - 1] } : null,
+  };
+}
