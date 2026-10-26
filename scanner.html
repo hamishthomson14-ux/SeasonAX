@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seasonal Scanner — Find Assets by Month, Win Rate and Average Return | TimingAX</title>
+<meta name="description" content="Scan all 733 assets for seasonal patterns: pick a month and set minimum average return, win rate and years of real history. Pro feature.">
+<link rel="canonical" href="https://www.timingax.co.uk/scanner.html">
+<meta property="og:title" content="Seasonal Scanner | TimingAX">
+<meta property="og:description" content="Scan every asset by month, win rate and average return — real data only.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.timingax.co.uk/scanner.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.sc-hero { padding: 56px 0 20px; max-width: 820px; }
+.sc-hero .tx-h1 { font-size: clamp(34px, 5vw, 56px); margin: 16px 0 14px; }
+.sc-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 16px; }
+.sc-controls label { display: flex; flex-direction: column; gap: 6px; font: 500 10.5px var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); }
+.sc-controls select { min-height: 40px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--tx-border-2); background: var(--tx-bg-1); color: var(--tx-text-1); font: 500 14px var(--tx-font-ui); text-transform: none; letter-spacing: 0; }
+.sc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--tx-border-1); }
+.sc-save { display: flex; gap: 8px; flex-wrap: wrap; }
+.sc-save .tx-input { min-height: 36px; width: 200px; font-size: 14px; }
+.sc-t { width: 100%; border-collapse: collapse; font-family: var(--tx-font-mono); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.sc-t th { font: 500 10.5px var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--tx-border-2); }
+.sc-t th:nth-child(-n+2), .sc-t td:nth-child(-n+2) { text-align: left; }
+.sc-t td { padding: 10px 12px; border-bottom: 1px solid #0B1220; text-align: right; white-space: nowrap; }
+.sc-t td:nth-child(2) { white-space: normal; }
+.sc-t a { color: var(--tx-text-1) !important; font-family: var(--tx-font-ui); font-weight: 500; }
+.sc-t small { color: var(--tx-text-3); margin-left: 6px; font-size: 11px; }
+#scSaved a { display: inline-flex; margin: 0 6px 8px 0; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--tx-border-1); background: var(--tx-surface-1); color: var(--tx-text-1) !important; font: 500 13px var(--tx-font-ui); }
+.sc-locked { text-align: center; padding: 40px 24px; background: radial-gradient(500px 200px at 50% 100%, rgba(232,147,24,.12), transparent 70%), var(--tx-bg-1); }
+.sc-locked p { color: var(--tx-text-2); max-width: 56ch; margin: 10px auto 20px; }
+@media (max-width: 900px) { .sc-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .sc-t td, .sc-t th { padding: 9px 7px; font-size: 12.5px; } .sc-col-hide { display: none; } .sc-t small { display: block; margin: 2px 0 0; } .sc-save .tx-input { width: 100%; } }
+</style>
+</head>
+<body class="tx" data-sc-state="loading">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap">
+  <section class="sc-hero">
+    <span class="tx-eyebrow">Seasonal scanner &middot; Pro</span>
+    <h1 class="tx-h1">Find the patterns, <em>across every asset.</em></h1>
+    <p class="tx-lead">Pick a month and set your thresholds &mdash; the scanner checks every asset with real price history and returns the ones that qualify, ranked.</p>
+  </section>
+
+  <div id="scApp" hidden>
+    <div class="tx-term">
+      <div class="tx-term__head"><span class="tx-term__title">Criteria</span><span class="tx-term__status is-live">Pro &middot; real data</span></div>
+      <div class="sc-controls">
+        <label>Month<select id="scMonth"></select></label>
+        <label>Average return<select id="scAvg">
+          <option value="">Any</option><option value="0">At least 0%</option><option value="0.5">At least +0.5%</option><option value="1">At least +1%</option><option value="2">At least +2%</option><option value="3">At least +3%</option>
+          <option value="-0.5">&minus;0.5% or lower</option><option value="-1">&minus;1% or lower</option><option value="-2">&minus;2% or lower</option></select></label>
+        <label>Win rate at least<select id="scWin"><option value="">Any</option><option>50</option><option>60</option><option>70</option><option>80</option><option>90</option></select></label>
+        <label>Years of data at least<select id="scYrs"><option>5</option><option>10</option><option>15</option></select></label>
+        <label>Market<select id="scRegion"><option value="">All markets</option><option>US</option><option>UK</option><option>Germany</option><option>Asia</option></select></label>
+        <label>Sector / section<select id="scSection"><option value="">All sections</option></select></label>
+        <label>Order<select id="scSort"><option value="strong">Strongest first</option><option value="weak">Weakest first</option></select></label>
+      </div>
+      <div class="sc-bar"><span class="tx-label" id="scCount" aria-live="polite">Loading&hellip;</span>
+        <div class="sc-save"><input class="tx-input" id="scName" placeholder="Name this screen" aria-label="Screen name"><button class="tx-btn tx-btn--sm" id="scSave" type="button">Save screen</button></div></div>
+    </div>
+    <div id="scSaved" style="margin-top:14px"></div>
+    <div class="tx-term" style="margin-top:14px" id="scResults">
+      <table class="sc-t"><thead><tr><th>#</th><th>Asset</th><th>Avg</th><th>Win</th><th class="sc-col-hide">Years</th><th class="sc-col-hide">Market</th></tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="tx-card sc-locked" id="scLocked" hidden>
+    <span class="tx-badge tx-badge--now">Pro</span>
+    <h2 class="tx-h2" style="font-size:26px;margin-top:14px">The scanner is a Pro feature</h2>
+    <p>Scan all 733 assets by month, average return, win rate and years of real history &mdash; and save your screens.</p>
+    <a class="tx-btn tx-btn--primary tx-btn--lg" href="/auth.html?tab=up">Start 7-day free trial</a>
+  </div>
+  <p class="tx-note" style="margin:24px 0 72px">Uses each asset&rsquo;s real monthly closes (up to 15 years); assets without real price history aren&rsquo;t included. History, not a forecast. <a href="/data.html">Data &amp; methodology</a>.</p>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+  var KEY = 'tx_screens', cache = {}, cat = null;
+  var params = new URLSearchParams(location.search);
+
+  function isPro() {
+    try {
+      var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44');
+      return sb.auth.getSession().then(function (r) { var u = r && r.data && r.data.session && r.data.session.user, s = u && u.app_metadata && u.app_metadata.subscription; return s === 'pro' || s === 'lifetime'; }).catch(function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
+  }
+  function saved() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+  function drawSaved() {
+    var s = saved();
+    $('scSaved').innerHTML = s.length ? '<span class="tx-label" style="display:block;margin-bottom:8px">Saved screens</span>' + s.map(function (x) { return '<a href="/scanner.html?' + esc(x.q) + '">' + esc(x.name) + '</a>'; }).join('') : '';
+  }
+  function crit() { return { m: +$('scMonth').value, avg: $('scAvg').value, win: $('scWin').value, yrs: +$('scYrs').value, region: $('scRegion').value, section: $('scSection').value, sort: $('scSort').value }; }
+  function query(c) {
+    var q = new URLSearchParams(); q.set('m', c.m); if (c.avg !== '') q.set('avg', c.avg); if (c.win !== '') q.set('win', c.win); q.set('yrs', c.yrs);
+    if (c.region) q.set('region', c.region); if (c.section) q.set('section', c.section); q.set('sort', c.sort); return q.toString();
+  }
+  function load(m) {                                   // all sections for month m (1-12); null if any section fails
+    if (cache[m]) return cache[m];
+    var secs = []; cat.forEach(function (a) { if (secs.indexOf(a.catSection) < 0) secs.push(a.catSection); });
+    var rows = [], bad = 0, k = 0;
+    function one() { if (k >= secs.length) return Promise.resolve(); var s = secs[k++];
+      return fetch('/api/v1/seasonality?view=leaderboard&month=' + m + '&section=' + encodeURIComponent(s)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+        .then(function (d) { if (d && d.rows) rows = rows.concat(d.rows); else bad++; return one(); }); }
+    cache[m] = Promise.all([one(), one(), one(), one(), one(), one()]).then(function () { if (bad) { delete cache[m]; return null; } return rows; });
+    return cache[m];
+  }
+  function run() {
+    var c = crit();
+    history.replaceState(null, '', '/scanner.html?' + query(c));
+    $('scCount').textContent = 'Scanning ' + MO[c.m - 1] + '…';
+    document.body.dataset.scState = 'loading';
+    load(c.m).then(function (rows) {
+      if (JSON.stringify(c) !== JSON.stringify(crit())) return;      // a newer scan has started
+      if (!rows) { $('scCount').textContent = 'Data is unavailable right now — nothing shown rather than a partial scan.'; $('scResults').querySelector('tbody').innerHTML = ''; document.body.dataset.scState = 'error'; return; }
+      var a = c.avg === '' ? null : +c.avg, w = c.win === '' ? null : +c.win;
+      var hits = rows.filter(function (r) {
+        return r.obs >= c.yrs && (a === null || (a < 0 ? r.avg <= a : r.avg >= a)) && (w === null || r.win >= w) &&
+          (!c.region || r.region === c.region) && (!c.section || r.section === c.section);
+      });
+      hits.sort(c.sort === 'weak' ? function (x, y) { return x.avg - y.avg || x.win - y.win; } : function (x, y) { return y.avg - x.avg || y.win - x.win; });
+      var AB = MO[c.m - 1].slice(0, 3);
+      $('scResults').querySelector('tbody').innerHTML = hits.map(function (r, i) {
+        var at = ' data-tx-sid="' + r.id + '" data-tx-month="' + AB + '"';
+        return '<tr data-id="' + r.id + '"><td>' + (i + 1) + '</td><td><a href="/seasonality/' + r.id + '">' + esc(r.name) + '</a>' + (r.ticker && r.ticker.charAt(0) !== '^' ? '<small>' + esc(r.ticker) + '</small>' : '') + '</td>' +
+          '<td class="' + (r.avg >= 0 ? 'tx-up' : 'tx-down') + '"' + at + ' data-tx-field="avg">' + TX.fmtPct(r.avg, 2) + '</td><td' + at + ' data-tx-field="win">' + r.win + '%</td>' +
+          '<td class="sc-col-hide">' + r.obs + 'y</td><td class="sc-col-hide">' + esc(r.region) + '</td></tr>';
+      }).join('');
+      $('scCount').textContent = hits.length + ' match' + (hits.length === 1 ? '' : 'es') + ' in ' + MO[c.m - 1] + ' (of ' + rows.length + ' assets with real data)';
+      document.body.dataset.scState = 'done';
+    });
+  }
+
+  Promise.all([isPro(), fetch('/api/catalogue').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })]).then(function (res) {
+    if (!res[0]) { $('scLocked').hidden = false; document.body.dataset.scState = 'locked'; return; }
+    cat = res[1];
+    if (!cat) { $('scApp').hidden = false; $('scCount').textContent = 'Data is unavailable right now.'; document.body.dataset.scState = 'error'; return; }
+    $('scApp').hidden = false;
+    var now = new Date().getUTCMonth() + 1;
+    $('scMonth').innerHTML = MO.map(function (n, i) { return '<option value="' + (i + 1) + '">' + n + '</option>'; }).join('');
+    var secs = []; cat.forEach(function (a) { if (secs.indexOf(a.catSection) < 0) secs.push(a.catSection); });
+    $('scSection').innerHTML += secs.map(function (s) { return '<option>' + esc(s) + '</option>'; }).join('');
+    var pick = function (id, v) { if (v == null) return; var sel = $(id); if ([].some.call(sel.options, function (o) { return o.value === v; })) sel.value = v; };
+    $('scMonth').value = /^(?:[1-9]|1[0-2])$/.test(params.get('m') || '') ? params.get('m') : String(now);
+    pick('scAvg', params.get('avg')); pick('scWin', params.get('win')); pick('scYrs', params.get('yrs')); pick('scRegion', params.get('region')); pick('scSection', params.get('section')); pick('scSort', params.get('sort'));
+    ['scMonth', 'scAvg', 'scWin', 'scYrs', 'scRegion', 'scSection', 'scSort'].forEach(function (id) { $(id).addEventListener('change', run); });
+    $('scSave').addEventListener('click', function () {
+      var name = ($('scName').value || '').trim() || ('Screen ' + (saved().length + 1));
+      var s = saved().filter(function (x) { return x.name !== name; }); s.unshift({ name: name, q: query(crit()) });
+      try { localStorage.setItem(KEY, JSON.stringify(s.slice(0, 20))); } catch (e) {}
+      $('scName').value = ''; drawSaved();
+    });
+    drawSaved(); run();
+  });
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

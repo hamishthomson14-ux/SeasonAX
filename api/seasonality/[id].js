@@ -110,6 +110,7 @@ export default async function handler(req, res) {
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/data.html">Data &amp; methodology</a></li>
@@ -385,6 +386,7 @@ export default async function handler(req, res) {
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/data.html">Data &amp; methodology</a></li>
@@ -500,6 +502,7 @@ function compareNotFound(res, msg) {
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/data.html">Data &amp; methodology</a></li>
@@ -682,6 +685,7 @@ async function compareHandler(req, res) {
         <li><a href="/outlook.html">Monthly outlook</a></li>
         <li><a href="/this-day.html">This day in markets</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/data.html">Data &amp; methodology</a></li>
