@@ -366,6 +366,11 @@ export default async function handler(req, res) {
       <span class="hub-pick"><select id="hubVsA" aria-label="First month"></select><span class="tx-muted">vs</span><select id="hubVsB" aria-label="Second month"></select></span></div>
       <div class="hub-body"><p class="hub-sum" id="hubVsSummary"></p><div class="hub-scroll"><table class="tx-table"><thead></thead><tbody></tbody></table></div></div></div>
     <p class="hub-links"><a href="/compare.html">Compare ${esc(dt)} with another asset &rarr;</a> <a href="/market-seasonality.html">Backtest it in the analyzer &rarr;</a> <a href="/this-day.html">This day in markets &rarr;</a></p>
+    <details class="hub-embed"><summary>Embed this chart on your site</summary>
+      <p class="tx-muted" style="margin:10px 0 8px">Live ${esc(dt)} seasonality, updated from real prices, with a link back to this page. Add <code>&amp;m=9</code> to the address for a single month (1&ndash;12).</p>
+      <textarea id="embedCode" readonly rows="3" onclick="this.select()">&lt;iframe src=&quot;https://www.timingax.co.uk/embed.html?id=${esc(id)}&quot; width=&quot;100%&quot; height=&quot;320&quot; style=&quot;border:0;max-width:640px&quot; title=&quot;${esc(item.name)} seasonality &mdash; TimingAX&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;</textarea>
+      <button class="tx-btn tx-btn--sm" type="button" onclick="var t=document.getElementById('embedCode');t.select();navigator.clipboard&amp;&amp;navigator.clipboard.writeText(t.value);this.textContent='Copied'">Copy code</button>
+    </details>
   </section>
 
   <div class="tx-card a-table" style="padding:6px 6px 0">

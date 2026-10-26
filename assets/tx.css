@@ -362,3 +362,5 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 .hub-scroll { overflow-x: auto; }
 .hub-links { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; }
 @media (max-width: 760px) { .hub-kpis { grid-template-columns: 1fr 1fr; } .hub-cols { grid-template-columns: 1fr; } .hub-bar__l { flex-basis: 92px; } .tx-term__head { flex-wrap: wrap; gap: 8px; } }
+.hub-embed summary { cursor: pointer; color: var(--tx-amber-2); font-weight: 600; }
+.hub-embed textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--tx-border-2); background: var(--tx-bg-1); color: var(--tx-text-2); font: 12px var(--tx-font-mono); resize: vertical; margin-bottom: 8px; }
