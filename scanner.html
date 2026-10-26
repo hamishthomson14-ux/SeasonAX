@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return r.obs >= c.yrs && (a === null || (a < 0 ? r.avg <= a : r.avg >= a)) && (w === null || r.win >= w) &&
           (!c.region || r.region === c.region) && (!c.section || r.section === c.section);
       });
-      hits.sort(c.sort === 'weak' ? function (x, y) { return x.avg - y.avg || x.win - y.win; } : function (x, y) { return y.avg - x.avg || y.win - x.win; });
+      hits.sort(c.sort === 'weak' ? function (x, y) { return x.avg - y.avg || x.win - y.win || (x.id < y.id ? -1 : 1); } : function (x, y) { return y.avg - x.avg || y.win - x.win || (x.id < y.id ? -1 : 1); });   // exact ties: fixed order by id
       var AB = MO[c.m - 1].slice(0, 3);
       $('scResults').querySelector('tbody').innerHTML = hits.map(function (r, i) {
         var at = ' data-tx-sid="' + r.id + '" data-tx-month="' + AB + '"';

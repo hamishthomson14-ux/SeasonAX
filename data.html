@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var set = function (k, v) { var e = document.querySelector('[data-hub="' + k + '"]'); if (e) e.textContent = v; };
   var fail = function () { document.getElementById('hubProgress').textContent = 'Coverage figures are unavailable right now.'; document.querySelectorAll('[data-hub] .tx-skel').forEach(function (s) { s.outerHTML = '—'; }); document.body.dataset.hubState = 'error'; };
-  fetch('/api/v1/seasonality?id=sp500&view=projection&days=30').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (p) {
+  var asof = fetch('/api/v1/seasonality?id=sp500&view=projection&days=30').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (p) {
     if (p && p.start) { var d = new Date(p.start.date + 'T00:00:00Z'); set('asof', d.getUTCDate() + ' ' + MO[d.getUTCMonth()] + ' ' + d.getUTCFullYear()); } else set('asof', '—');
   });
   fetch('/api/catalogue').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (cat) {
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
       rows.forEach(function (r) { dep[band(r.years)]++; });
       Object.keys(dep).forEach(function (k) { set('depth-' + k, dep[k]); });
       document.getElementById('hubProgress').textContent = 'Calculated just now from all ' + sections.length + ' market sections.';
-      document.body.dataset.hubState = 'done';
+      asof.then(function () { document.body.dataset.hubState = 'done'; });
     });
   });
 });

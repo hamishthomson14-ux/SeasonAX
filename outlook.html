@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (bad || !all.length) { unavailable($('olStrong'), 3); unavailable($('olWeak'), 3); return finish(false); }   // partial rankings would mislead
       // A market shown in both tables uses one figure: the in-progress month (e.g. Bitcoin at weekends) can move between the two requests.
       res[6].forEach(function (d) { if (!d) return; all.forEach(function (a) { if (a.id === d.id) { a.avg = d.months[mi].avgReturn; a.win = d.months[mi].winRate; } }); });
-      all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win; });
+      all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win || (a.id < b.id ? -1 : 1); });   // exact ties: fixed order by id
       var tr = function (a) { return '<tr data-id="' + a.id + '"><td><a href="/seasonality/' + a.id + '">' + esc(a.name) + '</a></td><td class="' + (a.avg >= 0 ? 'tx-up' : 'tx-down') + '"' + at(a.id) + ' data-tx-field="avg">' + TX.fmtPct(a.avg, 2) + '</td><td' + at(a.id) + ' data-tx-field="win">' + a.win + '%</td></tr>'; };
       $('olStrong').querySelector('tbody').innerHTML = all.slice(0, 10).map(tr).join('');
       $('olWeak').querySelector('tbody').innerHTML = all.slice(-10).reverse().map(tr).join('');
