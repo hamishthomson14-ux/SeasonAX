@@ -1,0 +1,117 @@
+// Asset hub on /seasonality/<id>: price history, month in review and month vs month (up to 20 years).
+// Every figure comes from /api/v1/seasonality (real prices only); nothing is computed from a model.
+(function () {
+  var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var AB = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var $ = function (id) { return document.getElementById(id); };
+  var pct = function (v) { return v === null || v === undefined ? '—' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; };
+  var col = function (v) { return v > 0 ? 'var(--tx-up, #22c58b)' : v < 0 ? 'var(--tx-down, #f04f5f)' : 'var(--tx-text-3)'; };
+  var price = function (v) { return v >= 1000 ? Math.round(v).toLocaleString('en-US') : v.toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }); };
+  var cache = {};
+  function get(q) {
+    if (!cache[q]) cache[q] = fetch('/api/v1/seasonality?' + q).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      .then(function (d) { if (!d) delete cache[q]; return d; });
+    return cache[q];
+  }
+  function bar(attrs, label, v, maxAbs) {
+    return '<div class="hub-bar" ' + attrs + '><span class="hub-bar__l">' + label + '</span><span class="hub-bar__t"><i style="width:' + (Math.abs(v) / maxAbs * 100).toFixed(0) + '%;background:' + col(v) + '"></i></span><span class="hub-bar__v" data-k="ret" style="color:' + col(v) + '">' + pct(v) + '</span></div>';
+  }
+
+  function history(id, name) {
+    var box = $('hubHistory');
+    return get('id=' + id + '&view=history').then(function (d) {
+      if (!d) { box.innerHTML = '<p class="tx-muted">Price history is unavailable right now.</p>'; box.dataset.state = 'error'; return; }
+      var pts = d.points, s = d.summary, W = 760, H = 240, P = 34;
+      var vals = pts.map(function (p) { return p[1]; }), lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+      // Prices that span more than 20x (e.g. Tesla since 2010) are drawn on a log scale so earlier years stay readable.
+      var log = hi / lo > 20, f = log ? Math.log : function (v) { return v; }, flo = f(lo), fhi = f(hi);
+      var x = function (k) { return P + 18 + (W - 2 * P - 18) * k / (pts.length - 1); }, y = function (v) { return H - P - (H - 2 * P) * (f(v) - flo) / ((fhi - flo) || 1); };
+      var ticks = [0, 1, 2, 3].map(function (k) { var t = flo + (fhi - flo) * k / 3; return log ? Math.exp(t) : t; });
+      var grid = ticks.map(function (v) { var yy = y(v).toFixed(1); return '<line x1="' + (P + 18) + '" y1="' + yy + '" x2="' + (W - P) + '" y2="' + yy + '" stroke="#12203A"/><text data-tick x="' + (P + 12) + '" y="' + yy + '" font-size="10" fill="#6B819A" text-anchor="end" dominant-baseline="middle">' + (v >= 100 ? Math.round(v).toLocaleString('en-US') : v.toFixed(v >= 10 ? 1 : 2)) + '</text>'; }).join('');
+      var path = pts.map(function (p, k) { return (k ? 'L' : 'M') + x(k).toFixed(1) + ' ' + y(p[1]).toFixed(1); }).join('');
+      var ym = function (s) { return AB[+s.slice(5, 7) - 1] + ' ' + s.slice(0, 4); };
+      box.innerHTML =
+        '<div class="hub-kpis">' +
+          '<div><span class="tx-label">Since ' + ym(s.from) + '</span><b data-hub="total" style="color:' + col(s.total) + '">' + pct(s.total) + '</b><small>total price change</small></div>' +
+          '<div><span class="tx-label">Per year</span><b data-hub="cagr" style="color:' + col(s.cagr) + '">' + pct(s.cagr) + '</b><small>annualised</small></div>' +
+          '<div><span class="tx-label">Highest month-end close</span><b>' + price(s.high.c) + '</b><small>' + ym(s.high.ym) + '</small></div>' +
+          '<div><span class="tx-label">Lowest month-end close</span><b>' + price(s.low.c) + '</b><small>' + ym(s.low.ym) + '</small></div>' +
+        '</div>' +
+        '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" data-scale="' + (log ? 'log' : 'linear') + '" role="img" aria-label="' + name + ' monthly closing price, ' + ym(s.from) + ' to ' + ym(s.to) + (log ? ', log scale' : '') + '">' + grid +
+          '<path d="' + path + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
+          '<text x="' + (P + 18) + '" y="' + (H - 10) + '" font-size="11" fill="#6B819A">' + ym(s.from) + '</text>' +
+          '<text x="' + (W - P) + '" y="' + (H - 10) + '" font-size="11" fill="#6B819A" text-anchor="end">' + ym(s.to) + '</text>' +
+        '</svg>' +
+        '<p class="hub-note">Month-end closing prices from Yahoo Finance (adjusted closes where Yahoo provides them). The latest month is in progress.' + (log ? ' Log scale: equal vertical distances are equal percentage moves.' : '') + '</p>';
+      box.dataset.state = 'done';
+    });
+  }
+
+  function monthReview(id, name) {
+    var box = $('hubMonth'), sel = $('hubMonthSel'), my = 0;
+    function load() {
+      var m = +sel.value, me = ++my;
+      box.dataset.state = 'loading'; box.dataset.key = '';
+      get('id=' + id + '&view=month&month=' + (m + 1) + '&years=20').then(function (d) {
+        if (me !== my) return;
+        box.dataset.key = String(m);
+        var out = $('hubMonthBody');
+        if (!d) { $('hubMonthSummary').textContent = 'No real price history for this month.'; out.innerHTML = ''; box.dataset.state = 'error'; return; }
+        var s = d.summary, last = d.years[0];
+        $('hubMonthSummary').textContent = name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + MO[m] + 's (' + s.from + '–' + last.year + (last.partial ? ', counting this ' + MO[m] + ' so far' : '') + '), averaging ' + pct(s.avg) + '. Best: ' + s.best.year + ' ' + pct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + pct(s.worst.ret) + '.';
+        var mx = Math.max.apply(null, d.years.map(function (y) { return Math.abs(y.ret); }).concat([0.01]));
+        var days = d.days.up.concat(d.days.down), mxd = Math.max.apply(null, days.map(function (x) { return Math.abs(x.ret); }).concat([0.01]));
+        out.innerHTML = '<div class="hub-col"><h3 class="tx-label">Every ' + MO[m] + '</h3>' +
+          d.years.map(function (y) { return bar('data-year="' + y.year + '"', y.year + (y.partial ? ' (so far)' : ''), y.ret, mx); }).join('') + '</div>' +
+          '<div class="hub-col"><h3 class="tx-label">Biggest daily moves in ' + MO[m] + '</h3>' +
+          (days.length ? days.map(function (x) { var t = new Date(x.date + 'T00:00:00Z'); return bar('data-date="' + x.date + '"', t.getUTCDate() + ' ' + AB[t.getUTCMonth()] + ' ' + t.getUTCFullYear(), x.ret, mxd); }).join('') : '<p class="tx-muted">No daily price history for this window.</p>') + '</div>';
+        box.dataset.state = 'done';
+      });
+    }
+    sel.addEventListener('change', load);
+    load();
+  }
+
+  function monthVsMonth(id) {
+    var box = $('hubVs'), a = $('hubVsA'), b = $('hubVsB'), my = 0;
+    function load() {
+      var ma = +a.value, mb = +b.value, me = ++my;
+      box.dataset.state = 'loading'; box.dataset.key = '';
+      Promise.all([get('id=' + id + '&view=month&month=' + (ma + 1) + '&years=20'), get('id=' + id + '&view=month&month=' + (mb + 1) + '&years=20')]).then(function (r) {
+        if (me !== my) return;
+        box.dataset.key = ma + ':' + mb;
+        var tb = box.querySelector('tbody');
+        if (!r[0] || !r[1]) { $('hubVsSummary').textContent = 'No real price history for these months.'; tb.innerHTML = ''; box.dataset.state = 'error'; return; }
+        var bm = {}; r[1].years.forEach(function (y) { bm[y.year] = y.ret; });
+        var both = r[0].years.filter(function (y) { return bm[y.year] !== undefined; });
+        var aw = both.filter(function (y) { return y.ret > bm[y.year]; }).length, bw = both.filter(function (y) { return bm[y.year] > y.ret; }).length;
+        var avg = function (arr) { return arr.length ? Math.round(arr.reduce(function (s, v) { return s + v; }, 0) / arr.length * 100) / 100 : null; };
+        $('hubVsSummary').textContent = ma === mb ? 'Pick two different months.' :
+          'Over the ' + both.length + ' years with both months on record, ' + MO[ma] + ' did better in ' + aw + ' and ' + MO[mb] + ' did better in ' + bw + ' of ' + both.length + ' years. Averages: ' + MO[ma] + ' ' + pct(avg(both.map(function (y) { return y.ret; }))) + ', ' + MO[mb] + ' ' + pct(avg(both.map(function (y) { return bm[y.year]; }))) + '.';
+        box.querySelector('thead').innerHTML = '<tr><th>Year</th><th class="r">' + MO[ma] + '</th><th class="r">' + MO[mb] + '</th><th class="r">Better</th></tr>';
+        tb.innerHTML = both.map(function (y) {
+          var v = bm[y.year], w = y.ret > v ? AB[ma] : v > y.ret ? AB[mb] : 'Tie';
+          return '<tr data-year="' + y.year + '"><td>' + y.year + (y.partial || r[1].years.some(function (z) { return z.year === y.year && z.partial; }) ? ' <small class="tx-muted">(so far)</small>' : '') + '</td>' +
+            '<td class="r tx-num" data-k="a" style="color:' + col(y.ret) + '">' + pct(y.ret) + '</td><td class="r tx-num" data-k="b" style="color:' + col(v) + '">' + pct(v) + '</td><td class="r">' + w + '</td></tr>';
+        }).join('');
+        box.dataset.state = 'done';
+      });
+    }
+    a.addEventListener('change', load); b.addEventListener('change', load);
+    load();
+  }
+
+  function init() {
+    var hub = $('hub'); if (!hub) return;
+    var id = hub.dataset.id, name = hub.dataset.name, cm = new Date().getUTCMonth();
+    var opts = MO.map(function (m, k) { return '<option value="' + k + '">' + m + '</option>'; }).join('');
+    $('hubMonthSel').innerHTML = opts; $('hubMonthSel').value = String(cm);
+    $('hubVsA').innerHTML = opts; $('hubVsB').innerHTML = opts;
+    $('hubVsA').value = String(cm); $('hubVsB').value = String((cm + 1) % 12);
+    hub.dataset.state = 'loading';
+    Promise.all([history(id, name)]).then(function () { hub.dataset.state = 'done'; });
+    monthReview(id, name);
+    monthVsMonth(id);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

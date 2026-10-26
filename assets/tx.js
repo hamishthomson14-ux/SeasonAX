@@ -116,7 +116,63 @@
     });
   }
 
-  function init() { initMenu(); initTicker(); fillSeasonal(); }
+  // Header search: match the catalogue by ticker or name, open /seasonality/<id>.
+  var catPromise = null;
+  function catalogue() {
+    if (!catPromise) catPromise = fetch('/api/catalogue').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { catPromise = null; return []; });
+    return catPromise;
+  }
+  function rank(cat, q) {
+    q = q.trim().toLowerCase(); if (!q) return [];
+    var out = [];
+    cat.forEach(function (a) {
+      var t = String(a.ticker || '').toLowerCase().replace(/^\^/, ''), n = String(a.name || '').toLowerCase(), id = a.id, s = -1;
+      if (t === q || id === q) s = 0;
+      else if (n === q) s = 1;
+      else if (t.indexOf(q) === 0 || id.indexOf(q) === 0) s = 2;
+      else if (n.indexOf(q) === 0) s = 3;
+      else if ((' ' + n).indexOf(' ' + q) >= 0) s = 4;
+      else if (n.indexOf(q) >= 0 || t.indexOf(q) >= 0) s = 5;
+      if (s >= 0) out.push({ a: a, s: s });
+    });
+    out.sort(function (x, y) { return x.s - y.s || x.a.name.length - y.a.name.length || (x.a.name < y.a.name ? -1 : 1); });
+    return out.slice(0, 8).map(function (x) { return x.a; });
+  }
+  function initSearch() {
+    var input = document.getElementById('txSearch'), list = document.getElementById('txSearchList');
+    if (!input || !list) return;
+    var items = [], sel = -1, token = 0;
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); sel = -1; }
+    function mark() {
+      [].forEach.call(list.children, function (li, k) { li.setAttribute('aria-selected', k === sel ? 'true' : 'false'); });
+      if (sel >= 0) input.setAttribute('aria-activedescendant', 'txs-' + sel); else input.removeAttribute('aria-activedescendant');
+    }
+    function go(a) { location.href = a ? '/seasonality/' + encodeURIComponent(a.id) : '/seasonality.html?q=' + encodeURIComponent(input.value.trim()); }
+    function render() {
+      var my = ++token, q = input.value;
+      catalogue().then(function (cat) {
+        if (my !== token) return;
+        items = rank(cat, q); sel = -1;
+        if (!q.trim()) { list.innerHTML = ''; close(); return; }
+        list.innerHTML = items.map(function (a, k) {
+          return '<li id="txs-' + k + '" role="option" aria-selected="false" data-id="' + esc(a.id) + '">' + esc(a.name) + '<span>' + esc(String(a.ticker).replace(/^\^/, '')) + '</span></li>';
+        }).join('') + (items.length ? '' : '<li class="tx-search__all" role="presentation">No match &mdash; press Enter to search all assets</li>');
+        list.hidden = false; input.setAttribute('aria-expanded', items.length ? 'true' : 'false');
+      });
+    }
+    input.addEventListener('input', render);
+    input.addEventListener('focus', function () { catalogue(); if (input.value.trim()) render(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); sel = Math.min(items.length - 1, sel + 1); mark(); }
+      else if (e.key === 'ArrowUp' && items.length) { e.preventDefault(); sel = Math.max(0, sel - 1); mark(); }
+      else if (e.key === 'Escape') { close(); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (!input.value.trim()) return; catalogue().then(function (cat) { if (!items.length) items = rank(cat, input.value); go(items[sel >= 0 ? sel : 0]); }); }
+    });
+    list.addEventListener('mousedown', function (e) { var li = e.target.closest('[role="option"]'); if (li) { e.preventDefault(); go(items.filter(function (a) { return a.id === li.dataset.id; })[0]); } });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.tx-search')) close(); });
+  }
+
+  function init() { initMenu(); initTicker(); fillSeasonal(); initSearch(); }
 
   w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, fetchVerified: fetchVerified, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER,
     seasonalValue: seasonalValue, fillSeasonal: fillSeasonal };
