@@ -847,6 +847,10 @@ body.is-pro .mt-lock{display:none}
           <a class="tx-btn tx-btn--ghost tx-btn--sm" data-cal="ics" href="#" download="timingax-seasonal.ics">Download .ics</a>
         </div>
       </div>
+      <div class="wl-cal" id="wlMail" hidden>
+        <div><b>Email me before strong months</b><span id="wlMailMsg">An email 3 days before each watched asset&rsquo;s historically strongest month, with the figures recomputed from real prices that day.</span></div>
+        <div class="wl-cal__btns"><button class="tx-btn tx-btn--primary tx-btn--sm" id="wlMailBtn" type="button" onclick="wlMailToggle()">Turn on email alerts</button></div>
+      </div>
       <div id="wlList"></div>
       <div class="bt-disclaimer" style="margin-top:16px">WATCHLIST — stored locally in your browser. Status lines compare the current month's historical average with next month's for each asset's seasonal pattern.</div>
     </div>
@@ -3494,7 +3498,7 @@ function showUserMenu(user){
     tb.className = 'tier-badge ' + label.toLowerCase();
   }
   document.body.classList.toggle('is-pro', isPro());
-  if (typeof wlCalRender === 'function') wlCalRender(wlGet()); // Pro status is known only after sign-in loads
+  if (typeof wlCalRender === 'function') { wlCalRender(wlGet()); wlMailRender(wlGet()); } // Pro status is known only after sign-in loads
   buildBrowser(document.getElementById('searchBox') ? document.getElementById('searchBox').value : '', activeRegion, activeSector);
 }
 
@@ -4275,11 +4279,59 @@ function wlCalRender(ids) {
   box.querySelector('[data-cal="ics"]').setAttribute('href', feed);
 }
 
+// "Email me before strong months" (Pro): one seasonal_alerts row per verified watchlist asset.
+// The daily cron (api/send-seasonal-alerts.js) recomputes the figures from real prices before sending.
+var WL_MAIL_ON = [];
+function wlMailSet(on, ids, note) {
+  WL_MAIL_ON = on;
+  var btn = document.getElementById('wlMailBtn'), n = ids.filter(function (id) { return on.indexOf(id) >= 0; }).length;
+  btn.disabled = false;
+  btn.textContent = n ? 'Turn off email alerts' : 'Turn on email alerts';
+  document.getElementById('wlMailMsg').textContent = n
+    ? 'On for ' + n + ' of ' + ids.length + ': an email 3 days before each one\u2019s historically strongest month, with figures recomputed from real prices that day.' + (note || '')
+    : 'An email 3 days before each watched asset\u2019s historically strongest month, with the figures recomputed from real prices that day.' + (note || '');
+}
+function wlMailRender(ids) {
+  var box = document.getElementById('wlMail');
+  if (!box) return;
+  box.hidden = !(ids.length && isPro() && currentUser);
+  if (box.hidden) return;
+  sb.from('seasonal_alerts').select('asset_id').eq('user_id', currentUser.id).in('asset_id', ids).then(function (res) {
+    wlMailSet((res.data || []).map(function (r) { return r.asset_id; }), ids);
+  });
+}
+function wlMailToggle() {
+  var ids = wlGet(), btn = document.getElementById('wlMailBtn');
+  if (!currentUser || !ids.length) return;
+  btn.disabled = true;
+  if (ids.some(function (id) { return WL_MAIL_ON.indexOf(id) >= 0; })) {
+    sb.from('seasonal_alerts').delete().eq('user_id', currentUser.id).in('asset_id', ids).then(function (res) {
+      wlMailSet(res.error ? WL_MAIL_ON : [], ids, res.error ? ' Couldn\u2019t update your alerts \u2014 please try again.' : '');
+    });
+    return;
+  }
+  btn.textContent = 'Checking real price history\u2026';
+  Promise.all(ids.map(function (id) { return TX.fetchVerified(id); })).then(function (ds) {
+    var rows = [], left = [];
+    ds.forEach(function (d, i) {
+      if (!d) { var it = CATALOGUE.find(function (a) { return a.id === ids[i]; }); left.push(it ? it.ticker : ids[i]); return; }
+      var b = d.months.map(function (m, k) { return { m: m, k: k }; }).sort(function (x, y) { return y.m.avgReturn - x.m.avgReturn; })[0];
+      rows.push({ user_id: currentUser.id, asset_id: d.id, asset_name: d.name, asset_ticker: d.ticker, best_month: b.k, best_avg: b.m.avgReturn, best_win: b.m.winRate });
+    });
+    var note = left.length ? ' Left out (no verified price history): ' + left.join(', ') + '.' : '';
+    if (!rows.length) { wlMailSet([], ids, note); return; }
+    sb.from('seasonal_alerts').upsert(rows, { onConflict: 'user_id,asset_id' }).then(function (res) {
+      wlMailSet(res.error ? [] : rows.map(function (r) { return r.asset_id; }), ids, res.error ? ' Couldn\u2019t save your alerts \u2014 please try again.' : note);
+    });
+  });
+}
+
 function wlRender() {
   var wrap = document.getElementById('wlList');
   if (!wrap) return;
   var ids = wlGet();
   wlCalRender(ids);
+  wlMailRender(ids);
 
   if (!ids.length) {
     document.getElementById('wlStats').innerHTML =
