@@ -30,12 +30,13 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
 const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
+const EVENTS_HISTORY = JSON.parse(readFileSync(path.join(__dirname, '../_data/events-history.json'), 'utf8'));
 
 // Run fn over items with at most `n` in flight (keeps upstream price requests polite).
 async function mapLimit(items, n, fn) {
@@ -64,7 +65,10 @@ export default async function handler(req, res) {
     const section = String(req.query.section || '');
     const members = CATALOGUE.filter(a => a.catSection === section);
     if (!members.length) return res.status(400).json({ error: 'Unknown section', sections: [...new Set(CATALOGUE.map(a => a.catSection))] });
-    const mi = new Date().getUTCMonth();
+    // ?month=1..12 (default: the current month)
+    const mq = req.query.month;
+    if (mq != null && !/^(?:[1-9]|1[0-2])$/.test(String(mq))) return res.status(400).json({ error: 'month must be 1-12' });
+    const mi = mq != null ? Number(mq) - 1 : new Date().getUTCMonth();
     const results = await mapLimit(members, 8, async (item) => {
       try {
         const rows = await fetchMonthly(yahooSymbol(item));
@@ -95,6 +99,12 @@ export default async function handler(req, res) {
     return res.status(200).send(buildCalendar(entries, { now: new Date() }));
   }
 
+  // ── ?view=events — event types (official dates); with &type=&id= the asset's moves around each event ──
+  if (req.query.view === 'events' && !req.query.type) {
+    res.setHeader('Cache-Control', 's-maxage=86400');
+    return res.status(200).json({ checked: EVENTS_HISTORY.checked, types: EVENTS_HISTORY.types.map(({ events, ...t }) => ({ ...t, count: events.length, first: events[0] && events[0].date, last: events[events.length - 1] && events[events.length - 1].date })) });
+  }
+
   if (!id && !ticker) {
     return res.status(400).json({
       error: 'Provide an asset via ?id= or ?ticker=',
@@ -121,7 +131,41 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events or leaderboard.' });
+  if (view === 'events') {
+    const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
+    if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
+    let st = null;
+    try { const rows = await fetchDaily(yahooSymbol(item)); st = rows && computeEventStudy(rows, type.events.map((e) => e.date)); } catch (e) { st = null; }
+    if (!st || !st.events.length) return res.status(404).json({ error: 'unavailable', hint: 'No real daily prices covering these events.' });
+    const r2 = (v) => (v === null ? null : Math.round(v * 100) / 100), meta = Object.fromEntries(type.events.map((e) => [e.date, e]));
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'events',
+      type: { id: type.id, name: type.name, note: type.note, source: type.source },
+      events: st.events.map((e) => ({ ...meta[e.date], date: e.date, before: r2(e.before), d1: r2(e.d1), w1: r2(e.w1), m1: r2(e.m1), m3: r2(e.m3) })),
+      summary: st.summary, method: 'Moves from the close on the last trading day before each event: day 1, 5, 21 and 63 trading days on; "before" is the 21 trading days leading in.', generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=day&date=MM-DD — daily move on one calendar date over the last 20 years ──
+  if (view === 'day') {
+    const now = new Date();
+    const dq = req.query.date ? String(req.query.date) : `${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`;
+    const dm = dq.match(/^(\d\d)-(\d\d)$/);
+    if (!dm || new Date(Date.UTC(2024, +dm[1] - 1, +dm[2])).getUTCDate() !== +dm[2] || +dm[1] < 1 || +dm[1] > 12) return res.status(400).json({ error: 'date must be MM-DD' });
+    let d = null;
+    try { const rows = await fetchDaily(yahooSymbol(item)); d = rows && computeThisDay(rows, { month: +dm[1], day: +dm[2], years: 20, now }); } catch (e) { d = null; }
+    if (!d || !d.summary.traded) return res.status(404).json({ error: 'unavailable', hint: 'Needs real daily prices (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'day', ...d, generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
+  if (view === 'track') {
+    let tr = null;
+    try { const rows = await fetchMonthly(yahooSymbol(item)); tr = rows && computeTrackRecord(rows, { now: new Date(), months: 36 }); } catch (e) { tr = null; }
+    if (!tr || !tr.records.some((x) => x.verdict)) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly history (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'track', ...tr,
+      disclaimer: 'Each month\'s signal uses only the 15 years before that month; the outcome is the month\'s actual return. Neutral months are not scored.', generatedAt: new Date().toISOString() });
+  }
   // ── ?view=patterns — best/worst weeks of the year + turn-of-month, from real daily prices ──
   if (view === 'patterns') {
     let pat = null;

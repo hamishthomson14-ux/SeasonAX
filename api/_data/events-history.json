@@ -1,0 +1,302 @@
+{
+ "checked": "2026-10-26",
+ "types": [
+  {
+   "id": "fed-cut",
+   "name": "Fed rate cuts",
+   "note": "Dates the federal funds target change took effect, as listed by the Federal Reserve.",
+   "source": "https://www.federalreserve.gov/monetarypolicy/openmarket.htm",
+   "events": [
+    {
+     "date": "2007-09-18",
+     "bp": "50",
+     "level": "4.75"
+    },
+    {
+     "date": "2007-10-31",
+     "bp": "25",
+     "level": "4.50"
+    },
+    {
+     "date": "2007-12-11",
+     "bp": "25",
+     "level": "4.25"
+    },
+    {
+     "date": "2008-01-22",
+     "bp": "75",
+     "level": "3.50"
+    },
+    {
+     "date": "2008-01-30",
+     "bp": "50",
+     "level": "3.00"
+    },
+    {
+     "date": "2008-03-18",
+     "bp": "75",
+     "level": "2.25"
+    },
+    {
+     "date": "2008-04-30",
+     "bp": "25",
+     "level": "2.00"
+    },
+    {
+     "date": "2008-10-08",
+     "bp": "50",
+     "level": "1.50"
+    },
+    {
+     "date": "2008-10-29",
+     "bp": "50",
+     "level": "1.00"
+    },
+    {
+     "date": "2008-12-16",
+     "bp": "75-100",
+     "level": "0-0.25"
+    },
+    {
+     "date": "2019-08-01",
+     "bp": "25",
+     "level": "2.00-2.25"
+    },
+    {
+     "date": "2019-09-19",
+     "bp": "25",
+     "level": "1.75-2.00"
+    },
+    {
+     "date": "2019-10-31",
+     "bp": "25",
+     "level": "1.50-1.75"
+    },
+    {
+     "date": "2020-03-04",
+     "bp": "50",
+     "level": "1.00-1.25"
+    },
+    {
+     "date": "2020-03-16",
+     "bp": "100",
+     "level": "0-0.25"
+    },
+    {
+     "date": "2024-09-19",
+     "bp": "50",
+     "level": "4.75-5.00"
+    },
+    {
+     "date": "2024-11-08",
+     "bp": "25",
+     "level": "4.50-4.75"
+    },
+    {
+     "date": "2024-12-19",
+     "bp": "25",
+     "level": "4.25-4.50"
+    },
+    {
+     "date": "2025-09-18",
+     "bp": "25",
+     "level": "4.00-4.25"
+    },
+    {
+     "date": "2025-10-30",
+     "bp": "25",
+     "level": "3.75-4.00"
+    },
+    {
+     "date": "2025-12-11",
+     "bp": "25",
+     "level": "3.50-3.75"
+    }
+   ]
+  },
+  {
+   "id": "fed-hike",
+   "name": "Fed rate hikes",
+   "note": "Dates the federal funds target change took effect, as listed by the Federal Reserve.",
+   "source": "https://www.federalreserve.gov/monetarypolicy/openmarket.htm",
+   "events": [
+    {
+     "date": "2015-12-17",
+     "bp": "25",
+     "level": "0.25-0.50"
+    },
+    {
+     "date": "2016-12-15",
+     "bp": "25",
+     "level": "0.50-0.75"
+    },
+    {
+     "date": "2017-03-16",
+     "bp": "25",
+     "level": "0.75-1.00"
+    },
+    {
+     "date": "2017-06-15",
+     "bp": "25",
+     "level": "1.00-1.25"
+    },
+    {
+     "date": "2017-12-14",
+     "bp": "25",
+     "level": "1.25-1.50"
+    },
+    {
+     "date": "2018-03-22",
+     "bp": "25",
+     "level": "1.50-1.75"
+    },
+    {
+     "date": "2018-06-14",
+     "bp": "25",
+     "level": "1.75-2.00"
+    },
+    {
+     "date": "2018-09-27",
+     "bp": "25",
+     "level": "2.00-2.25"
+    },
+    {
+     "date": "2018-12-20",
+     "bp": "25",
+     "level": "2.25-2.50"
+    },
+    {
+     "date": "2022-03-17",
+     "bp": "25",
+     "level": "0.25-0.50"
+    },
+    {
+     "date": "2022-05-05",
+     "bp": "50",
+     "level": "0.75-1.00"
+    },
+    {
+     "date": "2022-06-16",
+     "bp": "75",
+     "level": "1.50-1.75"
+    },
+    {
+     "date": "2022-07-28",
+     "bp": "75",
+     "level": "2.25-2.50"
+    },
+    {
+     "date": "2022-09-22",
+     "bp": "75",
+     "level": "3.00-3.25"
+    },
+    {
+     "date": "2022-11-03",
+     "bp": "75",
+     "level": "3.75-4.00"
+    },
+    {
+     "date": "2022-12-15",
+     "bp": "50",
+     "level": "4.25-4.50"
+    },
+    {
+     "date": "2023-02-02",
+     "bp": "25",
+     "level": "4.50-4.75"
+    },
+    {
+     "date": "2023-03-23",
+     "bp": "25",
+     "level": "4.75-5.00"
+    },
+    {
+     "date": "2023-05-04",
+     "bp": "25",
+     "level": "5.00-5.25"
+    },
+    {
+     "date": "2023-07-27",
+     "bp": "25",
+     "level": "5.25-5.50"
+    },
+    {
+     "date": "2026-09-17",
+     "bp": "25",
+     "level": "3.75-4.00"
+    }
+   ]
+  },
+  {
+   "id": "us-presidential",
+   "name": "US presidential elections",
+   "note": "Election Day as set by federal law: the Tuesday after the first Monday in November.",
+   "source": "https://www.law.cornell.edu/uscode/text/2/7",
+   "events": [
+    {
+     "date": "2008-11-04"
+    },
+    {
+     "date": "2012-11-06"
+    },
+    {
+     "date": "2016-11-08"
+    },
+    {
+     "date": "2020-11-03"
+    },
+    {
+     "date": "2024-11-05"
+    }
+   ]
+  },
+  {
+   "id": "us-midterm",
+   "name": "US midterm elections",
+   "note": "Election Day as set by federal law: the Tuesday after the first Monday in November.",
+   "source": "https://www.law.cornell.edu/uscode/text/2/7",
+   "events": [
+    {
+     "date": "2010-11-02"
+    },
+    {
+     "date": "2014-11-04"
+    },
+    {
+     "date": "2018-11-06"
+    },
+    {
+     "date": "2022-11-08"
+    }
+   ]
+  },
+  {
+   "id": "btc-halving",
+   "name": "Bitcoin halvings",
+   "note": "UTC date of the block at which the mining reward halved (heights 210,000; 420,000; 630,000; 840,000).",
+   "source": "https://mempool.space/block/840000",
+   "events": [
+    {
+     "date": "2012-11-28",
+     "block": 210000,
+     "hash": "000000000000048b95347e83192f69cf0366076336c639f9b7228e9ba171342e"
+    },
+    {
+     "date": "2016-07-09",
+     "block": 420000,
+     "hash": "000000000000000002cce816c0ab2c5c269cb081896b7dcb34b8422d6b74ffa1"
+    },
+    {
+     "date": "2020-05-11",
+     "block": 630000,
+     "hash": "000000000000000000024bead8df69990852c202db0e0097c1a12ea637d7e96d"
+    },
+    {
+     "date": "2024-04-20",
+     "block": 840000,
+     "hash": "0000000000000000000320283a032748cef8227873ff4872689bf23f1cda83a5"
+    }
+   ]
+  }
+ ]
+}

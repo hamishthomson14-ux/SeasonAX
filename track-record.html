@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Record — How Seasonal Signals Compared With What Happened | TimingAX</title>
+<meta name="description" content="An honest scorecard: for each of the last 36 months, what the seasonal signal said beforehand for eight major markets, and what actually happened.">
+<link rel="canonical" href="https://www.timingax.co.uk/track-record.html">
+<meta property="og:title" content="Seasonal Signal Track Record | TimingAX">
+<meta property="og:description" content="What seasonality said beforehand vs what happened, for the last 36 months.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.timingax.co.uk/track-record.html">
+<meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.tr-hero { padding: 56px 0 20px; max-width: 820px; }
+.tr-hero .tx-h1 { font-size: clamp(34px, 5vw, 56px); margin: 16px 0 14px; }
+.tr-sec { margin-top: 28px; }
+.tr-t { width: 100%; border-collapse: collapse; font-family: var(--tx-font-mono); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.tr-t th { font: 500 10.5px var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--tx-border-2); }
+.tr-t th:first-child, .tr-t td:first-child { text-align: left; }
+.tr-t td { padding: 10px 12px; border-bottom: 1px solid #0B1220; text-align: right; }
+.tr-t a { color: var(--tx-text-1) !important; font-family: var(--tx-font-ui); }
+.tr-grid-wrap { overflow-x: auto; }
+.tr-grid { border-collapse: collapse; font: 500 11.5px var(--tx-font-mono); min-width: 760px; width: 100%; }
+.tr-grid th { color: var(--tx-text-3); font-weight: 500; padding: 8px 6px; text-align: center; border-bottom: 1px solid var(--tx-border-2); }
+.tr-grid th:first-child { text-align: left; }
+.tr-grid td { padding: 6px; text-align: center; border-bottom: 1px solid #0B1220; }
+.tr-grid td:first-child { text-align: left; font-family: var(--tx-font-ui); color: var(--tx-text-1); white-space: nowrap; }
+.tr-cell { display: block; border-radius: 4px; padding: 5px 2px; border: 1px solid var(--tx-border-1); color: var(--tx-text-2); }
+.tr-cell.tw { border-color: rgba(0,201,126,.4); }
+.tr-cell.hw { border-color: rgba(240,64,80,.45); }
+.tr-cell i { display: block; font-style: normal; font-size: 10px; margin-top: 2px; }
+.tr-cell .ok { color: var(--tx-up); } .tr-cell .no { color: var(--tx-down); }
+.tr-legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 16px; border-top: 1px solid var(--tx-border-1); font: 500 12px var(--tx-font-mono); color: var(--tx-text-2); }
+.tr-method { margin: 32px 0 72px; max-width: 820px; }
+.tr-method li { color: var(--tx-text-2); margin-bottom: 8px; line-height: 1.65; }
+</style>
+</head>
+<body class="tx" data-tr-state="loading">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap">
+  <section class="tr-hero">
+    <span class="tx-eyebrow">Track record</span>
+    <h1 class="tx-h1">What seasonality said, <em>and what happened.</em></h1>
+    <p class="tx-lead">For each of the last 36 months, the seasonal signal for eight major markets &mdash; worked out using only the 15 years <em>before</em> that month &mdash; against the month&rsquo;s actual return. We publish it whether it flatters us or not.</p>
+  </section>
+
+  <div class="tx-statbar">
+    <div class="tx-stat"><span class="tx-stat__value" data-tr="hitRate"><span class="tx-skel"></span></span><span class="tx-stat__label">Signals right (<span data-tr="hits">&hellip;</span> of <span data-tr="signals">&hellip;</span>)</span></div>
+    <div class="tx-stat"><span class="tx-stat__value" data-tr="baseUp"><span class="tx-skel"></span></span><span class="tx-stat__label">Base rate: months that were up</span></div>
+    <div class="tx-stat"><span class="tx-stat__value tx-up" data-tr="twAvg"><span class="tx-skel"></span></span><span class="tx-stat__label">Avg month after a tailwind</span></div>
+    <div class="tx-stat"><span class="tx-stat__value tx-down" data-tr="hwAvg"><span class="tx-skel"></span></span><span class="tx-stat__label">Avg month after a headwind</span></div>
+  </div>
+  <p class="tx-note" style="margin-top:10px">All months averaged <span data-tr="allAvg">&hellip;</span>. A signal is &ldquo;right&rdquo; when a tailwind month closed up or a headwind month closed down; neutral months aren&rsquo;t scored. Compare the hit rate with the base rate: a signal is only useful if it beats simply expecting &ldquo;up&rdquo;.</p>
+
+  <div class="tx-term tr-sec" id="trMarkets"><div class="tx-term__head"><span class="tx-term__title">By market &middot; last 36 months</span><span class="tx-term__status">Real data</span></div>
+    <table class="tr-t"><thead><tr><th>Market</th><th>Signals</th><th>Right</th><th>Hit rate</th><th>Up months</th></tr></thead><tbody></tbody></table></div>
+
+  <div class="tx-term tr-sec"><div class="tx-term__head"><span class="tx-term__title">Last 12 months, month by month</span><span class="tx-term__status">Signal &middot; actual</span></div>
+    <div class="tr-grid-wrap"><table class="tr-grid" id="trGrid"></table></div>
+    <div class="tr-legend"><span><b style="color:var(--tx-up)">TW</b> tailwind</span><span><b style="color:var(--tx-down)">HW</b> headwind</span><span>&ndash; neutral</span><span class="tx-up">&#10003; right</span><span class="tx-down">&#10007; wrong</span></div></div>
+
+  <section class="tr-method">
+    <h2 class="tx-h2" style="font-size:26px">How this is worked out</h2>
+    <ul>
+      <li>For each month, the signal uses only the 15 years before it &mdash; e.g. the signal for March 2025 comes from March 2010&ndash;2024 &mdash; so nothing it &ldquo;knew&rdquo; came from the future.</li>
+      <li>Tailwind: average at least +0.8% and up in at least 60% of those years. Headwind: average &minus;0.5% or lower and up in 45% or fewer. Otherwise neutral.</li>
+      <li>Outcomes are each month&rsquo;s real return from month-end closes (the current, unfinished month isn&rsquo;t included). Markets: S&amp;P 500, NASDAQ Composite, Dow Jones, FTSE 100, DAX 40, Nikkei 225, Gold (GLD), Bitcoin.</li>
+      <li>Past results don&rsquo;t predict future ones; this is a record of how a historical tendency has played out, not advice. <a href="/data.html">Data &amp; methodology</a>.</li>
+    </ul>
+  </section>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var MK = [['sp500','S&P 500'],['nasdaq','NASDAQ Comp.'],['dow','Dow Jones'],['ftse100','FTSE 100'],['dax','DAX 40'],['nikkei','Nikkei 225'],['gld','Gold (GLD)'],['btc','Bitcoin']];
+  var AB = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var pct = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; };
+  var set = function (k, v) { document.querySelectorAll('[data-tr="' + k + '"]').forEach(function (e) { e.textContent = v; }); };
+  Promise.all(MK.map(function (m) { return fetch('/api/v1/seasonality?id=' + m[0] + '&view=track').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); })).then(function (ds) {
+    if (ds.some(function (d) { return !d || !d.records; })) {   // a partial scorecard would mislead: show none
+      document.querySelectorAll('[data-tr]').forEach(function (e) { e.textContent = '—'; });
+      document.querySelector('#trMarkets tbody').innerHTML = '<tr><td colspan="5">Track record data is unavailable right now.</td></tr>';
+      document.body.dataset.trState = 'error'; return;
+    }
+    var recs = []; ds.forEach(function (d) { recs = recs.concat(d.records); });
+    var scored = recs.filter(function (x) { return x.hit !== null; }), hits = scored.filter(function (x) { return x.hit; }).length;
+    var avg = function (a) { return Math.round(a.reduce(function (s, x) { return s + x.actual; }, 0) / a.length * 100) / 100; };
+    var tw = recs.filter(function (x) { return x.verdict === 'TAILWIND'; }), hw = recs.filter(function (x) { return x.verdict === 'HEADWIND'; }), all = recs.filter(function (x) { return x.actual !== null; });
+    set('signals', scored.length); set('hits', hits); set('hitRate', Math.round(hits / scored.length * 100) + '%');
+    set('baseUp', Math.round(all.filter(function (x) { return x.actual > 0; }).length / all.length * 100) + '%');
+    set('twAvg', tw.length ? pct(avg(tw)) : '—'); set('hwAvg', hw.length ? pct(avg(hw)) : '—'); set('allAvg', pct(avg(all)));
+    document.querySelector('#trMarkets tbody').innerHTML = MK.map(function (m, i) {
+      var s = ds[i].summary;
+      return '<tr data-id="' + m[0] + '"><td><a href="/seasonality/' + m[0] + '">' + m[1] + '</a></td><td>' + s.signals + '</td><td>' + s.hits + '</td><td>' + (s.hitRate == null ? '—' : s.hitRate + '%') + '</td><td>' + s.baseUpRate + '%</td></tr>';
+    }).join('');
+    var months = ds[0].records.slice(0, 12).map(function (r) { return r.ym; }).reverse();
+    var head = '<thead><tr><th>Market</th>' + months.map(function (ym) { return '<th>' + AB[+ym.slice(5) - 1] + ' ' + ym.slice(2, 4) + '</th>'; }).join('') + '</tr></thead>';
+    var body = MK.map(function (m, i) {
+      var by = {}; ds[i].records.forEach(function (r) { by[r.ym] = r; });
+      return '<tr><td>' + m[1] + '</td>' + months.map(function (ym) {
+        var r = by[ym], cls = r.verdict === 'TAILWIND' ? 'tw' : r.verdict === 'HEADWIND' ? 'hw' : '';
+        var sig = r.verdict === 'TAILWIND' ? 'TW' : r.verdict === 'HEADWIND' ? 'HW' : '–';
+        var mark = r.hit === null ? '' : r.hit ? ' <span class="ok">✓</span>' : ' <span class="no">✗</span>';
+        return '<td><span class="tr-cell ' + cls + '" data-cell="' + m[0] + '-' + ym + '">' + sig + mark + '<i class="' + (r.actual >= 0 ? 'tx-up' : 'tx-down') + '">' + (r.actual == null ? '—' : pct(r.actual)) + '</i></span></td>';
+      }).join('') + '</tr>';
+    }).join('');
+    document.getElementById('trGrid').innerHTML = head + '<tbody>' + body + '</tbody>';
+    document.body.dataset.trState = 'done';
+  });
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

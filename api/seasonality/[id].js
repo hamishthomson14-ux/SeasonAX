@@ -107,9 +107,15 @@ export default async function handler(req, res) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -378,9 +384,15 @@ export default async function handler(req, res) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -489,9 +501,15 @@ function compareNotFound(res, msg) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -667,9 +685,15 @@ async function compareHandler(req, res) {
       <div><h4>Product</h4><ul>
         <li><a href="/market-seasonality.html">Open the app</a></li>
         <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
         <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>

@@ -273,3 +273,88 @@ export function buildCalendar(entries, { now = new Date() } = {}) {
   lines.push('END:VCALENDAR');
   return lines.map(icsFold).join('\r\n') + '\r\n';
 }
+
+// ── Track record (out-of-sample) ────────────────────────────────────────────
+// For each of the last `months` complete months: the seasonal verdict for that calendar month using ONLY
+// the 15 years before it (min 5), and the month's actual return. hit: tailwind & up, headwind & down;
+// neutral months are not scored. rows: monthly closes as from fetchMonthly.
+export function computeTrackRecord(rows, { now = new Date(), months = 36, lookback = 15 } = {}) {
+  const ret = {};
+  for (let i = 1; i < rows.length; i++) {
+    const p = rows[i - 1].c, c = rows[i].c, r = (c - p) / p * 100;
+    if (isFinite(r) && p > 0 && Math.abs(r) <= 95) ret[rows[i].d.slice(0, 7)] = r;
+  }
+  const r2 = (v) => Math.round(v * 100) / 100, ym = (y, m) => `${y}-${String(m + 1).padStart(2, '0')}`;
+  const records = [];
+  for (let k = 1; k <= months; k++) {
+    const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - k, 1)), y = t.getUTCFullYear(), m = t.getUTCMonth();
+    const actual = ret[ym(y, m)];
+    const past = []; for (let py = y - lookback; py < y; py++) if (ret[ym(py, m)] != null) past.push(ret[ym(py, m)]);
+    const rec = { ym: ym(y, m), actual: actual == null ? null : r2(actual), n: past.length, avg: null, win: null, verdict: null, hit: null };
+    if (past.length >= 5 && actual != null) {
+      rec.avg = r2(past.reduce((a, b) => a + b, 0) / past.length);
+      rec.win = Math.round(past.filter((x) => x > 0).length / past.length * 100);
+      rec.verdict = verdictOf(rec.avg, rec.win);
+      if (rec.verdict !== 'NEUTRAL') rec.hit = rec.verdict === 'TAILWIND' ? actual > 0 : actual < 0;
+    }
+    records.push(rec);
+  }
+  const scored = records.filter((x) => x.hit !== null), withActual = records.filter((x) => x.actual != null);
+  const group = (v) => { const g = records.filter((x) => x.verdict === v); return { count: g.length, avgActual: g.length ? r2(g.reduce((a, b) => a + b.actual, 0) / g.length) : null }; };
+  return { records, summary: {
+    signals: scored.length, hits: scored.filter((x) => x.hit).length,
+    hitRate: scored.length ? Math.round(scored.filter((x) => x.hit).length / scored.length * 100) : null,
+    tailwind: group('TAILWIND'), headwind: group('HEADWIND'), neutral: group('NEUTRAL'),
+    baseUpRate: withActual.length ? Math.round(withActual.filter((x) => x.actual > 0).length / withActual.length * 100) : null,
+  } };
+}
+
+// ── This day in markets ─────────────────────────────────────────────────────
+// Daily % change on one calendar date (month 1-12, day) in each of the last `years` years, from daily
+// closes. A year where the market was shut that day is null ("closed"). This year counts once that date
+// has passed. null for a date that never exists (e.g. 31 Feb).
+export function computeThisDay(rows, { month, day, years = 20, now = new Date() } = {}) {
+  const m = month - 1;
+  if (!(m >= 0 && m < 12) || new Date(Date.UTC(2024, m, day)).getUTCDate() !== day) return null;
+  if (!rows || rows.length < 2) return null;
+  const idx = new Map(); rows.forEach((r, i) => idx.set(new Date(r.t).toISOString().slice(0, 10), i));
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const top = Date.UTC(now.getUTCFullYear(), m, day) < today ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
+  const r2 = (v) => Math.round(v * 100) / 100, out = [];
+  for (let y = top; y > top - years; y--) {
+    const t = Date.UTC(y, m, day), key = new Date(t).toISOString().slice(0, 10);
+    const i = new Date(t).getUTCDate() === day ? idx.get(key) : undefined;
+    out.push({ year: y, change: i > 0 ? r2((rows[i].c / rows[i - 1].c - 1) * 100) : null });
+  }
+  const tr = out.filter((x) => x.change !== null);
+  const by = (f) => tr.length ? tr.reduce((a, b) => (f(b.change, a.change) ? b : a)) : null;
+  return { month, day, years: out, summary: {
+    traded: tr.length, up: tr.filter((x) => x.change > 0).length, down: tr.filter((x) => x.change < 0).length,
+    avg: tr.length ? r2(tr.reduce((a, b) => a + b.change, 0) / tr.length) : null,
+    best: by((x, y) => x > y), worst: by((x, y) => x < y) } };
+}
+
+// ── Event studies ───────────────────────────────────────────────────────────
+// For each event date: % moves measured from the close on the last trading day before the event.
+// d1/w1/m1/m3 = close on the 1st/5th/21st/63rd trading day on or after the event date;
+// before = the 21 trading days leading up to that base close. null when a window runs past the data.
+export function computeEventStudy(rows, dates) {
+  const W = { d1: 1, w1: 5, m1: 21, m3: 63 }, r2 = (v) => Math.round(v * 100) / 100;
+  const events = [];
+  for (const date of dates) {
+    const t = Date.parse(date + 'T00:00:00Z'), i = rows.findIndex((r) => r.t >= t);
+    if (i < 1 || rows[i].t - t > 7 * 864e5) continue;            // before the data, or a gap
+    const base = rows[i - 1].c, e = { date };
+    for (const [k, n] of Object.entries(W)) e[k] = rows[i + n - 1] ? (rows[i + n - 1].c / base - 1) * 100 : null;
+    e.before = i - 22 >= 0 ? (base / rows[i - 22].c - 1) * 100 : null;
+    events.push(e);
+  }
+  const summary = {};
+  for (const k of ['before', 'd1', 'w1', 'm1', 'm3']) {
+    const v = events.map((e) => e[k]).filter((x) => x !== null), s = [...v].sort((a, b) => a - b);
+    const med = v.length ? (v.length % 2 ? s[(v.length - 1) / 2] : (s[v.length / 2 - 1] + s[v.length / 2]) / 2) : null;
+    summary[k] = { n: v.length, avg: v.length ? r2(v.reduce((a, b) => a + b, 0) / v.length) : null, median: med === null ? null : r2(med),
+      up: v.length ? Math.round(v.filter((x) => x > 0).length / v.length * 100) : null };
+  }
+  return { events, summary };
+}
