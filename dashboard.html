@@ -878,34 +878,10 @@ function buildDashboard(){
 
   // Calendar
   var now=new Date();
-  // Official schedules only (checked 2026-10-23): FOMC — federalreserve.gov/monetarypolicy/fomccalendars.htm
-  // (decision 2:00pm ET on the final day; 2027 dates tentative until confirmed); CPI and Nonfarm Payrolls —
-  // bls.gov/schedule (8:30am ET). Earnings dates are left out until companies confirm them. Refresh this list
-  // when it runs low — the widget says so rather than showing past events.
-  var evts=[
-    {d:new Date('2026-10-28T18:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2026-11-06T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2026-11-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2026-12-04T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2026-12-09T19:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2026-12-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-01-08T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-01-13T13:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-01-27T19:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2027-02-05T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-02-11T13:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-03-05T13:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-03-10T13:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-03-17T18:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2027-04-02T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-04-13T12:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-04-28T18:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2027-05-07T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-05-12T12:30:00Z'),n:'CPI Inflation',t:'data'},
-    {d:new Date('2027-06-04T12:30:00Z'),n:'Nonfarm Payrolls',t:'data'},
-    {d:new Date('2027-06-09T18:00:00Z'),n:'FOMC Decision',t:'fed'},
-    {d:new Date('2027-06-10T12:30:00Z'),n:'CPI Inflation',t:'data'},
-  ].filter(function(e){return e.d>now;}).slice(0,5);
+  // Scheduled events: the shared official list in /assets/events.json (FOMC: federalreserve.gov; CPI/jobs: bls.gov).
+  fetch('/assets/events.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }).then(function(file){
+  var evts=((file && file.events) || []).map(function(e){ return {d:new Date(e.t), n:e.name, t:e.type}; })
+    .filter(function(e){return e.d>now;}).slice(0,5);
   document.getElementById('cwList').innerHTML=evts.map(function(e){
     var a=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     var b=new Date(e.d.getFullYear(),e.d.getMonth(),e.d.getDate());
@@ -919,6 +895,7 @@ function buildDashboard(){
   if(evts.length>0){var na=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     var nb=new Date(evts[0].d.getFullYear(),evts[0].d.getMonth(),evts[0].d.getDate());
     var nd=Math.max(0,Math.round((nb-na)/86400000)); document.getElementById('tc9stat').textContent='Next: '+evts[0].n.split(' ')[0]+' in '+nd+'d';}
+  });
 }
 buildDashboard();
 obMaybeShow();

@@ -64,7 +64,10 @@ export default async function handler(req, res) {
     const section = String(req.query.section || '');
     const members = CATALOGUE.filter(a => a.catSection === section);
     if (!members.length) return res.status(400).json({ error: 'Unknown section', sections: [...new Set(CATALOGUE.map(a => a.catSection))] });
-    const mi = new Date().getUTCMonth();
+    // ?month=1..12 (default: the current month)
+    const mq = req.query.month;
+    if (mq != null && !/^(?:[1-9]|1[0-2])$/.test(String(mq))) return res.status(400).json({ error: 'month must be 1-12' });
+    const mi = mq != null ? Number(mq) - 1 : new Date().getUTCMonth();
     const results = await mapLimit(members, 8, async (item) => {
       try {
         const rows = await fetchMonthly(yahooSymbol(item));
