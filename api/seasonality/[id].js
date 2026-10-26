@@ -110,6 +110,7 @@ export default async function handler(req, res) {
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -381,6 +382,7 @@ export default async function handler(req, res) {
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -492,6 +494,7 @@ function compareNotFound(res, msg) {
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
@@ -670,6 +673,7 @@ async function compareHandler(req, res) {
         <li><a href="/leaderboard.html">Leaderboard</a></li>
         <li><a href="/compare.html">Compare assets</a></li>
         <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
         <li><a href="/methodology.html">Methodology</a></li>
         <li><a href="/changelog.html">Changelog</a></li>
       </ul></div>
