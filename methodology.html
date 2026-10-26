@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://www.timingax.co.uk/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.timingax.co.uk/og-image.png">
-<meta name="description" content="How TimingAX computes every seasonal stat from real price data, what VERIFIED vs MODELLED means, and the honest limits of seasonal analysis. No black boxes, observation counts shown.">
+<meta name="description" content="How TimingAX computes every seasonal stat from real price data, what the VERIFIED badge means, and the honest limits of seasonal analysis. No black boxes, observation counts shown.">
 <!-- tx:head -->
 <script>document.documentElement.className += " js";</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -271,21 +271,21 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     </div>
   </div>
 
-  <!-- 2. VERIFIED vs MODELLED -->
+  <!-- 2. VERIFIED -->
   <div class="s-section">
-    <div class="s-label">Data badges</div>
-    <h2 class="s-h">What <em>VERIFIED</em> and<br><em>MODELLED</em> mean.</h2>
+    <div class="s-label">Data badge</div>
+    <h2 class="s-h">What <em>VERIFIED</em> means &mdash;<br>and what we don&rsquo;t show.</h2>
     <div class="s-body">
-      <p>Every analysis on TimingAX displays a small badge telling you exactly which kind of data you're looking at. We show this everywhere &mdash; the Analyzer, Backtest, Screener, Watchlist, and Correlations &mdash; because the difference matters.</p>
+      <p>Every analysis on TimingAX is computed from the asset&rsquo;s own real prices, and carries a badge saying so. If we don&rsquo;t have real price history for an asset, we show no figures for it at all &mdash; never an estimate from a sector pattern.</p>
     </div>
     <div class="meth-badges">
       <div class="mb-card">
         <span class="data-badge real">&#10003; VERIFIED &middot; REAL PRICE DATA &middot; 15YR</span>
-        <p>The statistics were computed directly from real historical monthly closing prices for that specific asset, using the pipeline above. This is the default for major indices, large-cap stocks, ETFs, and Bitcoin/Ethereum.</p>
+        <p>The statistics were computed directly from real historical closing prices for that specific asset, using the pipeline above.</p>
       </div>
       <div class="mb-card">
-        <span class="data-badge model">MODELLED PATTERN DATA</span>
-        <p>Real price history wasn't available for this specific asset (typically smaller international tickers without reliable free data feeds), so the statistics come from a sector-level seasonal model instead. We show this badge rather than silently substituting &mdash; you always know which one you're looking at.</p>
+        <span class="data-badge real">No verified price history</span>
+        <p>Shown instead of figures when real price history isn&rsquo;t available for an asset &mdash; most often after a takeover, merger, delisting or change of ticker. Nothing is filled in from a model.</p>
       </div>
     </div>
   </div>
@@ -304,7 +304,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       <div class="mt-row"><div>Bitcoin &amp; Ethereum</div><div><span class="cov-dot cov-full"></span>Verified</div><div>Real history since each asset's listing</div></div>
       <div class="mt-row"><div>UK &amp; German indices (FTSE 100, DAX, etc.)</div><div><span class="cov-dot cov-full"></span>Verified</div><div>Full real history</div></div>
       <div class="mt-row"><div>Major Asia indices (Nikkei, Hang Seng, KOSPI, Sensex)</div><div><span class="cov-dot cov-full"></span>Verified</div><div>Full real history</div></div>
-      <div class="mt-row"><div>Smaller international &amp; regional stocks</div><div><span class="cov-dot cov-partial"></span>Partial</div><div>Falls back to MODELLED where feeds are unreliable</div></div>
+      <div class="mt-row"><div>Smaller international &amp; regional stocks</div><div><span class="cov-dot cov-partial"></span>Almost all</div><div>A small number of assets (mostly after takeovers, mergers or delistings) have no real history and show no figures</div></div>
     </div>
   </div>
 
@@ -315,12 +315,12 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
     <div class="meth-table">
       <div class="mt-row mt-head"><div>Tool</div><div>Data type</div><div>Notes</div></div>
       <div class="mt-row"><div>Seasonal Analyzer</div><div><span class="tt real">Real prices</span></div><div>Computed live per asset, VERIFIED badge shown</div></div>
-      <div class="mt-row"><div>Strategy Backtest</div><div><span class="tt real">Real prices</span></div><div>Year-by-year returns from actual history; year range auto-clamped to available data</div></div>
+      <div class="mt-row"><div>Strategy Backtest</div><div><span class="tt real">Real prices</span></div><div>Buys and sells at real closing prices on the trading days you choose; returns compounded; only completed windows</div></div>
       <div class="mt-row"><div>Seasonal Screener</div><div><span class="tt real">Real prices</span></div><div>Ranks a curated universe of 24 liquid assets by real current-month performance</div></div>
-      <div class="mt-row"><div>Watchlist &amp; Portfolio</div><div><span class="tt real">Real prices</span></div><div>Each tracked asset resolved to real data where available; the portfolio view blends holdings by your entered allocation</div></div>
-      <div class="mt-row"><div>Seasonal Correlations</div><div><span class="tt real">Real prices</span></div><div>Both assets resolved to real monthly returns before correlating</div></div>
-      <div class="mt-row"><div>Event Studies &amp; Earnings</div><div><span class="tt curated">Curated research</span></div><div>19 hand-researched historical events plus 26 real earnings reports, all with documented market reactions</div></div>
-      <div class="mt-row"><div>Economic Calendar</div><div><span class="tt live">Live computed</span></div><div>FOMC/CPI/NFP dates computed from known schedules with real-time countdowns; includes written market-history essays for every calendar month</div></div>
+      <div class="mt-row"><div>Watchlist &amp; Portfolio</div><div><span class="tt real">Real prices</span></div><div>Real data only; holdings without real history are left out and named; the portfolio view blends the rest by your entered allocation</div></div>
+      <div class="mt-row"><div>Seasonal Correlations</div><div><span class="tt real">Real prices</span></div><div>Correlation of the two assets&rsquo; real monthly averages, plus the correlation of their actual monthly returns over the last 15 years</div></div>
+      <div class="mt-row"><div>Event Studies</div><div><span class="tt real">Official records + real prices</span></div><div>Fed rate changes (federalreserve.gov), US election days (federal law) and Bitcoin halvings (the blockchain); moves measured from real daily closes</div></div>
+      <div class="mt-row"><div>Economic Calendar</div><div><span class="tt live">Official schedules</span></div><div>FOMC dates from the Federal Reserve and CPI/jobs-report dates from the Bureau of Labor Statistics, with countdowns; the month-in-history view is computed from real prices</div></div>
     </div>
   </div>
 
@@ -349,13 +349,13 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
       </div>
       <div class="ml-card">
         <div class="ml-num">04</div>
-        <div class="ml-title">Modelled data is a sector estimate</div>
-        <div class="ml-desc">When you see MODELLED PATTERN DATA, that asset's numbers come from a broader sector/asset-class pattern, not its own trading history. Treat it as directional context, not a precise figure for that specific ticker.</div>
+        <div class="ml-title">Some assets have no figures</div>
+        <div class="ml-desc">If an asset has no verified price history &mdash; for example after a takeover, merger or delisting &mdash; we show no figures for it rather than estimating. Coverage counts are on the <a href="/data.html" style="color:var(--amber2)">data page</a>.</div>
       </div>
       <div class="ml-card">
         <div class="ml-num">05</div>
         <div class="ml-title">Correlation isn't causation</div>
-        <div class="ml-desc">The Correlations tool measures how similarly two assets' seasonal patterns move &mdash; it doesn't imply one causes the other, and historical co-movement can change.</div>
+        <div class="ml-desc">The Correlations tool measures how similarly two assets' seasonal patterns, and actual monthly returns, have moved &mdash; it doesn't imply one causes the other, and historical co-movement can change.</div>
       </div>
     </div>
     <div class="s-body" style="margin-top:24px">

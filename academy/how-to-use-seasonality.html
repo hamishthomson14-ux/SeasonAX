@@ -235,7 +235,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 
 <p>"15 years of data" sounds like a lot &mdash; until you realize it means exactly 15 observations for any given calendar month. That's a small statistical sample. A couple of unusual years (a financial crisis, a global event) can meaningfully shift a 15-year average.</p>
 
-<p>This is why TimingAX shows the observation count (<code>n</code>) alongside every statistic, and why presidential-cycle filters &mdash; which can drop the sample to just 4-6 observations &mdash; come with extra-cautious framing.</p>
+<p>This is why TimingAX shows the observation count (<code>n</code>) alongside every statistic, and why presidential-cycle filters &mdash; which can drop the sample to just 4 or 5 observations &mdash; come with extra-cautious framing.</p>
 
 <h2>3. Use the asset's <em>own</em> history, not a generic rule</h2>
 
@@ -243,16 +243,9 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 
 <p>The most reliable approach is always to check the specific asset's own historical pattern &mdash; not to assume a famous broad-market pattern applies everywhere.</p>
 
-<h2>4. Distinguish VERIFIED from MODELLED</h2>
+<h2>4. Check the data source</h2>
 
-<p>On TimingAX, every result carries one of two badges:</p>
-
-<ul>
-<li><strong>VERIFIED</strong> &mdash; computed directly from that asset's own real historical prices.</li>
-<li><strong>MODELLED</strong> &mdash; based on a sector/region pattern, used when real price history isn't available for that specific asset.</li>
-</ul>
-
-<p>A MODELLED result is a reasonable starting estimate, but it's describing a <em>category</em> of assets, not the specific one you're looking at. Weight it accordingly.</p>
+<p>On TimingAX, every figure carries a <strong>VERIFIED</strong> badge: it was computed directly from that asset's own real historical prices. If an asset has no real price history (for example after a takeover, merger or delisting), we say so and show no figures, rather than estimating from a sector pattern.</p>
 
 <h2>5. Combine, don't replace</h2>
 
@@ -265,7 +258,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 <h2>A simple checklist</h2>
 
 <ul>
-<li>Is this VERIFIED (real data) or MODELLED (sector pattern)?</li>
+<li>Is this computed from the asset's own real prices (VERIFIED)?</li>
 <li>How many years of observations support this (n)?</li>
 <li>Does this asset's <em>own</em> seasonal shape match the "famous" pattern I'm thinking of, or is it different?</li>
 <li>What else do I know about this asset right now &mdash; does the seasonal backdrop add to or contradict that picture?</li>
@@ -274,7 +267,7 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 
 <div class="art-cta">
   <h3>Put this into practice</h3>
-  <p>Run a real seasonal analysis on any asset &mdash; with sample sizes, data-source badges, and an AI-generated summary that follows exactly this kind of careful framing.</p>
+  <p>Run a real seasonal analysis on any asset &mdash; with sample sizes, data-source badges, and a written summary generated from the data that follows exactly this kind of careful framing.</p>
   <a href="/market-seasonality.html" class="tx-btn tx-btn--primary tx-btn--lg">Open the Analyzer &rarr;</a>
 </div>
 
