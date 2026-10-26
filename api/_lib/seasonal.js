@@ -308,3 +308,28 @@ export function computeTrackRecord(rows, { now = new Date(), months = 36, lookba
     baseUpRate: withActual.length ? Math.round(withActual.filter((x) => x.actual > 0).length / withActual.length * 100) : null,
   } };
 }
+
+// ── This day in markets ─────────────────────────────────────────────────────
+// Daily % change on one calendar date (month 1-12, day) in each of the last `years` years, from daily
+// closes. A year where the market was shut that day is null ("closed"). This year counts once that date
+// has passed. null for a date that never exists (e.g. 31 Feb).
+export function computeThisDay(rows, { month, day, years = 20, now = new Date() } = {}) {
+  const m = month - 1;
+  if (!(m >= 0 && m < 12) || new Date(Date.UTC(2024, m, day)).getUTCDate() !== day) return null;
+  if (!rows || rows.length < 2) return null;
+  const idx = new Map(); rows.forEach((r, i) => idx.set(new Date(r.t).toISOString().slice(0, 10), i));
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const top = Date.UTC(now.getUTCFullYear(), m, day) < today ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
+  const r2 = (v) => Math.round(v * 100) / 100, out = [];
+  for (let y = top; y > top - years; y--) {
+    const t = Date.UTC(y, m, day), key = new Date(t).toISOString().slice(0, 10);
+    const i = new Date(t).getUTCDate() === day ? idx.get(key) : undefined;
+    out.push({ year: y, change: i > 0 ? r2((rows[i].c / rows[i - 1].c - 1) * 100) : null });
+  }
+  const tr = out.filter((x) => x.change !== null);
+  const by = (f) => tr.length ? tr.reduce((a, b) => (f(b.change, a.change) ? b : a)) : null;
+  return { month, day, years: out, summary: {
+    traded: tr.length, up: tr.filter((x) => x.change > 0).length, down: tr.filter((x) => x.change < 0).length,
+    avg: tr.length ? r2(tr.reduce((a, b) => a + b.change, 0) / tr.length) : null,
+    best: by((x, y) => x > y), worst: by((x, y) => x < y) } };
+}

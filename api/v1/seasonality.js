@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -124,7 +124,19 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day or leaderboard.' });
+  // ── ?view=day&date=MM-DD — daily move on one calendar date over the last 20 years ──
+  if (view === 'day') {
+    const now = new Date();
+    const dq = req.query.date ? String(req.query.date) : `${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`;
+    const dm = dq.match(/^(\d\d)-(\d\d)$/);
+    if (!dm || new Date(Date.UTC(2024, +dm[1] - 1, +dm[2])).getUTCDate() !== +dm[2] || +dm[1] < 1 || +dm[1] > 12) return res.status(400).json({ error: 'date must be MM-DD' });
+    let d = null;
+    try { const rows = await fetchDaily(yahooSymbol(item)); d = rows && computeThisDay(rows, { month: +dm[1], day: +dm[2], years: 20, now }); } catch (e) { d = null; }
+    if (!d || !d.summary.traded) return res.status(404).json({ error: 'unavailable', hint: 'Needs real daily prices (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'day', ...d, generatedAt: new Date().toISOString() });
+  }
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
   if (view === 'track') {
     let tr = null;
