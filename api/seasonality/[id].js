@@ -83,7 +83,7 @@ export default async function handler(req, res) {
     </nav>
     <div class="tx-search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="txSearch" type="search" placeholder="Search any asset &mdash; e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
       <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
     </div>
     <div class="tx-header__actions">
@@ -319,7 +319,7 @@ export default async function handler(req, res) {
     </nav>
     <div class="tx-search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="txSearch" type="search" placeholder="Search any asset &mdash; e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
       <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
     </div>
     <div class="tx-header__actions">
@@ -506,7 +506,7 @@ function notAvailable(res, { title, eyebrow, msg, cta }) {
     </nav>
     <div class="tx-search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="txSearch" type="search" placeholder="Search any asset &mdash; e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
       <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
     </div>
     <div class="tx-header__actions">
@@ -671,7 +671,7 @@ async function compareHandler(req, res) {
     </nav>
     <div class="tx-search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="txSearch" type="search" placeholder="Search any asset &mdash; e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
       <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
     </div>
     <div class="tx-header__actions">

@@ -137,7 +137,7 @@
     </nav>
     <div class="tx-search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="txSearch" type="search" placeholder="Search any asset &mdash; e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
       <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
     </div>
     <div class="tx-header__actions">
@@ -225,7 +225,12 @@
     <div>
       <span class="tx-eyebrow">The data</span>
       <div class="d-claim">We&rsquo;re new.<br>The data isn&rsquo;t.<br><em>15 years speaks for itself.</em></div>
-      <p class="tx-lead" style="font-size:17px">We won&rsquo;t insult your intelligence with invented testimonials. TimingAX is a new product. What we have is <strong>15 years of verifiable price history</strong> showing the same patterns repeat across every market cycle, including the tariff shock of 2025, the AI earnings supercycle, and the rate-hike bear of 2022. The data is the proof. Try it free.</p>
+      <p class="tx-lead" style="font-size:17px">We won&rsquo;t insult your intelligence with invented testimonials. TimingAX is a new product. What we have is up to <strong>15 years of verifiable price history</strong> &mdash; and a published record of how often seasonal signals have actually been right, misses included.</p>
+      <div class="tx-card" id="homeTrack" data-tx-api style="margin-top:22px;padding:18px 20px">
+        <span class="tx-label">Our track record &middot; last 36 months &middot; 8 major markets</span>
+        <p style="margin:10px 0 6px;font-size:16px;line-height:1.6">Out of sample, our seasonal signal was right <b data-ht="hits">&hellip;</b> of <b data-ht="signals">&hellip;</b> times &mdash; <b data-ht="hitRate" style="color:var(--tx-amber-2)">&hellip;</b>. Over the same months, markets rose <b data-ht="baseUp">&hellip;</b> of the time anyway.</p>
+        <p class="tx-note" style="margin:0">Each signal used only the 15 years before that month. A tendency, not an edge you can count on. <a href="/track-record.html">See every call &rarr;</a></p>
+      </div>
       <form class="tx-inline-form" id="rdForm" style="margin-top:28px" onsubmit="return rdStart(event)">
         <input class="tx-input" id="rdEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email address">
         <button class="tx-btn tx-btn--primary" id="rdGo" type="submit">Get started &rarr;</button>
@@ -598,6 +603,23 @@ async function stripeCheckout(priceId, mode) {
     btn.disabled = false;
   }
 }
+</script>
+<script>
+(function () {
+  // Same calculation as /track-record.html: every scored month across 8 markets.
+  var box = document.getElementById('homeTrack'); if (!box) return;
+  var IDS = ['sp500','nasdaq','dow','ftse100','dax','nikkei','gld','btc'];
+  var set = function (k, v) { var e = box.querySelector('[data-ht="' + k + '"]'); if (e) e.textContent = v; };
+  Promise.all(IDS.map(function (id) { return fetch('/api/v1/seasonality?id=' + id + '&view=track').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); })).then(function (ds) {
+    if (ds.some(function (d) { return !d; })) { ['hits','signals','hitRate','baseUp'].forEach(function (k) { set(k, '\u2014'); }); box.dataset.state = 'error'; return; }
+    var recs = [].concat.apply([], ds.map(function (d) { return d.records; }));
+    var scored = recs.filter(function (x) { return x.hit !== null; }), hits = scored.filter(function (x) { return x.hit; }).length;
+    var all = recs.filter(function (x) { return x.actual !== null; });
+    set('hits', hits); set('signals', scored.length); set('hitRate', Math.round(hits / scored.length * 100) + '%');
+    set('baseUp', Math.round(all.filter(function (x) { return x.actual > 0; }).length / all.length * 100) + '%');
+    box.dataset.state = 'done';
+  });
+})();
 </script>
 </body>
 </html>
