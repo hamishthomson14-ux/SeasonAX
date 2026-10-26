@@ -862,15 +862,24 @@ body.is-pro .mt-lock{display:none}
     <div class="bt-config" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <div class="bt-label" style="margin:0">Month</div>
       <select class="bt-select" id="mhMonth" style="max-width:200px"></select>
+      <div class="bt-label" style="margin:0">Market</div>
+      <select class="bt-select" id="mhAsset" style="max-width:220px"><option value="sp500">S&amp;P 500</option><option value="nasdaq">NASDAQ Composite</option><option value="ftse100">FTSE 100</option><option value="gld">Gold (GLD)</option><option value="btc">Bitcoin</option></select>
     </div>
     <div class="bt-stats" id="mhStats" style="border-radius:12px 12px 0 0;grid-template-columns:repeat(5,1fr)"></div>
     <div class="bt-panel">
       <div class="ai-header"><span class="ai-badge">Market History</span><span class="ai-title" id="mhTitle">This month</span></div>
-      <div class="aitxt" id="mhBlurb"></div>
+      <div class="aitxt" id="mhSummary"></div>
+      <div class="bt-ptitle" style="margin-top:18px">Every year</div>
+      <div class="bt-yrgrid" id="mhYears"></div>
+    </div>
+    <div class="bt-panel">
+      <div class="bt-ptitle" id="mhDaysTitle">Biggest daily moves</div>
+      <div class="bt-yrgrid" id="mhDays"></div>
     </div>
     <div class="bt-panel last">
-      <div class="bt-ptitle">Defining moments of this month</div>
-      <div class="bt-yrgrid" id="mhEvents"></div>
+      <div class="bt-ptitle" id="mhFedTitle">Fed rate changes</div>
+      <div class="bt-yrgrid" id="mhFed"></div>
+      <div class="bt-disclaimer" style="margin-top:16px">MONTH IN HISTORY &mdash; monthly moves are last close to last close over the same years and rules as the seasonal averages (the top strip: average and share of years up); daily moves are close to close. Fed dates are the dates each federal funds target change took effect (<a id="mhFedSource" href="https://www.federalreserve.gov/monetarypolicy/openmarket.htm" target="_blank" rel="noopener">Federal Reserve</a>), since October 2006. History, not a forecast.</div>
     </div>
   </div>
 
@@ -2505,7 +2514,7 @@ function bars(months, sfx) {
         '<div class="bt"><div class="bf" style="width:0%;background:'+col+';opacity:.72" data-w="'+w+'"></div></div>'+
         '<div class="bv '+(m.avg>=0?'p':'n')+'">'+sign+Number(m.avg).toFixed(2)+sfx+'</div>'+
       '</div>'+
-      '<div class="bsub">WIN RATE '+m.win+'% &middot; '+m.note+'</div>'+
+      '<div class="bsub">WIN RATE '+m.win+'%'+(m.note?' &middot; '+m.note:'')+'</div>'+
     '</div>';
   });
   return html+'</div>';
@@ -2640,9 +2649,7 @@ function recomputeView() {
     var yearsForCompute = preset.years || CUR_YEARS;
     var filtered = computeRealMonths(CUR_RAW_ROWS, yearsForCompute, preset.fn, preset.minObs);
     if (filtered) {
-      var patKey = (CUR_ITEM.pattern) || 'broadIndex';
-      var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
-      for (var i = 0; i < 12; i++) filtered[i].note = pat[i].note || '';
+      rankNotes(filtered);
       baseMonths = filtered;
       filterApplied = true;
       if (warnEl) warnEl.style.display = 'none';
@@ -2671,10 +2678,7 @@ function fetchRealMonths(item, yearsWanted, cb) {
       if (!data || !data.monthly || data.monthly.length < 24) { CUR_RAW_ROWS = null; cb(null); return; }
       var resolved = computeAdaptiveRealMonths(data.monthly, yearsWanted);
       if (resolved) {
-        // Preserve the model's written notes per month for colour
-        var patKey = (item.pattern) || 'broadIndex';
-        var pat = PATTERNS[patKey] || PATTERNS.broadIndex;
-        for (var i = 0; i < 12; i++) resolved.months[i].note = pat[i].note || '';
+        rankNotes(resolved.months);   // labels from this asset's own figures, never the written model
         REAL_CACHE[ck] = resolved;
         REAL_RAW_ROWS_CACHE[sym] = data.monthly;
         CUR_RAW_ROWS = data.monthly;
@@ -2736,7 +2740,7 @@ function getMonths(id) {
   for(var i=0;i<CATALOGUE.length;i++){ if(CATALOGUE[i].id===id){item=CATALOGUE[i];break;} }
   var patKey=(item&&item.pattern)||'broadIndex';
   var pat=PATTERNS[patKey]||PATTERNS.broadIndex;
-  return JSON.parse(JSON.stringify(pat));
+  return rankNotes(JSON.parse(JSON.stringify(pat)));   // modelled numbers keep their MODELLED badge; the written notes are never shown
 }
 
 // ============================================================
@@ -2788,7 +2792,7 @@ function generateBriefing(item, months, source, years, detrend) {
   if (detrend) verdict += ' (RELATIVE)';
 
   var dataLine = (source === 'real'
-    ? 'Computed from <strong>' + (cur.n || best.n || '15+') + ' years</strong> of actual monthly closing prices.'
+    ? 'Computed from actual monthly closing prices' + (cur.n ? ': <strong>' + cur.n + ' observations of ' + MOF[cm] + '</strong>, counting this month with its latest close.' : '.')
     : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).')
     + (detrend ? ' Values shown are <strong>detrended</strong> \u2014 each month\u2019s return relative to ' + name + '\u2019s own average month, with the overall trend removed.' : '');
 
@@ -2799,8 +2803,7 @@ function generateBriefing(item, months, source, years, detrend) {
     '</strong> (' + pct(best.avg) + ', ' + best.win + '% win rate), followed by ' + MOF[best2.i] + ' (' + pct(best2.avg) +
     '). The weakest is <strong>' + MOF[worst.i] + '</strong> (' + pct(worst.avg) + ', ' + worst.win +
     '% win rate). That is a ' + spread + ' percentage-point spread between the best and worst months \u2014 ' +
-    (Math.abs(spread) > 4 ? 'a wide seasonal dispersion that has historically rewarded calendar-aware positioning.' :
-     'a relatively contained seasonal range, suggesting calendar effects are secondary to other drivers for this asset.');
+    (Math.abs(spread) > 4 ? 'a wide gap between its best and worst months.' : 'a relatively narrow gap between its best and worst months.');
 
   var p2 = 'Right now, in <strong>' + MOF[cm] + '</strong>, ' + name + ' sits in ' + strength(cur.win) +
     ' seasonal month: a ' + pct(cur.avg) + ' historical average with a ' + cur.win + '% win rate' +
@@ -2832,6 +2835,15 @@ function detrendMonths(months) {
   return months.map(function(m){
     return { m: m.m, win: m.win, n: m.n, note: m.note, avg: +(m.avg - overall).toFixed(2), rawAvg: m.avg, overall: +overall.toFixed(2) };
   });
+}
+
+// Month labels computed from the asset's own averages: its two strongest and two weakest months.
+function rankNotes(months) {
+  var order = months.map(function (m, i) { return { i: i, a: m.avg }; }).sort(function (x, y) { return y.a - x.a; }).map(function (x) { return x.i; });
+  months.forEach(function (m) { m.note = ''; });
+  months[order[0]].note = 'strongest month'; months[order[1]].note = '2nd strongest';
+  months[order[11]].note = 'weakest month'; months[order[10]].note = '2nd weakest';
+  return months;
 }
 
 var CUR_ITEM=null, CUR_MONTHS=null, CUR_SOURCE=null, CUR_YEARS=null, CUR_YEAR_FILTER=null;
@@ -3616,11 +3628,11 @@ initAuth();
 // ============================================================
 var MODE_HERO = {
   analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 730+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
-  backtest: ['Test any window. <em>20 years deep.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
+  backtest: ['Test any window. <em>On real prices.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
   events:   ['When history repeats, <em>know the record.</em>', 'Fed rate cuts and hikes, US elections and Bitcoin halvings \u2014 official dates, real prices, and how markets actually moved before and after each one.'],
   screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
   watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
-  month: ['This month, <em>in market history.</em>', 'The average returns, the famous crashes and the legendary rallies that happened in this calendar month.'],
+  month: ['This month, <em>in market history.</em>', 'Every year\u2019s result for this calendar month, its biggest days and the Fed decisions that landed in it \u2014 from real prices and the Federal Reserve\u2019s own record.'],
   pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
   calendar: ['Every catalyst. <em>Counted down.</em>', 'FOMC decisions, CPI and jobs reports \u2014 the official schedule ahead, each linked to its source.'],
   portfolio: ['Your whole portfolio. <em>One seasonal picture.</em>', 'Enter your holdings and weights to see your portfolio\u2019s combined seasonal exposure \u2014 which months have historically worked in your favour, and which against.']
@@ -3651,6 +3663,7 @@ function switchMode(mode) {
   }
   applyToolPreviewGate(mode);
   if (mode === 'events') esInit();
+  if (mode === 'month' && !document.getElementById('modeMonth').dataset.mhState) mhBuild();
   var h = MODE_HERO[mode];
   if (h) {
     var t = document.querySelector('.hs-title');
@@ -3690,80 +3703,17 @@ function btInit() {
   document.getElementById('btBuyMonth').innerHTML = buyHtml;
   document.getElementById('btSellMonth').innerHTML = sellHtml;
 
-  // Years 2000-2025
-  var fy = '', ty = '';
-  for (var y = 2000; y <= 2025; y++) {
-    fy += '<option value="' + y + '"' + (y === 2000 ? ' selected' : '') + '>' + y + '</option>';
-    ty += '<option value="' + y + '"' + (y === 2025 ? ' selected' : '') + '>' + y + '</option>';
+  // Daily price history starts in late 2006 (20 years); windows that haven't finished are left out by the API.
+  var fy = '', ty = '', lastY = new Date().getFullYear();
+  for (var y = 2006; y <= lastY; y++) {
+    fy += '<option value="' + y + '"' + (y === 2006 ? ' selected' : '') + '>' + y + '</option>';
+    ty += '<option value="' + y + '"' + (y === lastY ? ' selected' : '') + '>' + y + '</option>';
   }
   document.getElementById('btFromYear').innerHTML = fy;
   document.getElementById('btToYear').innerHTML = ty;
 }
 
-function btHash(str) {
-  var h = 2166136261;
-  for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
-function btRng(seed) {
-  return function() {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-function btGauss(rng) {
-  var u = 0, v = 0;
-  while (u === 0) u = rng();
-  while (v === 0) v = rng();
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
-function btSigma(pattern) {
-  var mean = 0; pattern.forEach(function(m){ mean += m.avg; }); mean /= 12;
-  var v = 0; pattern.forEach(function(m){ v += (m.avg - mean) * (m.avg - mean); }); v /= 12;
-  return Math.max(Math.sqrt(v) * 2.6, 2.0);
-}
-function btMonthlyReturn(assetId, year, mi, pattern, sigma) {
-  var rng = btRng(btHash(assetId + '|' + year + '|' + mi));
-  return pattern[mi].avg + btGauss(rng) * sigma;
-}
-function btWindowMonths(buyM, sellM, buyDay, sellDay) {
-  var out = [], i = buyM, guard = 0;
-  while (guard++ <= 12) { out.push(i); if (i === sellM) break; i = (i + 1) % 12; }
-  if (buyDay === 'last') out.shift();   // enter at end of buy month -> skip it
-  if (sellDay === 'first' && out.length) out.pop(); // exit at start of sell month -> skip it
-  return out;
-}
-
-// Build a real per-year, per-month return map for backtesting from actual prices.
-// cb({map, source}) where map[year][monthIndex] = pct return that month.
-var BT_REAL_CACHE = {};
-function btFetchRealReturns(item, cb) {
-  var sym = yahooSymbol(item);
-  if (!sym) { cb({ map: null, source: 'model' }); return; }
-  if (BT_REAL_CACHE[sym]) { cb({ map: BT_REAL_CACHE[sym], source: 'real' }); return; }
-  fetch('/api/prices?s=' + encodeURIComponent(sym))
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if (!data || !data.monthly || data.monthly.length < 36) { cb({ map: null, source: 'model' }); return; }
-      var map = {};
-      for (var i = 1; i < data.monthly.length; i++) {
-        var p = data.monthly[i-1], q = data.monthly[i];
-        if (!isFinite(p.c) || p.c <= 0) continue;
-        var dt = new Date(q.d);
-        var ret = ((q.c - p.c) / p.c) * 100;
-        if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-        var yr = dt.getFullYear(), mo = dt.getMonth();
-        if (!map[yr]) map[yr] = {};
-        map[yr][mo] = ret;
-      }
-      BT_REAL_CACHE[sym] = map;
-      cb({ map: map, source: 'real' });
-    })
-    .catch(function(){ cb({ map: null, source: 'model' }); });
-}
-
+// Backtests come only from real daily closes (/api/v1/seasonality?view=backtest). Nothing is simulated or filled in.
 function runBacktest() {
   if (!checkUsageLimit()) return;
   var assetId = document.getElementById('btAsset').value;
@@ -3775,153 +3725,77 @@ function runBacktest() {
   var y0 = parseInt(document.getElementById('btFromYear').value, 10);
   var y1 = parseInt(document.getElementById('btToYear').value, 10);
   if (y1 < y0) { var tmp = y0; y0 = y1; y1 = tmp; }
-
   var item = null;
   for (var i = 0; i < CATALOGUE.length; i++) if (CATALOGUE[i].id === assetId) { item = CATALOGUE[i]; break; }
   if (!item) return;
-  var pattern = PATTERNS[item.pattern || 'broadIndex'] || PATTERNS.broadIndex;
-  var sigma = btSigma(pattern);
-  var winMonths = btWindowMonths(buyM, sellM, buyDay, sellDay);
 
-  var res = document.getElementById('btResults');
-  if (winMonths.length === 0) {
-    res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Your buy/sell window is empty \u2014 widen the dates.</div>';
-    return;
-  }
+  var res = document.getElementById('btResults'), btn = document.getElementById('btGoBtn');
+  var MS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var empty = function (state, msg) { res.dataset.state = state; res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">' + msg + '</div>'; };
+  btn.disabled = true; btn.textContent = 'Fetching real prices...'; res.dataset.state = 'loading';
+  var url = '/api/v1/seasonality?id=' + encodeURIComponent(assetId) + '&view=backtest&buy=' + (buyM + 1) + '&buyDay=' + buyDay + '&sell=' + (sellM + 1) + '&sellDay=' + sellDay + '&from=' + y0 + '&to=' + y1;
+  fetch(url).then(function (r) { return r.status === 404 ? { missing: true } : r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (d) {
+    btn.disabled = false; btn.textContent = 'Run Backtest';
+    if (d && d.missing) return empty('unavailable', 'No backtest for ' + item.ticker + ': it needs real daily prices for at least one completed window in this range, and we never simulate one.');
+    if (!d) return empty('error', 'Real price data is unavailable right now, so no backtest is shown. Please try again.');
+    var s = d.summary;
+    function col(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
+    function sgn(v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; }
+    function day(iso) { var t = new Date(iso + 'T00:00:00Z'); return t.getUTCDate() + ' ' + MS[t.getUTCMonth()] + ' ' + t.getUTCFullYear(); }
+    var stratLabel = (buyDay === 'first' ? 'First' : 'Last') + ' trading day of ' + MS[buyM] + ' → ' + sellDay + ' trading day of ' + MS[sellM];
 
-  var btn = document.getElementById('btGoBtn');
-  btn.disabled = true;
-  btn.textContent = 'Fetching real data...';
-
-  btFetchRealReturns(item, function(real){
-    var realMap = real.map;
-    var dataSource = real.source;
-    btn.textContent = 'Run Backtest';
-    // Per-month return: real if available for that year/month, else synthetic model.
-    function monthRet(y, mi) {
-      if (realMap && realMap[y] && typeof realMap[y][mi] === 'number') return realMap[y][mi];
-      return btMonthlyReturn(assetId, y, mi, pattern, sigma);
+    // Equity curve: growth of 100 at each window's exit, strategy vs buy and hold from the first entry.
+    var pts = [{ s: 100, b: 100, date: d.windows[0].entry }].concat(d.equity.map(function (e) { return { s: 100 + e.strategy, b: 100 + e.buyHold, date: e.date }; }));
+    var W = 860, H = 240, pad = 36, vals = [];
+    pts.forEach(function (p) { vals.push(p.s, p.b); });
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals); if (hi - lo < 1) hi = lo + 1;
+    function px(k) { return pad + (W - pad * 2) * k / Math.max(1, pts.length - 1); }
+    function py(v) { return H - pad - (H - pad * 2) * (v - lo) / (hi - lo); }
+    function line(key) { return pts.map(function (p, k) { return (k ? 'L' : 'M') + px(k).toFixed(1) + ' ' + py(p[key]).toFixed(1); }).join(''); }
+    var grid = '';
+    for (var g = 0; g <= 4; g++) {
+      var gv = lo + (hi - lo) * g / 4, gy = py(gv).toFixed(1);
+      grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>' +
+        '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
     }
-    setTimeout(function() {
-    try {
-      var years = [], stratEq = [100], bhEq = [100];
-      var wins = 0, best = null, worst = null;
-      // If using real data, clamp the year range to what we actually have.
-      if (realMap) {
-        var realYears = Object.keys(realMap).map(Number);
-        var minY = Math.min.apply(null, realYears), maxY = Math.max.apply(null, realYears);
-        if (y0 < minY) y0 = minY;
-        if (y1 > maxY) y1 = maxY;
-      }
-      for (var y = y0; y <= y1; y++) {
-        var r = 0;
-        winMonths.forEach(function(mi){ r += monthRet(y, mi); });
-        var bh = 0;
-        for (var mi2 = 0; mi2 < 12; mi2++) bh += monthRet(y, mi2);
-        years.push({ year: y, ret: r, bh: bh });
-        if (r > 0) wins++;
-        if (!best || r > best.ret) best = { year: y, ret: r };
-        if (!worst || r < worst.ret) worst = { year: y, ret: r };
-        stratEq.push(stratEq[stratEq.length - 1] * (1 + r / 100));
-        bhEq.push(bhEq[bhEq.length - 1] * (1 + bh / 100));
-      }
-      var n = years.length;
-      var finalS = stratEq[stratEq.length - 1], finalB = bhEq[bhEq.length - 1];
-      var totalRet = (finalS / 100 - 1) * 100;
-      var bhTotal = (finalB / 100 - 1) * 100;
-      var cagr = (Math.pow(Math.max(finalS, 0.01) / 100, 1 / n) - 1) * 100;
-      var winRate = Math.round(wins / n * 100);
-      var edge = totalRet - bhTotal;
+    grid += '<text x="' + pad + '" y="' + (H - 8) + '" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + day(pts[0].date) + '</text>' +
+      '<text x="' + (W - pad) + '" y="' + (H - 8) + '" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + day(pts[pts.length - 1].date) + '</text>';
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
+      '<path d="' + line('b') + '" fill="none" stroke="#4D6880" stroke-width="1.5" stroke-dasharray="4 3"/>' +
+      '<path d="' + line('s') + '" fill="none" stroke="#E89318" stroke-width="2"/></svg>';
 
-      var mNamesS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var stratLabel = (buyDay === 'first' ? 'First' : 'Last') + ' trading day of ' + mNamesS[buyM] +
-        ' \u2192 ' + (sellDay === 'last' ? 'last' : 'first') + ' trading day of ' + mNamesS[sellM];
+    var maxAbs = Math.max.apply(null, d.windows.map(function (w) { return Math.abs(w.ret); }).concat([0.01]));
+    var yrHtml = d.windows.map(function (w) {
+      return '<div class="bt-yr" data-year="' + w.year + '" data-entry="' + w.entry + '" data-exit="' + w.exit + '">' +
+        '<div class="bt-yr-l" style="flex-basis:auto;min-width:150px;text-align:left">' + day(w.entry) + ' → ' + day(w.exit) + '</div>' +
+        '<div class="bt-yr-t"><div class="bt-yr-f" style="width:0%;background:' + col(w.ret) + ';opacity:.72" data-w="' + (Math.abs(w.ret) / maxAbs * 100).toFixed(0) + '"></div></div>' +
+        '<div class="bt-yr-v" style="color:' + col(w.ret) + '" data-k="ret">' + sgn(w.ret) + '</div></div>';
+    }).join('');
 
-      function col(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
-      function sgn(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
-
-      // ── Equity curve SVG ──
-      var W = 860, H = 240, pad = 36;
-      var allVals = stratEq.concat(bhEq);
-      var lo = Math.min.apply(null, allVals), hi = Math.max.apply(null, allVals);
-      if (hi - lo < 1) hi = lo + 1;
-      function px(idx) { return pad + (W - pad * 2) * idx / (stratEq.length - 1); }
-      function py(v) { return H - pad - (H - pad * 2) * (v - lo) / (hi - lo); }
-      function line(arr) {
-        var d = '';
-        arr.forEach(function(v, idx) { d += (idx === 0 ? 'M' : 'L') + px(idx).toFixed(1) + ' ' + py(v).toFixed(1); });
-        return d;
-      }
-      var grid = '';
-      for (var g = 0; g <= 4; g++) {
-        var gv = lo + (hi - lo) * g / 4;
-        var gy = py(gv).toFixed(1);
-        grid += '<line x1="' + pad + '" y1="' + gy + '" x2="' + (W - pad) + '" y2="' + gy + '" stroke="#0F1E30" stroke-width="1"/>';
-        grid += '<text x="' + (pad - 6) + '" y="' + gy + '" text-anchor="end" dominant-baseline="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + Math.round(gv) + '</text>';
-      }
-      grid += '<text x="' + pad + '" y="' + (H - 8) + '" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y0 + '</text>';
-      grid += '<text x="' + (W - pad) + '" y="' + (H - 8) + '" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#4D6880">' + y1 + '</text>';
-      var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%">' + grid +
-        '<path d="' + line(bhEq) + '" fill="none" stroke="#4D6880" stroke-width="1.5" stroke-dasharray="4 3"/>' +
-        '<path d="' + line(stratEq) + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
-        '</svg>';
-
-      // ── Year bars ──
-      var maxAbs = 1;
-      years.forEach(function(yy){ if (Math.abs(yy.ret) > maxAbs) maxAbs = Math.abs(yy.ret); });
-      var yrHtml = '';
-      years.forEach(function(yy) {
-        var w = (Math.abs(yy.ret) / maxAbs * 100).toFixed(0);
-        yrHtml += '<div class="bt-yr">' +
-          '<div class="bt-yr-l">' + yy.year + '</div>' +
-          '<div class="bt-yr-t"><div class="bt-yr-f" style="width:0%;background:' + col(yy.ret) + ';opacity:.72" data-w="' + w + '"></div></div>' +
-          '<div class="bt-yr-v" style="color:' + col(yy.ret) + '">' + sgn(yy.ret) + '</div>' +
-        '</div>';
-      });
-
-      res.innerHTML =
-        '<div class="kpi-rail kpi-rail-6">' +
-          '<div class="kpi"><div class="kpi-l">Total Return</div><div class="kpi-v ' + (totalRet>=0?'p':'n') + '">' + sgn(totalRet) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">CAGR</div><div class="kpi-v ' + (cagr>=0?'p':'n') + '">' + sgn(cagr) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Win Rate</div><div class="kpi-v a">' + winRate + '%</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Best Year</div><div class="kpi-v p">' + best.year + ' ' + sgn(best.ret) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">Worst Year</div><div class="kpi-v n">' + worst.year + ' ' + sgn(worst.ret) + '</div></div>' +
-          '<div class="kpi"><div class="kpi-l">vs Buy &amp; Hold</div><div class="kpi-v ' + (edge>=0?'p':'n') + '">' + sgn(edge) + '</div></div>' +
-        '</div>' +
-        '<div class="term-tabs" id="btTabs">' +
-          '<button class="term-tab active" data-tab="equity" onclick="btSwitchTab(\'equity\')">Equity Curve</button>' +
-          '<button class="term-tab" data-tab="years" onclick="btSwitchTab(\'years\')">Year by Year</button>' +
-        '</div>' +
-        '<div class="term-panel show" data-panel="equity">' +
-          '<div class="term-chartwrap">' +
-            '<div class="cp-title">' + item.ticker + ' \u00b7 ' + stratLabel + ' \u00b7 Growth of 100</div>' +
-            svg +
-            '<div class="bt-legend">' +
-              '<span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span>' +
-              '<span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span>' +
-            '</div>' +
-            '<div class="bt-disclaimer">' + (dataSource === 'real' ? '\u2713 REAL BACKTEST \u2014 computed from actual historical monthly closing prices over the available range. Past performance does not guarantee future results.' : 'SIMULATED BACKTEST \u2014 generated from TimingAX\u2019s seasonal pattern model (real price history was unavailable for this asset). Simulated performance does not guarantee future results.') + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="term-panel" data-panel="years">' +
-          '<div class="term-chartwrap">' +
-            '<div class="cp-title">Year-by-Year Strategy Returns</div>' +
-            '<div class="bt-yrgrid">' + yrHtml + '</div>' +
-          '</div>' +
-        '</div>';
-
-      setTimeout(function() {
-        document.querySelectorAll('.bt-yr-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
-      }, 80);
-
-      trackAnalysis();
-    } catch (e) {
-      console.error(e);
-      res.innerHTML = '<div class="analysis-empty" style="border:1px solid var(--b2);border-radius:12px;background:var(--bg2)">Backtest error \u2014 check console.</div>';
-    } finally {
-      btn.disabled = false;
-    }
-    }, 350);
+    res.innerHTML =
+      '<div class="kpi-rail kpi-rail-6">' +
+        '<div class="kpi"><div class="kpi-l">Total return</div><div class="kpi-v ' + (s.total >= 0 ? 'p' : 'n') + '" data-bt="total">' + sgn(s.total) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">CAGR</div><div class="kpi-v ' + (s.cagr >= 0 ? 'p' : 'n') + '" data-bt="cagr">' + (s.cagr === null ? '—' : sgn(s.cagr)) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Windows up</div><div class="kpi-v a" data-bt="win">' + s.wins + ' of ' + s.n + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Best window</div><div class="kpi-v p" data-bt="best">' + s.best.year + ' ' + sgn(s.best.ret) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Worst window</div><div class="kpi-v n" data-bt="worst">' + s.worst.year + ' ' + sgn(s.worst.ret) + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Buy &amp; hold, same span</div><div class="kpi-v ' + (s.buyHold >= 0 ? 'p' : 'n') + '" data-bt="buyHold">' + sgn(s.buyHold) + '</div></div>' +
+      '</div>' +
+      '<div class="term-tabs" id="btTabs">' +
+        '<button class="term-tab active" data-tab="equity" onclick="btSwitchTab(\'equity\')">Equity Curve</button>' +
+        '<button class="term-tab" data-tab="years" onclick="btSwitchTab(\'years\')">Every window</button>' +
+      '</div>' +
+      '<div class="term-panel show" data-panel="equity"><div class="term-chartwrap">' +
+        '<div class="cp-title">' + item.ticker + ' · ' + stratLabel + ' · Growth of 100</div>' + svg +
+        '<div class="bt-legend"><span><span class="bt-ld" style="background:#E89318"></span>Seasonal strategy</span><span><span class="bt-ld" style="background:#4D6880"></span>Buy &amp; hold (dashed)</span></div>' +
+        '<div class="bt-disclaimer">✓ REAL BACKTEST — ' + d.method + ' ' + s.n + ' completed windows, ' + s.from + '–' + s.to + '. Excludes trading costs and taxes. Past performance does not guarantee future results.</div>' +
+      '</div></div>' +
+      '<div class="term-panel" data-panel="years"><div class="term-chartwrap">' +
+        '<div class="cp-title">Every window (entry close → exit close)</div><div class="bt-yrgrid">' + yrHtml + '</div>' +
+      '</div></div>';
+    res.dataset.state = 'done';
+    setTimeout(function () { document.querySelectorAll('.bt-yr-f').forEach(function (el) { el.style.width = el.dataset.w + '%'; }); }, 80);
+    trackAnalysis();
   });
 }
 
@@ -4417,157 +4291,78 @@ function wlInit() {
 wlInit();
 
 // ============================================================
-// THIS MONTH IN HISTORY
+// THIS MONTH IN HISTORY — computed from real prices (/api/v1/seasonality?view=month) and the Fed's own table
 // ============================================================
-var MH_DATA = [
-{ // January
-  blurb:"January sets the year's tone \u2014 literally, by legend. The \u201cJanuary Barometer\u201d holds that as January goes, so goes the year, and it has been right roughly 70% of the time since 1950. The month belongs to small caps: the January Effect \u2014 December tax-loss selling violently reversing \u2014 makes it the Russell 2000's best month of the year. January is also earnings-season kickoff and historically the month of surprise central-bank action.",
-  events:[
-    {l:"Jan 3 2001 \u2014 surprise Fed cut, NASDAQ's best day ever", v:14.2},
-    {l:"Jan 2018 \u2014 the melt-up month before Volmageddon", v:5.6},
-    {l:"Jan 10 2024 \u2014 spot Bitcoin ETFs approved after a decade", v:-15},
-    {l:"Jan 2008 \u2014 emergency 75bp cut as crisis built", v:-6.1}
-  ]},
-{ // February
-  blurb:"February is the forgettable month \u2014 historically near-flat with a sub-55% win rate \u2014 but it has produced some of the most violent single days on record. It hosted the 2018 \u201cVolmageddon\u201d that wiped out short-volatility funds overnight, and the exact pre-COVID top of February 19, 2020. Mid-February is peak earnings season, when roughly half the S&P reports inside three weeks.",
-  events:[
-    {l:"Feb 5 2018 \u2014 Volmageddon, VIX doubles in a day", v:-4.1},
-    {l:"Feb 19 2020 \u2014 the exact pre-COVID market top", v:0},
-    {l:"Feb 24 2022 \u2014 Ukraine invasion; stocks reverse UP", v:1.5},
-    {l:"Feb 2009 \u2014 the GFC's brutal final full month down", v:-11.0}
-  ]},
-{ // March
-  blurb:"March is the month of bottoms and tops. The dot-com bubble peaked March 10, 2000; the GFC ended March 9, 2009; the COVID crash bottomed March 23, 2020 \u2014 three of the most important turning points in modern history, all in March. It is also fiscal year-end in Japan and home to quarterly quad-witching expiration, making late March structurally turbulent and liquidity-heavy.",
-  events:[
-    {l:"Mar 9 2009 \u2014 THE generational GFC bottom (S&P 666)", v:0},
-    {l:"Mar 10 2000 \u2014 NASDAQ 5,048: the dot-com peak", v:0},
-    {l:"Mar 23 2020 \u2014 Fed goes unlimited; COVID low printed", v:9.4},
-    {l:"Mar 10 2023 \u2014 SVB seized; banking mini-crisis", v:-4.6}
-  ]},
-{ // April
-  blurb:"April has historically been one of the strongest months of the year \u2014 the tail end of the \u201cBest Six Months\u201d window, powered by Q1 earnings optimism and spring fund flows. April 2020 delivered +12.7%, the best single month since 1987, as markets roared back from the COVID low. The famous exception: April 2000, when the dot-com unwind began in earnest.",
-  events:[
-    {l:"Apr 2020 \u2014 best month since 1987 off the COVID low", v:12.7},
-    {l:"Apr 2000 \u2014 NASDAQ's first post-bubble collapse month", v:-15.6},
-    {l:"Apr 2024 \u2014 rate-fear pullback inside the AI bull", v:-4.2},
-    {l:"Apr 1999 \u2014 peak dot-com euphoria month", v:3.8}
-  ]},
-{ // May
-  blurb:"\u201cSell in May and go away\u201d \u2014 the most famous phrase in seasonality, marking the start of the historically weak May\u2013October half. The stats are real but gentler than the slogan: summer months average roughly +0.3%/month versus +1.2% for winter. May owns one structural scar \u2014 the 2010 Flash Crash \u2014 and one modern counterexample: Nvidia's May 2023 guidance, which launched the AI supercycle.",
-  events:[
-    {l:"May 6 2010 \u2014 Flash Crash: -9% in 36 minutes", v:-3.2},
-    {l:"May 24 2023 \u2014 NVDA guidance ignites the AI era", v:24.4},
-    {l:"May 2022 \u2014 bear-market low attempt and reversal", v:0.2},
-    {l:"May 2013 \u2014 \u201ctaper tantrum\u201d begins", v:-1.4}
-  ]},
-{ // June
-  blurb:"June is the heart of the summer doldrums \u2014 historically one of the weakest months with low volume and institutional vacation drift. But it punches above its weight for event risk: a scheduled FOMC meeting with fresh projections, quad-witching expiry, and Russell index rebalancing \u2014 the year's single biggest volume day. June 2022 printed that bear market's panic low; June 2016 delivered the Brexit shock.",
-  events:[
-    {l:"Jun 16 2022 \u2014 the 2022 bear's capitulation low", v:0},
-    {l:"Jun 24 2016 \u2014 Brexit result shocks markets", v:-3.6},
-    {l:"Jun 2020 \u2014 recovery rally powers through doubt", v:1.8},
-    {l:"Jun 13 2022 \u2014 hot CPI triggers -3.9% rout", v:-3.9}
-  ]},
-{ // July
-  blurb:"July is the secret star of summer \u2014 the strongest month of the May\u2013October half, driven by Q2 earnings season and the \u201cearly July rally\u201d around Independence Day. The best month in Dow history was a July: +33.6% in 1932, the bottom of the Great Depression. July 2022's +9.1% bear-market rally remains the textbook example of why shorts fear this month.",
-  events:[
-    {l:"Jul 1932 \u2014 best month in Dow history", v:33.6},
-    {l:"Jul 2022 \u2014 ferocious +9.1% bear-market rally", v:9.1},
-    {l:"Jul 2024 \u2014 great rotation: small caps explode vs tech", v:0},
-    {l:"Jul 13 2023 \u2014 disinflation confirmed; soft landing priced", v:0.9}
-  ]},
-{ // August
-  blurb:"August is thin, twitchy and dangerous \u2014 the lowest-volume month of the year, which means shocks hit harder. The 2011 US credit downgrade, the 2015 China devaluation flash crash, and the 2024 yen carry-trade unwind (VIX 65 before breakfast) all landed in August. Jackson Hole at month-end regularly resets Fed expectations for autumn.",
-  events:[
-    {l:"Aug 5 2024 \u2014 yen carry unwind; VIX spikes to 65", v:-3.0},
-    {l:"Aug 8 2011 \u2014 US downgrade aftermath", v:-6.7},
-    {l:"Aug 24 2015 \u2014 China deval flash crash; Dow -1000 open", v:-3.9},
-    {l:"Aug 2017 \u2014 the calmest August ever recorded", v:0.1}
-  ]},
-{ // September
-  blurb:"September is statistically the worst month in market history \u2014 the only one to average a loss across every measured decade, in the US, UK, Germany and Japan alike. Institutional rebalancing, fiscal year-ends, and post-summer risk reduction all collide. It hosted Lehman's bankruptcy, the post-9/11 reopening plunge, and 2022's -9.3% washout. If seasonality has one iron law, it's September caution.",
-  events:[
-    {l:"Sep 15 2008 \u2014 Lehman Brothers files; system breaks", v:-4.7},
-    {l:"Sep 17 2001 \u2014 post-9/11 reopening plunge", v:-4.9},
-    {l:"Sep 2022 \u2014 the bear's worst month", v:-9.3},
-    {l:"Sep 1998 \u2014 LTCM collapse and Fed-brokered rescue", v:-5.7}
-  ]},
-{ // October
-  blurb:"October carries the crash mythology \u2014 1929, 1987, and 2008's worst days all happened here \u2014 but the data tells the opposite story: October is the \u201cbear killer.\u201d More bear markets have ENDED in October than any other month (1974, 1990, 2002, 2011, 2022). Volatility peaks, then the year's strongest seasonal stretch begins. October is where panic historically met its buyer.",
-  events:[
-    {l:"Oct 19 1987 \u2014 Black Monday, -22.6% in one day", v:-22.6},
-    {l:"Oct 13 2022 \u2014 hot-CPI reversal day marks the bear's low", v:2.6},
-    {l:"Oct 2011 \u2014 +10.8% month kills the eurozone bear", v:10.8},
-    {l:"Oct 2008 \u2014 the GFC's most violent month", v:-16.9}
-  ]},
-{ // November
-  blurb:"November is statistically the best month of the year and the gateway to the strongest stretch on the calendar \u2014 the November\u2013April \u201cBest Six Months.\u201d Election resolution, holiday-spending optimism and institutional year-end positioning all push the same direction. November 2020 added the vaccine rotation; November 2022 delivered the +5.5% CPI day. Crypto's Singles-Day-adjacent strength makes it Bitcoin's second-best month too.",
-  events:[
-    {l:"Nov 10 2022 \u2014 cool CPI: best day since 2020", v:5.5},
-    {l:"Nov 9 2020 \u2014 vaccine Monday; historic value rotation", v:1.2},
-    {l:"Nov 2022 \u2014 FTX collapses; crypto winter deepens", v:-16},
-    {l:"Nov 2021 \u2014 NASDAQ's exact cycle top", v:0}
-  ]},
-{ // December
-  blurb:"December closes the year with the \u201cSanta Claus rally\u201d \u2014 the final five trading days plus the first two of January, positive roughly 75% of the time since 1950. Tax-loss selling pressures losers early, then window dressing lifts winners late. The great exception proves the rule: December 2018's -9.2% (worst since 1931) ended with the Christmas Eve capitulation and a +5% day right after \u2014 the bottom, almost to the hour.",
-  events:[
-    {l:"Dec 2018 \u2014 worst December since 1931", v:-9.2},
-    {l:"Dec 26 2018 \u2014 the post-Christmas reversal day", v:5.0},
-    {l:"Dec 1996 \u2014 \u201cirrational exuberance\u201d speech", v:-0.4},
-    {l:"Dec 2023 \u2014 everything-rally on the Fed pivot", v:4.4}
-  ]}
-];
-
-function mhBuild() {
-  var sel = document.getElementById('mhMonth');
-  if (!sel) return;
-  var mi = parseInt(sel.value, 10);
-  var d = MH_DATA[mi];
-
-  // Stat strip from key patterns
-  function pv(key) { return PATTERNS[key][mi]; }
-  function cell(label, p) {
-    var col = p.avg >= 0 ? 'var(--green)' : 'var(--red)';
-    return '<div class="bts"><div class="bts-v" style="color:' + col + '">' + (p.avg >= 0 ? '+' : '') + p.avg.toFixed(1) + '%</div><div class="bts-l">' + label + ' \u00b7 ' + p.win + '% win</div></div>';
-  }
-  document.getElementById('mhStats').innerHTML =
-    '<div class="bts"><div class="bts-v" style="color:var(--amber2)">' + MF_LONG[mi] + '</div><div class="bts-l">Month in focus</div></div>' +
-    cell('S&P 500', pv('broadIndex')) +
-    cell('NASDAQ/Tech', pv('techGrowth')) +
-    cell('Bitcoin', pv('crypto')) +
-    cell('Gold', pv('gold'));
-
-  document.getElementById('mhTitle').textContent = MF_LONG[mi] + ' in market history';
-  document.getElementById('mhBlurb').innerHTML = d.blurb;
-
-  var maxAbs = 1;
-  d.events.forEach(function(e){ if (Math.abs(e.v) > maxAbs) maxAbs = Math.abs(e.v); });
-  var html = '';
-  d.events.forEach(function(e) {
-    var col = e.v > 0 ? 'var(--green)' : (e.v < 0 ? 'var(--red)' : 'var(--w4)');
-    var w = (Math.abs(e.v) / maxAbs * 100).toFixed(0);
-    var val = e.v === 0 ? 'pivot' : ((e.v > 0 ? '+' : '') + e.v + '%');
-    html += '<div class="es-inst">' +
-      '<div class="es-inst-l" style="text-align:left">' + e.l + '</div>' +
-      '<div class="es-inst-t"><div class="es-inst-f" style="width:0%;background:' + col + ';opacity:.72" data-w="' + w + '"></div></div>' +
-      '<div class="es-inst-v" style="color:' + col + '">' + val + '</div>' +
-    '</div>';
-  });
-  document.getElementById('mhEvents').innerHTML = html;
-  setTimeout(function() {
-    document.querySelectorAll('#mhEvents .es-inst-f').forEach(function(el){ el.style.width = el.dataset.w + '%'; });
-  }, 80);
+var MH_MARKETS = [['sp500', 'S&P 500'], ['nasdaq', 'NASDAQ Composite'], ['ftse100', 'FTSE 100'], ['gld', 'Gold (GLD)'], ['btc', 'Bitcoin']];
+var MH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var mhCache = {}, mhToken = 0;
+function mhGet(url) {
+  if (!mhCache[url]) mhCache[url] = fetch(url).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    .then(function (d) { if (!d) delete mhCache[url]; return d; });
+  return mhCache[url];
 }
-
+function mhPct(v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; }
+function mhCol(v) { return v > 0 ? 'var(--green)' : v < 0 ? 'var(--red)' : 'var(--w4)'; }
+function mhBar(key, label, v, maxAbs, extra) {
+  return '<div class="es-inst" ' + key + '><div class="es-inst-l" style="text-align:left">' + label + '</div>' +
+    '<div class="es-inst-t"><div class="es-inst-f" style="width:' + (Math.abs(v) / maxAbs * 100).toFixed(0) + '%;background:' + mhCol(v) + ';opacity:.72"></div></div>' +
+    '<div class="es-inst-v" style="color:' + mhCol(v) + '" data-k="ret">' + mhPct(v) + '</div>' + (extra || '') + '</div>';
+}
+function mhBuild() {
+  var sel = document.getElementById('mhMonth'), box = document.getElementById('modeMonth');
+  if (!sel || !box) return;
+  var mi = parseInt(sel.value, 10), id = document.getElementById('mhAsset').value, my = ++mhToken;
+  var name = MH_MARKETS.filter(function (m) { return m[0] === id; })[0][1], M = MF_LONG[mi];
+  box.dataset.mhState = 'loading'; box.dataset.mhKey = '';
+  document.getElementById('mhTitle').textContent = M + ' in market history · ' + name;
+  document.getElementById('mhSummary').textContent = 'Loading real price history…';
+  ['mhYears', 'mhDays', 'mhFed'].forEach(function (k) { document.getElementById(k).innerHTML = ''; });
+  // Top strip: each market's average and share of years up for this month (same figures as its asset page)
+  Promise.all(MH_MARKETS.map(function (m) { return mhGet('/api/v1/seasonality?id=' + m[0]); })).then(function (ds) {
+    if (my !== mhToken) return;
+    document.getElementById('mhStats').innerHTML = MH_MARKETS.map(function (m, k) {
+      var d = ds[k], x = d && d.source === 'verified' ? d.months[mi] : null, at = ' data-tx-sid="' + m[0] + '" data-tx-month="' + MH_ABBR[mi] + '"';
+      if (!x) return '<div class="bts"><div class="bts-v">—</div><div class="bts-l">' + m[1] + '</div></div>';
+      return '<div class="bts"><div class="bts-v" style="color:' + mhCol(x.avgReturn) + '"' + at + ' data-tx-field="avg">' + mhPct(x.avgReturn) + '</div>' +
+        '<div class="bts-l">' + m[1] + ' · <span' + at + ' data-tx-field="win">' + x.winRate + '%</span> up</div></div>';
+    }).join('');
+  });
+  mhGet('/api/v1/seasonality?id=' + id + '&view=month&month=' + (mi + 1)).then(function (d) {
+    if (my !== mhToken) return;
+    box.dataset.mhKey = mi + ':' + id;
+    if (!d) { document.getElementById('mhSummary').textContent = 'Real price history for ' + name + ' is unavailable right now, so nothing is shown.'; box.dataset.mhState = 'error'; return; }
+    var s = d.summary, last = d.years[0], partial = last.partial;
+    document.getElementById('mhSummary').textContent = 'The ' + name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + M + 's (' + s.from + '–' + last.year +
+      (partial ? ', counting this ' + M + ' so far' : '') + '), averaging ' + mhPct(s.avg) + '. Best: ' + s.best.year + ' ' + mhPct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + mhPct(s.worst.ret) + '.';
+    var maxY = Math.max.apply(null, d.years.map(function (y) { return Math.abs(y.ret); }).concat([0.01]));
+    document.getElementById('mhYears').innerHTML = d.years.map(function (y) {
+      return mhBar('data-year="' + y.year + '"', M + ' ' + y.year + (y.partial ? ' (so far)' : ''), y.ret, maxY);
+    }).join('');
+    var days = d.days.up.concat(d.days.down), maxD = Math.max.apply(null, days.map(function (x) { return Math.abs(x.ret); }).concat([0.01]));
+    document.getElementById('mhDaysTitle').textContent = 'Biggest daily moves in ' + M + ' since ' + s.from;
+    document.getElementById('mhDays').innerHTML = days.length ? days.map(function (x) {
+      var dt = new Date(x.date + 'T00:00:00Z');
+      return mhBar('data-date="' + x.date + '"', dt.getUTCDate() + ' ' + MH_ABBR[dt.getUTCMonth()] + ' ' + dt.getUTCFullYear(), x.ret, maxD);
+    }).join('') : '<div class="analysis-empty">No daily price history for this window.</div>';
+    document.getElementById('mhFedTitle').textContent = 'Fed rate changes that took effect in ' + M + ' (since October 2006)';
+    document.getElementById('mhFedSource').setAttribute('href', d.fedSource);
+    document.getElementById('mhFed').innerHTML = d.fed.length ? d.fed.map(function (f) {
+      var dt = new Date(f.date + 'T00:00:00Z');
+      return '<div class="es-inst" data-date="' + f.date + '"><div class="es-inst-l" style="text-align:left">' + dt.getUTCDate() + ' ' + MH_ABBR[dt.getUTCMonth()] + ' ' + dt.getUTCFullYear() + '</div>' +
+        '<div class="es-inst-t" style="background:none"></div><div class="es-inst-v" style="flex-basis:auto;color:' + (f.dir === 'cut' ? 'var(--green)' : 'var(--red)') + '">' +
+        (f.dir === 'cut' ? 'Cut ' : 'Hike ') + f.bp + 'bp → ' + f.level + '%</div></div>';
+    }).join('') : '<div class="analysis-empty">No federal funds target changes took effect in ' + M + ' since October 2006.</div>';
+    box.dataset.mhState = 'done';
+  });
+}
 function mhInit() {
   var sel = document.getElementById('mhMonth');
   if (!sel) return;
-  var nowM = new Date().getMonth();
-  var html = '';
+  var nowM = new Date().getMonth(), html = '';
   for (var i = 0; i < 12; i++) html += '<option value="' + i + '"' + (i === nowM ? ' selected' : '') + '>' + MF_LONG[i] + '</option>';
   sel.innerHTML = html;
   sel.addEventListener('change', mhBuild);
-  mhBuild();
+  document.getElementById('mhAsset').addEventListener('change', mhBuild);
 }
 mhInit();
 
