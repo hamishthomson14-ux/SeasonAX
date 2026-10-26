@@ -79,7 +79,7 @@ export default async function handler(req, res) {
       } catch (e) { return null; }
     });
     const rowsOut = results.filter(Boolean);
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');   // same freshness as the per-asset view
     return res.status(200).json({ view: 'leaderboard', section, month: MONTH_ABBR[mi], monthName: MONTH_NAMES[mi],
       total: members.length, unavailable: members.length - rowsOut.length, rows: rowsOut, generatedAt: new Date().toISOString() });
   }

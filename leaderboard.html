@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function render() {
-    all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win; });
+    all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win || (a.id < b.id ? -1 : 1); });   // exact ties: fixed order by id
     $('lbTitle').textContent = month + '’s strongest & weakest';
     document.title = month + ' Seasonality Leaderboard — Strongest & Weakest Assets | TimingAX';
     $('lbSummary').textContent = all.length + ' assets ranked for ' + month + ' · real data, at least 5 years each · updated daily' + (sectionsFailed ? ' · ' + sectionsFailed + ' market sections unavailable right now' : '');
