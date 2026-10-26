@@ -7,20 +7,19 @@
 // Function in this project, and Node lets us read the single source of
 // truth in api/_data/ rather than duplicating the catalogue here.
 //
-// The bars are an ILLUSTRATIVE shape drawn from the sector/region pattern,
-// not the asset's verified figures. The real VERIFIED/MODELLED data lives
-// on the page itself; this image exists to make shared links visually
-// distinctive. The footer says so explicitly.
+// The bars are the asset's own average return for each calendar month, computed from real prices
+// (the same figures as its page). Assets without real price history get the generic card.
 
 import { ImageResponse } from '@vercel/og';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { yahooSymbol, fetchMonthly, computeAdaptiveMonths } from '../_lib/seasonal.js';
+import { ogContent } from '../_lib/og.js';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
-const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
 
 // id -> catalogue entry, built once per cold start
 const BY_ID = new Map(CATALOGUE.map(a => [String(a.id).toLowerCase(), a]));
@@ -92,57 +91,39 @@ export default async function handler(req) {
   const item = BY_ID.get(id);
   if (!item) return fallbackImage();
 
-  const patternKey = item.pattern || 'broadIndex';
-  const pattern = PATTERNS[patternKey] || PATTERNS.broadIndex || [];
+  let real = null;
+  try { const rows = await fetchMonthly(yahooSymbol(item)); real = rows && computeAdaptiveMonths(rows, 15); } catch (e) { real = null; }
+  const c = ogContent(item, real);
+  if (!c) return fallbackImage();
 
-  // patterns.json stores objects ({m, avg, win}); tolerate plain numbers too.
-  const values = pattern.map(p => (typeof p === 'number' ? p : Number(p && p.avg))).slice(0, 12);
-  if (values.length !== 12 || values.some(v => !isFinite(v))) return fallbackImage();
-
-  const maxAbs = Math.max(0.5, ...values.map(v => Math.abs(v)));
-  const ticker = String(item.ticker || '');
-  const displayTicker = ticker.startsWith('^') ? '' : ticker;
-  const name = String(item.name || ticker || 'TimingAX');
-
-  const bars = values.map(v => el(
-    {
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'flex-end', width: 36, height: 200, marginRight: 8,
-    },
-    [el({
-      width: 36,
-      height: Math.max(4, Math.round((Math.abs(v) / maxAbs) * 160)),
-      background: v >= 0 ? GREEN : RED,
-      borderRadius: 3,
-      opacity: 0.85,
-    }, [])]
+  const maxAbs = Math.max(0.5, ...c.bars.map((v) => Math.abs(v)));
+  const LETTERS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+  const bars = c.bars.map((v, k) => el(
+    { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', width: 44, height: 210, marginRight: 10 },
+    [
+      el({ display: 'flex', width: 40, height: Math.max(4, Math.round((Math.abs(v) / maxAbs) * 170)), background: v >= 0 ? GREEN : RED, borderRadius: 3, opacity: 0.9 }, []),   // satori: every div needs display
+      el({ fontSize: 16, color: W3, marginTop: 8, display: 'flex' }, LETTERS[k]),
+    ]
   ));
 
   return new ImageResponse(
     el(
-      {
-        width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-        background: BG, padding: 64, fontFamily: 'sans-serif', position: 'relative',
-      },
+      { width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: BG, padding: 64, fontFamily: 'sans-serif', position: 'relative' },
       [
         brandRow(),
-        el({ fontSize: 16, letterSpacing: 4, color: AMBER2, textTransform: 'uppercase', marginBottom: 24, display: 'flex' },
-          'SEASONALITY SNAPSHOT'),
-        el({ fontSize: name.length > 26 ? 42 : 56, fontWeight: 800, color: W, marginBottom: 8, display: 'flex' },
-          name),
-        el({ fontSize: 22, color: W4, marginBottom: 36, display: 'flex' },
-          [item.sector, item.region, displayTicker].filter(Boolean).join('  \u00b7  ')),
-        el({ display: 'flex', alignItems: 'flex-end', height: 200, marginBottom: 8 }, bars),
+        el({ fontSize: 16, letterSpacing: 4, color: AMBER2, textTransform: 'uppercase', marginBottom: 20, display: 'flex' }, 'SEASONALITY SNAPSHOT'),
+        el({ fontSize: c.name.length > 26 ? 42 : 56, fontWeight: 800, color: W, marginBottom: 6, display: 'flex' }, c.name),
+        el({ fontSize: 22, color: W4, marginBottom: 26, display: 'flex' }, c.sub),
+        el({ display: 'flex', alignItems: 'flex-end' }, [
+          el({ display: 'flex', alignItems: 'flex-end', height: 240 }, bars),
+          el({ display: 'flex', flexDirection: 'column', marginLeft: 24, marginBottom: 40, fontSize: 24 }, [
+            el({ color: GREEN, display: 'flex', marginBottom: 12 }, c.best),
+            el({ color: RED, display: 'flex' }, c.worst),
+          ]),
+        ]),
         el(
-          {
-            position: 'absolute', bottom: 56, left: 64, right: 64, display: 'flex',
-            justifyContent: 'space-between', alignItems: 'center',
-            borderTop: `1px solid ${B2}`, paddingTop: 24, fontSize: 18, color: W3,
-          },
-          [
-            el({ display: 'flex' }, 'Historical seasonal data \u2014 timingax.co.uk'),
-            el({ color: AMBER2, display: 'flex' }, 'Illustrative pattern'),
-          ]
+          { position: 'absolute', bottom: 48, left: 64, right: 64, display: 'flex', borderTop: `1px solid ${B2}`, paddingTop: 20, fontSize: 18, color: W3 },
+          [el({ display: 'flex' }, c.footer)]
         ),
       ]
     ),
