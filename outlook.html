@@ -163,7 +163,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 1) Major markets
   var MK = [['sp500','S&P 500'],['nasdaq','NASDAQ Composite'],['dow','Dow Jones'],['ftse100','FTSE 100'],['dax','DAX 40'],['nikkei','Nikkei 225'],['gld','Gold (GLD)'],['btc','Bitcoin']];
-  Promise.all(MK.map(function (m) { return TX.fetchVerified(m[0]); })).then(function (ds) {
+  var mkData = Promise.all(MK.map(function (m) { return TX.fetchVerified(m[0]); }));
+  mkData.then(function (ds) {
     var rows = MK.map(function (m, i) {
       var d = ds[i]; if (!d) return '';
       var x = d.months[mi], v = TX.verdict(x.avgReturn, x.winRate);
@@ -183,8 +184,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function one() { if (k >= secs.length) return Promise.resolve(); var s = secs[k++];
       return fetch('/api/v1/seasonality?view=leaderboard&month=' + (mi + 1) + '&section=' + encodeURIComponent(s)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
         .then(function (d) { if (d && d.rows) d.rows.forEach(function (a) { if (a.obs >= 5) all.push(a); }); else bad++; return one(); }); }
-    Promise.all([one(), one(), one(), one(), one(), one()]).then(function () {
+    Promise.all([one(), one(), one(), one(), one(), one(), mkData]).then(function (res) {
       if (bad || !all.length) { unavailable($('olStrong'), 3); unavailable($('olWeak'), 3); return finish(false); }   // partial rankings would mislead
+      // A market shown in both tables uses one figure: the in-progress month (e.g. Bitcoin at weekends) can move between the two requests.
+      res[6].forEach(function (d) { if (!d) return; all.forEach(function (a) { if (a.id === d.id) { a.avg = d.months[mi].avgReturn; a.win = d.months[mi].winRate; } }); });
       all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win; });
       var tr = function (a) { return '<tr data-id="' + a.id + '"><td><a href="/seasonality/' + a.id + '">' + esc(a.name) + '</a></td><td class="' + (a.avg >= 0 ? 'tx-up' : 'tx-down') + '"' + at(a.id) + ' data-tx-field="avg">' + TX.fmtPct(a.avg, 2) + '</td><td' + at(a.id) + ' data-tx-field="win">' + a.win + '%</td></tr>'; };
       $('olStrong').querySelector('tbody').innerHTML = all.slice(0, 10).map(tr).join('');

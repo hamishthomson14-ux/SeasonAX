@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Seasonality Report | TimingAX</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="A printable seasonal report for your TimingAX portfolio, from verified price history.">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+.rp-hero { padding: 48px 0 16px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.rp-hero .tx-h1 { font-size: clamp(30px, 4.4vw, 48px); margin: 12px 0 8px; }
+.rp-t { width: 100%; border-collapse: collapse; font-family: var(--tx-font-mono); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.rp-t th { font: 500 10.5px var(--tx-font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-text-3); text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--tx-border-2); white-space: nowrap; }
+.rp-t th:first-child, .rp-t td:first-child { text-align: left; }
+.rp-t td { padding: 8px 12px; border-bottom: 1px solid #0B1220; text-align: right; white-space: nowrap; }
+.rp-scroll { overflow-x: auto; }
+.rp-sec { margin-top: 20px; }
+.rp-note { margin: 0; padding: 12px 16px; border-top: 1px solid var(--tx-border-1); color: var(--tx-text-3); font-size: 13px; }
+.rp-locked { text-align: center; padding: 40px 24px; margin-top: 20px; }
+.rp-locked p { color: var(--tx-text-2); max-width: 56ch; margin: 10px auto 20px; }
+@media (max-width: 600px) { .rp-t td, .rp-t th { padding: 8px 6px; font-size: 12px; } .rp-hide { display: none; } }
+@media print {
+  .tx-header, .tx-footer, .tx-ticker, #rpPrint, #rpBack, .cookie-banner, [id*="cookie"], [id*="chat"], [class*="chat"] { display: none !important; }
+  body.tx { background: #fff !important; color: #000 !important; }
+  .tx-term { background: #fff !important; border: 1px solid #999 !important; box-shadow: none !important; break-inside: avoid; }
+  .tx-term__head, .rp-t th, .rp-t td, .rp-note, .tx-note, .tx-lead, .tx-h1, .tx-eyebrow { color: #000 !important; border-color: #bbb !important; background: none !important; }
+  .rp-t td.tx-up { color: #0a6b3a !important; } .rp-t td.tx-down { color: #a3121f !important; }
+  .rp-hide { display: table-cell !important; }
+  .rp-scroll { overflow: visible; }
+}
+</style>
+</head>
+<body class="tx" data-rp-state="loading">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap">
+  <section class="rp-hero">
+    <div><span class="tx-eyebrow">Portfolio report</span>
+      <h1 class="tx-h1">Your portfolio&rsquo;s seasonal year</h1>
+      <p class="tx-lead" style="margin:0">Generated <span id="rpDate"></span> from verified price history.</p></div>
+    <div style="display:flex;gap:10px"><a class="tx-btn" id="rpBack" href="/market-seasonality.html" onclick="try{localStorage.setItem('sax_mode','portfolio')}catch(e){}">Edit portfolio</a><button class="tx-btn tx-btn--primary" id="rpPrint" type="button">Print / save as PDF</button></div>
+  </section>
+
+  <div id="rpApp" hidden>
+    <div class="tx-term rp-sec"><div class="tx-term__head"><span class="tx-term__title">Portfolio by month</span><span class="tx-term__status">Weighted by your allocation</span></div>
+      <div class="rp-scroll"><table class="rp-t" id="rpMonths"><thead><tr><th>Month</th><th>Avg return</th><th>Times up</th><th>Signal</th></tr></thead><tbody></tbody></table></div>
+      <p class="rp-note">Each month is the allocation-weighted average of every included holding&rsquo;s own average return and win rate for that calendar month &mdash; a weighted blend, not a backtest of this exact portfolio.</p></div>
+
+    <div class="tx-term rp-sec"><div class="tx-term__head"><span class="tx-term__title">Holdings</span><span class="tx-term__status" id="rpCount"></span></div>
+      <div class="rp-scroll"><table class="rp-t" id="rpHoldings"><thead><tr><th>Holding</th><th>Weight</th><th>Years</th><th>Best month</th><th class="rp-hide">Worst month</th><th id="rpNowHead">This month</th></tr></thead><tbody></tbody></table></div>
+      <p class="rp-note" id="rpExcluded"></p></div>
+  </div>
+
+  <div class="tx-card" id="rpEmpty" hidden style="margin-top:20px"><p style="margin:0">Your portfolio is empty. <a href="/market-seasonality.html" onclick="try{localStorage.setItem('sax_mode','portfolio')}catch(e){}">Add holdings in the analyzer</a>, then come back for the report.</p></div>
+  <div class="tx-card rp-locked" id="rpLocked" hidden>
+    <span class="tx-badge tx-badge--now">Pro</span>
+    <h2 class="tx-h2" style="font-size:26px;margin-top:14px">The portfolio report is a Pro feature</h2>
+    <p>A printable, month-by-month seasonal report for your holdings, built only from verified price history.</p>
+    <a class="tx-btn tx-btn--primary tx-btn--lg" href="/auth.html?tab=up">Start 7-day free trial</a>
+  </div>
+  <p class="tx-note" style="margin:24px 0 72px">Up to 15 years of real monthly closes per holding; holdings without verified history are left out rather than estimated. History, not a forecast, and not financial advice. <a href="/data.html">Data &amp; methodology</a>.</p>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 733 global assets, 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); };
+  var pct = function (v) { return v === null || v === undefined ? '—' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; };
+  var cls = function (v) { return v === null || v === undefined ? '' : v >= 0 ? 'tx-up' : 'tx-down'; };
+  var now = new Date();
+  $('rpDate').textContent = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  $('rpPrint').addEventListener('click', function () { window.print(); });
+
+  function isPro() {
+    try {
+      var sb = window.supabase.createClient('https://hqbxonheaeespnrlhkys.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44');
+      return sb.auth.getSession().then(function (r) { var u = r && r.data && r.data.session && r.data.session.user, s = u && u.app_metadata && u.app_metadata.subscription; return s === 'pro' || s === 'lifetime'; }).catch(function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
+  }
+  function holdings() {
+    try { var h = JSON.parse(localStorage.getItem('sx_portfolio') || '[]'); return Array.isArray(h) ? h.filter(function (x) { return x && x.id; }) : []; } catch (e) { return []; }
+  }
+
+  isPro().then(function (pro) {
+    if (!pro) { $('rpLocked').hidden = false; $('rpPrint').hidden = true; document.body.dataset.rpState = 'locked'; return; }
+    var H = holdings();
+    if (!H.length) { $('rpEmpty').hidden = false; $('rpPrint').hidden = true; document.body.dataset.rpState = 'empty'; return; }
+    Promise.all(H.map(function (h) { return TX.fetchVerified(h.id).then(function (d) { return { h: h, d: d }; }, function () { return { h: h, d: null }; }); })).then(function (res) {
+      var inc = res.filter(function (r) { return r.d; }), out = res.filter(function (r) { return !r.d; });
+      // Weights are renormalised over the included holdings; if every weight is 0, equal-weight them.
+      var raw = inc.map(function (r) { var w = parseFloat(r.h.weight); return isFinite(w) && w > 0 ? w : 0; });
+      var tot = raw.reduce(function (a, b) { return a + b; }, 0);
+      var W = raw.map(function (w) { return tot > 0 ? w / tot : 1 / inc.length; });
+      $('rpExcluded').textContent = out.length ? 'Left out (no verified price history): ' + out.map(function (r) { return r.h.id; }).join(', ') + '.' : 'Every holding has verified price history.';
+      if (!inc.length) { $('rpApp').hidden = false; $('rpMonths').querySelector('tbody').innerHTML = ''; document.body.dataset.rpState = 'error'; return; }
+      $('rpCount').textContent = inc.length + ' of ' + res.length + ' included';
+      var months = inc[0].d.months.map(function (mm, m) {
+        var avg = 0, win = 0;
+        inc.forEach(function (r, i) { avg += r.d.months[m].avgReturn * W[i]; win += r.d.months[m].winRate * W[i]; });
+        return { name: mm.month, avg: Math.round(avg * 100) / 100, win: Math.round(win) };
+      });
+      $('rpMonths').querySelector('tbody').innerHTML = months.map(function (r, m) {
+        var v = TX.verdict(r.avg, r.win);
+        return '<tr' + (m === now.getMonth() ? ' style="background:rgba(232,147,24,.06)"' : '') + '><td>' + r.name + '</td><td class="' + cls(r.avg) + '">' + pct(r.avg) + '</td><td>' + r.win + '%</td><td>' + v.charAt(0) + v.slice(1).toLowerCase() + '</td></tr>';
+      }).join('');
+      var cm = now.getMonth();
+      $('rpNowHead').textContent = inc[0].d.months[cm].month;
+      $('rpHoldings').querySelector('tbody').innerHTML = inc.map(function (r, i) {
+        var d = r.d, c = d.months[cm];
+        return '<tr data-id="' + esc(d.id) + '"><td>' + esc(d.ticker) + ' <span class="tx-muted rp-hide">' + esc(d.name) + '</span></td><td data-k="w">' + (W[i] * 100).toFixed(1) + '%</td><td data-k="yrs">' + d.years + '</td>' +
+          '<td data-k="best">' + d.best.month + ' ' + pct(d.best.avgReturn) + '</td><td class="rp-hide">' + d.worst.month + ' ' + pct(d.worst.avgReturn) + '</td>' +
+          '<td class="' + cls(c.avgReturn) + '">' + pct(c.avgReturn) + ' · ' + c.winRate + '%</td></tr>';
+      }).join('');
+      $('rpApp').hidden = false;
+      document.body.dataset.rpState = 'done';
+    });
+  });
+});
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>
