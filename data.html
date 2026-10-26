@@ -69,7 +69,7 @@
   <div class="tx-statbar" style="margin-top:8px">
     <div class="tx-stat"><span class="tx-stat__value" data-hub="total"><span class="tx-skel"></span></span><span class="tx-stat__label">Assets in the catalogue</span></div>
     <div class="tx-stat"><span class="tx-stat__value tx-up" data-hub="real"><span class="tx-skel"></span></span><span class="tx-stat__label">With real price history</span></div>
-    <div class="tx-stat"><span class="tx-stat__value" data-hub="modelled"><span class="tx-skel"></span></span><span class="tx-stat__label">Modelled only (labelled)</span></div>
+    <div class="tx-stat"><span class="tx-stat__value" data-hub="modelled"><span class="tx-skel"></span></span><span class="tx-stat__label">No verified history (no figures shown)</span></div>
     <div class="tx-stat"><span class="tx-stat__value" style="font-size:clamp(20px,2.4vw,28px)" data-hub="asof"><span class="tx-skel"></span></span><span class="tx-stat__label">Latest S&amp;P 500 close</span></div>
   </div>
   <p class="tx-note" id="hubProgress" style="margin-top:10px">Calculating coverage&hellip;</p>
@@ -91,7 +91,7 @@
     <ul class="dh-list">
       <li><strong>Prices:</strong> daily closing prices from Yahoo Finance&rsquo;s public chart data, fetched by TimingAX&rsquo;s own servers. Where Yahoo provides dividend-adjusted closes, those are used; index levels such as the S&amp;P 500 are price-only. Up to 20 years are fetched; seasonal statistics use the most recent 15.</li>
       <li><strong>Scheduled events:</strong> Federal Reserve rate decisions from the official FOMC calendar at <a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" rel="noopener">federalreserve.gov</a>; CPI and jobs-report dates from the release schedules at <a href="https://www.bls.gov/schedule/news_release/" rel="noopener">bls.gov</a>.</li>
-      <li><strong>Assets without enough real history</strong> are never shown with real-looking numbers: they&rsquo;re labelled MODELLED (a sector pattern) or left out, depending on the page.</li>
+      <li><strong>Assets without enough real history</strong> are never shown with figures: they get a &ldquo;no verified price history&rdquo; notice instead. Nothing is estimated or filled in from a model.</li>
     </ul>
   </section>
 

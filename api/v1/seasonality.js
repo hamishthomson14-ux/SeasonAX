@@ -29,13 +29,12 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import {
-  yahooSymbol, computeAdaptiveMonths, getModelMonths, bestWorst,
+  yahooSymbol, computeAdaptiveMonths, bestWorst,
   fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
-const PATTERNS = JSON.parse(readFileSync(path.join(__dirname, '../_data/patterns.json'), 'utf8'));
 const EVENTS_HISTORY = JSON.parse(readFileSync(path.join(__dirname, '../_data/events-history.json'), 'utf8'));
 
 // Run fn over items with at most `n` in flight (keeps upstream price requests polite).
@@ -239,8 +238,9 @@ export default async function handler(req, res) {
     });
   }
 
-  // Resolve seasonal months: real data first, modelled fallback (same as product)
-  let months = null, source = 'modelled', years = null;
+  // Real price history only. Without it (or during a price-source outage) answer "unavailable", cached briefly
+  // so a transient failure is retried soon — never model figures.
+  let months = null, source = null, years = null;
   try {
     const sym = yahooSymbol(item);
     const rows = await fetchMonthly(sym);
@@ -252,10 +252,12 @@ export default async function handler(req, res) {
         source = 'verified';
       }
     }
-  } catch (e) {
-    // fall through to modelled
+  } catch (e) { /* treated as unavailable below */ }
+  if (!months) {
+    res.setHeader('Cache-Control', 's-maxage=60');
+    return res.status(404).json({ error: 'unavailable', id: item.id, ticker: item.ticker, name: item.name,
+      hint: 'No verified price history for this asset right now. TimingAX never serves modelled figures.' });
   }
-  if (!months) months = getModelMonths(item, PATTERNS);
 
   // Shape the monthly array
   const monthsOut = months.map((m, i) => ({
