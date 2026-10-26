@@ -358,3 +358,36 @@ export function computeEventStudy(rows, dates) {
   }
   return { events, summary };
 }
+
+// "This month in history": every year's return for one calendar month over the same window and rules as
+// computeMonths (last close to last close, years from now-15, moves over 95% excluded), newest first, plus the
+// biggest daily moves inside that month from daily closes. month is 0-11.
+export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new Date() } = {}) {
+  const from = now.getUTCFullYear() - 15, r2 = (v) => Math.round(v * 100) / 100;
+  const years = [];
+  for (let i = 1; i < monthlyRows.length; i++) {
+    const prev = monthlyRows[i - 1], cur = monthlyRows[i];
+    const yr = +cur.d.slice(0, 4), mo = +cur.d.slice(5, 7) - 1;
+    if (mo !== month || yr < from || !isFinite(prev.c) || prev.c <= 0) continue;
+    const ret = ((cur.c - prev.c) / prev.c) * 100;
+    if (!isFinite(ret) || Math.abs(ret) > 95) continue;
+    years.push({ year: yr, raw: ret, partial: yr === now.getUTCFullYear() && month === now.getUTCMonth() });
+  }
+  if (!years.length) return null;
+  years.sort((a, b) => b.year - a.year);
+  // Compared at the shown precision; on a tie the most recent year (years are newest first) is named.
+  const best = years.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = years.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
+  const summary = { n: years.length, up: years.filter((y) => y.raw > 0).length, avg: +(years.reduce((s, y) => s + y.raw, 0) / years.length).toFixed(2),
+    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from: Math.min(...years.map((y) => y.year)) };
+  const moves = [];
+  for (let i = 1; i < (dailyRows || []).length; i++) {
+    const d = new Date(dailyRows[i].t);
+    if (d.getUTCMonth() !== month || d.getUTCFullYear() < from) continue;
+    const ret = (dailyRows[i].c / dailyRows[i - 1].c - 1) * 100;
+    if (isFinite(ret) && Math.abs(ret) <= 95) moves.push({ date: d.toISOString().slice(0, 10), ret: r2(ret) });
+  }
+  return {
+    years: years.map((y) => ({ year: y.year, ret: r2(y.raw), partial: y.partial })), summary,
+    days: { up: moves.filter((m) => m.ret > 0).sort((a, b) => b.ret - a.ret).slice(0, 3), down: moves.filter((m) => m.ret < 0).sort((a, b) => a.ret - b.ret).slice(0, 3) },
+  };
+}
