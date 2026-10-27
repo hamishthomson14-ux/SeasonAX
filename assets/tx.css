@@ -364,3 +364,35 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 @media (max-width: 760px) { .hub-kpis { grid-template-columns: 1fr 1fr; } .hub-cols { grid-template-columns: 1fr; } .hub-bar__l { flex-basis: 92px; } .tx-term__head { flex-wrap: wrap; gap: 8px; } }
 .hub-embed summary { cursor: pointer; color: var(--tx-amber-2); font-weight: 600; }
 .hub-embed textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--tx-border-2); background: var(--tx-bg-1); color: var(--tx-text-2); font: 12px var(--tx-font-mono); resize: vertical; margin-bottom: 8px; }
+
+/* ── Motion (assets/tx.js initMotion). Everything is gated on html.js-motion, which is only set when the visitor
+   hasn't asked for reduced motion, so content is never hidden without JS and nothing moves for reduced-motion users.
+   Figures are never animated as changing numbers: blocks fade/slide in already showing their real values. */
+@keyframes tx-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes tx-grow-x { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes tx-grow-y { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes tx-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes tx-flash-up { 0% { background: rgba(34,197,139,.28); } 100% { background: transparent; } }
+@keyframes tx-flash-down { 0% { background: rgba(240,79,95,.28); } 100% { background: transparent; } }
+@keyframes tx-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+.js-motion [data-anim]:not(.is-in) { opacity: 0; }
+.js-motion [data-anim].is-in { animation: tx-rise .65s cubic-bezier(.2,.7,.2,1) both; }
+.js-motion .is-in .hub-bar__t i, .js-motion .is-in .mp-bar i, .js-motion .is-in .pr-bf, .js-motion .is-in .es-inst-f, .js-motion .is-in .bt-yr-f {
+  transform-origin: left center; animation: tx-grow-x .9s cubic-bezier(.2,.7,.2,1) both; animation-delay: .15s; }
+.js-motion .is-in svg .tx-line {   /* a class, not [pathLength]: CSS lowercases attribute names and SVG's are case-sensitive */ stroke-dasharray: 1; animation: tx-draw 1.6s cubic-bezier(.4,0,.2,1) both; animation-delay: .1s; }
+.tx-ticker__item.tx-flash-up { animation: tx-flash-up 1.8s ease-out; }
+.tx-ticker__item.tx-flash-down { animation: tx-flash-down 1.8s ease-out; }
+.tx-ticker__live { position: absolute; left: 0; top: 0; bottom: 0; z-index: 2; display: flex; align-items: center; gap: 7px; padding: 0 12px; background: var(--tx-term-bg); border-right: 1px solid var(--tx-border-1); color: var(--tx-text-3); font: 500 11px/32px var(--tx-font-mono); letter-spacing: .04em; }
+.tx-ticker__live i { width: 7px; height: 7px; border-radius: 50%; background: var(--tx-up, #22c58b); animation: tx-pulse 2s ease-in-out infinite; }
+@media (max-width: 600px) { .tx-ticker__live span { display: none; } }
+@media (prefers-reduced-motion: reduce) { .tx-ticker__live i, .tx-ticker__item.tx-flash-up, .tx-ticker__item.tx-flash-down { animation: none; } }
+
+/* Search in the signed-in app headers (dashboard, analyzer): always visible; there is no menu to hold it on phones. */
+.tx-header--app .tx-search { display: flex; margin: 0 10px 0 auto; }
+.tx-header--app .tx-search input { width: 220px; }
+@media (max-width: 900px) {
+  .tx-header--app .tx-header__bar { flex-wrap: wrap; height: auto; padding: 8px 0; row-gap: 8px; }
+  .tx-header--app .tx-search { order: 5; width: 100%; margin: 0; }
+  .tx-header--app .tx-search input { width: 100%; height: 40px; font-size: 16px; }
+  .tx-header--app .tx-search ul { min-width: 0; }
+}
