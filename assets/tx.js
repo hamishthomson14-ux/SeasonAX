@@ -102,7 +102,7 @@
     document.documentElement.classList.add('js-motion');
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });   // any part on screen: a block taller than the screen (e.g. a 700-row table) can never be 5% visible
     var sel = 'main .tx-term, main .tx-card, main .tx-statbar, main .tx-table, main section > h2, main .hub-links, main .mp-months, [data-anim], ' +
       // signed-in app (dashboard, analyzer)
       '.page .welcome, .page .overview, .page .seasonal-ribbon, .page .tool-card, .page .bt-panel, .page .chart-panel, .page .bt-stats, .page .ai-panel, .page .kpi-rail, .page .term-chartwrap, .page .sc-row, .page .wl-row, .page .pf-bd-row';
