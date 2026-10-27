@@ -241,7 +241,29 @@
     }).catch(function () { restore(); alert('Could not start checkout. Please try again.'); });
   }
 
-  function init() { initMotion(); initMenu(); initTicker(); fillSeasonal(); initSearch(); }
+  // Public pages are static, so their header always says "Log in / Start free". A visitor with a stored Supabase
+  // session (refreshed by the app pages) is still signed in: offer the app instead, and point Pro prompts at it.
+  function storedUser() {
+    try { var s = JSON.parse(localStorage.getItem(SB_TOKEN_KEY) || 'null'); if (s && s.user && (s.refresh_token || s.expires_at * 1000 > Date.now())) return s.user; } catch (e) {}
+    return null;
+  }
+  function initAccount() {
+    var user = storedUser(); if (!user) return;
+    document.documentElement.classList.add('tx-signed-in');
+    var box = document.querySelector('.tx-header:not(.tx-header--app) .tx-header__actions');
+    if (box) box.innerHTML = '<a class="tx-btn tx-btn--ghost tx-btn--sm" href="/market-seasonality.html">Analyzer</a><a class="tx-btn tx-btn--primary tx-btn--sm" href="/dashboard.html">Dashboard</a>';
+    var cta = document.querySelector('#projPreview .proj-cta a'), hub = document.getElementById('hub');
+    if (!cta || !hub) return;
+    var sub = user.app_metadata && user.app_metadata.subscription;
+    if (sub === 'pro' || sub === 'lifetime') {
+      cta.textContent = 'Open in the analyzer'; cta.href = '/market-seasonality.html';
+      cta.addEventListener('click', function () { try { localStorage.setItem('sax_mode', 'analyzer'); localStorage.setItem('sax_preselect', hub.dataset.id); } catch (e) {} });
+    } else {
+      cta.addEventListener('click', function (e) { e.preventDefault(); checkout('monthly', cta); });
+    }
+  }
+
+  function init() { initAccount(); initMotion(); initMenu(); initTicker(); fillSeasonal(); initSearch(); }
 
   w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, fetchVerified: fetchVerified, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER,
     seasonalValue: seasonalValue, fillSeasonal: fillSeasonal, checkout: checkout };

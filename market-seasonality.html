@@ -3428,7 +3428,8 @@ buildBrowser('', null, null);
   var mode = localStorage.getItem('sax_mode');
   var preselect = localStorage.getItem('sax_preselect');
   if(mode) { localStorage.removeItem('sax_mode'); setTimeout(function(){ switchMode(mode); },100); }
-  if(preselect) { localStorage.removeItem('sax_preselect'); setTimeout(function(){ selectAsset(preselect); },200); }
+  // Wait for sign-in to resolve, or a Pro member is checked as signed out and shown the paywall.
+  if(preselect) { localStorage.removeItem('sax_preselect'); Promise.resolve().then(function(){ return authReady; }).then(function(){ selectAsset(preselect); }); }
   // First-time visitors get the welcome starter overlay (unless arriving from a dashboard quick-launch).
   if(!mode && !preselect) setTimeout(maybeShowWelcome, 400);
 })();
@@ -3616,7 +3617,7 @@ function showPaywall(reason, toolName){
 }
 
 // Init on load
-initAuth();
+var authReady = initAuth().catch(function(){});
 
 
 
