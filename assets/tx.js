@@ -252,15 +252,19 @@
     document.documentElement.classList.add('tx-signed-in');
     var box = document.querySelector('.tx-header:not(.tx-header--app) .tx-header__actions');
     if (box) box.innerHTML = '<a class="tx-btn tx-btn--ghost tx-btn--sm" href="/market-seasonality.html">Analyzer</a><a class="tx-btn tx-btn--primary tx-btn--sm" href="/dashboard.html">Dashboard</a>';
-    var cta = document.querySelector('#projPreview .proj-cta a'), hub = document.getElementById('hub');
-    if (!cta || !hub) return;
-    var sub = user.app_metadata && user.app_metadata.subscription;
-    if (sub === 'pro' || sub === 'lifetime') {
-      cta.textContent = 'Open in the analyzer'; cta.href = '/market-seasonality.html';
-      cta.addEventListener('click', function () { try { localStorage.setItem('sax_mode', 'analyzer'); localStorage.setItem('sax_preselect', hub.dataset.id); } catch (e) {} });
-    } else {
-      cta.addEventListener('click', function (e) { e.preventDefault(); checkout('monthly', cta); });
-    }
+    // Asset pages: Pro members get the real projection in place (the shared analyzer component), free members a
+    // trial button. Signed-out visitors keep the server-rendered sign-up prompt.
+    var box2 = document.getElementById('projPreview'), hub = document.getElementById('hub');
+    if (!box2 || !hub) return;
+    var sub = user.app_metadata && user.app_metadata.subscription, pro = sub === 'pro' || sub === 'lifetime';
+    var s = document.createElement('script'); s.src = '/assets/projection.js';
+    s.onload = function () {
+      var el = document.createElement('div'); el.id = 'projPreview'; el.style.marginTop = '20px';
+      box2.replaceWith(el);
+      w.TXProjection.mount(el, { id: hub.dataset.id, name: hub.dataset.name, pro: pro, cta: 'Start 7-day free trial',
+        onUpgrade: function () { checkout('monthly', el.querySelector('.proj-cta .tx-btn--primary')); } });
+    };
+    document.head.appendChild(s);
   }
 
   function init() { initAccount(); initMotion(); initMenu(); initTicker(); fillSeasonal(); initSearch(); }
