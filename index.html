@@ -291,7 +291,7 @@
         <span class="p-tier">Pro &middot; 7-day free trial</span>
         <div class="p-amt">&pound;19.99<small>/mo</small></div>
         <div class="p-per">Free for 7 days, then &pound;19.99/mo &middot; cancel anytime<br>
-          <button class="p-alt" onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')">Or go annual &mdash; &pound;149/yr (save &pound;91)</button></div>
+          <button class="p-alt" onclick="TX.checkout('annual', this)">Or go annual &mdash; &pound;149/yr (save &pound;91)</button></div>
         <ul class="p-feats">
           <li>Unlimited analyses</li>
           <li>All 700+ global assets</li>
@@ -302,7 +302,7 @@
           <li>Email seasonal alerts</li>
           <li>Priority support</li>
         </ul>
-        <button class="tx-btn tx-btn--primary tx-btn--lg" onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')">Start 7-day free trial</button>
+        <button class="tx-btn tx-btn--primary tx-btn--lg" onclick="TX.checkout('monthly', this)">Start 7-day free trial</button>
         <div class="p-fine">No charge today &middot; we&rsquo;ll email you before the trial ends</div>
       </div>
     </div>
@@ -581,29 +581,7 @@ function rdStart(e) {
 <script src="/cookie-consent.js"></script>
 <script src="/chat-widget.js"></script>
 
-<!-- Stripe -->
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-var _spk = 'pk_test_51TgkdX2MZ73Stw01GqMBlkdRUCMB6N00kGOcDzKiyAGeV2wCUME0oSSGVlLdp7gkgEF8C8qfKMRy0xr1aO6hzqA800aYjpyCiK';
-async function stripeCheckout(priceId, mode) {
-  var btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Loading...';
-  try {
-    var res = await fetch('/api/create-checkout', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ priceId: priceId, mode: mode })
-    });
-    var data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { alert('Checkout failed: ' + (data.error || 'Unknown error')); btn.disabled = false; btn.textContent = 'Try again'; }
-  } catch(e) {
-    alert('Something went wrong. Please try again.');
-    btn.disabled = false;
-  }
-}
-</script>
+
 <script>
 (function () {
   // Same calculation as /track-record.html: every scored month across 8 markets.

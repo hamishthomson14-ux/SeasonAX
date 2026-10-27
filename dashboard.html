@@ -332,8 +332,8 @@ body.is-pro .tool-card.pro-locked{opacity:1}
           <div style="font:400 11px/1 var(--mono);color:var(--w4)">Free tier &middot; 5 analyses/month &middot; indices &amp; ETFs only</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button onclick="stripeCheckout('price_1Tgkjt2MZ73Stw013w4czf7Z','subscription')" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Start 7-day free trial</button>
-          <button onclick="stripeCheckout('price_1ThF3e2MZ73Stw01iR4vDpHc','subscription')" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Annual &mdash; &pound;149/yr</button>
+          <button onclick="TX.checkout('monthly', this, dashToken)" style="background:var(--amber);color:var(--bg);border:none;padding:8px 16px;border-radius:7px;font:600 13px/1 var(--sans);cursor:pointer">Start 7-day free trial</button>
+          <button onclick="TX.checkout('annual', this, dashToken)" style="background:none;border:1px solid var(--b3);color:var(--w3);padding:8px 14px;border-radius:7px;font:500 12px/1 var(--sans);cursor:pointer">Annual &mdash; &pound;149/yr</button>
         </div>
       </div>
       <div class="sec-label">Research Tools &#8212; choose where to go</div>
@@ -464,6 +464,12 @@ async function initAuth() {
   var sub = user.app_metadata && user.app_metadata.subscription;
   var isPro = sub === 'pro' || sub === 'lifetime';
   document.body.classList.toggle('is-pro', isPro);
+  // Resume a checkout started before sign-up (see TX.checkout), once; Pro users just clear it.
+  var pending = null; try { pending = localStorage.getItem('tx_pending_plan'); localStorage.removeItem('tx_pending_plan'); } catch (e) {}
+  if (!isPro && (pending === 'monthly' || pending === 'annual')) {
+    var go = function () { window.TX && TX.checkout ? TX.checkout(pending, null, dashToken) : setTimeout(go, 200); };
+    go();
+  }
   if (isPro) {
     var banner = document.getElementById('upgradeBanner');
     if (banner) banner.style.display = 'none';
@@ -901,24 +907,9 @@ buildDashboard();
 obMaybeShow();
 </script>
 
-<script src="https://js.stripe.com/v3/"></script>
 <script>
-async function stripeCheckout(priceId, mode) {
-  var btn = event.target;
-  btn.disabled = true;
-  var orig = btn.textContent;
-  btn.textContent = 'Loading...';
-  try {
-    var res = await fetch('/api/create-checkout', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ priceId: priceId, mode: mode })
-    });
-    var data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { alert('Checkout error: ' + (data.error || 'Try again')); btn.disabled = false; btn.textContent = orig; }
-  } catch(e) { btn.disabled = false; btn.textContent = orig; }
-}
+// The live Supabase session token for checkout (fresher than the stored copy).
+function dashToken() { return sb.auth.getSession().then(function (r) { return r && r.data && r.data.session && r.data.session.access_token; }); }
 </script>
 </body>
 </html>
