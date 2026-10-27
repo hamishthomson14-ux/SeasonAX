@@ -3439,23 +3439,12 @@ const FREE_LIMIT = 5;
 let analysisCount = 0;
 
 // Real Stripe price IDs (same as dashboard). Monthly trial is the paywall default.
-var PW_PRICE_MONTHLY = 'price_1Tgkjt2MZ73Stw013w4czf7Z';
 var lastAnalyzedName = null;   // set when a free user analyses something, for contextual copy
 
 // Fire Stripe checkout straight from the paywall — no redirect to the pricing page.
-async function pwCheckout(btn){
-  if(!currentUser){ window.location.href = '/auth.html'; return; }
-  var orig = btn.textContent;
-  btn.disabled = true; btn.textContent = 'Loading\u2026';
-  try{
-    var res = await fetch('/api/create-checkout', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ priceId: PW_PRICE_MONTHLY, mode:'subscription', email: (currentUser && currentUser.email) || undefined })
-    });
-    var data = await res.json();
-    if(data.url){ window.location.href = data.url; }
-    else { btn.disabled=false; btn.textContent=orig; alert('Checkout error: ' + (data.error||'Please try again')); }
-  } catch(e){ btn.disabled=false; btn.textContent=orig; alert('Could not start checkout. Please try again.'); }
+function pwCheckout(btn){
+  // Verified server-side from the session token; signed-out users sign up first (TX.checkout remembers the plan).
+  TX.checkout('monthly', btn, function () { return sb.auth.getSession().then(function (r) { return r && r.data && r.data.session && r.data.session.access_token; }); });
 }
 
 var WC_KEY = 'sx_seen_welcome_v1';

@@ -4,6 +4,7 @@
 // SUPABASE_SERVICE_ROLE_KEY in Vercel environment variables
 
 import crypto from 'node:crypto';
+import { eventAction, findUserByEmail } from './_lib/billing.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -179,107 +180,46 @@ export default async function handler(req, res) {
 
   console.log('Stripe event received:', event.type);
 
-  // ── Handle subscription/payment success ──────────────
-  if (
-    event.type === 'checkout.session.completed' ||
-    event.type === 'customer.subscription.created' ||
-    event.type === 'customer.subscription.updated' ||
-    event.type === 'invoice.payment_succeeded'
-  ) {
-    const obj = event.data.object;
-    const customerEmail = obj.customer_email || (obj.customer_details && obj.customer_details.email);
-    const mode = obj.mode; // 'subscription' or 'payment' (only present on checkout.session)
-    const status = mode === 'payment' ? 'lifetime' : 'pro';
-
-    if (customerEmail) {
-      try {
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-        if (supabaseUrl && supabaseServiceKey) {
-          const userRes = await fetch(
-            `${supabaseUrl}/auth/v1/admin/users?email=${encodeURIComponent(customerEmail)}`,
-            {
-              headers: {
-                apikey: supabaseServiceKey,
-                Authorization: `Bearer ${supabaseServiceKey}`,
-              },
-            }
-          );
-          const userData = await userRes.json();
-
-          if (userData.users && userData.users.length > 0) {
-            const userId = userData.users[0].id;
-            await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
-              method: 'PUT',
-              headers: {
-                apikey: supabaseServiceKey,
-                Authorization: `Bearer ${supabaseServiceKey}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                app_metadata: { subscription: status, stripe_customer: obj.customer },
-              }),
-            });
-            console.log(`Updated ${customerEmail} -> ${status}`);
-
-            // Referral reward: if this user was referred and this is their
-            // first time becoming Pro/Lifetime, credit both accounts.
-            if (status === 'pro' || status === 'lifetime') {
-              await processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, userId, obj.customer);
-            }
-          } else {
-            console.log(`No Supabase user found for ${customerEmail}`);
-          }
-        }
-      } catch (e) {
-        console.error('Supabase update error:', e.message);
-      }
-    }
-  }
-
-  // ── Handle cancellations ──────────────────────────────
-  if (event.type === 'customer.subscription.deleted') {
-    const sub = event.data.object;
-    console.log('Subscription cancelled:', sub.id);
+  // ── Work out which account this event is about, and what it should become ──
+  // The account comes from the id we attached at checkout (client_reference_id / subscription metadata). Older
+  // subscriptions without it fall back to an exact email match (never "the first user in the list").
+  const action = eventAction(event);
+  if (action) {
+    const supabaseUrl = process.env.SUPABASE_URL, supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const svc = { apikey: supabaseServiceKey, Authorization: `Bearer ${supabaseServiceKey}` };
     try {
-      const supabaseUrl = process.env.SUPABASE_URL;
-      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      if (secretKey && supabaseUrl && supabaseServiceKey && sub.customer) {
-        // Resolve the customer's email via Stripe, then downgrade that user.
-        const custRes = await fetch('https://api.stripe.com/v1/customers/' + sub.customer, {
-          headers: { Authorization: 'Bearer ' + secretKey },
-        });
-        const cust = await custRes.json();
-        const email = cust && cust.email;
-        if (email) {
-          const userRes = await fetch(
-            supabaseUrl + '/auth/v1/admin/users?email=' + encodeURIComponent(email),
-            { headers: { apikey: supabaseServiceKey, Authorization: 'Bearer ' + supabaseServiceKey } }
-          );
-          const userData = await userRes.json();
-          if (userData.users && userData.users.length > 0) {
-            const u = userData.users[0];
-            const current = u.app_metadata && u.app_metadata.subscription;
-            if (current !== 'lifetime') {
-              await fetch(supabaseUrl + '/auth/v1/admin/users/' + u.id, {
-                method: 'PUT',
-                headers: {
-                  apikey: supabaseServiceKey,
-                  Authorization: 'Bearer ' + supabaseServiceKey,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  app_metadata: { subscription: 'free', stripe_customer: sub.customer },
-                }),
-              });
-              console.log('Downgraded ' + email + ' -> free');
-            }
+      if (!supabaseUrl || !supabaseServiceKey) throw new Error('Supabase not configured');
+      let userId = action.userId;
+      if (!userId) {
+        let email = action.email;
+        if (!email && action.customerId && secretKey) {
+          const cust = await (await fetch('https://api.stripe.com/v1/customers/' + action.customerId, { headers: { Authorization: 'Bearer ' + secretKey } })).json();
+          email = cust && cust.email;
+        }
+        const found = email ? await findUserByEmail(email, { url: supabaseUrl, key: supabaseServiceKey }) : null;
+        userId = found && found.id;
+      }
+      if (!userId) { console.log(`No TimingAX account for ${event.type} (${action.customerId || 'no customer'})`); }
+      else {
+        const ur = await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, { headers: svc });
+        const user = ur.ok ? await ur.json() : null;
+        const current = user && user.app_metadata && user.app_metadata.subscription;
+        if (!user) console.log(`Account ${userId} not found`);
+        else if (action.status === 'free' && current === 'lifetime') console.log(`Kept lifetime for ${userId}`);
+        else {
+          await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
+            method: 'PUT', headers: { ...svc, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ app_metadata: { subscription: action.status, stripe_customer: action.customerId || (user.app_metadata && user.app_metadata.stripe_customer) || null } }),
+          });
+          console.log(`Updated ${userId} -> ${action.status}`);
+          // Referral reward: credit both accounts once, when a referred user first becomes paying.
+          if (action.status === 'pro' || action.status === 'lifetime') {
+            await processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, userId, action.customerId);
           }
         }
       }
     } catch (e) {
-      console.error('Downgrade error:', e.message);
+      console.error('Account update error:', e.message);
     }
   }
 

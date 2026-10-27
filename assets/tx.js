@@ -172,10 +172,34 @@
     document.addEventListener('click', function (e) { if (!e.target.closest('.tx-search')) close(); });
   }
 
+  // Upgrade: start Stripe Checkout for a plan ('monthly' | 'annual') as the signed-in user. The server verifies the
+  // session token; signed-out visitors sign up first and the dashboard resumes checkout for the remembered plan.
+  var SB_TOKEN_KEY = 'sb-hqbxonheaeespnrlhkys-auth-token';
+  function storedToken() {
+    try { var s = JSON.parse(localStorage.getItem(SB_TOKEN_KEY) || 'null'); if (s && s.access_token && (!s.expires_at || s.expires_at * 1000 > Date.now() + 60000)) return s.access_token; } catch (e) {}
+    return null;
+  }
+  function remember(plan) { try { localStorage.setItem('tx_pending_plan', plan); } catch (e) {} }
+  function checkout(plan, btn, getToken) {
+    var orig = btn && btn.textContent;
+    if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+    var restore = function () { if (btn) { btn.disabled = false; btn.textContent = orig; } };
+    Promise.resolve(getToken ? getToken() : storedToken()).then(function (token) {
+      if (!token) { remember(plan); location.href = '/auth.html?tab=up'; return; }
+      return fetch('/api/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ plan: plan }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.url) { try { localStorage.removeItem('tx_pending_plan'); } catch (e) {} location.href = d.url; return; }
+          if (d.signIn) { remember(plan); location.href = '/auth.html?tab=up'; return; }
+          restore(); alert(d.error || 'Checkout could not start. Please try again.');
+        });
+    }).catch(function () { restore(); alert('Could not start checkout. Please try again.'); });
+  }
+
   function init() { initMenu(); initTicker(); fillSeasonal(); initSearch(); }
 
   w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, fetchVerified: fetchVerified, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER,
-    seasonalValue: seasonalValue, fillSeasonal: fillSeasonal };
+    seasonalValue: seasonalValue, fillSeasonal: fillSeasonal, checkout: checkout };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })(window);
