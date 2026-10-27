@@ -79,7 +79,9 @@ function fallbackImage() {
   );
 }
 
-export default async function handler(req) {
+// Named GET export: Vercel treats it as Web-style (Request in, Response out). A default export would be called as
+// (req, res) and the returned Response never sent, so the request hung until it timed out (504).
+export async function GET(req) {
   let id = '';
   try {
     const url = new URL(req.url, 'https://www.timingax.co.uk');
