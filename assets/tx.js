@@ -66,16 +66,61 @@
     }).join('');
   }
 
+  // Real quotes, refreshed every minute while the page is visible. A price that changed since the last refresh
+  // flashes green/red; nothing flashes if it didn't. The label shows when the quotes were last fetched (exchanges
+  // may delay some quotes, so it never says "live").
+  var lastPx = {};
   function initTicker() {
     var track = document.getElementById('ttrack');
     if (!track || track.getAttribute('data-ready')) return;
     track.setAttribute('data-ready', '1');
-    var paint = function (q) { var h = tickerHtml(q); track.innerHTML = h + h; };
-    paint(null);
-    fetch('/api/prices?quotes=' + TICKER.map(encodeURIComponent).join(','))
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) { if (d && d.quotes && d.quotes.length >= 4) paint(d.quotes); })
-      .catch(function () {});
+    var tape = track.parentNode, label = tape.querySelector('.tx-ticker__live');
+    if (!label) { label = document.createElement('div'); label.className = 'tx-ticker__live'; label.innerHTML = '<i aria-hidden="true"></i><span></span>'; tape.insertBefore(label, track); }
+    var paint = function (q) {
+      var h = tickerHtml(q); track.innerHTML = h + h;
+      if (!q) return;
+      var changed = {};
+      q.forEach(function (x) { var p = lastPx[x.symbol]; if (p != null && x.close != null && x.close !== p) changed[x.symbol] = x.close > p ? 'tx-flash-up' : 'tx-flash-down'; lastPx[x.symbol] = x.close; });
+      [].forEach.call(track.children, function (el, k) { var sym = q[k % q.length].symbol; if (changed[sym]) el.classList.add(changed[sym]); });
+      var t = new Date(); label.querySelector('span').textContent = 'Updated ' + t.getHours() + ':' + ('0' + t.getMinutes()).slice(-2);
+      label.title = 'Quotes refresh every minute; some exchanges delay their prices.';
+    };
+    var load = function () {
+      return fetch('/api/prices?quotes=' + TICKER.map(encodeURIComponent).join(','))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d && d.quotes && d.quotes.length >= 4) paint(d.quotes); })
+        .catch(function () {});
+    };
+    paint(null); load();
+    setInterval(function () { if (!document.hidden) load(); }, 60000);
+  }
+
+  // Blocks fade/slide in as they scroll into view; charts grow and lines draw (CSS keyframes, gated on js-motion).
+  function initMotion() {
+    var reduce = w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in w)) return;
+    document.documentElement.classList.add('js-motion');
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    var sel = 'main .tx-term, main .tx-card, main .tx-statbar, main .tx-table, main section > h2, main .hub-links, main .mp-months, [data-anim], ' +
+      // signed-in app (dashboard, analyzer)
+      '.page .welcome, .page .overview, .page .seasonal-ribbon, .page .tool-card, .page .bt-panel, .page .chart-panel, .page .bt-stats, .page .ai-panel, .page .kpi-rail, .page .term-chartwrap, .page .sc-row, .page .wl-row, .page .pf-bd-row';
+    var tag = function (root) {
+      [].forEach.call((root || document).querySelectorAll(sel), function (el) {
+        if (el.hasAttribute('data-anim-done') || (el.parentElement && el.parentElement.closest('[data-anim]'))) return;   // animate the outer block only
+        el.setAttribute('data-anim-done', ''); el.setAttribute('data-anim', ''); io.observe(el);
+      });
+    };
+    tag();
+    // Content rendered later (an analysis, a hub panel) is tagged as it appears.
+    var queued = false;   // batch: at most one re-scan per frame however much the page changes
+    if ('MutationObserver' in w) new MutationObserver(function () {
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () { queued = false; tag(); });
+    }).observe(document.body, { childList: true, subtree: true });
+    // Safety net: anything still hidden after 2.5s (e.g. inside a scroll container) is shown.
+    setTimeout(function () { [].forEach.call(document.querySelectorAll('[data-anim]:not(.is-in)'), function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight) el.classList.add('is-in'); }); }, 2500);
   }
 
   // One figure from an /api/v1/seasonality body. spec: { month: 'Sep', field, dp } or
@@ -196,7 +241,7 @@
     }).catch(function () { restore(); alert('Could not start checkout. Please try again.'); });
   }
 
-  function init() { initMenu(); initTicker(); fillSeasonal(); initSearch(); }
+  function init() { initMotion(); initMenu(); initTicker(); fillSeasonal(); initSearch(); }
 
   w.TX = { fmtPct: fmtPct, verdict: verdict, fetchSeasonality: fetchSeasonality, fetchVerified: fetchVerified, initMenu: initMenu, tickerHtml: tickerHtml, initTicker: initTicker, tickerSymbols: TICKER,
     seasonalValue: seasonalValue, fillSeasonal: fillSeasonal, checkout: checkout };

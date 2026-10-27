@@ -245,6 +245,11 @@ body.is-pro .tool-card.pro-locked{opacity:1}
       <div class="tb-clock" id="tbClock"></div>
       <div class="market-status" id="mktStatus"></div>
     </div>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
     <div class="tx-app-actions">
       <div class="user-pill" id="userPill">Loading...</div>
       <button class="tx-btn tx-btn--ghost tx-btn--sm" onclick="openSettings()" title="Account settings">&#9881; Account</button>
@@ -355,6 +360,12 @@ body.is-pro .tool-card.pro-locked{opacity:1}
           <div class="tc-name">Event Studies</div>
           <div class="tc-desc">Fed rate cuts and hikes, US elections and Bitcoin halvings &#8212; how markets moved before and after each, from real prices.</div>
           <div class="tc-footer"><span class="tc-stat">Live data</span><span class="tc-arr">&#8599;</span></div>
+        </a>
+        <a href="/seasonality.html" class="tool-card">
+          <div class="tc-top"><div class="tc-icon" style="background:rgba(232,147,24,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" stroke="#E89318" stroke-width="1.7"/><path d="m20 20-3.5-3.5" stroke="#E89318" stroke-width="1.7"/></svg></div><div class="tc-num">New</div></div>
+          <div class="tc-name">Asset pages</div>
+          <div class="tc-desc">Any asset in depth: 20-year price history, every year for any month, month vs month, and a page for each month.</div>
+          <div class="tc-footer"><span class="tc-stat">700+ assets</span><span class="tc-arr">&#8599;</span></div>
         </a>
         <a href="/track-record.html" class="tool-card">
           <div class="tc-top"><div class="tc-icon" style="background:rgba(0,201,126,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="#00C97E" stroke-width="1.7"/><path d="M7.5 14.8l3-3.4 2.4 2 3.6-4.4" stroke="#00C97E" stroke-width="1.7"/><path d="M14 9h2.5v2.5" stroke="#E89318" stroke-width="1.7"/></svg></div><div style="text-align:right"><div class="tc-num">04</div></div></div>

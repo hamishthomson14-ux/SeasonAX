@@ -38,7 +38,7 @@
           '<div><span class="tx-label">Lowest month-end close</span><b>' + price(s.low.c) + '</b><small>' + ym(s.low.ym) + '</small></div>' +
         '</div>' +
         '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" data-scale="' + (log ? 'log' : 'linear') + '" role="img" aria-label="' + name + ' monthly closing price, ' + ym(s.from) + ' to ' + ym(s.to) + (log ? ', log scale' : '') + '">' + grid +
-          '<path d="' + path + '" fill="none" stroke="#E89318" stroke-width="2"/>' +
+          '<path d="' + path + '" pathLength="1" class="tx-line" fill="none" stroke="#E89318" stroke-width="2"/>' +
           '<text x="' + (P + 18) + '" y="' + (H - 10) + '" font-size="11" fill="#6B819A">' + ym(s.from) + '</text>' +
           '<text x="' + (W - P) + '" y="' + (H - 10) + '" font-size="11" fill="#6B819A" text-anchor="end">' + ym(s.to) + '</text>' +
         '</svg>' +

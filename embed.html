@@ -24,6 +24,12 @@ html, body { margin: 0; background: var(--bg); color: var(--t1); font: 14px/1.5 
 .foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--b); padding-top: 8px; font-size: 11.5px; color: var(--t3); }
 .foot a { color: var(--amber); text-decoration: none; font-weight: 600; }
 .msg { color: var(--t2); margin: 18px 0; }
+@keyframes grow { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.bar i { transform-origin: bottom; animation: grow .8s cubic-bezier(.2,.7,.2,1) both; }
+.bar:nth-child(n) i { animation-delay: calc(var(--k, 0) * 40ms); }
+.big, .line { animation: rise .6s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .bar i, .big, .line { animation: none; } }
 @media (max-width: 420px) { .bar b { font-size: 8.5px; } .bars { gap: 2px; } }
 </style>
 </head>
@@ -57,7 +63,7 @@ html, body { margin: 0; background: var(--bg); color: var(--t1); font: 14px/1.5 
     } else {
       var mx = Math.max.apply(null, d.months.map(function (x) { return Math.abs(x.avgReturn); }).concat([0.1]));
       box.innerHTML = head + '<div class="sub">Average return by month</div><div class="bars">' + d.months.map(function (x, k) {
-        return '<div class="bar" data-month="' + k + '" title="' + MO[k] + ': ' + pct(x.avgReturn) + ', up in ' + x.winRate + '% of years"><b style="color:' + col(x.avgReturn) + '"' + at(k) + ' data-tx-field="avg">' + pct(x.avgReturn) + '</b>' +
+        return '<div class="bar" style="--k:' + k + '" data-month="' + k + '" title="' + MO[k] + ': ' + pct(x.avgReturn) + ', up in ' + x.winRate + '% of years"><b style="color:' + col(x.avgReturn) + '"' + at(k) + ' data-tx-field="avg">' + pct(x.avgReturn) + '</b>' +
           '<i style="height:' + Math.max(3, Math.abs(x.avgReturn) / mx * 100).toFixed(0) + '%;background:' + col(x.avgReturn) + '"></i><span>' + AB[k].charAt(0) + '</span></div>';
       }).join('') + '</div>' + foot;
     }
