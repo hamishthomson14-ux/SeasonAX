@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>TimingAX seasonality embed</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root { --bg: #04070F; --card: #0A1220; --b: #162540; --t1: #EDF2FA; --t2: #B4C3D6; --t3: #8FA3B8; --up: #22C58B; --down: #F04F5F; --amber: #F5A52F; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--t1); font: 14px/1.5 Inter, system-ui, sans-serif; }
+.e { border: 1px solid var(--b); border-radius: 12px; background: var(--card); padding: 14px 16px 10px; min-height: 100vh; display: flex; flex-direction: column; }
+.e h1 { margin: 0; font-size: 15px; font-weight: 600; }
+.e h1 span { color: var(--t3); font-weight: 500; }
+.sub { color: var(--t3); font: 500 11px 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+.bars { flex: 1; display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; align-items: end; margin: 12px 0 6px; min-height: 150px; }
+.bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.bar i { display: block; width: 100%; max-width: 30px; border-radius: 3px; opacity: .9; }
+.bar b { font: 500 10px 'IBM Plex Mono', monospace; margin-bottom: 3px; white-space: nowrap; }
+.bar span { font: 500 10px 'IBM Plex Mono', monospace; color: var(--t3); margin-top: 4px; }
+.big { font: 600 36px 'IBM Plex Mono', monospace; margin: 14px 0 4px; }
+.line { color: var(--t2); margin: 0 0 8px; }
+.foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--b); padding-top: 8px; font-size: 11.5px; color: var(--t3); }
+.foot a { color: var(--amber); text-decoration: none; font-weight: 600; }
+.msg { color: var(--t2); margin: 18px 0; }
+@media (max-width: 420px) { .bar b { font-size: 8.5px; } .bars { gap: 2px; } }
+</style>
+</head>
+<body data-state="loading">
+<div class="e" id="e"><p class="msg">Loading real price data&hellip;</p></div>
+<script>
+// Embeddable seasonality card: ?id=<asset>[&m=1..12]. Real prices only, via /api/v1/seasonality.
+(function () {
+  var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var AB = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var q = new URLSearchParams(location.search), id = (q.get('id') || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''), m = parseInt(q.get('m'), 10);
+  var box = document.getElementById('e'), site = 'https://www.timingax.co.uk';
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+  var pct = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%'; };
+  var col = function (v) { return v >= 0 ? 'var(--up)' : 'var(--down)'; };
+  function fail(msg) {
+    box.innerHTML = '<p class="msg">' + msg + '</p><div class="foot"><span>Seasonality data</span><a href="' + site + '/seasonality.html" target="_blank" rel="noopener">TimingAX &rarr;</a></div>';
+    document.body.dataset.state = 'error';
+  }
+  if (!id) return fail('No asset chosen.');
+  fetch('/api/v1/seasonality?id=' + encodeURIComponent(id)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (d) {
+    if (!d || d.source !== 'verified') return fail('No verified price history for this asset, so no figures are shown.');
+    var url = site + '/seasonality/' + encodeURIComponent(d.id), at = function (k) { return ' data-tx-sid="' + esc(d.id) + '" data-tx-month="' + AB[k] + '"'; };
+    var head = '<h1>' + esc(d.name) + ' <span>' + esc(String(d.ticker).replace(/^\^/, '')) + '</span></h1>';
+    var foot = '<div class="foot"><span>Up to ' + d.years + ' years of real prices &middot; history, not a forecast</span><a href="' + url + '" target="_blank" rel="noopener">Data: TimingAX &rarr;</a></div>';
+    if (m >= 1 && m <= 12) {
+      var x = d.months[m - 1];
+      box.innerHTML = head + '<div class="sub">' + MO[m - 1] + ' &middot; average return</div>' +
+        '<div class="big" style="color:' + col(x.avgReturn) + '"' + at(m - 1) + ' data-tx-field="avg">' + pct(x.avgReturn) + '</div>' +
+        '<p class="line">Rose in <b' + at(m - 1) + ' data-tx-field="win">' + x.winRate + '%</b> of the last ' + x.observations + ' ' + MO[m - 1] + 's.</p>' + foot;
+    } else {
+      var mx = Math.max.apply(null, d.months.map(function (x) { return Math.abs(x.avgReturn); }).concat([0.1]));
+      box.innerHTML = head + '<div class="sub">Average return by month</div><div class="bars">' + d.months.map(function (x, k) {
+        return '<div class="bar" data-month="' + k + '" title="' + MO[k] + ': ' + pct(x.avgReturn) + ', up in ' + x.winRate + '% of years"><b style="color:' + col(x.avgReturn) + '"' + at(k) + ' data-tx-field="avg">' + pct(x.avgReturn) + '</b>' +
+          '<i style="height:' + Math.max(3, Math.abs(x.avgReturn) / mx * 100).toFixed(0) + '%;background:' + col(x.avgReturn) + '"></i><span>' + AB[k].charAt(0) + '</span></div>';
+      }).join('') + '</div>' + foot;
+    }
+    document.body.dataset.state = 'done';
+  });
+})();
+</script>
+</body>
+</html>

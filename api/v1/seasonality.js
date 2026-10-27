@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history or leaderboard.' });
   if (view === 'events') {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
@@ -161,17 +161,20 @@ export default async function handler(req, res) {
     const mq = String(req.query.month || '');
     if (!/^(?:[1-9]|1[0-2])$/.test(mq)) return res.status(400).json({ error: 'month must be 1-12' });
     const mi = +mq - 1;
+    const yq = req.query.years;
+    if (yq != null && !/^(?:[1-9]|1\d|20)$/.test(String(yq))) return res.status(400).json({ error: 'years must be 1-20' });
+    const span = yq != null ? +yq : 15;
     let h = null;
     try {
       const [mrows, drows] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchDaily(yahooSymbol(item))]);
-      h = mrows && computeMonthHistory(mrows, drows, { month: mi, now: new Date() });
+      h = mrows && computeMonthHistory(mrows, drows, { month: mi, now: new Date(), years: span });
     } catch (e) { h = null; }
     if (!h) return res.status(404).json({ error: 'unavailable', hint: 'Needs real price history (never modelled).' });
     const fed = EVENTS_HISTORY.types.filter((t) => t.id === 'fed-cut' || t.id === 'fed-hike')
       .flatMap((t) => t.events.filter((e) => +e.date.slice(5, 7) - 1 === mi).map((e) => ({ date: e.date, dir: t.id === 'fed-cut' ? 'cut' : 'hike', bp: e.bp, level: e.level })))
       .sort((a, b) => (a.date < b.date ? 1 : -1));
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
-    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'month', month: MONTH_NAMES[mi], ...h,
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'month', month: MONTH_NAMES[mi], yearsRequested: span, ...h,
       fed, fedSource: 'https://www.federalreserve.gov/monetarypolicy/openmarket.htm',
       method: 'Monthly: last close to last close, same window and rules as the seasonal averages. Daily: close to close. Fed: dates the target change took effect, since October 2006.',
       generatedAt: new Date().toISOString() });
@@ -200,6 +203,16 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).json({ source: 'verified', view: 'pair', a: side(item, p.a), b: side(other, p.b), seasonal: p.seasonal, returns: p.returns,
       method: 'Seasonal correlation: Pearson correlation of the two assets\' 12 monthly average returns. Monthly-return correlation: Pearson correlation of their actual monthly returns over the completed months they share in the last 15 calendar years.',
+      generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=history — monthly closes (up to 20 years) with total and annualised return; real data only ──
+  if (view === 'history') {
+    let h = null;
+    try { h = computePriceHistory(await fetchMonthly(yahooSymbol(item))); } catch (e) { h = null; }
+    if (!h) return res.status(404).json({ error: 'unavailable', hint: 'Needs real price history (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'history', ...h,
+      method: 'Last close of each calendar month (Yahoo Finance; adjusted closes where Yahoo provides them). Annualised return compounds over the months between the first and last close.',
       generatedAt: new Date().toISOString() });
   }
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──

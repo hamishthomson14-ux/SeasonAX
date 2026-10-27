@@ -81,6 +81,11 @@ export default async function handler(req, res) {
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>
     </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
     <div class="tx-header__actions">
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
@@ -312,6 +317,11 @@ export default async function handler(req, res) {
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>
     </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
     <div class="tx-header__actions">
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
@@ -346,6 +356,23 @@ export default async function handler(req, res) {
     </div>
   </div>` : ''}
 
+  <section id="hub" class="hub" data-id="${esc(id)}" data-name="${esc(item.name)}" aria-label="${esc(item.name)} history and monthly analysis">
+    <div class="tx-term"><div class="tx-term__head"><span class="tx-term__title">${esc(item.name)} · Price history</span><span class="tx-term__status">Up to 20 years</span></div>
+      <div class="hub-body" id="hubHistory"><p class="tx-muted">Loading real price history…</p></div></div>
+    <div class="tx-term" id="hubMonth"><div class="tx-term__head"><span class="tx-term__title">Month in review</span>
+      <label class="hub-pick"><span class="tx-label">Month</span><select id="hubMonthSel" aria-label="Month to review"></select></label></div>
+      <div class="hub-body"><p class="hub-sum" id="hubMonthSummary"></p><div class="hub-cols" id="hubMonthBody"></div></div></div>
+    <div class="tx-term" id="hubVs"><div class="tx-term__head"><span class="tx-term__title">Month vs month</span>
+      <span class="hub-pick"><select id="hubVsA" aria-label="First month"></select><span class="tx-muted">vs</span><select id="hubVsB" aria-label="Second month"></select></span></div>
+      <div class="hub-body"><p class="hub-sum" id="hubVsSummary"></p><div class="hub-scroll"><table class="tx-table"><thead></thead><tbody></tbody></table></div></div></div>
+    <p class="hub-links"><a href="/compare.html">Compare ${esc(dt)} with another asset &rarr;</a> <a href="/market-seasonality.html">Backtest it in the analyzer &rarr;</a> <a href="/this-day.html">This day in markets &rarr;</a></p>
+    <details class="hub-embed"><summary>Embed this chart on your site</summary>
+      <p class="tx-muted" style="margin:10px 0 8px">Live ${esc(dt)} seasonality, updated from real prices, with a link back to this page. Add <code>&amp;m=9</code> to the address for a single month (1&ndash;12).</p>
+      <textarea id="embedCode" readonly rows="3" onclick="this.select()">&lt;iframe src=&quot;https://www.timingax.co.uk/embed.html?id=${esc(id)}&quot; width=&quot;100%&quot; height=&quot;320&quot; style=&quot;border:0;max-width:640px&quot; title=&quot;${esc(item.name)} seasonality &mdash; TimingAX&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;</textarea>
+      <button class="tx-btn tx-btn--sm" type="button" onclick="var t=document.getElementById('embedCode');t.select();navigator.clipboard&amp;&amp;navigator.clipboard.writeText(t.value);this.textContent='Copied'">Copy code</button>
+    </details>
+  </section>
+
   <div class="tx-card a-table" style="padding:6px 6px 0">
     <table class="tx-table">
       <thead><tr><th>Month</th><th class="r">Avg return</th><th class="r">Win rate</th></tr></thead>
@@ -373,6 +400,7 @@ export default async function handler(req, res) {
 
   ${related.length ? `<div class="a-rel"><span class="tx-label">Related: ${esc(item.catSection || '')}</span><div style="margin-top:12px">${relatedLinks}</div></div>` : ''}
 
+  <script src="/assets/hub.js" defer></script>
   <p class="tx-note a-disc">TimingAX is an independently operated service, not a registered investment adviser. This page is for informational purposes only and is not financial advice.</p>
 </main>
 <!-- tx:footer -->
@@ -481,6 +509,11 @@ function notAvailable(res, { title, eyebrow, msg, cta }) {
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>
     </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
     <div class="tx-header__actions">
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
@@ -641,6 +674,11 @@ async function compareHandler(req, res) {
       <a href="/#pricing">Pricing</a>
       <a href="/about.html">About</a>
     </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
     <div class="tx-header__actions">
       <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
       <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>

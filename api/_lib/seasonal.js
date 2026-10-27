@@ -362,8 +362,8 @@ export function computeEventStudy(rows, dates) {
 // "This month in history": every year's return for one calendar month over the same window and rules as
 // computeMonths (last close to last close, years from now-15, moves over 95% excluded), newest first, plus the
 // biggest daily moves inside that month from daily closes. month is 0-11.
-export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new Date() } = {}) {
-  const from = now.getUTCFullYear() - 15, r2 = (v) => Math.round(v * 100) / 100;
+export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new Date(), years: span = 15 } = {}) {
+  const from = now.getUTCFullYear() - span, r2 = (v) => Math.round(v * 100) / 100;
   const years = [];
   for (let i = 1; i < monthlyRows.length; i++) {
     const prev = monthlyRows[i - 1], cur = monthlyRows[i];
@@ -467,5 +467,22 @@ export function computePairStats(rowsA, rowsB, { now = new Date() } = {}) {
     a: A, b: B,
     seasonal: pear(A.months.map((m) => m.avg), B.months.map((m) => m.avg)),
     returns: keys.length >= 24 ? { r: pear(keys.map((k) => ra.get(k)), keys.map((k) => rb.get(k))), n: keys.length, from: keys[0], to: keys[keys.length - 1] } : null,
+  };
+}
+
+// Monthly closing prices as [['YYYY-MM', close], ...] with total and annualised return from the first to the last close.
+export function computePriceHistory(monthlyRows) {
+  if (!monthlyRows || monthlyRows.length < 2) return null;
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const points = monthlyRows.filter((r) => isFinite(r.c) && r.c > 0).map((r) => [r.d.slice(0, 7), r.c]);
+  if (points.length < 2) return null;
+  const [f, l] = [points[0], points[points.length - 1]];
+  const months = (+l[0].slice(0, 4) - +f[0].slice(0, 4)) * 12 + (+l[0].slice(5, 7) - +f[0].slice(5, 7));
+  const hi = points.reduce((a, b) => (b[1] > a[1] ? b : a)), lo = points.reduce((a, b) => (b[1] < a[1] ? b : a));
+  return {
+    points,
+    summary: { from: f[0], to: l[0], first: f[1], last: l[1], total: r2((l[1] / f[1] - 1) * 100),
+      cagr: months >= 12 ? r2((Math.pow(l[1] / f[1], 12 / months) - 1) * 100) : null,
+      high: { ym: hi[0], c: hi[1] }, low: { ym: lo[0], c: lo[1] } },
   };
 }
