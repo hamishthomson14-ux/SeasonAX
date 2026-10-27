@@ -9,4 +9,7 @@
   <sitemap>
     <loc>https://www.timingax.co.uk/sitemap-compare.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://www.timingax.co.uk/sitemap-months.xml</loc>
+  </sitemap>
 </sitemapindex>
