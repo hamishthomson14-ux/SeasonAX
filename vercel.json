@@ -7,6 +7,10 @@
   ],
   "rewrites": [
     {
+      "source": "/seasonality/:id/:month",
+      "destination": "/api/seasonality/:id?view=month&month=:month"
+    },
+    {
       "source": "/seasonality/:id",
       "destination": "/api/seasonality/:id"
     },

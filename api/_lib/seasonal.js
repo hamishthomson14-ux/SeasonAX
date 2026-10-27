@@ -68,13 +68,15 @@ export function computeAdaptiveMonths(rows, yearsWanted = 15) {
 // server-side/datacenter requests with a JS challenge page.)
 const YAHOO_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 const YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+// A stalled request must not hang the page or API until the platform's 60s limit: give up and try the next host.
+const FETCH_TIMEOUT_MS = +(process.env.TX_FETCH_TIMEOUT_MS || 12000);
 
 export async function fetchMonthly(sym) {
   for (const host of YAHOO_HOSTS) {
     const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
     let json = null;
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
+      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
       json = await r.json();
     } catch (e) {
       continue;
@@ -123,7 +125,7 @@ export async function fetchDaily(sym) {
     const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
     let json = null;
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' } });
+      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
       json = await r.json();
     } catch (e) { continue; }
     const result = json && json.chart && json.chart.result && json.chart.result[0];

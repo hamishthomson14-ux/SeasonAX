@@ -65,6 +65,7 @@
           d.years.map(function (y) { return bar('data-year="' + y.year + '"', y.year + (y.partial ? ' (so far)' : ''), y.ret, mx); }).join('') + '</div>' +
           '<div class="hub-col"><h3 class="tx-label">Biggest daily moves in ' + MO[m] + '</h3>' +
           (days.length ? days.map(function (x) { var t = new Date(x.date + 'T00:00:00Z'); return bar('data-date="' + x.date + '"', t.getUTCDate() + ' ' + AB[t.getUTCMonth()] + ' ' + t.getUTCFullYear(), x.ret, mxd); }).join('') : '<p class="tx-muted">No daily price history for this window.</p>') + '</div>';
+        var link = $('hubMonthLink'); if (link) { link.href = '/seasonality/' + id + '/' + MO[m].toLowerCase(); link.textContent = 'Open the full ' + name + ' in ' + MO[m] + ' page \u2192'; }
         box.dataset.state = 'done';
       });
     }

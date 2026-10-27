@@ -7,7 +7,7 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { yahooSymbol, computeAdaptiveMonths, bestWorst, fetchMonthly, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import { yahooSymbol, computeAdaptiveMonths, bestWorst, fetchMonthly, fetchDaily, computeMonthHistory, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
@@ -51,6 +51,7 @@ function relatedAssets(item) {
 
 export default async function handler(req, res) {
   if (req.query.view === 'compare') return compareHandler(req, res);
+  if (req.query.view === 'month') return monthHandler(req, res);
   const id = String(req.query.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''); // 14 catalogue ids contain _ (bp_uk)
   const item = BY_ID[id];
 
@@ -361,7 +362,7 @@ export default async function handler(req, res) {
       <div class="hub-body" id="hubHistory"><p class="tx-muted">Loading real price history…</p></div></div>
     <div class="tx-term" id="hubMonth"><div class="tx-term__head"><span class="tx-term__title">Month in review</span>
       <label class="hub-pick"><span class="tx-label">Month</span><select id="hubMonthSel" aria-label="Month to review"></select></label></div>
-      <div class="hub-body"><p class="hub-sum" id="hubMonthSummary"></p><div class="hub-cols" id="hubMonthBody"></div></div></div>
+      <div class="hub-body"><p class="hub-sum" id="hubMonthSummary"></p><div class="hub-cols" id="hubMonthBody"></div><p style="margin:14px 0 0"><a id="hubMonthLink" href="/seasonality/${esc(id)}/${MONTH_NAMES[cm].toLowerCase()}">Open the full month page &rarr;</a></p></div></div>
     <div class="tx-term" id="hubVs"><div class="tx-term__head"><span class="tx-term__title">Month vs month</span>
       <span class="hub-pick"><select id="hubVsA" aria-label="First month"></select><span class="tx-muted">vs</span><select id="hubVsB" aria-label="Second month"></select></span></div>
       <div class="hub-body"><p class="hub-sum" id="hubVsSummary"></p><div class="hub-scroll"><table class="tx-table"><thead></thead><tbody></tbody></table></div></div></div>
@@ -766,4 +767,168 @@ async function compareHandler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
   res.status(200).send(html);
+}
+
+
+// ── /seasonality/<id>/<month> — one asset in one calendar month: every year (up to 20), biggest days, other months ──
+async function monthHandler(req, res) {
+  const id = String(req.query.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  const mi = MONTH_NAMES.findIndex((m) => m.toLowerCase() === String(req.query.month || '').toLowerCase());
+  const item = BY_ID[id];
+  if (!item || mi < 0) return notAvailable(res, { title: 'Page not found', eyebrow: 'Seasonality', msg: 'We don’t have a page for that asset and month.', cta: ['/seasonality.html', 'Browse assets'] });
+  let real = null, h = null;
+  try {
+    const [mrows, drows] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchDaily(yahooSymbol(item))]);
+    if (mrows) { real = computeAdaptiveMonths(mrows, 15); h = computeMonthHistory(mrows, drows, { month: mi, now: new Date(), years: 20 }); }
+  } catch (e) { real = null; h = null; }
+  if (!real || !h) return notAvailable(res, { title: `${item.name}: no verified price history`, eyebrow: 'Seasonality',
+    msg: `There is no verified price history for ${item.name} (${dispTicker(item)}), and we only show figures computed from real prices.`, cta: ['/seasonality.html', 'Browse assets with real data'] });
+
+  const M = MONTH_NAMES[mi], m = M.toLowerCase(), dt = dispTicker(item), s = h.summary, last = h.years[0];
+  const label = item.name + (dt !== item.name ? ` (${dt})` : '');
+  const url = `https://www.timingax.co.uk/seasonality/${id}/${m}`;
+  const title = `${label} in ${M}: every year since ${s.from} | TimingAX`;
+  const summary = `${item.name} rose in ${s.up} of the last ${s.n} ${M}s (${s.from}–${last.year}${last.partial ? `, counting this ${M} so far` : ''}), averaging ${dpct(s.avg)}. Best: ${s.best.year} ${dpct(s.best.ret)}. Worst: ${s.worst.year} ${dpct(s.worst.ret)}.`;
+  const desc = `${summary} From real closing prices.`;
+  const order = real.months.map((x, i) => ({ i, a: x.avg })).sort((x, y) => y.a - x.a).map((x) => x.i);
+  const rank = order.indexOf(mi) + 1, ord = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+  const at = (k) => ` data-tx-sid="${id}" data-tx-month="${MONTH_ABBR[k]}"`;
+  const mx = Math.max(...h.years.map((y) => Math.abs(y.ret)), 0.01);
+  const yearRows = h.years.map((y) => `<tr data-year="${y.year}"><td>${M} ${y.year}${y.partial ? ' <small class="tx-muted">(so far)</small>' : ''}</td><td class="mp-bar"><i style="width:${(Math.abs(y.ret) / mx * 100).toFixed(0)}%;background:${y.ret >= 0 ? 'var(--tx-up,#22c58b)' : 'var(--tx-down,#f04f5f)'}"></i></td><td class="r tx-num ${y.ret >= 0 ? 'tx-up' : 'tx-down'}" data-k="ret">${dpct(y.ret)}</td></tr>`).join('');
+  const days = [...h.days.up, ...h.days.down];
+  const dayRows = days.map((x) => { const d = new Date(x.date + 'T00:00:00Z'); return `<li data-date="${x.date}"><span>${d.getUTCDate()} ${MONTH_ABBR[d.getUTCMonth()]} ${d.getUTCFullYear()}</span><b class="${x.ret >= 0 ? 'tx-up' : 'tx-down'}">${dpct(x.ret)}</b></li>`; }).join('');
+  const monthLinks = MONTH_NAMES.map((n, k) => `<a href="/seasonality/${id}/${n.toLowerCase()}"${k === mi ? ' aria-current="page"' : ''}><span>${MONTH_ABBR[k]}</span><b class="${real.months[k].avg >= 0 ? 'tx-up' : 'tx-down'}"${at(k)} data-tx-field="avg">${dpct(real.months[k].avg)}</b><small${at(k)} data-tx-field="win">${real.months[k].win}%</small></a>`).join('');
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Data', item: 'https://www.timingax.co.uk/seasonality.html' },
+    { '@type': 'ListItem', position: 2, name: item.name, item: `https://www.timingax.co.uk/seasonality/${id}` },
+    { '@type': 'ListItem', position: 3, name: M, item: url }] };
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  return res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${url}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="https://www.timingax.co.uk/api/og/${id}">
+<meta name="twitter:card" content="summary_large_image">
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+<style>
+.mp{max-width:960px;padding-top:40px;padding-bottom:80px}
+.mp-crumb{font:500 12px var(--tx-font-mono);color:var(--tx-text-3);margin-bottom:18px}.mp-crumb a{color:var(--tx-text-3) !important}
+.mp h1{font:700 clamp(30px,5vw,48px)/1.08 var(--tx-font-ui);letter-spacing:-.03em;margin:12px 0 10px}
+.mp-sum{font-size:18px;line-height:1.6;color:var(--tx-text-1);max-width:70ch;margin:0 0 22px}
+.mp-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+.mp-bar{width:45%}.mp-bar i{display:block;height:10px;border-radius:2px;opacity:.75}
+.mp-days{list-style:none;margin:0;padding:6px 16px 12px}.mp-days li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--tx-border-1);font:500 13.5px var(--tx-font-mono)}
+.mp-months{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:20px}
+.mp-months a{display:flex;flex-direction:column;gap:2px;padding:10px;border:1px solid var(--tx-border-1);border-radius:8px;background:var(--tx-surface-1);color:var(--tx-text-2) !important;font:500 12px var(--tx-font-mono)}
+.mp-months a[aria-current]{border-color:var(--tx-amber-2)}.mp-months b{font-size:14px}
+.mp-note{color:var(--tx-text-3);font-size:13.5px;margin-top:20px}
+@media(max-width:760px){.mp-grid{grid-template-columns:1fr}.mp-months{grid-template-columns:repeat(3,1fr)}.mp-bar{width:35%}}
+</style>
+</head>
+<body class="tx">
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+<main class="tx-wrap mp">
+  <div class="mp-crumb"><a href="/seasonality.html">Data</a> / <a href="/seasonality/${id}">${esc(item.name)}</a> / ${M}</div>
+  <span class="tx-eyebrow">Month in history</span>
+  <h1>${esc(item.name)} in ${M}</h1>
+  <p class="mp-sum" id="mpSummary">${esc(summary)} On the 15-year averages, ${M} is its ${ord(rank)} strongest month.</p>
+  <div class="mp-grid">
+    <div class="tx-term"><div class="tx-term__head"><span class="tx-term__title">Every ${M}</span><span class="tx-term__status">${s.n} years &middot; real prices</span></div>
+      <div style="overflow-x:auto"><table class="tx-table" id="mpYears"><tbody>${yearRows}</tbody></table></div></div>
+    <div class="tx-term"><div class="tx-term__head"><span class="tx-term__title">Biggest days in ${M}</span><span class="tx-term__status">Since ${s.from}</span></div>
+      <ul class="mp-days" id="mpDays">${dayRows || '<li>No daily price history for this window.</li>'}</ul></div>
+  </div>
+  <h2 class="tx-h2" style="font-size:22px;margin-top:36px">${esc(item.name)} in other months</h2>
+  <p class="tx-muted" style="margin:6px 0 0">15-year average return and share of years up, from real monthly closes.</p>
+  <nav class="mp-months" id="mpMonths" aria-label="${esc(item.name)} by month">${monthLinks}</nav>
+  <p class="mp-note">Monthly moves are last close to last close; daily moves are close to close (Yahoo Finance; adjusted closes where Yahoo provides them). History, not a forecast, and not financial advice. <a href="/seasonality/${id}">Full ${esc(item.name)} page &rarr;</a> &middot; <a href="/data.html">Data &amp; methodology</a></p>
+</main>
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+</body></html>`);
 }
