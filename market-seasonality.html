@@ -2575,16 +2575,20 @@ function computeRealMonths(rows, yearsWanted, yearFilterFn, minObs) {
   // minObs: minimum observations per month required (default 5; cycle filters allow fewer)
   minObs = minObs || 5;
   var byMonth = [[],[],[],[],[],[],[],[],[],[],[],[]];
-  var cutoffYear = new Date().getFullYear() - (yearsWanted || 15);
-  for (var i = 1; i < rows.length; i++) {
+  // Same rule as the server (api/_lib/seasonal.js computeMonths): the last `yearsWanted` COMPLETED occurrences of
+  // each month. The month in progress is left out; a year filter then picks from within that window.
+  var current = new Date().toISOString().slice(0, 7), seen = [0,0,0,0,0,0,0,0,0,0,0,0], want = yearsWanted || 15;
+  for (var i = rows.length - 1; i >= 1; i--) {
     var prev = rows[i-1], cur = rows[i];
+    if (cur.d.slice(0, 7) >= current) continue;
     var yr = +cur.d.slice(0, 4);            // parse 'YYYY-MM-DD' directly (no TZ drift)
     var mo = +cur.d.slice(5, 7) - 1;         // 0-indexed month
-    if (yr < cutoffYear) continue;
-    if (yearFilterFn && !yearFilterFn(yr)) continue;
+    if (seen[mo] >= want) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     var ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
+    seen[mo]++;
+    if (yearFilterFn && !yearFilterFn(yr)) continue;
     byMonth[mo].push(ret);
   }
   var months = [];
@@ -2805,7 +2809,7 @@ function generateBriefing(item, months, source, years, detrend) {
   if (detrend) verdict += ' (RELATIVE)';
 
   var dataLine = (source === 'real'
-    ? 'Computed from actual monthly closing prices' + (cur.n ? ': <strong>' + cur.n + ' observations of ' + MOF[cm] + '</strong>, counting this month with its latest close.' : '.')
+    ? 'Computed from actual monthly closing prices' + (cur.n ? ': <strong>' + cur.n + ' observations of ' + MOF[cm] + '</strong>, completed months only (this ' + MOF[cm] + ' counts once it ends).' : '.')
     : 'Based on a modelled seasonal pattern (real price history was unavailable for this asset).')
     + (detrend ? ' Values shown are <strong>detrended</strong> \u2014 each month\u2019s return relative to ' + name + '\u2019s own average month, with the overall trend removed.' : '');
 

@@ -19,14 +19,16 @@ export function yahooSymbol(item) {
 
 // Compute per-calendar-month seasonal stats from monthly close-price rows.
 // rows: [{ d: 'YYYY-MM-DD', c: close }, ...] oldest first.
-export function computeMonths(rows, yearsWanted = 15, minObs = 5) {
+export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date()) {
+  // A "15-year average" is the last 15 COMPLETED occurrences of each month: the month in progress is left out
+  // (its return so far is not a month's return), and no month gets a 16th year.
+  const current = now.toISOString().slice(0, 7);
   const byMonth = Array.from({ length: 12 }, () => []);
-  const cutoffYear = new Date().getFullYear() - yearsWanted;
-  for (let i = 1; i < rows.length; i++) {
+  for (let i = rows.length - 1; i >= 1; i--) {   // newest first, so each month keeps its most recent years
     const prev = rows[i - 1], cur = rows[i];
-    const yr = +cur.d.slice(0, 4);          // parse 'YYYY-MM-DD' directly (no TZ drift)
-    const mo = +cur.d.slice(5, 7) - 1;       // 0-indexed month
-    if (yr < cutoffYear) continue;
+    if (cur.d.slice(0, 7) >= current) continue;
+    const mo = +cur.d.slice(5, 7) - 1;       // 0-indexed month ('YYYY-MM-DD' parsed directly, no TZ drift)
+    if (byMonth[mo].length >= yearsWanted) continue;
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     const ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
@@ -49,7 +51,7 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5) {
 // genuinely has real data). minObs scales down with the window. Returns
 // {months, years} where `years` reflects the asset's actual data span
 // (not just the cutoff window), or null if even a 2yr window fails.
-export function computeAdaptiveMonths(rows, yearsWanted = 15) {
+export function computeAdaptiveMonths(rows, yearsWanted = 15, now = new Date()) {
   const base = yearsWanted || 15;
   const candidates = [base, 10, 7, 5, 3, 2].filter((y, i, arr) => y <= base && arr.indexOf(y) === i);
   const firstYear = rows.length ? new Date(rows[0].d).getFullYear() : null;
@@ -57,7 +59,7 @@ export function computeAdaptiveMonths(rows, yearsWanted = 15) {
   const actualYears = (firstYear && lastYear) ? Math.max(1, lastYear - firstYear + 1) : base;
   for (const y of candidates) {
     const minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
-    const months = computeMonths(rows, y, minObs);
+    const months = computeMonths(rows, y, minObs, now);
     if (months) return { months, years: Math.min(y, actualYears) };
   }
   return null;
