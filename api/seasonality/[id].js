@@ -398,6 +398,7 @@ export default async function handler(req, res) {
 
   ${related.length ? `<div class="a-rel"><span class="tx-label">Related: ${esc(item.catSection || '')}</span><div style="margin-top:12px">${relatedLinks}</div></div>` : ''}
 
+  <script src="/assets/yearcurve.js" defer></script>
   <script src="/assets/hub.js" defer></script>
   <p class="tx-note a-disc">TimingAX is an independently operated service, not a registered investment adviser. This page is for informational purposes only and is not financial advice.</p>
 </main>
@@ -702,6 +703,13 @@ async function compareHandler(req, res) {
     <div style="padding:14px 12px 4px">${chart}</div>
     <div class="c-legend"><span><i style="background:#F5A52F"></i>${esc(A.name)}</span><span><i style="background:#4DA3FF"></i>${esc(B.name)}</span></div>
   </div>
+
+  <div class="tx-term" id="cmpYear" data-a="${esc(A.id)}" data-b="${esc(B.id)}" data-na="${esc(A.name)}" data-nb="${esc(B.name)}" style="margin-top:20px">
+    <div class="tx-term__head"><span class="tx-term__title">Typical year vs ${new Date().getUTCFullYear()}</span><span class="tx-term__status">Real daily data</span></div>
+    <div class="hub-body" id="cmpYearBody"><p class="tx-muted">Loading real daily prices…</p></div>
+  </div>
+  <script src="/assets/yearcurve.js" defer></script>
+  <script src="/assets/compare-year.js" defer></script>
 
   <div class="tx-card c-table">
     <table class="tx-table" id="cmpTable">
