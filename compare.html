@@ -177,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cat = list;
     var opts = '';
     list.forEach(function (a) {
+      if (a.noHistory) return;   // delisted / taken over: no verified history, so nothing to compare
       var label = a.ticker && a.ticker.charAt(0) !== '^' ? a.name + ' (' + a.ticker + ')' : a.name;
       [label, a.name, a.ticker, a.id].forEach(function (k) { if (k && !byKey[norm(k)]) byKey[norm(k)] = a.id; });
       opts += '<option value="' + label.replace(/"/g, '&quot;') + '">';
