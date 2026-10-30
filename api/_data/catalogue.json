@@ -1437,7 +1437,8 @@
     "sector": "Media",
     "region": "US",
     "pattern": "consumer",
-    "catSection": "US Communications & Media"
+    "catSection": "US Communications & Media",
+    "noHistory": true
   },
   {
     "id": "t_us",
@@ -1509,7 +1510,8 @@
     "sector": "Internet Media",
     "region": "US",
     "pattern": "techGrowth",
-    "catSection": "US Communications & Media"
+    "catSection": "US Communications & Media",
+    "noHistory": true
   },
   {
     "id": "rivn",
@@ -1680,7 +1682,8 @@
     "sector": "Asset Mgmt",
     "region": "UK",
     "pattern": "financials",
-    "catSection": "UK Banking & Finance"
+    "catSection": "UK Banking & Finance",
+    "noHistory": true
   },
   {
     "id": "lsl",
@@ -1977,7 +1980,8 @@
     "sector": "Betting",
     "region": "UK",
     "pattern": "consumer",
-    "catSection": "UK Consumer & Retail"
+    "catSection": "UK Consumer & Retail",
+    "noHistory": true
   },
   {
     "id": "bpt",
@@ -2121,7 +2125,8 @@
     "sector": "Plumbing/HVAC",
     "region": "UK",
     "pattern": "consumer",
-    "catSection": "UK Industrials & Defense"
+    "catSection": "UK Industrials & Defense",
+    "noHistory": true
   },
   {
     "id": "imi",
@@ -2139,7 +2144,8 @@
     "sector": "Precision Inst.",
     "region": "UK",
     "pattern": "defense",
-    "catSection": "UK Industrials & Defense"
+    "catSection": "UK Industrials & Defense",
+    "noHistory": true
   },
   {
     "id": "smw",
@@ -2661,7 +2667,8 @@
     "sector": "Insurtech",
     "region": "Germany",
     "pattern": "speculative",
-    "catSection": "German Consumer & Retail"
+    "catSection": "German Consumer & Retail",
+    "noHistory": true
   },
   {
     "id": "pro7",
@@ -3804,7 +3811,8 @@
     "sector": "Engineering SW",
     "region": "US",
     "pattern": "techGrowth",
-    "catSection": "US Technology"
+    "catSection": "US Technology",
+    "noHistory": true
   },
   {
     "id": "adp",
@@ -3876,7 +3884,8 @@
     "sector": "Networking",
     "region": "US",
     "pattern": "techGrowth",
-    "catSection": "US Technology"
+    "catSection": "US Technology",
+    "noHistory": true
   },
   {
     "id": "mchp",
@@ -3912,7 +3921,8 @@
     "sector": "Semiconductors",
     "region": "US",
     "pattern": "semis",
-    "catSection": "US Technology"
+    "catSection": "US Technology",
+    "noHistory": true
   },
   {
     "id": "ter",
@@ -3993,7 +4003,8 @@
     "sector": "Video Games",
     "region": "US",
     "pattern": "techGrowth",
-    "catSection": "US Technology"
+    "catSection": "US Technology",
+    "noHistory": true
   },
   {
     "id": "ttwo",
@@ -5127,7 +5138,8 @@
     "sector": "Life Insurance",
     "region": "UK",
     "pattern": "financials",
-    "catSection": "UK Banking & Finance"
+    "catSection": "UK Banking & Finance",
+    "noHistory": true
   },
   {
     "id": "adm",
@@ -5154,7 +5166,8 @@
     "sector": "Motor Insurance",
     "region": "UK",
     "pattern": "financials",
-    "catSection": "UK Banking & Finance"
+    "catSection": "UK Banking & Finance",
+    "noHistory": true
   },
   {
     "id": "fres",
@@ -5226,7 +5239,8 @@
     "sector": "Pharmaceuticals",
     "region": "UK",
     "pattern": "healthcare",
-    "catSection": "UK Pharma & Health"
+    "catSection": "UK Pharma & Health",
+    "noHistory": true
   },
   {
     "id": "sn",
@@ -5541,7 +5555,8 @@
     "sector": "Steel Distribution",
     "region": "Germany",
     "pattern": "defense",
-    "catSection": "German Industrials & Chemicals"
+    "catSection": "German Industrials & Chemicals",
+    "noHistory": true
   },
   {
     "id": "bnr",
@@ -6054,7 +6069,8 @@
     "sector": "Banking",
     "region": "Asia",
     "pattern": "financials",
-    "catSection": "China & Hong Kong"
+    "catSection": "China & Hong Kong",
+    "noHistory": true
   },
   {
     "id": "0016",

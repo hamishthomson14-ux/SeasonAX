@@ -171,6 +171,7 @@
     q = q.trim().toLowerCase(); if (!q) return [];
     var out = [];
     cat.forEach(function (a) {
+      if (a.noHistory) return;   // delisted / taken over: no page to open
       var t = String(a.ticker || '').toLowerCase().replace(/^\^/, ''), n = String(a.name || '').toLowerCase(), id = a.id, s = -1;
       if (t === q || id === q) s = 0;
       else if (n === q) s = 1;

@@ -103,12 +103,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.timingax.co.uk/api-docs.html</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://www.timingax.co.uk/changelog.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
