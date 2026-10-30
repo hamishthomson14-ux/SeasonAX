@@ -14,7 +14,7 @@ import { ImageResponse } from '@vercel/og';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { yahooSymbol, fetchMonthly, computeAdaptiveMonths } from '../_lib/seasonal.js';
+import { yahooSymbol, fetchMonthly, UpstreamError, computeAdaptiveMonths } from '../_lib/seasonal.js';
 import { ogContent } from '../_lib/og.js';
 
 
@@ -94,7 +94,11 @@ export async function GET(req) {
   if (!item) return fallbackImage();
 
   let real = null;
-  try { const rows = await fetchMonthly(yahooSymbol(item)); real = rows && computeAdaptiveMonths(rows, 15); } catch (e) { real = null; }
+  try { const rows = await fetchMonthly(yahooSymbol(item)); real = rows && computeAdaptiveMonths(rows, 15); }
+  catch (e) {   // provider down: a retried 503, never a figure-less card cached for a day
+    if (e instanceof UpstreamError) return new Response('Price data temporarily unavailable', { status: 503, headers: { 'Retry-After': '60', 'Cache-Control': 'no-store' } });
+    real = null;
+  }
   const c = ogContent(item, real);
   if (!c) return fallbackImage();
 

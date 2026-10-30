@@ -7,7 +7,7 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { yahooSymbol, computeAdaptiveMonths, computeMonthGrid, roundGrid, bestWorst, fetchMonthly, fetchDaily, computeMonthHistory, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import { yahooSymbol, computeAdaptiveMonths, computeMonthGrid, roundGrid, bestWorst, fetchMonthly, fetchDaily, UpstreamError, computeMonthHistory, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
 import '../../assets/heatmap.js';   // sets globalThis.TXHeatmap: the same renderer the analyzer uses
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -160,7 +160,7 @@ export default async function handler(req, res) {
         if (real) { months = real.months; source = 'real'; realYears = real.years; grid = computeMonthGrid(rows, { now: new Date(), years: 15 }); grid = grid && roundGrid(grid); }
       }
     }
-  } catch (e) { /* fall through to model */ }
+  } catch (e) { if (e instanceof UpstreamError) return notAvailable(res, outage(item)); /* anything else: no page */ }
 
   // Real price history only: without it there is no seasonal page (never modelled figures).
   if (!months) return notAvailable(res, { title: `${item.name}: no verified price history`, eyebrow: 'Seasonality',
@@ -457,7 +457,7 @@ export default async function handler(req, res) {
 </html>`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
   res.status(200).send(html);
 }
 
@@ -483,14 +483,21 @@ async function realMonths(item) {
     const rows = await fetchMonthly(yahooSymbol(item));
     const real = rows && computeAdaptiveMonths(rows, 15);
     return real && real.months ? real : null;
-  } catch (e) { return null; }
+  } catch (e) { if (e instanceof UpstreamError) throw e; return null; }
 }
 function compareNotFound(res, msg) {
   return notAvailable(res, { title: 'Comparison not available', eyebrow: 'Compare', msg, cta: ['/compare.html', 'Compare two assets'] });
 }
-function notAvailable(res, { title, eyebrow, msg, cta }) {
+// The provider did not answer: a 503 that is retried (Retry-After, never cached), with copy that says so. Never the
+// 404 "no verified price history" page, which is for assets the provider has no data for.
+function outage(item, { eyebrow = 'Seasonality', cta = ['/seasonality.html', 'Browse other assets'] } = {}) {
+  return { status: 503, title: `${item.name}: price data temporarily unavailable`, eyebrow, cta,
+    msg: `Our price data provider didn’t answer just now. Nothing on TimingAX is modelled, so this page waits for real prices instead of guessing. Please try again in a minute.` };
+}
+function notAvailable(res, { title, eyebrow, msg, cta, status = 404 }) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.status(404).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${esc(title)} | TimingAX</title>
+  if (status === 503) { res.setHeader('Retry-After', '60'); res.setHeader('Cache-Control', 'no-store'); }
+  res.status(status).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${esc(title)} | TimingAX</title>
       <meta name="robots" content="noindex"><meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="icon" href="/favicon.ico">
 <!-- tx:head -->
@@ -589,7 +596,9 @@ async function compareHandler(req, res) {
   if (!BY_ID[ia] || !BY_ID[ib]) return compareNotFound(res, 'We don’t track one of those assets.');
   if (ia > ib) { res.setHeader('Location', `/compare/${ib}-vs-${ia}`); return res.status(301).end(); }
   const A = BY_ID[ia], B = BY_ID[ib];
-  const [ra, rb] = await Promise.all([realMonths(A), realMonths(B)]);
+  let ra, rb;
+  try { [ra, rb] = await Promise.all([realMonths(A), realMonths(B)]); }
+  catch (e) { if (e instanceof UpstreamError) return notAvailable(res, outage({ name: `${A.name} vs ${B.name}` }, { eyebrow: 'Compare', cta: ['/compare.html', 'Compare two assets'] })); throw e; }
   if (!ra || !rb) return compareNotFound(res, `There is no verified price history for ${!ra ? A.name : B.name}, and we only compare assets using real prices.`);
 
   const ma = ra.months, mb = rb.months, cm = new Date().getMonth();
@@ -777,7 +786,7 @@ async function compareHandler(req, res) {
 </body>
 </html>`;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
   res.status(200).send(html);
 }
 
@@ -792,7 +801,7 @@ async function monthHandler(req, res) {
   try {
     const [mrows, drows] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchDaily(yahooSymbol(item))]);
     if (mrows) { real = computeAdaptiveMonths(mrows, 15); h = computeMonthHistory(mrows, drows, { month: mi, now: new Date(), years: 20 }); }
-  } catch (e) { real = null; h = null; }
+  } catch (e) { if (e instanceof UpstreamError) return notAvailable(res, outage(item)); real = null; h = null; }
   if (!real || !h) return notAvailable(res, { title: `${item.name}: no verified price history`, eyebrow: 'Seasonality',
     msg: `There is no verified price history for ${item.name} (${dispTicker(item)}), and we only show figures computed from real prices.`, cta: ['/seasonality.html', 'Browse assets with real data'] });
 
@@ -816,7 +825,7 @@ async function monthHandler(req, res) {
     { '@type': 'ListItem', position: 3, name: M, item: url }] };
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
   return res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
 <head>

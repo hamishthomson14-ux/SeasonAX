@@ -30,18 +30,19 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, computeMonthGrid, roundGrid, computeConsistency, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, UpstreamError, computeProjection, computePatterns, computeYearCurve, computeMonthGrid, roundGrid, computeConsistency, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
 const EVENTS_HISTORY = JSON.parse(readFileSync(path.join(__dirname, '../_data/events-history.json'), 'utf8'));
 
-// Run fn over items with at most `n` in flight (keeps upstream price requests polite).
-async function mapLimit(items, n, fn) {
-  const out = new Array(items.length); let next = 0;
+// Run fn over items with at most `n` in flight (keeps upstream price requests polite). Nothing new starts after
+// `deadline` (ms epoch): the slots left stay undefined, so a slow provider yields a partial answer, never a timeout.
+async function mapLimit(items, n, fn, { deadline = Infinity } = {}) {
+  const out = new Array(items.length).fill(undefined); let next = 0;   // filled, not holes: filter() can count the skipped ones
   await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => {
-    while (next < items.length) { const i = next++; out[i] = await fn(items[i], i); }
+    while (next < items.length && Date.now() < deadline) { const i = next++; out[i] = await fn(items[i], i); }
   }));
   return out;
 }
@@ -49,7 +50,17 @@ async function mapLimit(items, n, fn) {
 // Leaderboard sections fetch up to 76 assets: allow the Hobby maximum.
 export const config = { maxDuration: 60 };
 
+// When the price provider does not answer, the answer is 503 + Retry-After and never cached: no modelled figures, no
+// "unavailable" 404 that the CDN would hold on to. (The 404s below mean the provider answered and has no data.)
 export default async function handler(req, res) {
+  try { return await handle(req, res); } catch (e) {
+    if (!(e instanceof UpstreamError)) throw e;
+    res.setHeader('Retry-After', '60'); res.setHeader('Cache-Control', 'no-store');
+    return res.status(503).json({ error: 'upstream_unavailable', hint: 'Our price data provider did not answer. TimingAX never serves modelled figures, so please retry in a minute.' });
+  }
+}
+
+async function handle(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -68,6 +79,9 @@ export default async function handler(req, res) {
     const mq = req.query.month;
     if (mq != null && !/^(?:[1-9]|1[0-2])$/.test(String(mq))) return res.status(400).json({ error: 'month must be 1-12' });
     const mi = mq != null ? Number(mq) - 1 : new Date().getUTCMonth();
+    let outages = 0;   // assets the provider did not answer for (never counted as "no history")
+    // 60s function limit, and one fetch can take 24s (two bases x 12s): stop starting new ones at 30s, answer with what is in.
+    const deadline = Date.now() + (+process.env.TX_LEADERBOARD_BUDGET_MS || 30000);
     const results = await mapLimit(members, 8, async (item) => {
       try {
         const rows = await fetchMonthly(yahooSymbol(item));
@@ -75,12 +89,14 @@ export default async function handler(req, res) {
         if (!real || !real.months) return null;
         const m = real.months[mi];
         return { id: item.id, name: item.name, ticker: item.ticker, region: item.region, section, avg: +m.avg, win: m.win, obs: m.n != null ? m.n : null, years: real.years };
-      } catch (e) { return null; }
-    });
-    const rowsOut = results.filter(Boolean);
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');   // same freshness as the per-asset view
+      } catch (e) { if (e instanceof UpstreamError) outages++; return null; }
+    }, { deadline });
+    const rowsOut = results.filter(Boolean), skipped = results.filter((x) => x === undefined).length;
+    if (!rowsOut.length && (outages || skipped)) throw new UpstreamError('provider unavailable for every asset in ' + section);
+    // A section with gaps is held only briefly, so they close as soon as the provider answers again.
+    res.setHeader('Cache-Control', outages || skipped ? 's-maxage=120' : 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');   // same freshness as the per-asset view
     return res.status(200).json({ view: 'leaderboard', section, month: MONTH_ABBR[mi], monthName: MONTH_NAMES[mi],
-      total: members.length, unavailable: members.length - rowsOut.length, rows: rowsOut, generatedAt: new Date().toISOString() });
+      total: members.length, unavailable: members.length - rowsOut.length, outages, skipped, rows: rowsOut, generatedAt: new Date().toISOString() });
   }
 
   // ── ?view=calendar&ids=a,b,… — ICS feed of historically strong/weak months (watchlist, max 10) ──
@@ -90,11 +106,11 @@ export default async function handler(req, res) {
     const items = [...new Set(ids)].map(x => CATALOGUE.find(a => a.id === x)).filter(Boolean);
     if (!items.length) return res.status(400).json({ error: 'Provide up to 10 asset ids via ?ids=' });
     const entries = (await mapLimit(items, 5, async (item) => {
-      try { const rows = await fetchMonthly(yahooSymbol(item)); const real = rows && computeAdaptiveMonths(rows, 15); return real && real.months ? { item, months: real.months } : null; } catch (e) { return null; }
+      try { const rows = await fetchMonthly(yahooSymbol(item)); const real = rows && computeAdaptiveMonths(rows, 15); return real && real.months ? { item, months: real.months } : null; } catch (e) { if (e instanceof UpstreamError) throw e; return null; }
     })).filter(Boolean);                                      // real data only: modelled assets get no events
     res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
     res.setHeader('Content-Disposition', 'inline; filename="timingax-seasonal.ics"');
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).send(buildCalendar(entries, { now: new Date() }));
   }
 
@@ -135,10 +151,10 @@ export default async function handler(req, res) {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
     let st = null;
-    try { const rows = await fetchDaily(yahooSymbol(item)); st = rows && computeEventStudy(rows, type.events.map((e) => e.date)); } catch (e) { st = null; }
+    try { const rows = await fetchDaily(yahooSymbol(item)); st = rows && computeEventStudy(rows, type.events.map((e) => e.date)); } catch (e) { if (e instanceof UpstreamError) throw e; st = null; }
     if (!st || !st.events.length) return res.status(404).json({ error: 'unavailable', hint: 'No real daily prices covering these events.' });
     const r2 = (v) => (v === null ? null : Math.round(v * 100) / 100), meta = Object.fromEntries(type.events.map((e) => [e.date, e]));
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'events',
       type: { id: type.id, name: type.name, note: type.note, source: type.source },
       events: st.events.map((e) => ({ ...meta[e.date], date: e.date, before: r2(e.before), d1: r2(e.d1), w1: r2(e.w1), m1: r2(e.m1), m3: r2(e.m3) })),
@@ -151,9 +167,9 @@ export default async function handler(req, res) {
     const dm = dq.match(/^(\d\d)-(\d\d)$/);
     if (!dm || new Date(Date.UTC(2024, +dm[1] - 1, +dm[2])).getUTCDate() !== +dm[2] || +dm[1] < 1 || +dm[1] > 12) return res.status(400).json({ error: 'date must be MM-DD' });
     let d = null;
-    try { const rows = await fetchDaily(yahooSymbol(item)); d = rows && computeThisDay(rows, { month: +dm[1], day: +dm[2], years: 20, now }); } catch (e) { d = null; }
+    try { const rows = await fetchDaily(yahooSymbol(item)); d = rows && computeThisDay(rows, { month: +dm[1], day: +dm[2], years: 20, now }); } catch (e) { if (e instanceof UpstreamError) throw e; d = null; }
     if (!d || !d.summary.traded) return res.status(404).json({ error: 'unavailable', hint: 'Needs real daily prices (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'day', ...d, generatedAt: new Date().toISOString() });
   }
   // ── ?view=month&month=1..12 — every year's return for that calendar month, biggest days, Fed changes in it ──
@@ -168,12 +184,12 @@ export default async function handler(req, res) {
     try {
       const [mrows, drows] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchDaily(yahooSymbol(item))]);
       h = mrows && computeMonthHistory(mrows, drows, { month: mi, now: new Date(), years: span });
-    } catch (e) { h = null; }
+    } catch (e) { if (e instanceof UpstreamError) throw e; h = null; }
     if (!h) return res.status(404).json({ error: 'unavailable', hint: 'Needs real price history (never modelled).' });
     const fed = EVENTS_HISTORY.types.filter((t) => t.id === 'fed-cut' || t.id === 'fed-hike')
       .flatMap((t) => t.events.filter((e) => +e.date.slice(5, 7) - 1 === mi).map((e) => ({ date: e.date, dir: t.id === 'fed-cut' ? 'cut' : 'hike', bp: e.bp, level: e.level })))
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'month', month: MONTH_NAMES[mi], yearsRequested: span, ...h,
       fed, fedSource: 'https://www.federalreserve.gov/monetarypolicy/openmarket.htm',
       method: 'Monthly: last close to last close, same window and rules as the seasonal averages. Daily: close to close. Fed: dates the target change took effect, since October 2006.',
@@ -185,9 +201,9 @@ export default async function handler(req, res) {
     if (!m(q.buy) || !m(q.sell) || !dayOk(q.buyDay) || !dayOk(q.sellDay)) return res.status(400).json({ error: 'buy/sell must be 1-12 and buyDay/sellDay first or last' });
     const from = /^\d{4}$/.test(String(q.from)) ? +q.from : 0, to = /^\d{4}$/.test(String(q.to)) ? +q.to : 9999;
     let b = null;
-    try { const rows = await fetchDaily(yahooSymbol(item)); b = rows && computeBacktest(rows, { buyM: +q.buy - 1, buyDay: q.buyDay, sellM: +q.sell - 1, sellDay: q.sellDay, from, to, now: new Date() }); } catch (e) { b = null; }
+    try { const rows = await fetchDaily(yahooSymbol(item)); b = rows && computeBacktest(rows, { buyM: +q.buy - 1, buyDay: q.buyDay, sellM: +q.sell - 1, sellDay: q.sellDay, from, to, now: new Date() }); } catch (e) { if (e instanceof UpstreamError) throw e; b = null; }
     if (!b) return res.status(404).json({ error: 'unavailable', hint: 'Backtests need real daily prices; none are simulated.' });
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'backtest', ...b,
       method: 'Buy at the close of the chosen trading day of the buy month and sell at the close of the chosen trading day of the sell month (the next year if the window crosses New Year). Only completed windows. Returns compound; buy and hold runs from the first entry to the last exit. Yahoo Finance daily closes (adjusted closes where Yahoo provides them).',
       generatedAt: new Date().toISOString() });
@@ -197,10 +213,10 @@ export default async function handler(req, res) {
     const other = CATALOGUE.find(a => a.id === String(req.query.with || '').toLowerCase());
     if (!other) return res.status(400).json({ error: 'Provide the second asset via &with=' });
     let p = null;
-    try { const [ra, rb] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchMonthly(yahooSymbol(other))]); p = ra && rb && computePairStats(ra, rb, { now: new Date() }); } catch (e) { p = null; }
+    try { const [ra, rb] = await Promise.all([fetchMonthly(yahooSymbol(item)), fetchMonthly(yahooSymbol(other))]); p = ra && rb && computePairStats(ra, rb, { now: new Date() }); } catch (e) { if (e instanceof UpstreamError) throw e; p = null; }
     if (!p) return res.status(404).json({ error: 'unavailable', hint: 'Both assets need real price history; nothing is computed from a model.' });
     const side = (it, x) => ({ id: it.id, ticker: it.ticker, name: it.name, years: x.years, months: x.months.map((m, i) => ({ month: MONTH_NAMES[i], avgReturn: m.avg, winRate: m.win, observations: m.n })) });
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ source: 'verified', view: 'pair', a: side(item, p.a), b: side(other, p.b), seasonal: p.seasonal, returns: p.returns,
       method: 'Seasonal correlation: Pearson correlation of the two assets\' 12 monthly average returns. Monthly-return correlation: Pearson correlation of their actual monthly returns over the completed months they share in the last 15 calendar years.',
       generatedAt: new Date().toISOString() });
@@ -208,9 +224,9 @@ export default async function handler(req, res) {
   // ── ?view=history — monthly closes (up to 20 years) with total and annualised return; real data only ──
   if (view === 'history') {
     let h = null;
-    try { h = computePriceHistory(await fetchMonthly(yahooSymbol(item))); } catch (e) { h = null; }
+    try { h = computePriceHistory(await fetchMonthly(yahooSymbol(item))); } catch (e) { if (e instanceof UpstreamError) throw e; h = null; }
     if (!h) return res.status(404).json({ error: 'unavailable', hint: 'Needs real price history (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'history', ...h,
       method: 'Last close of each calendar month (Yahoo Finance; adjusted closes where Yahoo provides them). Annualised return compounds over the months between the first and last close.',
       generatedAt: new Date().toISOString() });
@@ -218,9 +234,9 @@ export default async function handler(req, res) {
   // ── ?view=grid — every month's real return, year by year (the heatmap); inAvg marks the cells behind the average ──
   if (view === 'grid') {
     let g = null;
-    try { g = computeMonthGrid(await fetchMonthly(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { g = null; }
+    try { g = computeMonthGrid(await fetchMonthly(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { if (e instanceof UpstreamError) throw e; g = null; }
     if (!g) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly price history (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     const pub = roundGrid(g);
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'grid', window: pub.window, months: pub.months, years: pub.years,
       method: 'Each cell: last close of the month vs last close of the month before (Yahoo Finance; adjusted where provided). inAvg marks the last ' + g.window + ' completed occurrences of each month, the ones behind the published average; partial marks the month in progress; flag "data" marks a move over 95% treated as a data error. total: Dec to Dec (this year: to the latest close).',
@@ -229,9 +245,9 @@ export default async function handler(req, res) {
   // ── ?view=curve — the typical calendar year (median path of the last 15 completed years) vs this year so far ──
   if (view === 'curve') {
     let c = null;
-    try { c = computeYearCurve(await fetchDaily(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { c = null; }
+    try { c = computeYearCurve(await fetchDaily(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { if (e instanceof UpstreamError) throw e; c = null; }
     if (!c) return res.status(404).json({ error: 'unavailable', hint: 'Needs at least 5 completed years of real daily prices (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'curve', ...c,
       method: 'Daily closes (Yahoo Finance; adjusted where provided). Each year is measured from the previous year\'s last close; weekends and holidays carry the last close forward; 29 Feb shares 28 Feb. typical = the median of the ' + c.n + ' years on each calendar day, p25/p75 = the middle half.',
       disclaimer: 'A historical pattern, not a forecast.', generatedAt: new Date().toISOString() });
@@ -240,9 +256,9 @@ export default async function handler(req, res) {
   // published average vs the (up to 15) occurrences before them: two windows that share no month. Needs 32 years of closes.
   if (view === 'consistency') {
     let rows = null;
-    try { rows = await fetchMonthly(yahooSymbol(item), '32y'); } catch (e) { rows = null; }
+    try { rows = await fetchMonthly(yahooSymbol(item), '32y'); } catch (e) { if (e instanceof UpstreamError) throw e; rows = null; }
     if (!rows) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly price history (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     const c = computeConsistency(rows, { now: new Date(), years: 15 });
     // Too young for the check is an answer, not an error (200): most assets listed after 2001 land here.
     if (!c) return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'consistency', available: false,
@@ -254,18 +270,18 @@ export default async function handler(req, res) {
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
   if (view === 'track') {
     let tr = null;
-    try { const rows = await fetchMonthly(yahooSymbol(item)); tr = rows && computeTrackRecord(rows, { now: new Date(), months: 36 }); } catch (e) { tr = null; }
+    try { const rows = await fetchMonthly(yahooSymbol(item)); tr = rows && computeTrackRecord(rows, { now: new Date(), months: 36 }); } catch (e) { if (e instanceof UpstreamError) throw e; tr = null; }
     if (!tr || !tr.records.some((x) => x.verdict)) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly history (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'track', ...tr,
       disclaimer: 'Each month\'s signal uses only the 15 years before that month; the outcome is the month\'s actual return. Neutral months are not scored.', generatedAt: new Date().toISOString() });
   }
   // ── ?view=patterns — best/worst weeks of the year + turn-of-month, from real daily prices ──
   if (view === 'patterns') {
     let pat = null;
-    try { const rows = await fetchDaily(yahooSymbol(item)); pat = rows && computePatterns(rows, { today: new Date(), years: 15 }); } catch (e) { pat = null; }
+    try { const rows = await fetchDaily(yahooSymbol(item)); pat = rows && computePatterns(rows, { today: new Date(), years: 15 }); } catch (e) { if (e instanceof UpstreamError) throw e; pat = null; }
     if (!pat) return res.status(404).json({ error: 'unavailable', hint: 'Needs at least 5 years of real daily prices (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'patterns', ...pat,
       disclaimer: 'Averages over the last ' + pat.years + ' years of real daily prices. A historical pattern, not a forecast.', generatedAt: new Date().toISOString() });
   }
@@ -276,9 +292,9 @@ export default async function handler(req, res) {
     try {
       const rows = await fetchDaily(yahooSymbol(item));
       proj = rows && computeProjection(rows, { today: new Date(), days, years: 15 });
-    } catch (e) { proj = null; }
+    } catch (e) { if (e instanceof UpstreamError) throw e; proj = null; }
     if (!proj) return res.status(404).json({ error: 'unavailable', hint: 'No real daily price history for a projection (never modelled).' });
-    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({
       id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'projection',
       ...proj,
@@ -301,7 +317,7 @@ export default async function handler(req, res) {
         source = 'verified';
       }
     }
-  } catch (e) { /* treated as unavailable below */ }
+  } catch (e) { if (e instanceof UpstreamError) throw e; /* anything else: treated as unavailable below */ }
   if (!months) {
     res.setHeader('Cache-Control', 's-maxage=60');
     return res.status(404).json({ error: 'unavailable', id: item.id, ticker: item.ticker, name: item.name,
@@ -323,7 +339,7 @@ export default async function handler(req, res) {
   } : null;
 
   // Cache at the edge for an hour
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
   return res.status(200).json({
     id: item.id,
     ticker: item.ticker,
