@@ -3184,6 +3184,10 @@ function showUserMenu(user){
   }
   document.body.classList.toggle('is-pro', isPro());
   if (typeof wlCalRender === 'function') { wlCalRender(wlGet()); wlMailRender(wlGet()); } // Pro status is known only after sign-in loads
+  // The Correlations pair and the Screener render on page load, before sign-in has finished: re-check their Pro locks now.
+  applyPairsPreviewGate();
+  applyScreenerPreviewGate();
+  if (CUR_MODE) applyToolPreviewGate(CUR_MODE);
   buildBrowser(document.getElementById('searchBox') ? document.getElementById('searchBox').value : '', activeRegion, activeSector);
 }
 
@@ -3320,6 +3324,7 @@ var PREVIEW_COPY = {
   portfolio: ['Your whole portfolio, one calendar', 'Enter your holdings and weights to map your mix\u2019s combined seasonal profile. Pro unlocks the portfolio view.']
 };
 
+var CUR_MODE = null;
 function switchMode(mode) {
   if (mode === 'earnings') mode = 'events'; // earnings mode was retired (unsourced); old links land on the events library
   var names = { analyzer:'modeAnalyzer', backtest:'modeBacktest', events:'modeEvents', screener:'modeScreener', watchlist:'modeWatchlist', month:'modeMonth', pairs:'modePairs', calendar:'modeCalendar', portfolio:'modePortfolio' };
@@ -3334,6 +3339,7 @@ function switchMode(mode) {
     var aliasTab = document.getElementById('mt_' + alias[mode]);
     if (aliasTab) aliasTab.classList.add('active');
   }
+  CUR_MODE = mode;
   applyToolPreviewGate(mode);
   if (mode === 'events') esInit();
   if (mode === 'month' && !document.getElementById('modeMonth').dataset.mhState) mhBuild();
