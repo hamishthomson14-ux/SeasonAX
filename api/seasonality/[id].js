@@ -47,7 +47,7 @@ function renderChart(months, cm) {
 }
 
 function relatedAssets(item) {
-  return CATALOGUE.filter(a => a.id !== item.id && a.catSection === item.catSection).slice(0, 6);
+  return CATALOGUE.filter(a => a.id !== item.id && a.catSection === item.catSection && !a.noHistory).slice(0, 6);   // noHistory: no page to link
 }
 
 export default async function handler(req, res) {

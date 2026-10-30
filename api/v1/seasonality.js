@@ -62,7 +62,7 @@ export default async function handler(req, res) {
   // The page ranks across all 30 sections; per-section requests keep each call small and CDN-cached.
   if (req.query.view === 'leaderboard') {
     const section = String(req.query.section || '');
-    const members = CATALOGUE.filter(a => a.catSection === section);
+    const members = CATALOGUE.filter(a => a.catSection === section && !a.noHistory);   // noHistory: delisted, no prices to rank
     if (!members.length) return res.status(400).json({ error: 'Unknown section', sections: [...new Set(CATALOGUE.map(a => a.catSection))] });
     // ?month=1..12 (default: the current month)
     const mq = req.query.month;
