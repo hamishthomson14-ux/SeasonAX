@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uptober: What the Data Shows About Bitcoin in October | TimingAX</title>
+<meta property="og:title" content="Uptober: What the Data Shows About Bitcoin in October | TimingAX">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.timingax.co.uk/blog/uptober-bitcoin-october.html">
+<link rel="canonical" href="https://www.timingax.co.uk/blog/uptober-bitcoin-october.html">
+<meta property="og:image" content="https://www.timingax.co.uk/api/og/btc">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.timingax.co.uk/api/og/btc">
+<meta name="description" content="Is October really Bitcoin&rsquo;s best month? Every October from real closing prices, the explanations people give, the bad Octobers, and the wider crypto seasonal calendar.">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Uptober: What the Data Shows About Bitcoin in October", "description": "Is October really Bitcoin’s best month? Every October from real closing prices, the explanations people give, the bad Octobers, and the wider crypto seasonal calendar.", "datePublished": "2026-04", "author": {"@type": "Organization", "name": "TimingAX"}, "publisher": {"@type": "Organization", "name": "TimingAX", "url": "https://www.timingax.co.uk"}, "image": "https://www.timingax.co.uk/api/og/btc", "mainEntityOfPage": "https://www.timingax.co.uk/blog/uptober-bitcoin-october.html"}</script>
+<!-- tx:head -->
+<script>document.documentElement.className += " js";</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/tx.css">
+<script src="/assets/tx.js" defer></script>
+<!-- /tx:head -->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
+  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
+  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
+  --green:var(--tx-up);--red:var(--tx-down);
+  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
+  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
+  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
+}
+body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+.n-logo{display:flex;align-items:center;gap:9px}
+.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
+.n-word b{color:var(--amber2)}
+.nav-links{display:flex;gap:4px}
+.nl{padding:6px 12px;font-size:13px;color:var(--w3);border-radius:5px;transition:all .15s}
+.nl:hover{color:var(--w);background:rgba(255,255,255,.05)}
+.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
+.btn-cta:hover{background:var(--amber2)}
+
+/* HERO */
+.hero{padding:80px 48px 64px;border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.h-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 100% 100% at 0% 0%,black,transparent);opacity:.3;pointer-events:none}
+.h-in{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
+.hero-h{font:800 56px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
+.hero-h em{font-style:normal;color:var(--amber2)}
+.hero-sub{font-size:18px;color:var(--w3);max-width:540px;line-height:1.68}
+
+/* ARTICLES GRID */
+.articles{max-width:1200px;margin:0 auto;padding:72px 48px}
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:72px}
+.article-card{background:var(--bg);padding:36px 32px;position:relative;overflow:hidden;transition:background .18s;cursor:pointer;display:flex;flex-direction:column}
+.article-card:hover{background:var(--bg2)}
+.article-card:hover .ac-arr{color:var(--amber2);transform:translate(3px,-3px)}
+.ac-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px;align-self:flex-start}
+.ac-cat.season{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
+.ac-cat.events{background:rgba(77,163,255,.08);color:#4DA3FF;border:1px solid rgba(77,163,255,.2)}
+.ac-cat.crypto{background:rgba(155,127,255,.08);color:#9B7FFF;border:1px solid rgba(155,127,255,.2)}
+.ac-h{font:800 22px/1.2 var(--disp-serif);letter-spacing:-.01em;margin-bottom:12px;color:var(--w)}
+.ac-sub{font-size:14px;color:var(--w3);line-height:1.68;flex:1;margin-bottom:24px}
+.ac-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.ac-date{font:400 10px/1 var(--mono);color:var(--w5)}
+.ac-read{font:500 11px/1 var(--mono);color:var(--amber2)}
+.ac-arr{position:absolute;right:26px;top:26px;color:var(--w5);font-size:16px;transition:all .2s}
+
+/* FULL ARTICLE PAGE */
+.article-wrap{max-width:1200px;margin:0 auto;padding:0 48px}
+.article-page{display:none;padding:64px 0 100px}
+.article-page.active{display:block}
+.ap-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:48px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
+.ap-back:hover{color:var(--amber2)}
+.ap-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px}
+.ap-h{font:800 52px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px;max-width:760px}
+.ap-h em{font-style:normal;color:var(--amber2)}
+.ap-meta{font:400 11px/1 var(--mono);color:var(--w4);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--b1)}
+.ap-body{display:grid;grid-template-columns:1fr 340px;gap:72px;align-items:start}
+.ap-text h2{font:800 26px/1.2 var(--disp-serif);letter-spacing:-.01em;margin:48px 0 16px;color:var(--w)}
+.ap-text h2:first-child{margin-top:0}
+.ap-text h3{font:600 18px/1.3 var(--sans);margin:32px 0 12px;color:var(--w2)}
+.ap-text p{font-size:16px;color:var(--w3);line-height:1.82;margin-bottom:18px}
+.ap-text p:last-child{margin-bottom:0}
+.ap-text strong{color:var(--w2);font-weight:500}
+.ap-text em{font-style:italic;color:var(--w2)}
+.ap-text ul{padding-left:20px;margin-bottom:18px}
+.ap-text ul li{font-size:15px;color:var(--w3);line-height:1.7;margin-bottom:8px}
+.ap-pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:18px 0 18px 24px}
+.ap-pullquote p{font:700 20px/1.4 var(--disp-serif);letter-spacing:0em;color:var(--w);margin:0}
+/* Data callout */
+.ap-stat{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:22px 24px;margin:28px 0}
+.ap-stat-v{font:700 44px/1 var(--mono);letter-spacing:-.03em;margin-bottom:6px}
+.ap-stat-v.g{color:var(--green)}.ap-stat-v.r{color:var(--red)}.ap-stat-v.a{color:var(--amber2)}
+.ap-stat-l{font:400 12px/1.5 var(--mono);color:var(--w4)}
+/* Sidebar */
+.ap-sidebar{position:sticky;top:72px}
+.ap-toc{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;margin-bottom:20px}
+.ap-toc-h{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber2);margin-bottom:14px}
+.ap-toc ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ap-toc li a{font-size:13px;color:var(--w4);transition:color .15s;line-height:1.4;display:block}
+.ap-toc li a:hover{color:var(--amber2)}
+.ap-cta-box{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:24px;text-align:center}
+.ap-cta-box h4{font:700 18px/1.2 var(--disp-serif);letter-spacing:0em;margin-bottom:10px}
+.ap-cta-box p{font-size:13px;color:var(--w3);line-height:1.6;margin-bottom:18px}
+.btn-amber{background:var(--amber);color:var(--bg);border:none;padding:11px 20px;border-radius:7px;font:700 13px/1 var(--sans);width:100%;cursor:pointer;transition:all .18s}
+.btn-amber:hover{background:var(--amber2)}
+
+/* NEWSLETTER */
+.newsletter{background:var(--bg2);border-top:1px solid var(--b1);padding:72px 48px}
+.nl-in{max-width:560px;margin:0 auto;text-align:center}
+.nl-h{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:12px}
+.nl-h em{font-style:normal;color:var(--amber2)}
+.nl-p{font-size:16px;color:var(--w3);margin-bottom:28px;line-height:1.65}
+.nl-form{display:flex;gap:10px}
+.nl-input{flex:1;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 16px;font-size:14px;border-radius:7px;outline:none;transition:border-color .2s;font-family:var(--sans)}
+.nl-input:focus{border-color:var(--amber2)}
+.nl-input::placeholder{color:var(--w4)}
+.nl-btn{background:var(--amber);color:var(--bg);border:none;padding:12px 22px;border-radius:7px;font:700 13px/1 var(--sans);cursor:pointer;transition:all .18s;white-space:nowrap}
+.nl-btn:hover{background:var(--amber2)}
+.nl-note{font:400 11px/1 var(--mono);color:var(--w5);margin-top:12px}
+
+footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ft-links{display:flex;gap:20px}
+.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
+.ft-links a:hover{color:var(--amber2)}
+.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
+
+@media(max-width:1024px){
+  .nav{padding:0 24px}.nav-links{display:none}
+  .hero,.articles,.article-wrap,.newsletter,footer{padding-left:24px;padding-right:24px}
+  .articles-grid{grid-template-columns:1fr}
+  .ap-body{grid-template-columns:1fr}
+  .ap-sidebar{display:none}
+  .hero-h{font-size:38px}
+  .ap-h{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- tx:header -->
+<div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
+<header class="tx-header">
+  <div class="tx-wrap tx-header__bar">
+    <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+    <nav class="tx-nav" id="txNav" aria-label="Main">
+      <a href="/market-seasonality.html">Platform</a>
+      <a href="/seasonality.html">Data</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+      <a href="/academy.html">Academy</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <div class="tx-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="txSearch" type="search" placeholder="Search e.g. Tesla" aria-label="Search assets by name or ticker" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="txSearchList">
+      <ul id="txSearchList" role="listbox" aria-label="Matching assets" hidden></ul>
+    </div>
+    <div class="tx-header__actions">
+      <a class="tx-btn tx-btn--ghost tx-btn--sm" href="/auth.html">Log in</a>
+      <a class="tx-btn tx-btn--primary tx-btn--sm" href="/auth.html">Start free</a>
+    </div>
+    <button class="tx-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="txNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<!-- /tx:header -->
+
+<!-- INDEX VIEW -->
+<div class="article-wrap">
+
+<div class="article-page active" id="art_uptober">
+  <div style="padding-top:48px">
+    <a class="ap-back" href="/blog.html">&#8592; Back to Research</a>
+    <span class="ap-cat crypto" style="display:inline-block;margin-bottom:20px">Crypto</span>
+    <h1 class="ap-h">Uptober: What the Data Shows<br>About <em>Bitcoin in October</em></h1>
+    <div class="ap-meta">TimingAX Research &nbsp;&middot;&nbsp; April 2026 &nbsp;&middot;&nbsp; 7 min read &nbsp;&middot;&nbsp; Bitcoin, crypto seasonality</div>
+    <div class="ap-body">
+      <div class="ap-text">
+        <h2>Bitcoin&rsquo;s strongest month</h2>
+        <p>Bitcoin averages <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></strong> in October across <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years of data &mdash; its strongest month of the year. It has been positive in <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> Octobers</strong>, a <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate. In an asset class defined by volatility and chaos, that level of calendar consistency is remarkable enough to warrant serious analysis.</p>
+        <div class="ap-stat"><div class="ap-stat-v a"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></div><div class="ap-stat-l">Bitcoin average October return &nbsp;&middot;&nbsp; <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> Octobers &nbsp;&middot;&nbsp; <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate</div></div>
+        <p>"Uptober" has been part of crypto trading culture for years, and here the data backs up the nickname: October has been Bitcoin's strongest month on average. Why is less clear &mdash; and a strong average is not a guarantee: our <a href="/track-record.html">track record</a> shows how often Bitcoin's seasonal signals have actually been right.</p>
+
+        <h2>Three explanations people give</h2>
+        <h3>1. Halving cycle timing</h3>
+        <p>Bitcoin's halvings (which cut the issuance rate by 50%) have occurred in November 2012, July 2016, May 2020, and April 2024. In each of the last three cycles, Bitcoin&rsquo;s closing high came about a year and a half after the halving: 525 days after the 2016 halving (December 2017), 546 days after the 2020 halving (November 2021) and 534 days after the April 2024 halving, on 6 October 2025 ($124,753). Whether this cycle explains October strength specifically is debated.</p>
+        <h3>2. Institutional positioning</h3>
+        <p>One theory is that, since Bitcoin futures launched in December 2017 and institutional crypto markets grew, more professional money positions ahead of the fourth quarter, as in traditional markets. We haven&rsquo;t found data that isolates this effect.</p>
+        <h3>3. Recovery from September weakness</h3>
+        <p>Bitcoin's September is one of its weakest months: averaging <strong><span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span></strong> with a <span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="win">50%</span> win rate, before October's <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span>. One argument is that sellers are exhausted after September and buyers step in as the calendar turns, and that, as more people expect a strong October, buying ahead of it adds to the effect. Both are hard to test.</p>
+
+        <div class="ap-pullquote"><p>"September is one of Bitcoin's weakest months at <span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span>. October is its best at <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span>."</p></div>
+
+        <h2>The three bad Octobers</h2>
+        <p>Bitcoin's negative completed Octobers in our data are 2014, 2018 and 2025. The first two occurred during sustained bear markets where macro and structural forces overwhelmed seasonal tendencies. The 2018 case is instructive &mdash; October 2018 was negative despite strong seasonals, as the broader crypto bear market (in which Bitcoin fell 83% from its December 2017 closing high to its December 2018 closing low) dominated every other factor.</p>
+        <p>This is the key qualifier: seasonal patterns are tendencies that hold when other forces are neutral or aligned. When a bear market is in full force, no seasonal pattern reliably reverses it. The <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="win">69%</span> win rate already prices in those failures &mdash; years where the backdrop was too negative for seasonality to overcome.</p>
+
+        <h2>Beyond Bitcoin: the crypto seasonal calendar</h2>
+        <p>Ethereum, by comparison, averages <span data-tx-fill data-tx-sid="eth" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+4.81%</span> in October. Bitcoin has averaged <span data-tx-fill data-tx-sid="btc" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+7.51%</span> in November and <span data-tx-fill data-tx-sid="btc" data-tx-month="Dec" data-tx-field="avg" data-tx-dp="2">+7.14%</span> in December.</p>
+        <p>Bitcoin's weakest months have been January (<span data-tx-fill data-tx-sid="btc" data-tx-month="Jan" data-tx-field="avg" data-tx-dp="2">−1.15%</span>) and September (<span data-tx-fill data-tx-sid="btc" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.14%</span>).</p>
+      </div>
+      <div class="ap-sidebar">
+        <div class="ap-toc">
+          <div class="ap-toc-h">In this article</div>
+          <ul>
+            <li><a href="#">Bitcoin&rsquo;s strongest month</a></li>
+            <li><a href="#">Three explanations</a></li>
+            <li><a href="#">The three bad Octobers</a></li>
+            <li><a href="#">Beyond Bitcoin</a></li>
+          </ul>
+        </div>
+        <div class="ap-cta-box">
+          <h4>See Bitcoin's full seasonal calendar</h4>
+          <p>All 12 months, win rates and a written summary for Bitcoin &mdash; including the full halving cycle context.</p>
+          <a href="/market-seasonality.html"><button class="btn-amber">Analyze Bitcoin &rarr;</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /article-wrap -->
+
+<!-- NEWSLETTER -->
+<div class="newsletter" id="nlSection">
+  <div class="nl-in">
+    <h2 class="nl-h">Research in your<br><em>inbox.</em></h2>
+    <p class="nl-p">New articles, seasonal alerts and platform updates. One email when it matters. Never spam.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" id="nlEmail" placeholder="your@email.com">
+      <button class="nl-btn" onclick="nlSubmit()">Subscribe</button>
+    </div>
+    <div class="nl-note" id="nlNote">&#10003; Free forever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; No spam</div>
+  </div>
+</div>
+
+<!-- tx:footer -->
+<footer class="tx-footer">
+  <div class="tx-wrap">
+    <div class="tx-footer__grid">
+      <div class="tx-footer__brand">
+        <a class="tx-logo" href="/" aria-label="TimingAX home"><svg viewBox="0 0 26 26" fill="none" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#0F1728"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="19" cy="7" r="1.8" fill="#E89318"/><rect x="3" y="19.5" width="2.2" height="2.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="7.5" y="17.5" width="2.2" height="4.8" rx="1" fill="#00C97E" opacity=".8"/><rect x="12" y="15" width="2.2" height="7.3" rx="1" fill="#E89318" opacity=".9"/><rect x="16.5" y="11" width="2.2" height="11.3" rx="1" fill="#E89318"/></svg><span>Timing<b>AX</b></span></a>
+        <p style="margin:14px 0 0;max-width:340px">Professional market seasonality intelligence for self-directed investors. 700+ global assets, up to 15 years of real price history.</p>
+      </div>
+      <div><h4>Product</h4><ul>
+        <li><a href="/market-seasonality.html">Open the app</a></li>
+        <li><a href="/seasonality.html">Browse assets</a></li>
+        <li><a href="/outlook.html">Monthly outlook</a></li>
+        <li><a href="/this-day.html">This day in markets</a></li>
+        <li><a href="/events.html">Market events</a></li>
+        <li><a href="/leaderboard.html">Leaderboard</a></li>
+        <li><a href="/scanner.html">Scanner</a></li>
+        <li><a href="/compare.html">Compare assets</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/data.html">Data &amp; methodology</a></li>
+        <li><a href="/track-record.html">Track record</a></li>
+        <li><a href="/methodology.html">Methodology</a></li>
+        <li><a href="/changelog.html">Changelog</a></li>
+      </ul></div>
+      <div><h4>Company</h4><ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/academy.html">Academy</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="/accessibility.html">Accessibility</a></li>
+        <li><a href="/privacy-policy.html">Privacy policy</a></li>
+        <li><a href="/terms-of-service.html">Terms of service</a></li>
+        <li><a href="/terms-of-service.html">Disclaimer</a></li>
+      </ul></div>
+    </div>
+    <div class="tx-footer__legal">
+      <p>Past seasonal performance does not guarantee future results. TimingAX provides historical data for informational purposes only and does not constitute financial advice. All investments carry risk. Consult a qualified financial adviser before making investment decisions. TimingAX is an independently operated service and not a registered investment adviser.</p>
+      <span>&copy; 2026 TimingAX &middot; All rights reserved</span>
+    </div>
+  </div>
+</footer>
+<!-- /tx:footer -->
+
+<script>
+var SB_URL = 'https://hqbxonheaeespnrlhkys.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYnhvbmhlYWVlc3Bucmxoa3lzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzc2MTIsImV4cCI6MjA5NjY1MzYxMn0.0zChPuEruUsDo1qN9nX2M6618WICkXBuu-0zNEvni44';
+
+function nlSubmit() {
+  var v = document.getElementById('nlEmail').value.trim();
+  var note = document.getElementById('nlNote');
+  var btn = document.querySelector('.nl-btn');
+  if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+    note.textContent = 'Please enter a valid email address.';
+    note.style.color = 'var(--red)';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  fetch(SB_URL + '/rest/v1/newsletter_subscribers', {
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal,resolution=ignore-duplicates'
+    },
+    body: JSON.stringify({ email: v })
+  }).then(function(r) {
+    btn.disabled = false;
+    btn.textContent = 'Subscribe';
+    if (!r.ok && r.status !== 409) throw new Error('failed');
+    note.textContent = '\u2713 You\u2019re subscribed. We\u2019ll be in touch.';
+    note.style.color = 'var(--green)';
+    document.getElementById('nlEmail').value = '';
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Subscribe';
+    note.textContent = 'Something went wrong \u2014 please try again.';
+    note.style.color = 'var(--red)';
+  });
+}
+</script>
+<script src="/cookie-consent.js"></script>
+<script src="/chat-widget.js"></script>
+</body>
+</html>

@@ -62,9 +62,27 @@
   </url>
   <url>
     <loc>https://www.timingax.co.uk/blog.html</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/blog/september-weakest-month.html</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/blog/sell-in-may-halloween-indicator.html</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.timingax.co.uk/blog/uptober-bitcoin-october.html</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.timingax.co.uk/contact.html</loc>
