@@ -233,6 +233,45 @@ export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
   };
 }
 
+// ── Typical year ────────────────────────────────────────────────────────────
+// Each completed calendar year as a % path from the previous year's last close, on 365 day-of-year slots
+// (29 Feb shares 28 Feb's slot; weekends and holidays carry the last close forward). `typical` is the per-slot
+// median across the last `years` completed years, p25/p75 the middle half. A year counts only when both its own
+// and the previous year's December closes exist. `current` is this year's real path up to the latest close.
+const SLOT0 = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+function yearSlot(t) { const d = new Date(t), m = d.getUTCMonth(); return SLOT0[m] + Math.min(d.getUTCDate(), m === 1 ? 28 : 31) - 1; }
+export function computeYearCurve(rows, { now = new Date(), years = 15 } = {}) {
+  if (!rows || rows.length < 2) return null;
+  const byYear = new Map();
+  for (const r of rows) { const y = new Date(r.t).getUTCFullYear(); if (!byYear.has(y)) byYear.set(y, []); byYear.get(y).push(r); }
+  const endsInDec = (rs) => rs && new Date(rs[rs.length - 1].t).getUTCMonth() === 11;
+  const r2 = (v) => Math.round(v * 100) / 100;
+  function path(y, upto) {
+    const prev = byYear.get(y - 1), own = byYear.get(y);
+    if (!endsInDec(prev) || !own) return null;
+    const base = prev[prev.length - 1].c, out = new Array(upto + 1);
+    for (const r of own) out[yearSlot(r.t)] = (r.c / base - 1) * 100;
+    for (let k = 0, v = 0; k <= upto; k++) { if (out[k] === undefined) out[k] = v; v = out[k]; }
+    return out;
+  }
+  const Y = now.getUTCFullYear(), used = [], paths = [];
+  for (let y = Y - 1; used.length < years && byYear.has(y - 1); y--) {
+    if (!endsInDec(byYear.get(y))) continue;
+    const p = path(y, 364); if (p) { used.unshift(y); paths.unshift(p); }
+  }
+  if (used.length < 5) return null;
+  const q = (a, f) => { const s = a.slice().sort((x, y) => x - y), i = (s.length - 1) * f, lo = Math.floor(i); return s[lo] + (s[Math.ceil(i)] - s[lo]) * (i - lo); };
+  const col = (f) => Array.from({ length: 365 }, (_, k) => r2(q(paths.map((p) => p[k]), f)));
+  const own = byYear.get(Y), lastRow = own && own[own.length - 1];
+  const current = lastRow ? path(Y, yearSlot(lastRow.t)) : null;
+  return {
+    from: used[0], to: used[used.length - 1], n: used.length, years: used,
+    typical: col(0.5), p25: col(0.25), p75: col(0.75),
+    up: paths.filter((p) => p[364] > 0).length,
+    year: Y, current: current && current.map(r2), asOf: current ? new Date(lastRow.t).toISOString().slice(0, 10) : null,
+  };
+}
+
 // ── Calendar feed (ICS) ─────────────────────────────────────────────────────
 // Same rule as the asset pages and tx.js.
 export function verdictOf(avg, win) {
