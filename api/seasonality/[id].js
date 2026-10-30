@@ -360,6 +360,8 @@ export default async function handler(req, res) {
   <section id="hub" class="hub" data-id="${esc(id)}" data-name="${esc(item.name)}" aria-label="${esc(item.name)} history and monthly analysis">
     <div class="tx-term"><div class="tx-term__head"><span class="tx-term__title">${esc(item.name)} · Price history</span><span class="tx-term__status">Up to 20 years</span></div>
       <div class="hub-body" id="hubHistory"><p class="tx-muted">Loading real price history…</p></div></div>
+    <div class="tx-term" id="hubYear"><div class="tx-term__head"><span class="tx-term__title">${esc(item.name)} · Typical year vs ${new Date().getUTCFullYear()}</span><span class="tx-term__status">Real daily data</span></div>
+      <div class="hub-body" id="hubYearBody"><p class="tx-muted">Loading real daily prices…</p></div></div>
     <div class="tx-term" id="hubMonth"><div class="tx-term__head"><span class="tx-term__title">Month in review</span>
       <label class="hub-pick"><span class="tx-label">Month</span><select id="hubMonthSel" aria-label="Month to review"></select></label></div>
       <div class="hub-body"><p class="hub-sum" id="hubMonthSummary"></p><div class="hub-cols" id="hubMonthBody"></div><p style="margin:14px 0 0"><a id="hubMonthLink" href="/seasonality/${esc(id)}/${MONTH_NAMES[cm].toLowerCase()}">Open the full month page &rarr;</a></p></div></div>

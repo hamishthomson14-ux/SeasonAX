@@ -47,6 +47,42 @@
     });
   }
 
+  // Typical year: the median path of the last completed years (shaded: the middle half of years) vs this year's real path.
+  var SLOT0 = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  function yearCurve(id, name) {
+    var box = $('hubYear'), body = $('hubYearBody');
+    return get('id=' + id + '&view=curve').then(function (d) {
+      if (!d) { body.innerHTML = '<p class="tx-muted">Not enough real daily price history to draw a typical year for ' + name + ' (we need at least 5 complete years, and never model one).</p>'; box.dataset.state = 'error'; return; }
+      var W = 760, H = 260, L = 52, R = 14, T = 14, B = 30, cur = d.current || [];
+      var all = d.p25.concat(d.p75, d.typical, cur), lo = Math.min.apply(null, all.concat([0])), hi = Math.max.apply(null, all.concat([0]));
+      var x = function (k) { return L + (W - L - R) * k / 364; }, y = function (v) { return T + (H - T - B) * (hi - v) / ((hi - lo) || 1); };
+      var line = function (a) { return a.map(function (v, k) { return (k ? 'L' : 'M') + x(k).toFixed(1) + ' ' + y(v).toFixed(1); }).join(''); };
+      var band = line(d.p75) + d.p25.slice().reverse().map(function (v, k) { return 'L' + x(364 - k).toFixed(1) + ' ' + y(v).toFixed(1); }).join('') + 'Z';
+      var step = Math.pow(10, Math.floor(Math.log(Math.max(hi - lo, 1) / 4) / Math.LN10)), tick = [1, 2, 5, 10].map(function (m) { return m * step; }).filter(function (t) { return (hi - lo) / t <= 6; })[0];
+      var grid = '';
+      for (var v = Math.ceil(lo / tick) * tick; v <= hi + 1e-9; v += tick) { var yy = y(v).toFixed(1); grid += '<line x1="' + L + '" y1="' + yy + '" x2="' + (W - R) + '" y2="' + yy + '" stroke="' + (Math.abs(v) < 1e-9 ? '#2A3B57' : '#12203A') + '"/><text data-tick x="' + (L - 6) + '" y="' + yy + '" font-size="10" fill="#6B819A" text-anchor="end" dominant-baseline="middle">' + (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(+v.toFixed(6)) + '%</text>'; }
+      var months = SLOT0.map(function (s, k) { return '<text x="' + x(s + 15).toFixed(1) + '" y="' + (H - 10) + '" font-size="10" fill="#6B819A" text-anchor="middle">' + AB[k] + '</text>'; }).join('');
+      var asOf = d.asOf ? new Date(d.asOf + 'T00:00:00Z') : null, today = asOf ? SLOT0[asOf.getUTCMonth()] + Math.min(asOf.getUTCDate(), asOf.getUTCMonth() === 1 ? 28 : 31) - 1 : null;
+      var nowAt = cur.length ? cur[cur.length - 1] : null, dAsOf = asOf ? asOf.getUTCDate() + ' ' + AB[asOf.getUTCMonth()] : '';
+      body.innerHTML =
+        '<div class="hub-kpis">' +
+          '<div><span class="tx-label">Typical full year</span><b data-yc="typical" style="color:' + col(d.typical[364]) + '">' + pct(d.typical[364]) + '</b><small>median of ' + d.n + ' years</small></div>' +
+          '<div><span class="tx-label">Years that ended up</span><b data-yc="up">' + d.up + ' of ' + d.n + '</b><small>' + d.from + '–' + d.to + '</small></div>' +
+          (nowAt === null ? '' :
+          '<div><span class="tx-label">' + d.year + ' so far</span><b data-yc="current" style="color:' + col(nowAt) + '">' + pct(nowAt) + '</b><small>to ' + dAsOf + '</small></div>' +
+          '<div><span class="tx-label">Typical by ' + dAsOf + '</span><b data-yc="typicalToday" style="color:' + col(d.typical[today]) + '">' + pct(d.typical[today]) + '</b><small>median path</small></div>') +
+        '</div>' +
+        '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="' + name + ': median path of ' + d.from + ' to ' + d.to + ' versus ' + d.year + ' so far">' + grid + months +
+          '<path data-line="band" d="' + band + '" fill="rgba(107,129,154,.16)" stroke="none"/>' +
+          '<path data-line="typical" d="' + line(d.typical) + '" fill="none" stroke="#6B819A" stroke-width="1.6" stroke-dasharray="4 3"/>' +
+          (cur.length ? '<path data-line="current" d="' + line(cur) + '" pathLength="1" class="tx-line" fill="none" stroke="#E89318" stroke-width="2.2"/>' : '') +
+        '</svg>' +
+        '<p class="hub-legend"><span><i style="background:#E89318"></i>' + d.year + ' (real)</span><span><i style="background:#6B819A"></i>Typical year (median ' + d.from + '–' + d.to + ')</span><span><i style="background:rgba(107,129,154,.35)"></i>Middle half of years</span></p>' +
+        '<p class="hub-note">Each year is measured from the previous year’s last close, using daily closes from Yahoo Finance. The typical line is the median of the ' + d.n + ' years on each calendar day, not an average, so one extreme year cannot drag it. History, not a forecast.</p>';
+      box.dataset.state = 'done';
+    });
+  }
+
   function monthReview(id, name) {
     var box = $('hubMonth'), sel = $('hubMonthSel'), my = 0;
     function load() {
@@ -110,7 +146,7 @@
     $('hubVsA').innerHTML = opts; $('hubVsB').innerHTML = opts;
     $('hubVsA').value = String(cm); $('hubVsB').value = String((cm + 1) % 12);
     hub.dataset.state = 'loading';
-    Promise.all([history(id, name)]).then(function () { hub.dataset.state = 'done'; });
+    Promise.all([history(id, name), yearCurve(id, name)]).then(function () { hub.dataset.state = 'done'; });
     monthReview(id, name);
     monthVsMonth(id);
   }

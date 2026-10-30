@@ -351,6 +351,8 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 .hub-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
 .hub-kpis b { display: block; font: 600 20px var(--tx-font-mono); margin: 4px 0 2px; color: var(--tx-text-1); }
 .hub-kpis small, .hub-note { color: var(--tx-text-3); font-size: 12.5px; }
+.hub-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 8px 0 6px; color: var(--tx-text-2); font-size: 12.5px; }
+.hub-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
 .hub-sum { margin: 0 0 14px; color: var(--tx-text-1); line-height: 1.6; }
 .hub-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .hub-col h3 { margin: 0 0 8px; }

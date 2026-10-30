@@ -5,8 +5,8 @@
 //   GET /api/v1/seasonality?ticker=AAPL
 //
 // Returns the same monthly seasonal statistics the product uses, computed
-// from real historical price data where available (Yahoo Finance) and
-// labelled honestly as "verified" or "modelled". Keyless, CORS-open, cached.
+// from real historical price data (Yahoo Finance). An asset without real
+// history gets a 404, never modelled figures. Keyless, CORS-open, cached.
 //
 // Response shape:
 // {
@@ -14,8 +14,8 @@
 //   "ticker": "^GSPC",
 //   "name": "S&P 500",
 //   "region": "US",
-//   "source": "verified",          // "verified" = real price data, "modelled" = sector pattern
-//   "years": 15,                    // years of history the stats are based on (verified only)
+//   "source": "verified",          // always "verified": computed from real price data
+//   "years": 15,                    // years of history the stats are based on
 //   "months": [
 //     { "month": "January", "abbr": "Jan", "avgReturn": 1.12, "winRate": 67, "observations": 15 },
 //     ...
@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history', 'curve'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history, curve or leaderboard.' });
   if (view === 'events') {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
@@ -214,6 +214,16 @@ export default async function handler(req, res) {
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'history', ...h,
       method: 'Last close of each calendar month (Yahoo Finance; adjusted closes where Yahoo provides them). Annualised return compounds over the months between the first and last close.',
       generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=curve — the typical calendar year (median path of the last 15 completed years) vs this year so far ──
+  if (view === 'curve') {
+    let c = null;
+    try { c = computeYearCurve(await fetchDaily(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { c = null; }
+    if (!c) return res.status(404).json({ error: 'unavailable', hint: 'Needs at least 5 completed years of real daily prices (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'curve', ...c,
+      method: 'Daily closes (Yahoo Finance; adjusted where provided). Each year is measured from the previous year\'s last close; weekends and holidays carry the last close forward; 29 Feb shares 28 Feb. typical = the median of the ' + c.n + ' years on each calendar day, p25/p75 = the middle half.',
+      disclaimer: 'A historical pattern, not a forecast.', generatedAt: new Date().toISOString() });
   }
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
   if (view === 'track') {
