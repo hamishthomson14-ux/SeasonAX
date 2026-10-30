@@ -411,3 +411,7 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 .hm td[data-total] { font-weight: 600; color: var(--tx-text-2); padding-left: 8px; }
 .hm tfoot td { color: var(--tx-text-2); font-weight: 600; border-top: 1px solid var(--tx-border, #1d2a42); }
 .hm-note { color: var(--tx-text-3); font-size: 12.5px; margin: 10px 0 0; }
+/* "Does the pattern hold?" table: the two windows' headers span their Avg/Up pairs; ✓/✗ coloured by agreement. */
+.cs th[colspan] { text-align: center; }
+.cs .cs-same { font-weight: 700; color: var(--tx-down, #f04f5f); }
+.cs tr[data-agree] .cs-same { color: var(--tx-up, #22c58b); }

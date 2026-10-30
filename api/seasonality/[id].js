@@ -369,6 +369,8 @@ export default async function handler(req, res) {
     <div class="tx-term" id="hubVs"><div class="tx-term__head"><span class="tx-term__title">Month vs month</span>
       <span class="hub-pick"><select id="hubVsA" aria-label="First month"></select><span class="tx-muted">vs</span><select id="hubVsB" aria-label="Second month"></select></span></div>
       <div class="hub-body"><p class="hub-sum" id="hubVsSummary"></p><div class="hub-scroll"><table class="tx-table"><thead></thead><tbody></tbody></table></div></div></div>
+    <div class="tx-term" id="hubHold"><div class="tx-term__head"><span class="tx-term__title">${esc(item.name)} · Does the pattern hold?</span><span class="tx-term__status">Two windows, no shared month</span></div>
+      <div class="hub-body" id="hubHoldBody"><p class="tx-muted">Checking the earlier years of real prices…</p></div></div>
     <p class="hub-links"><a href="/compare.html">Compare ${esc(dt)} with another asset &rarr;</a> <a href="/market-seasonality.html">Backtest it in the analyzer &rarr;</a> <a href="/this-day.html">This day in markets &rarr;</a></p>
   </section>
 
@@ -403,6 +405,7 @@ export default async function handler(req, res) {
   ${related.length ? `<div class="a-rel"><span class="tx-label">Related: ${esc(item.catSection || '')}</span><div style="margin-top:12px">${relatedLinks}</div></div>` : ''}
 
   <script src="/assets/yearcurve.js" defer></script>
+  <script src="/assets/consistency.js" defer></script>
   <script src="/assets/hub.js" defer></script>
   <p class="tx-note a-disc">TimingAX is an independently operated service, not a registered investment adviser. This page is for informational purposes only and is not financial advice.</p>
 </main>
