@@ -7,7 +7,8 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { yahooSymbol, computeAdaptiveMonths, bestWorst, fetchMonthly, fetchDaily, computeMonthHistory, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import { yahooSymbol, computeAdaptiveMonths, computeMonthGrid, roundGrid, bestWorst, fetchMonthly, fetchDaily, computeMonthHistory, MONTH_NAMES, MONTH_ABBR } from '../_lib/seasonal.js';
+import '../../assets/heatmap.js';   // sets globalThis.TXHeatmap: the same renderer the analyzer uses
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CATALOGUE = JSON.parse(readFileSync(path.join(__dirname, '../_data/catalogue.json'), 'utf8'));
@@ -149,14 +150,14 @@ export default async function handler(req, res) {
   }
 
   // Try real price data; fall back to modelled pattern.
-  let months = null, source = 'model', realYears = null;
+  let months = null, source = 'model', realYears = null, grid = null;
   try {
     const sym = yahooSymbol(item);
     if (sym) {
       const rows = await fetchMonthly(sym);
       if (rows) {
         const real = computeAdaptiveMonths(rows, 15);
-        if (real) { months = real.months; source = 'real'; realYears = real.years; }
+        if (real) { months = real.months; source = 'real'; realYears = real.years; grid = computeMonthGrid(rows, { now: new Date(), years: 15 }); grid = grid && roundGrid(grid); }
       }
     }
   } catch (e) { /* fall through to model */ }
@@ -377,6 +378,9 @@ export default async function handler(req, res) {
       <tbody>${tableRows}</tbody>
     </table>
   </div>
+
+  ${grid ? `<div class="tx-term hm-wrap" id="heatmap"><div class="tx-term__head"><span class="tx-term__title">${esc(dt)} \u00b7 Every month, year by year</span><span class="tx-term__status">Real data \u00b7 %</span></div>
+    <div class="hub-body">${globalThis.TXHeatmap.html(grid, { name: item.name })}</div></div>` : ''}
 
   <div class="tx-card a-note">${dataLine} Past seasonal patterns are not a guarantee of future performance. See our <a href="/methodology.html">methodology</a> for how this is calculated, or visit the <a href="/academy.html">Academy</a> to learn how to read seasonal data responsibly.</div>
 

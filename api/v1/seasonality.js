@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, computeMonthGrid, roundGrid, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history', 'curve'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history, curve or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history', 'curve', 'grid'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history, curve, grid or leaderboard.' });
   if (view === 'events') {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
@@ -213,6 +213,17 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'history', ...h,
       method: 'Last close of each calendar month (Yahoo Finance; adjusted closes where Yahoo provides them). Annualised return compounds over the months between the first and last close.',
+      generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=grid — every month's real return, year by year (the heatmap); inAvg marks the cells behind the average ──
+  if (view === 'grid') {
+    let g = null;
+    try { g = computeMonthGrid(await fetchMonthly(yahooSymbol(item)), { now: new Date(), years: 15 }); } catch (e) { g = null; }
+    if (!g) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly price history (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    const pub = roundGrid(g);
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'grid', window: pub.window, months: pub.months, years: pub.years,
+      method: 'Each cell: last close of the month vs last close of the month before (Yahoo Finance; adjusted where provided). inAvg marks the last ' + g.window + ' completed occurrences of each month, the ones behind the published average; partial marks the month in progress; flag "data" marks a move over 95% treated as a data error. total: Dec to Dec (this year: to the latest close).',
       generatedAt: new Date().toISOString() });
   }
   // ── ?view=curve — the typical calendar year (median path of the last 15 completed years) vs this year so far ──

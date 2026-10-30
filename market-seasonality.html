@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/assets/tx.css">
 <script src="/assets/tx.js" defer></script>
+<script src="/assets/heatmap.js" defer></script>
 <!-- /tx:head -->
 <script src="/assets/projection.js" defer></script>
 <script src="/assets/patterns.js" defer></script>
@@ -2333,6 +2334,7 @@ function recomputeView() {
 
   CUR_YEAR_FILTER = filterApplied ? preset : null;
   paintAnalysis(CUR_ITEM, baseMonths, CUR_SOURCE, CUR_YEARS);
+  azHeatmap(CUR_ITEM);
 }
 
 function fetchRealMonths(item, yearsWanted, cb) {
@@ -2525,6 +2527,7 @@ function renderRun(item, monthsIn, source, years) {
     try {
       CUR_ITEM=item; CUR_MONTHS=monthsIn; CUR_SOURCE=source; CUR_YEARS=years;
       paintAnalysis(item, monthsIn, source, years);
+      azHeatmap(item);
       trackAnalysis();
     } catch (e) {
       console.error(e);
@@ -2532,6 +2535,20 @@ function renderRun(item, monthsIn, source, years) {
       btn.disabled=false;
     }
   }, 350);
+}
+
+// Year × month heatmap under the Calendar tab: the same API and renderer as the asset pages (actual returns, so it
+// ignores the detrend and year-filter views).
+var AZ_GRID = {};
+function azHeatmap(item) {
+  var box = document.getElementById('azHeatmap'); if (!box || !item || !window.TXHeatmap) return;
+  var paint = function (g) {
+    var b = document.getElementById('azHeatmap'); if (!b || b.dataset.id !== item.id) return;
+    b.innerHTML = g ? TXHeatmap.html(g, { name: item.name, state: 'done' }) : '<p class="tx-muted" style="font-size:12px">The year-by-year grid is unavailable right now.</p>';
+  };
+  if (AZ_GRID[item.id]) return paint(AZ_GRID[item.id]);
+  fetch('/api/v1/seasonality?id=' + encodeURIComponent(item.id) + '&view=grid').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    .then(function (g) { if (g) AZ_GRID[item.id] = g; paint(g); });
 }
 
 function paintAnalysis(item, monthsIn, source, years) {
@@ -2595,6 +2612,8 @@ function paintAnalysis(item, monthsIn, source, years) {
               bars(months, sfx)+
             '</div>'+
           '</div>'+
+          '<div class="cp-title" style="margin-top:22px">Every month, year by year &middot; actual returns</div>'+
+          '<div id="azHeatmap" data-id="'+item.id+'"><p class="tx-muted" style="font-size:12px">Loading every month&rsquo;s real return&hellip;</p></div>'+
         '</div>'+
         // RETURNS tab — just the horizontal bars, full width
         '<div class="term-panel" data-panel="returns">'+
