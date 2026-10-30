@@ -719,7 +719,7 @@ function obRender() {
   html += '<div class="ob-text">' + s.body + '</div>';
 
   if (s.preview) {
-    var mi = new Date().getMonth();
+    var mi = new Date().getUTCMonth();
     var sp = dm('sp500', mi), cr = dm('btc', mi);
     function c(v){return v>=0?'g':'r';}
     function cell(id, p, f, label, cls){ return '<div class="ob-pv-cell"><div class="ob-pv-val '+(p?cls:'')+'"'+dtag(id,mi,f)+'>'+(p?(f==='win'?p.win+'%':TX.fmtPct(p.avg,1)):ph(id))+'</div><div class="ob-pv-lbl">'+label+'</div></div>'; }
@@ -806,7 +806,7 @@ function dashLoad(){
   DASH.forEach(function(a){
     TX.fetchVerified(a.id).then(function(d){
       if (d) DASH_DATA[a.id] = d; else DASH_FAILED[a.id] = true;
-      renderSeasonal(new Date().getMonth());
+      renderSeasonal(new Date().getUTCMonth());
       var ov = document.getElementById('obOverlay');
       if (ov && ov.style.display === 'flex' && OB_STEPS[obStep] && OB_STEPS[obStep].preview) obRender();
     });
@@ -879,7 +879,7 @@ function renderSeasonal(mi){
 }
 
 function buildDashboard(){
-  var mi=new Date().getMonth();
+  var mi=new Date().getUTCMonth();
   var mn=MO_NAMES[mi];
   document.getElementById('monthName').textContent=mn;
   document.getElementById('ovMonthLabel').textContent=mn+' historical averages';

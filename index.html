@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
   var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var AB = MO.map(function (m) { return m.slice(0, 3); });
-  var cm = new Date().getMonth();
+  var cm = new Date().getUTCMonth();
   var data = {}, failed = {}, sel = 0, done = 0, ok = 0, verified = 0;
   var dash = '<span class="tx-muted">\u2014</span>';
   var $ = function (id) { return document.getElementById(id); };
