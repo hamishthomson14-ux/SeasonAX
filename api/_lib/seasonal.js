@@ -19,9 +19,10 @@ export function yahooSymbol(item) {
 
 // Compute per-calendar-month seasonal stats from monthly close-price rows.
 // rows: [{ d: 'YYYY-MM-DD', c: close }, ...] oldest first.
-export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date()) {
-  // A "15-year average" is the last 15 COMPLETED occurrences of each month: the month in progress is left out
-  // (its return so far is not a month's return), and no month gets a 16th year.
+// The months behind a "15-year average": the last `yearsWanted` COMPLETED occurrences of each month. The month in
+// progress is left out (its return so far is not a month's return), no month gets an extra year, and a move over
+// 95% (a data error, e.g. an unadjusted split) is skipped so an older year takes its place.
+function selectMonths(rows, yearsWanted, now) {
   const current = now.toISOString().slice(0, 7);
   const byMonth = Array.from({ length: 12 }, () => []);
   for (let i = rows.length - 1; i >= 1; i--) {   // newest first, so each month keeps its most recent years
@@ -32,14 +33,19 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date
     if (!isFinite(prev.c) || prev.c <= 0) continue;
     const ret = ((cur.c - prev.c) / prev.c) * 100;
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    byMonth[mo].push(ret);
+    byMonth[mo].push({ ym: cur.d.slice(0, 7), ret });
   }
+  return byMonth;
+}
+
+export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date()) {
+  const byMonth = selectMonths(rows, yearsWanted, now);
   const months = [];
   for (let m = 0; m < 12; m++) {
     const arr = byMonth[m];
     if (arr.length < minObs) return null;
     let sum = 0, wins = 0;
-    for (const r of arr) { sum += r; if (r > 0) wins++; }
+    for (const { ret } of arr) { sum += ret; if (ret > 0) wins++; }
     months.push({ m: MONTH_ABBR[m], avg: +(sum / arr.length).toFixed(2), win: Math.round((wins / arr.length) * 100), n: arr.length });
   }
   return months;
@@ -60,9 +66,44 @@ export function computeAdaptiveMonths(rows, yearsWanted = 15, now = new Date()) 
   for (const y of candidates) {
     const minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
     const months = computeMonths(rows, y, minObs, now);
-    if (months) return { months, years: Math.min(y, actualYears) };
+    if (months) return { months, years: Math.min(y, actualYears), window: y };
   }
   return null;
+}
+
+// Year × month returns grid (the heatmap). Every cell is a month-end to month-end return; inAvg marks exactly the
+// cells behind the published average (same window as computeAdaptiveMonths), partial marks the month in progress
+// and flag 'data' a skipped data-error move. total is the calendar-year return (Dec to Dec; this year: so far).
+export function computeMonthGrid(rows, { now = new Date(), years = 15 } = {}) {
+  const ad = rows && computeAdaptiveMonths(rows, years, now);
+  if (!ad) return null;
+  const used = new Set(selectMonths(rows, ad.window, now).flat().map((x) => x.ym));
+  const current = now.toISOString().slice(0, 7), Y = +current.slice(0, 4);
+  const first = Math.min(...[...used].map((ym) => +ym.slice(0, 4)));
+  const byYM = new Map(rows.map((r, i) => [r.d.slice(0, 7), i]));
+  const out = [];
+  for (let y = Y; y >= first; y--) {
+    const cells = Array.from({ length: 12 }, (_, m) => {
+      const ym = `${y}-${String(m + 1).padStart(2, '0')}`, i = byYM.get(ym);
+      if (i === undefined || i < 1 || ym > current) return null;
+      const prev = rows[i - 1].c, ret = (rows[i].c / prev - 1) * 100;
+      if (!isFinite(ret) || prev <= 0) return null;
+      const c = { ret, inAvg: used.has(ym) };
+      if (ym === current) c.partial = true;
+      if (Math.abs(ret) > 95) c.flag = 'data';
+      return c;
+    });
+    const dec = byYM.get(`${y - 1}-12`), end = y === Y ? rows.length - 1 : byYM.get(`${y}-12`);
+    const row = { year: y, cells, total: dec !== undefined && end !== undefined && end > dec ? (rows[end].c / rows[dec].c - 1) * 100 : null };
+    if (y === Y) row.totalPartial = true;
+    out.push(row);
+  }
+  return { window: ad.window, months: ad.months, years: out };
+}
+// The grid as published (API and pages): returns to 2 decimals, so every view rounds from the same numbers.
+export function roundGrid(g) {
+  const r2 = (v) => v == null ? null : Math.round(v * 100) / 100;
+  return { ...g, years: g.years.map((y) => ({ ...y, total: r2(y.total), cells: y.cells.map((c) => c && { ...c, ret: r2(c.ret) }) })) };
 }
 
 // Fetch monthly close history from Yahoo Finance's public chart API.
