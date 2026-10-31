@@ -30,7 +30,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   yahooSymbol, computeAdaptiveMonths, bestWorst,
-  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, computeMonthGrid, roundGrid, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
+  fetchMonthly, fetchDaily, computeProjection, computePatterns, computeYearCurve, computeMonthGrid, roundGrid, computeConsistency, buildCalendar, computeTrackRecord, computeThisDay, computeEventStudy, computeMonthHistory, computePriceHistory, computeBacktest, computePairStats, MONTH_NAMES, MONTH_ABBR,
 } from '../_lib/seasonal.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
   // ── ?view=projection&days=30|60|90 — next-N-days seasonal path from real daily prices ──
   // (A mode of this endpoint rather than a new function: the Hobby plan allows 12 functions.)
   const view = String(req.query.view || 'months');
-  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history', 'curve', 'grid'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history, curve, grid or leaderboard.' });
+  if (!['months', 'projection', 'patterns', 'track', 'day', 'events', 'month', 'backtest', 'pair', 'history', 'curve', 'grid', 'consistency'].includes(view)) return res.status(400).json({ error: 'Unknown view. Use view=months, projection, patterns, track, day, events, month, backtest, pair, history, curve, grid, consistency or leaderboard.' });
   if (view === 'events') {
     const type = EVENTS_HISTORY.types.find((t) => t.id === String(req.query.type));
     if (!type) return res.status(400).json({ error: 'Unknown event type', types: EVENTS_HISTORY.types.map((t) => t.id) });
@@ -235,6 +235,21 @@ export default async function handler(req, res) {
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'curve', ...c,
       method: 'Daily closes (Yahoo Finance; adjusted where provided). Each year is measured from the previous year\'s last close; weekends and holidays carry the last close forward; 29 Feb shares 28 Feb. typical = the median of the ' + c.n + ' years on each calendar day, p25/p75 = the middle half.',
       disclaimer: 'A historical pattern, not a forecast.', generatedAt: new Date().toISOString() });
+  }
+  // ── ?view=consistency — does the pattern hold out of sample? The 15 completed occurrences of each month behind the
+  // published average vs the (up to 15) occurrences before them: two windows that share no month. Needs 32 years of closes.
+  if (view === 'consistency') {
+    let rows = null;
+    try { rows = await fetchMonthly(yahooSymbol(item), '32y'); } catch (e) { rows = null; }
+    if (!rows) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly price history (never modelled).' });
+    res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
+    const c = computeConsistency(rows, { now: new Date(), years: 15 });
+    // Too young for the check is an answer, not an error (200): most assets listed after 2001 land here.
+    if (!c) return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'consistency', available: false,
+      hint: 'Needs at least 25 years of real monthly history: the last 15 completed occurrences of each month and at least 10 before them (never modelled).', generatedAt: new Date().toISOString() });
+    return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'consistency', available: true, ...c,
+      method: 'Month-end closes (Yahoo Finance; adjusted where provided). recent = the last 15 completed occurrences of each month, the same months as the published average; prior = the occurrences before them, so the windows share no month. agree: the month\'s average return has the same sign in both. rankCorr: Spearman rank correlation of the two windows\' 12 monthly averages.',
+      disclaimer: 'Agreement between two past windows is evidence that a pattern persisted; it is not a forecast.', generatedAt: new Date().toISOString() });
   }
   // ── ?view=track — last 36 months: out-of-sample seasonal verdict vs the actual return ──
   if (view === 'track') {

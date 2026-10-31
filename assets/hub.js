@@ -1,4 +1,4 @@
-// Asset hub on /seasonality/<id>: price history, month in review and month vs month (up to 20 years).
+// Asset hub on /seasonality/<id>: price history, typical year, out-of-sample check, month in review and month vs month.
 // Every figure comes from /api/v1/seasonality (real prices only); nothing is computed from a model.
 (function () {
   var MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -71,6 +71,18 @@
     });
   }
 
+  // Does the pattern hold? The 15 occurrences behind each published month vs the (up to 15) occurrences before them.
+  // available:false means the asset is too young for the check (never modelled); a failed request is a passing outage.
+  function hold(id, name) {
+    var box = $('hubHold'), body = $('hubHoldBody'); if (!box) return Promise.resolve();
+    return get('id=' + id + '&view=consistency').then(function (d) {
+      if (d && d.available === false) { body.innerHTML = '<p class="tx-muted">Not enough real price history to check ' + name + ' out of sample: this needs at least 25 years of month-end closes (the 15 behind each published month and at least 10 before them), and we never model the earlier years.</p>'; box.dataset.state = 'none'; return; }
+      if (!d) { body.innerHTML = '<p class="tx-muted">The out-of-sample check is unavailable right now.</p>'; box.dataset.state = 'error'; return; }
+      body.innerHTML = TXConsistency.html(d, { name: name });
+      box.dataset.state = 'done';
+    });
+  }
+
   function monthReview(id, name) {
     var box = $('hubMonth'), sel = $('hubMonthSel'), my = 0;
     function load() {
@@ -134,7 +146,7 @@
     $('hubVsA').innerHTML = opts; $('hubVsB').innerHTML = opts;
     $('hubVsA').value = String(cm); $('hubVsB').value = String((cm + 1) % 12);
     hub.dataset.state = 'loading';
-    Promise.all([history(id, name), yearCurve(id, name)]).then(function () { hub.dataset.state = 'done'; });
+    Promise.all([history(id, name), yearCurve(id, name), hold(id, name)]).then(function () { hub.dataset.state = 'done'; });
     monthReview(id, name);
     monthVsMonth(id);
   }

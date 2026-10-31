@@ -106,6 +106,37 @@ export function roundGrid(g) {
   return { ...g, years: g.years.map((y) => ({ ...y, total: r2(y.total), cells: y.cells.map((c) => c && { ...c, ret: r2(c.ret) }) })) };
 }
 
+// "Does the pattern hold?": the last `years` completed occurrences of each month (the window behind the published
+// average) against the occurrences before them, so the two windows share no month. Out of sample, not a forecast.
+// Needs the full recent window and at least `minPrior` earlier occurrences of every month; otherwise null (never modelled).
+export function computeConsistency(rows, { now = new Date(), years = 15, minPrior = 10 } = {}) {
+  if (!rows) return null;
+  const by = selectMonths(rows, years * 2, now);
+  const stat = (arr) => { let s = 0, w = 0; for (const { ret } of arr) { s += ret; if (ret > 0) w++; } return { avg: +(s / arr.length).toFixed(2), win: Math.round((w / arr.length) * 100), n: arr.length }; };
+  const months = [], span = { recent: [], prior: [] };
+  for (let m = 0; m < 12; m++) {
+    const recent = by[m].slice(0, years), prior = by[m].slice(years);
+    if (recent.length < years || prior.length < minPrior) return null;
+    span.recent.push(...recent.map((x) => x.ym)); span.prior.push(...prior.map((x) => x.ym));
+    const r = stat(recent), p = stat(prior);
+    months.push({ m: MONTH_ABBR[m], recent: r, prior: p, agree: (r.avg > 0) === (p.avg > 0) });
+  }
+  const window = (yms, ns) => ({ from: yms.reduce((a, b) => (a < b ? a : b)), to: yms.reduce((a, b) => (a > b ? a : b)), n: Math.min(...ns) });
+  const rank = (xs) => {   // average ranks, so ties count equally
+    const idx = xs.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0]), r = new Array(xs.length);
+    for (let i = 0; i < idx.length;) { let j = i; while (j + 1 < idx.length && idx[j + 1][0] === idx[i][0]) j++; for (let k = i; k <= j; k++) r[idx[k][1]] = (i + j) / 2 + 1; i = j + 1; }
+    return r;
+  };
+  // Spearman rank correlation of the two windows' 12 monthly averages: did the ORDER of the months persist?
+  const ra = rank(months.map((x) => x.recent.avg)), rp = rank(months.map((x) => x.prior.avg)), mean = 6.5;
+  let srp = 0, srr = 0, spp = 0;
+  for (let m = 0; m < 12; m++) { srp += (ra[m] - mean) * (rp[m] - mean); srr += (ra[m] - mean) ** 2; spp += (rp[m] - mean) ** 2; }
+  const rankCorr = srr && spp ? Math.round((srp / Math.sqrt(srr * spp)) * 100) / 100 : null;
+  const pick = (k, sign) => months.reduce((b, x) => (sign * x[k].avg > sign * b[k].avg ? x : b)).m;
+  return { years, recent: window(span.recent, months.map((x) => x.recent.n)), prior: window(span.prior, months.map((x) => x.prior.n)), months,
+    agree: months.filter((x) => x.agree).length, rankCorr, best: { recent: pick('recent', 1), prior: pick('prior', 1) }, worst: { recent: pick('recent', -1), prior: pick('prior', -1) } };
+}
+
 // Fetch monthly close history from Yahoo Finance's public chart API.
 // No API key. (Previously used Stooq's CSV endpoint, but Stooq now blocks
 // server-side/datacenter requests with a JS challenge page.)
@@ -114,9 +145,10 @@ const YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
 // A stalled request must not hang the page or API until the platform's 60s limit: give up and try the next host.
 const FETCH_TIMEOUT_MS = +(process.env.TX_FETCH_TIMEOUT_MS || 12000);
 
-export async function fetchMonthly(sym) {
+// range: Yahoo accepts '<N>y' with daily bars (range=max silently drops to quarterly bars, so it is never used).
+export async function fetchMonthly(sym, range = '20y') {
   for (const host of YAHOO_HOSTS) {
-    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
+    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=' + range + '&interval=1d';
     let json = null;
     try {
       const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
