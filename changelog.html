@@ -20,6 +20,41 @@
 <meta name="description" content="What's new on TimingAX — a running log of features, data improvements, and fixes.">
 <!-- tx:head -->
 <script>document.documentElement.className += " js";</script>
+<!-- tx:retry -->
+<script>
+// One automatic retry, 2.5 s later, for the site's own read-only data requests (/api/v1/seasonality, /api/prices,
+// /api/catalogue) when the answer is a transient failure: HTTP 502/503, or no answer at all. Inline, so it is in
+// place before any page script asks for data. Never a POST, another origin, a 500 or an aborted request; never a loop.
+(function () {
+  if (typeof window.fetch !== 'function' || window.fetch.txRetry) return;
+  var real = window.fetch, DATA = ['/api/v1/seasonality', '/api/prices', '/api/catalogue'], DELAY = 2500;
+  function isData(input) {
+    if (typeof input !== 'string' && !(input instanceof URL)) return false;
+    try { var u = new URL(String(input), location.href); return u.origin === location.origin && DATA.indexOf(u.pathname) !== -1; } catch (e) { return false; }
+  }
+  function aborted(init) { return !!(init && init.signal && init.signal.aborted); }
+  function later(init) {
+    return new Promise(function (go) {
+      var t = setTimeout(go, DELAY);
+      if (init && init.signal) init.signal.addEventListener('abort', function () { clearTimeout(t); go(); }, { once: true });
+    });
+  }
+  window.fetch = function (input, init) {
+    var args = arguments, method = init && init.method ? String(init.method).toUpperCase() : 'GET';
+    if (method !== 'GET' || !isData(input)) return real.apply(window, args);
+    var again = function () { return later(init).then(function () { return real.apply(window, args); }); };
+    return real.apply(window, args).then(function (r) {
+      if (r.status !== 502 && r.status !== 503) return r;
+      return again().catch(function (e) { if (aborted(init)) throw e; return r; });
+    }, function (e) {
+      if (aborted(init)) throw e;
+      return again();
+    });
+  };
+  window.fetch.txRetry = true;
+})();
+</script>
+<!-- /tx:retry -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
