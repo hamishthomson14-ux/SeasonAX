@@ -211,7 +211,7 @@ export default async function handler(req, res) {
   const title = `${dispTicker(item)} Seasonality: ${MONTH_NAMES[best.i]} vs ${MONTH_NAMES[worst.i]} | TimingAX`;
   const tickerSuffix = dispTicker(item) !== item.name ? ` (${dispTicker(item)})` : '';
   const desc = `${item.name}${tickerSuffix} seasonal performance${years ? ' over ' + years + ' years' : ''}: averages ${pct(best.avg)} in ${MONTH_NAMES[best.i]} (${best.win}% win rate) and ${pct(worst.avg)} in ${MONTH_NAMES[worst.i]}. Free seasonal chart on TimingAX.`;
-  const url = `https://timingax.co.uk/seasonality/${id}`;
+  const url = `https://www.timingax.co.uk/seasonality/${id}`;
   const badge = source === 'real'
     ? `<span class="tx-badge tx-badge--verified">&#10003; Verified &middot; ${years}yr real data</span>`
     : `<span class="tx-badge tx-badge--modelled">Modelled pattern data</span>`;
@@ -252,7 +252,7 @@ export default async function handler(req, res) {
       'description': desc,
       'url': url,
       'keywords': [`${item.name} seasonality`, `${dt} seasonal pattern`, `${item.name} best month`, `${item.name} monthly returns`],
-      'creator': { '@type': 'Organization', 'name': 'TimingAX', 'url': 'https://timingax.co.uk' },
+      'creator': { '@type': 'Organization', 'name': 'TimingAX', 'url': 'https://www.timingax.co.uk' },
       'isAccessibleForFree': true,
       'temporalCoverage': years ? `${new Date().getFullYear() - years}/${new Date().getFullYear()}` : undefined,
       'variableMeasured': [
@@ -277,7 +277,7 @@ export default async function handler(req, res) {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': 'Seasonality', 'item': 'https://timingax.co.uk/market-seasonality.html' },
+        { '@type': 'ListItem', 'position': 1, 'name': 'Seasonality', 'item': 'https://www.timingax.co.uk/market-seasonality.html' },
         { '@type': 'ListItem', 'position': 2, 'name': `${dt} Seasonality`, 'item': url }
       ]
     }
@@ -299,11 +299,11 @@ export default async function handler(req, res) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="https://timingax.co.uk/api/og/${id}">
+<meta property="og:image" content="https://www.timingax.co.uk/api/og/${id}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://timingax.co.uk/api/og/${id}">
+<meta name="twitter:image" content="https://www.timingax.co.uk/api/og/${id}">
 <!-- tx:head -->
 <script>document.documentElement.className += " js";</script>
 <!-- tx:retry -->
