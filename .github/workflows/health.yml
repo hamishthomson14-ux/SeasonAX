@@ -1,0 +1,56 @@
+name: Live health check
+# Hourly probe of www.timingax.co.uk by scripts/health-check.mjs: every public page, the server-rendered asset,
+# month and compare pages, every API view, the catalogue, the live quotes and the share image. Read-only GETs only.
+# A failing hour is logged on one open issue labelled "health-check" (a comment per failing run); the issue is
+# closed with a note as soon as a run passes again. Scheduled workflows run from the default branch only, and
+# GitHub pauses them after 60 days without any commit to the repository.
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: health-check
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Probe the live site
+        id: probe
+        run: node scripts/health-check.mjs https://www.timingax.co.uk --report "$RUNNER_TEMP/report.md"
+
+      - name: Log the failure on the tracking issue
+        if: failure() && steps.probe.conclusion == 'failure'
+        run: |
+          R="$RUNNER_TEMP/report.md"
+          [ -s "$R" ] || printf 'The health-check script produced no report (it may have crashed); see the run log.\n' > "$R"
+          printf '\nRun: %s\n' "$RUN_URL" >> "$R"
+          gh label create health-check --color D93F0B --description "Opened by the hourly live health check" --force
+          n=$(gh issue list --label health-check --state open --json number --jq '.[0].number')
+          if [ -n "$n" ]; then
+            gh issue comment "$n" --body-file "$R"
+          else
+            gh issue create --title "Live health check is failing" --label health-check --body-file "$R"
+          fi
+
+      - name: Close the tracking issue once the site passes again
+        if: success()
+        run: |
+          n=$(gh issue list --label health-check --state open --json number --jq '.[0].number' 2>/dev/null || true)
+          [ -z "$n" ] || gh issue close "$n" --comment "Healthy again: every probe passed at $(date -u '+%Y-%m-%d %H:%M UTC'). Run: $RUN_URL"
