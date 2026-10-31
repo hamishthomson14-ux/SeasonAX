@@ -2437,7 +2437,7 @@ function renderNoData(item) {
 function generateBriefing(item, months, source, years, detrend) {
   var MOF = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var now = new Date();
-  var cm = now.getMonth();
+  var cm = now.getUTCMonth();
   var sorted = months.map(function(m,i){return {i:i,avg:m.avg,win:m.win,n:m.n};}).sort(function(a,b){return b.avg-a.avg;});
   var best = sorted[0], best2 = sorted[1], worst = sorted[11], worst2 = sorted[10];
   var posCount = months.filter(function(m){return m.avg>0;}).length;
@@ -2566,7 +2566,7 @@ function paintAnalysis(item, monthsIn, source, years) {
       var posM=posCount+'/12';
 
       // current calendar month + best/worst indices (for tape highlighting)
-      var curMonthIdx = new Date().getMonth();
+      var curMonthIdx = new Date().getUTCMonth();
       var bestIdx = months.indexOf(sorted[0]);
       var worstIdx = months.indexOf(sorted[11]);
       var curMonthData = months[curMonthIdx] || months[0];
@@ -3689,7 +3689,7 @@ function scBuild() {
 function scInit() {
   var mSel = document.getElementById('scMonth');
   if (!mSel) return;
-  var nowM = new Date().getMonth();
+  var nowM = new Date().getUTCMonth();
   var html = '';
   for (var i = 0; i < 12; i++) html += '<option value="' + i + '"' + (i === nowM ? ' selected' : '') + '>' + MF_LONG[i] + '</option>';
   mSel.innerHTML = html;
@@ -3744,7 +3744,7 @@ function wlSuggest() {
 
 function wlDaysToNextMonth() {
   var now = new Date();
-  var next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  var next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));   // UTC: the data's month
   return Math.ceil((next - now) / 86400000);
 }
 
@@ -3838,7 +3838,7 @@ function wlMonthsFor(id) {
 
 function wlRenderWith(ids, map) {
   var wrap = document.getElementById('wlList');
-  var nowM = new Date().getMonth();
+  var nowM = new Date().getUTCMonth();
   var nextM = (nowM + 1) % 12;
   var days = wlDaysToNextMonth();
 
@@ -3971,7 +3971,7 @@ function mhBuild() {
 function mhInit() {
   var sel = document.getElementById('mhMonth');
   if (!sel) return;
-  var nowM = new Date().getMonth(), html = '';
+  var nowM = new Date().getUTCMonth(), html = '';
   for (var i = 0; i < 12; i++) html += '<option value="' + i + '"' + (i === nowM ? ' selected' : '') + '>' + MF_LONG[i] + '</option>';
   sel.innerHTML = html;
   sel.addEventListener('change', mhBuild);
@@ -4365,7 +4365,7 @@ function pfRecompute() {
 
     // Stats strip
     var sorted = displayMonths.slice().sort(function(a,b){ return b.avg - a.avg; });
-    var nowM = new Date().getMonth();
+    var nowM = new Date().getUTCMonth();
     var sign0 = sorted[0].avg >= 0 ? '+' : '';
     document.getElementById('pfStats').innerHTML =
       '<div class="ss"><div class="ss-v" style="color:var(--green)">' + sorted[0].m + ' ' + sign0 + sorted[0].avg.toFixed(1) + sfx + '</div><div class="ss-l">Best Month' + (detrend?' (Relative)':'') + '</div></div>' +
