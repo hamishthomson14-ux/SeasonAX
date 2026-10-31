@@ -141,43 +141,53 @@ export function computeConsistency(rows, { now = new Date(), years = 15, minPrio
 // No API key. (Previously used Stooq's CSV endpoint, but Stooq now blocks
 // server-side/datacenter requests with a JS challenge page.)
 const YAHOO_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
-const YAHOO_HOSTS = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+// Overridable for tests (TX_YAHOO_BASES=http://127.0.0.1:1234,...); production uses Yahoo's two query hosts.
+const YAHOO_BASES = (process.env.TX_YAHOO_BASES || 'https://query1.finance.yahoo.com,https://query2.finance.yahoo.com').split(',').map((s) => s.trim()).filter(Boolean);
 // A stalled request must not hang the page or API until the platform's 60s limit: give up and try the next host.
 const FETCH_TIMEOUT_MS = +(process.env.TX_FETCH_TIMEOUT_MS || 12000);
+// The provider did not answer (network, timeout, 429/5xx, unparseable): callers say "temporarily unavailable" with a
+// 503 and never cache it. It is never "no history", which is what a silent null used to turn into.
+export class UpstreamError extends Error { constructor(msg) { super(msg); this.name = 'UpstreamError'; } }
+// One chart request with failover across the bases. Returns Yahoo's result object; null when the provider answered
+// and has nothing for the symbol (unknown, delisted, no series); throws UpstreamError when no base gave an answer.
+async function yahooChart(sym, query) {
+  let why = 'no bases configured';
+  for (const base of YAHOO_BASES) {
+    let r, json;
+    try { r = await fetch(base + '/v8/finance/chart/' + encodeURIComponent(sym) + '?' + query, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) }); }
+    catch (e) { why = String((e && e.message) || e); continue; }                        // network, DNS, timeout
+    try { json = await r.json(); } catch (e) { why = 'HTTP ' + r.status + ', not JSON'; continue; }
+    const chart = json && json.chart;
+    if (!chart) { why = 'HTTP ' + r.status + ', no chart envelope'; continue; }          // 429/5xx bodies
+    if (chart.error && !chart.result) {
+      const what = ((chart.error.code || '') + ' ' + (chart.error.description || '')).trim();
+      if (/not found|no data|delisted|invalid/i.test(what)) return null;               // definitive: nothing to show
+      why = 'HTTP ' + r.status + ', ' + what; continue;
+    }
+    const result = chart.result && chart.result[0];
+    if (!result || !result.timestamp || !result.indicators || !result.indicators.quote || !result.indicators.quote[0]) return null;
+    return result;
+  }
+  throw new UpstreamError('price provider unavailable for ' + sym + ' (' + why + ')');
+}
 
 // range: Yahoo accepts '<N>y' with daily bars (range=max silently drops to quarterly bars, so it is never used).
+// null: the provider answered and has no usable series for this symbol. UpstreamError: it did not answer.
 export async function fetchMonthly(sym, range = '20y') {
-  for (const host of YAHOO_HOSTS) {
-    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=' + range + '&interval=1d';
-    let json = null;
-    try {
-      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-      json = await r.json();
-    } catch (e) {
-      continue;
-    }
-    const result = json && json.chart && json.chart.result && json.chart.result[0];
-    const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
-    if (!result || !result.timestamp || !quote) continue;
-    const adj = result.indicators.adjclose && result.indicators.adjclose[0];
-    const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-    // Roll daily closes up to one observation per calendar month (last close
-    // in each UTC month). Avoids Yahoo's 1mo boundary drift that skips/dups
-    // months for non-US exchanges (e.g. .L listings missing October).
-    const byYM = new Map();
-    for (let i = 0; i < result.timestamp.length; i++) {
-      const c = closes[i];
-      if (c == null || !isFinite(c)) continue;
-      const ym = new Date(result.timestamp[i] * 1000).toISOString().slice(0, 7);
-      byYM.set(ym, c);
-    }
-    const rows = Array.from(byYM.entries())
-      .map(([ym, c]) => ({ d: ym + '-01', c }))
-      .sort((a, b) => a.d < b.d ? -1 : 1);
-    if (rows.length < 24) return null;
-    return rows;
+  const result = await yahooChart(sym, 'range=' + range + '&interval=1d');
+  if (!result) return null;
+  const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
+  const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+  // Roll daily closes up to one observation per calendar month (last close in each UTC month). Avoids Yahoo's 1mo
+  // boundary drift that skips/dups months for non-US exchanges (e.g. .L listings missing October).
+  const byYM = new Map();
+  for (let i = 0; i < result.timestamp.length; i++) {
+    const c = closes[i];
+    if (c == null || !isFinite(c)) continue;
+    byYM.set(new Date(result.timestamp[i] * 1000).toISOString().slice(0, 7), c);
   }
-  return null;
+  const rows = Array.from(byYM.entries()).map(([ym, c]) => ({ d: ym + '-01', c })).sort((a, b) => a.d < b.d ? -1 : 1);
+  return rows.length < 24 ? null : rows;
 }
 
 // Modelled fallback: returns a 12-month array shaped like computeMonths' output,
@@ -196,26 +206,16 @@ export function bestWorst(months) {
 // ── Seasonal projection ─────────────────────────────────────────────────────
 // Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t: msUTC, c }].
 export async function fetchDaily(sym) {
-  for (const host of YAHOO_HOSTS) {
-    const url = 'https://' + host + '/v8/finance/chart/' + encodeURIComponent(sym) + '?range=20y&interval=1d';
-    let json = null;
-    try {
-      const r = await fetch(url, { headers: { 'User-Agent': YAHOO_UA, 'Accept': 'application/json' }, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-      json = await r.json();
-    } catch (e) { continue; }
-    const result = json && json.chart && json.chart.result && json.chart.result[0];
-    const quote = result && result.indicators && result.indicators.quote && result.indicators.quote[0];
-    if (!result || !result.timestamp || !quote) continue;
-    const adj = result.indicators.adjclose && result.indicators.adjclose[0];
-    const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-    const rows = [];
-    for (let i = 0; i < result.timestamp.length; i++) {
-      const c = closes[i];
-      if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
-    }
-    return rows.length ? rows : null;
+  const result = await yahooChart(sym, 'range=20y&interval=1d');
+  if (!result) return null;
+  const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
+  const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
+  const rows = [];
+  for (let i = 0; i < result.timestamp.length; i++) {
+    const c = closes[i];
+    if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
   }
-  return null;
+  return rows.length ? rows : null;
 }
 
 // How the asset moved over the next `days` calendar days from today's calendar date in each of

@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
   var BADGE = { TAILWIND: 'tx-badge--tail', HEADWIND: 'tx-badge--head', NEUTRAL: 'tx-badge--neutral' };
   var MIN_YEARS = 5; // fewer observations than this is too thin to rank
-  var month = null, all = [], pro = false, sectionsTotal = 0, sectionsFailed = 0, thin = 0;
+  var month = null, all = [], pro = false, sectionsTotal = 0, sectionsFailed = 0, thin = 0, partial = 0;   // partial: assets a slow provider left unranked
 
   // Pro status from the Supabase session (same rule as the analyzer: app_metadata.subscription).
   var authReady = (function () {
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
     all.sort(function (a, b) { return b.avg - a.avg || b.win - a.win || (a.id < b.id ? -1 : 1); });   // exact ties: fixed order by id
     $('lbTitle').textContent = month + '’s strongest & weakest';
     document.title = month + ' Seasonality Leaderboard — Strongest & Weakest Assets | TimingAX';
-    $('lbSummary').textContent = all.length + ' assets ranked for ' + month + ' · real data, at least 5 years each · updated daily' + (sectionsFailed ? ' · ' + sectionsFailed + ' market sections unavailable right now' : '');
+    $('lbSummary').textContent = all.length + ' assets ranked for ' + month + ' · real data, at least 5 years each · updated daily' + (sectionsFailed ? ' · ' + sectionsFailed + ' market sections unavailable right now' : '') + (partial ? ' · ' + partial + ' assets not ranked right now (price data was slow)' : '');
     var n = all.length;
     $('lbStrong').querySelector('.lb-scroll').innerHTML = table(all.slice(0, 10), function (i) { return i + 1; });
     $('lbWeak').querySelector('.lb-scroll').innerHTML = table(all.slice(-10).reverse(), function (i) { return n - i; });
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
         .then(function (d) {
           done++;
-          if (d && d.rows) { month = month || d.monthName; d.rows.forEach(function (a) { if (a.obs >= MIN_YEARS) all.push(a); else thin++; }); } else sectionsFailed++;
+          if (d && d.rows) { month = month || d.monthName; partial += (d.outages || 0) + (d.skipped || 0); d.rows.forEach(function (a) { if (a.obs >= MIN_YEARS) all.push(a); else thin++; }); } else sectionsFailed++;
           bar.style.width = Math.round(done / sectionsTotal * 100) + '%';
           $('lbSummary').textContent = 'Ranking ' + cat.length + ' assets — ' + done + ' of ' + sectionsTotal + ' market sections loaded';
           return one();
