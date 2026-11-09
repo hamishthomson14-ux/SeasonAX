@@ -62,134 +62,39 @@
 <script src="/assets/tx.js" defer></script>
 <!-- /tx:head -->
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-:root{
-  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
-  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
-  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
-  --green:var(--tx-up);--red:var(--tx-down);--blue:var(--tx-info);
-  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
-  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
-  --mono:var(--tx-font-mono);
-  --disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);
-  --sans:var(--tx-font-ui);
-}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:var(--sans)}
-
-/* NAV */
-.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
-.n-logo{display:flex;align-items:center;gap:9px}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2);font-weight:800}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;transition:all .18s}
-.btn-cta:hover{background:var(--amber2)}
-
-/* HERO */
-.about-hero{position:relative;padding:100px 48px 80px;text-align:center;overflow:hidden;border-bottom:1px solid var(--b1)}
-.ah-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black,transparent);pointer-events:none;opacity:.35}
-.ah-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:min(700px,100vw);height:600px;background:radial-gradient(ellipse,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
-.ah-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
-.ah-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px}
-.ah-eyebrow::before,.ah-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
-.ah-h{font:800 64px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:24px}
-.ah-h em{font-style:normal;color:var(--amber2)}
-.ah-sub{font-size:20px;color:var(--w2);line-height:1.65;max-width:580px;margin:0 auto}
-
-/* STORY */
-.story{max-width:760px;margin:0 auto;padding:80px 48px}
-.s-section{margin-bottom:72px}
-.s-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.s-label::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
-.s-h{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:20px}
-.s-h em{font-style:normal;color:var(--amber2)}
-.s-body{font-size:16px;color:var(--w3);line-height:1.82}
-.s-body p{margin-bottom:20px}
-.s-body p:last-child{margin-bottom:0}
-.s-body strong{color:var(--w2);font-weight:500}
-
-/* Pull quote */
-.pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:20px 0 20px 28px}
-.pq-text{font:700 22px/1.4 var(--disp-serif);letter-spacing:0em;color:var(--w);margin-bottom:10px}
-.pq-attr{font:400 11px/1 var(--mono);color:var(--w4);letter-spacing:.06em}
-
-/* Stat highlight inline */
-.s-stat{display:inline-flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:4px 12px 4px 8px;font:600 14px/1 var(--mono);vertical-align:middle;margin:0 4px}
-.s-stat em{font-style:normal;font-size:20px;font-weight:700;margin-right:2px}
-.s-stat.g em{color:var(--green)}
-.s-stat.r em{color:var(--red)}
-.s-stat.a em{color:var(--amber2)}
-
-/* Timeline */
-.timeline{position:relative;margin:0 0 72px;padding-left:28px}
-.timeline::before{content:"";position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(var(--b2),transparent)}
-.tl-item{position:relative;padding-bottom:36px}
-.tl-item:last-child{padding-bottom:0}
-.tl-dot{position:absolute;left:-34px;top:5px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--amber2);background:var(--bg)}
-.tl-dot.filled{background:var(--amber2)}
-.tl-date{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--amber2);text-transform:uppercase;margin-bottom:8px}
-.tl-h{font:600 16px/1.3 var(--sans);color:var(--w2);margin-bottom:6px;letter-spacing:-.01em}
-.tl-p{font-size:14px;color:var(--w4);line-height:1.65}
-
-/* Data sources grid */
-.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
-.src-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;transition:border-color .2s}
-.src-card:hover{border-color:var(--b3)}
-.src-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.src-name{font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
-.src-desc{font:400 11px/1.5 var(--mono);color:var(--w4)}
-
-/* Principles */
-.principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
-.principle{display:flex;gap:16px;align-items:flex-start;background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px 22px;transition:border-color .2s}
-.principle:hover{border-color:var(--b3)}
-.pr-n{width:32px;height:32px;border-radius:7px;background:rgba(232,147,24,.1);border:1px solid rgba(232,147,24,.2);color:var(--amber2);font:700 13px/1 var(--mono);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.pr-t{font:600 14px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
-.pr-d{font-size:13px;color:var(--w4);line-height:1.6}
-
-/* What we are not */
-.not-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
-.not-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;position:relative;overflow:hidden}
-.not-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.not-card.is::before{background:var(--green)}
-.not-card.not::before{background:var(--red)}
-.nc-label{font:600 8px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:12px}
-.nc-label.is{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
-.nc-label.not{background:rgba(240,64,80,.08);color:var(--red);border:1px solid rgba(240,64,80,.2)}
-.nc-items{list-style:none;display:flex;flex-direction:column;gap:7px}
-.nc-items li{font-size:13px;color:var(--w3);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
-.nc-items li span{flex-shrink:0;margin-top:1px}
-
-/* CTA */
-.about-cta{background:var(--bg2);border-top:1px solid var(--b1);padding:80px 48px;text-align:center}
-.ac-in{max-width:520px;margin:0 auto}
-.ac-h{font:800 40px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
-.ac-h em{font-style:normal;color:var(--amber2)}
-.ac-p{font-size:16px;color:var(--w3);line-height:1.7;margin-bottom:36px}
-.btn-hero{background:var(--amber);color:var(--bg);border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;margin-right:10px}
-.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,147,24,.3)}
-.btn-ghost-l{background:none;border:1px solid var(--s3);color:var(--w2);padding:14px 26px;border-radius:8px;font-size:15px;transition:all .2s;display:inline-flex;align-items:center}
-.btn-ghost-l:hover{border-color:var(--amber2);color:var(--w)}
-
-/* Footer */
-footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.ft-links{display:flex;gap:20px}
-.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
-.ft-links a:hover{color:var(--amber2)}
-.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
-
-@media(max-width:900px){
-  .ah-h{font-size:40px}
-  .about-hero,.story,.about-cta,footer{padding-left:24px;padding-right:24px}
-  .sources-grid{grid-template-columns:1fr}
-  .not-grid{grid-template-columns:1fr}
-  .nav{padding:0 24px}
+.ab-hero { padding: var(--tx-space-8) 0 var(--tx-space-7); }
+.ab-hero .tx-h1 { max-width: 16ch; margin: var(--tx-space-4) 0 var(--tx-space-4); }
+.ab-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--tx-space-5) 0; }
+.ab-amber { color: var(--tx-amber-2); }
+.ab-after { margin-top: var(--tx-space-2); }
+.ab-log__list { list-style: none; margin: 0; padding: 0; }
+.ab-log__list li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--tx-space-4); padding: 18px 16px; border-bottom: 1px solid var(--tx-border-1); }
+.ab-log__list li:last-child { border-bottom: 0; }
+.ab-log__list li.is-now { background: rgba(232, 147, 24, .05); }
+.ab-log__date { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--tx-amber-2); padding-top: 4px; }
+.ab-log__list p { margin: 0; font-family: var(--tx-font-ui); font-size: 15px; line-height: 1.65; color: var(--tx-text-2); }
+.ab-cards .tx-card p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--tx-text-2); }
+.ab-cards { margin-top: var(--tx-space-5); }
+.ab-num { display: block; font: 600 12px var(--tx-font-mono); letter-spacing: .12em; color: var(--tx-amber-2); margin-bottom: var(--tx-space-3); }
+.ab-founder { display: flex; gap: var(--tx-space-5); align-items: flex-start; }
+.ab-founder__mark { flex-shrink: 0; width: 88px; height: 88px; border-radius: var(--tx-radius); border: 1px solid var(--tx-border-2); background: var(--tx-surface-1); display: flex; align-items: center; justify-content: center; font: 600 28px var(--tx-font-mono); color: var(--tx-amber-2); }
+.ab-list { list-style: none; margin: var(--tx-space-4) 0 0; padding: 0; }
+.ab-list li { position: relative; padding: 8px 0 8px 26px; border-bottom: 1px solid var(--tx-border-1); color: var(--tx-text-2); font-size: 15px; }
+.ab-list li:last-child { border-bottom: 0; }
+.ab-list li::before { position: absolute; left: 0; top: 8px; font-family: var(--tx-font-mono); }
+.ab-list--is li::before { content: '\2713'; color: var(--tx-up); }
+.ab-list--not li::before { content: '\2717'; color: var(--tx-down); }
+.ab-cta .tx-lead { margin-bottom: var(--tx-space-5); }
+@media (max-width: 600px) {
+  .ab-stats { grid-template-columns: 1fr; }
+  .ab-stats > * { border-right: 0; border-bottom: 1px solid var(--tx-border-1); }
+  .ab-stats > :last-child { border-bottom: 0; }
+  .ab-log__list li { grid-template-columns: 1fr; gap: 6px; }
+  .ab-founder { flex-direction: column; }
 }
 </style>
 </head>
-<body>
+<body class="tx">
 
 <!-- tx:header -->
 <div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
@@ -218,237 +123,129 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </header>
 <!-- /tx:header -->
 
-<!-- HERO -->
-<div class="about-hero">
-  <div class="ah-dg" aria-hidden="true"></div>
-  <div class="ah-glow" aria-hidden="true"></div>
-  <div class="ah-inner">
-    <div class="ah-eyebrow">Our story</div>
-    <h1 class="ah-h">Built because<br><em>September kept<br>costing us money.</em></h1>
-    <p class="ah-sub">TimingAX exists because one pattern was hiding in plain sight for decades, and almost nobody was making it easy to see.</p>
-  </div>
-</div>
+<main class="tx-wrap">
+  <section class="ab-hero">
+    <span class="tx-eyebrow">Our story</span>
+    <h1 class="tx-h1">Built because <em>September kept costing us money.</em></h1>
+    <p class="tx-lead">TimingAX exists because one pattern was hiding in plain sight for decades, and almost nobody was making it easy to see.</p>
+  </section>
 
-<!-- STORY -->
-<div class="story">
-
-  <!-- The Origin -->
-  <div class="s-section">
-    <div class="s-label">The origin</div>
-    <h2 class="s-h">It started with a<br>terrible <em>September.</em></h2>
-    <div class="s-body">
+  <section class="tx-section">
+    <span class="tx-eyebrow">The origin</span>
+    <h2 class="tx-h2">It started with a terrible <em>September.</em></h2>
+    <div class="tx-prose">
       <p>September 2022. The S&P 500 fell <strong>9.3%</strong>. Portfolio down. In pain. And the same thing had happened, to varying degrees, the September before, and the one before that. So the question became: <em>is this just bad luck, or is there something structural here?</em></p>
       <p>Three hours of research later, the answer was unambiguous. For the S&amp;P 500, September is the only month of the year to average a net loss over the last 15 years (<span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span>), and the UK and Germany show September weakness too. Not a coincidence. Not a 2022 anomaly. A pattern academic studies have tracked for decades &mdash; though not everywhere: Japan&rsquo;s Nikkei has tended to rise in September, which is exactly why it pays to check each market&rsquo;s own calendar.</p>
       <p>Then the next question: what are the good months? November &mdash; <span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span> average for the S&amp;P 500, a <span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="win">87%</span> win rate over 15 years. The entire "Best Six Months" from November through April. Bitcoin in October, up in <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years. January for small caps. The data was everywhere once you knew where to look.</p>
-    </div>
-    <div class="pullquote">
-      <div class="pq-text">"The edge wasn't secret. It was just fragmented, scattered across academic papers and institutional research that most investors never see."</div>
-    </div>
-    <div class="s-body">
+      <blockquote>"The edge wasn't secret. It was just fragmented, scattered across academic papers and institutional research that most investors never see."</blockquote>
       <p>The existing tools were either priced for hedge funds (£40k+/year Bloomberg terminals) or too simplistic to be useful. There was no professional-grade seasonal analysis tool built for self-directed investors who take their portfolios seriously. So we built one.</p>
     </div>
-  </div>
+  </section>
 
-  <!-- The numbers -->
-  <div class="s-section">
-    <div class="s-label">The data</div>
-    <h2 class="s-h">What <em>15 years</em><br>actually shows.</h2>
-    <div class="s-body">
-      <p>These aren't theories. They're the averages from 15 years of monthly return data across every major asset class:</p>
+  <section class="tx-section">
+    <span class="tx-eyebrow">The data</span>
+    <h2 class="tx-h2">What <em>15 years</em> actually shows.</h2>
+    <div class="tx-prose"><p>These aren't theories. They're the averages from 15 years of monthly return data across every major asset class:</p></div>
+    <div class="tx-statbar ab-stats">
+      <div class="tx-stat"><span class="tx-stat__value tx-down"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span></span><span class="tx-stat__label">S&amp;P 500 avg &middot; September</span></div>
+      <div class="tx-stat"><span class="tx-stat__value tx-up"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span></span><span class="tx-stat__label">S&amp;P 500 avg &middot; November</span></div>
+      <div class="tx-stat"><span class="tx-stat__value ab-amber"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></span><span class="tx-stat__label">Bitcoin avg &middot; October</span></div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:28px 0">
-      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
-        <div style="font:700 clamp(26px,7vw,36px)/1 var(--mono);color:var(--red);margin-bottom:6px"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span></div>
-        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">S&amp;P 500 avg<br>September</div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
-        <div style="font:700 clamp(26px,7vw,36px)/1 var(--mono);color:var(--green);margin-bottom:6px"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span></div>
-        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">S&amp;P 500 avg<br>November</div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;text-align:center">
-        <div style="font:700 clamp(26px,7vw,36px)/1 var(--mono);color:var(--amber2);margin-bottom:6px"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></div>
-        <div style="font:500 11px/1.4 var(--mono);color:var(--w4)">Bitcoin avg<br>October</div>
-      </div>
-    </div>
-    <div class="s-body">
+    <div class="tx-prose ab-after">
       <p>For the S&amp;P 500, September has averaged <span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span> and November <span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span> &mdash; a gap of more than four percentage points between two months of the same year. Over a 15-year period, an investor who simply avoided September and was overweight November would have materially outperformed one who held constant positions all year &mdash; with <strong>less risk, not more</strong>. That's the entire premise of TimingAX.</p>
     </div>
-  </div>
+  </section>
 
-  <!-- Product timeline -->
-  <div class="s-section">
-    <div class="s-label">The build</div>
-    <h2 class="s-h">From frustration<br>to <em>seven tools.</em></h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot filled"></div>
-        <div class="tl-date">The problem</div>
-        <div class="tl-h">September 2022 &mdash; The question that started everything</div>
-        <div class="tl-p">After a painful month in the market, I started asking: is September always like this? Three hours of research showed it had been, more often than not, for years. The idea for TimingAX was born.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot filled"></div>
-        <div class="tl-date">The data</div>
-        <div class="tl-h">2023 &mdash; Building the pattern library</div>
-        <div class="tl-p">Monthly return data compiled for US, UK, German and Asian markets, and twelve seasonal patterns mapped: broad index, tech growth, crypto, gold, energy, healthcare and regional variants for UK mining, German auto, Japan export, China internet and Korean tech.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot filled"></div>
-        <div class="tl-date">The platform</div>
-        <div class="tl-h">2024 &mdash; The first version ships</div>
-        <div class="tl-p">The Seasonal Analyzer goes live with 100+ assets. Strategy Backtest follows. Supabase authentication, free tier gating, and the core visual language &mdash; the calendar wheel, heatmap and bar charts &mdash; are established.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot filled"></div>
-        <div class="tl-date">The expansion</div>
-        <div class="tl-h">2025 &mdash; From one tool to nine</div>
-        <div class="tl-p">Asset catalogue expanded across the US, UK, Germany and Asia Pacific. Event Studies library built (19 events including the 2025 Tariff Shock and SVB). Earnings Analysis tracker launched. Screener, Watchlist, This Month in History, Correlations and Economic Calendar complete the platform.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-date">October 2026</div>
-        <div class="tl-h">2026 &mdash; Real prices everywhere</div>
-        <div class="tl-p">Every figure on the platform is now computed from real closing prices or an official record: seasonal averages, backtests, projections, correlations, the market events library and the track record. Watchlist email alerts and a public data API went live.</div>
+  <section class="tx-section">
+    <span class="tx-eyebrow">The build</span>
+    <h2 class="tx-h2">From frustration to <em>seven tools.</em></h2>
+    <div class="tx-term ab-log">
+      <div class="tx-term__head"><span class="tx-term__title">Build log</span><span class="tx-term__status">2022 &ndash; 2026</span></div>
+      <ol class="ab-log__list">
+        <li><span class="ab-log__date">The problem</span><div><h3 class="tx-h3">September 2022 &mdash; The question that started everything</h3><p>After a painful month in the market, I started asking: is September always like this? Three hours of research showed it had been, more often than not, for years. The idea for TimingAX was born.</p></div></li>
+        <li><span class="ab-log__date">The data</span><div><h3 class="tx-h3">2023 &mdash; Building the pattern library</h3><p>Monthly return data compiled for US, UK, German and Asian markets, and twelve seasonal patterns mapped: broad index, tech growth, crypto, gold, energy, healthcare and regional variants for UK mining, German auto, Japan export, China internet and Korean tech.</p></div></li>
+        <li><span class="ab-log__date">The platform</span><div><h3 class="tx-h3">2024 &mdash; The first version ships</h3><p>The Seasonal Analyzer goes live with 100+ assets. Strategy Backtest follows. Supabase authentication, free tier gating, and the core visual language &mdash; the calendar wheel, heatmap and bar charts &mdash; are established.</p></div></li>
+        <li><span class="ab-log__date">The expansion</span><div><h3 class="tx-h3">2025 &mdash; From one tool to nine</h3><p>Asset catalogue expanded across the US, UK, Germany and Asia Pacific. Event Studies library built (19 events including the 2025 Tariff Shock and SVB). Earnings Analysis tracker launched. Screener, Watchlist, This Month in History, Correlations and Economic Calendar complete the platform.</p></div></li>
+        <li class="is-now"><span class="ab-log__date">October 2026</span><div><h3 class="tx-h3">2026 &mdash; Real prices everywhere</h3><p>Every figure on the platform is now computed from real closing prices or an official record: seasonal averages, backtests, projections, correlations, the market events library and the track record. Watchlist email alerts and a public data API went live.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="tx-section">
+    <span class="tx-eyebrow">Methodology</span>
+    <h2 class="tx-h2">What's <em>under the hood.</em></h2>
+    <div class="tx-prose"><p>Every figure on TimingAX is computed from real closing prices or taken from an official record, and the exact method is published on our <a href="/data.html">Data &amp; methodology</a> page. We&rsquo;re transparent about how it works because transparency is non-negotiable for a financial data product.</p></div>
+    <div class="tx-grid tx-grid--3 ab-cards">
+      <div class="tx-card"><h3 class="tx-h3">Real closing prices</h3><p>Daily closing prices from Yahoo Finance (adjusted closes where Yahoo provides them), up to 20 years per asset. Monthly averages use up to 15 years; observation counts are shown for every figure.</p></div>
+      <div class="tx-card"><h3 class="tx-h3">Official event dates</h3><p>Fed rate changes from the Federal Reserve (federalreserve.gov), CPI and jobs-report dates from the Bureau of Labor Statistics (bls.gov), US election days from federal law, Bitcoin halvings from the blockchain &mdash; each linked to its source.</p></div>
+      <div class="tx-card"><h3 class="tx-h3">No estimates</h3><p>If we don&rsquo;t have real price history for an asset, we say so and show no figures for it. Nothing on the platform is filled in from a model.</p></div>
+      <div class="tx-card"><h3 class="tx-h3">Real backtests</h3><p>Strategy backtests buy and sell at actual closing prices on the trading days you choose, compound the results and count only windows that have finished.</p></div>
+      <div class="tx-card"><h3 class="tx-h3">Explicit caveats</h3><p>Every analysis output includes explicit limitations. Seasonal patterns are statistical tendencies, not guarantees. We say this loudly, not in tiny print.</p></div>
+      <div class="tx-card"><h3 class="tx-h3">Regular updates</h3><p>Figures recompute from the latest prices (cached for up to an hour). Event dates are checked against their official schedules.</p></div>
+    </div>
+  </section>
+
+  <section class="tx-section">
+    <span class="tx-eyebrow">How we work</span>
+    <h2 class="tx-h2">The principles we won't <em>compromise on.</em></h2>
+    <div class="tx-grid tx-grid--2 ab-cards">
+      <div class="tx-card"><span class="ab-num">01</span><h3 class="tx-h3">No fake testimonials. Ever.</h3><p>We're a new product. We don't have 500 verified reviews yet. We will not invent them. Our data is the proof of concept &mdash; not fabricated quotes from made-up users. When we have real users who choose to share their experience, we'll show them.</p></div>
+      <div class="tx-card"><span class="ab-num">02</span><h3 class="tx-h3">Explicit limitations on every output.</h3><p>Seasonal patterns are tendencies, not predictions. Every analysis, backtest and event study on the platform carries an explicit caveat saying exactly that. We designed the product to be useful, not to make you feel more certain than the data justifies.</p></div>
+      <div class="tx-card"><span class="ab-num">03</span><h3 class="tx-h3">Real data or nothing.</h3><p>Every number comes from real prices or an official record. Where we don&rsquo;t have real data for an asset, we say so instead of estimating &mdash; no simulated backtests, no modelled patterns, no invented figures.</p></div>
+      <div class="tx-card"><span class="ab-num">04</span><h3 class="tx-h3">Simple, honest pricing.</h3><p>Free tier (5 analyses/month, no card needed), Pro at &pound;19.99/month or &pound;149/year with a 7-day free trial. One-click cancellation, no retention friction. We will never introduce dark patterns, manipulative upgrade prompts or misleading annual-versus-monthly pricing sleight of hand.</p></div>
+    </div>
+  </section>
+
+  <section class="tx-section">
+    <span class="tx-eyebrow">The founder</span>
+    <h2 class="tx-h2">One person, <em>obsessed with the calendar.</em></h2>
+    <div class="ab-founder">
+      <div class="ab-founder__mark" aria-hidden="true">HT</div>
+      <div class="tx-prose">
+        <p>TimingAX is built and run by a single founder &mdash; a self-directed investor who got tired of losing money to the same seasonal patterns every year and decided to build the tool he wished existed. No VC, no team of twenty, no marketing department writing things that aren&rsquo;t true.</p>
+        <p>That&rsquo;s deliberate. A small, independent operation has no incentive to over-promise, upsell, or bury you in dark patterns. The goal is simple: build the most honest, genuinely useful seasonal-analysis tool for retail investors that exists &mdash; and charge a fair price for it.</p>
+        <p>If you have feedback, criticism, or just want to talk markets, it reaches a real person. <a href="/contact.html">Get in touch</a> &mdash; every message is read and answered personally.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Data sources -->
-  <div class="s-section">
-    <div class="s-label">Methodology</div>
-    <h2 class="s-h">What's <em>under the hood.</em></h2>
-    <div class="s-body">
-      <p>Every figure on TimingAX is computed from real closing prices or taken from an official record, and the exact method is published on our <a href="/data.html" style="color:var(--amber2)">Data &amp; methodology</a> page. We&rsquo;re transparent about how it works because transparency is non-negotiable for a financial data product.</p>
-    </div>
-    <div class="sources-grid">
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128200;</div>
-        <div class="src-name">Real closing prices</div>
-        <div class="src-desc">Daily closing prices from Yahoo Finance (adjusted closes where Yahoo provides them), up to 20 years per asset. Monthly averages use up to 15 years; observation counts are shown for every figure.</div>
-      </div>
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(0,201,126,.08)">&#128218;</div>
-        <div class="src-name">Official event dates</div>
-        <div class="src-desc">Fed rate changes from the Federal Reserve (federalreserve.gov), CPI and jobs-report dates from the Bureau of Labor Statistics (bls.gov), US election days from federal law, Bitcoin halvings from the blockchain &mdash; each linked to its source.</div>
-      </div>
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(77,163,255,.08)">&#127760;</div>
-        <div class="src-name">No estimates</div>
-        <div class="src-desc">If we don&rsquo;t have real price history for an asset, we say so and show no figures for it. Nothing on the platform is filled in from a model.</div>
-      </div>
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(155,127,255,.08)">&#9201;</div>
-        <div class="src-name">Real backtests</div>
-        <div class="src-desc">Strategy backtests buy and sell at actual closing prices on the trading days you choose, compound the results and count only windows that have finished.</div>
-      </div>
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(232,64,74,.08)">&#9888;</div>
-        <div class="src-name">Explicit caveats</div>
-        <div class="src-desc">Every analysis output includes explicit limitations. Seasonal patterns are statistical tendencies, not guarantees. We say this loudly, not in tiny print.</div>
-      </div>
-      <div class="src-card">
-        <div class="src-icon" style="background:rgba(232,147,24,.08)">&#128260;</div>
-        <div class="src-name">Regular updates</div>
-        <div class="src-desc">Figures recompute from the latest prices (cached for up to an hour). Event dates are checked against their official schedules.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Principles -->
-  <div class="s-section">
-    <div class="s-label">How we work</div>
-    <h2 class="s-h">The principles we<br>won't <em>compromise on.</em></h2>
-    <div class="principles">
-      <div class="principle">
-        <div class="pr-n">01</div>
-        <div>
-          <div class="pr-t">No fake testimonials. Ever.</div>
-          <div class="pr-d">We're a new product. We don't have 500 verified reviews yet. We will not invent them. Our data is the proof of concept &mdash; not fabricated quotes from made-up users. When we have real users who choose to share their experience, we'll show them.</div>
-        </div>
-      </div>
-      <div class="principle">
-        <div class="pr-n">02</div>
-        <div>
-          <div class="pr-t">Explicit limitations on every output.</div>
-          <div class="pr-d">Seasonal patterns are tendencies, not predictions. Every analysis, backtest and event study on the platform carries an explicit caveat saying exactly that. We designed the product to be useful, not to make you feel more certain than the data justifies.</div>
-        </div>
-      </div>
-      <div class="principle">
-        <div class="pr-n">03</div>
-        <div>
-          <div class="pr-t">Real data or nothing.</div>
-          <div class="pr-d">Every number comes from real prices or an official record. Where we don&rsquo;t have real data for an asset, we say so instead of estimating &mdash; no simulated backtests, no modelled patterns, no invented figures.</div>
-        </div>
-      </div>
-      <div class="principle">
-        <div class="pr-n">04</div>
-        <div>
-          <div class="pr-t">Simple, honest pricing.</div>
-          <div class="pr-d">Free tier (5 analyses/month, no card needed), Pro at &pound;19.99/month or &pound;149/year with a 7-day free trial. One-click cancellation, no retention friction. We will never introduce dark patterns, manipulative upgrade prompts or misleading annual-versus-monthly pricing sleight of hand.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Founder -->
-  <div class="s-section">
-    <div class="s-label">The founder</div>
-    <h2 class="s-h">One person, <em>obsessed<br>with the calendar.</em></h2>
-    <div style="display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;margin-top:8px">
-      <div style="flex-shrink:0">
-        <div style="width:96px;height:96px;border-radius:16px;background:linear-gradient(135deg,var(--bg3),var(--s1));border:1px solid var(--b3);display:flex;align-items:center;justify-content:center;font:800 32px/1 var(--disp);color:var(--amber2);letter-spacing:-.02em">HT</div>
-      </div>
-      <div style="flex:1;min-width:280px">
-        <div class="s-body">
-          <p style="margin-top:0">TimingAX is built and run by a single founder &mdash; a self-directed investor who got tired of losing money to the same seasonal patterns every year and decided to build the tool he wished existed. No VC, no team of twenty, no marketing department writing things that aren&rsquo;t true.</p>
-          <p>That&rsquo;s deliberate. A small, independent operation has no incentive to over-promise, upsell, or bury you in dark patterns. The goal is simple: build the most honest, genuinely useful seasonal-analysis tool for retail investors that exists &mdash; and charge a fair price for it.</p>
-          <p style="margin-bottom:0">If you have feedback, criticism, or just want to talk markets, it reaches a real person. <a href="/contact.html" style="color:var(--amber2)">Get in touch</a> &mdash; every message is read and answered personally.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- What we are / are not -->
-  <div class="s-section">
-    <div class="s-label">Clarity</div>
-    <h2 class="s-h">What TimingAX <em>is<br>and is not.</em></h2>
-    <div class="not-grid">
-      <div class="not-card is">
-        <span class="nc-label is">TimingAX is</span>
-        <ul class="nc-items">
-          <li><span style="color:var(--green)">&#10003;</span>A historical data and pattern analysis tool</li>
-          <li><span style="color:var(--green)">&#10003;</span>An educational resource on seasonal market tendencies</li>
-          <li><span style="color:var(--green)">&#10003;</span>One useful input among many for investment decisions</li>
-          <li><span style="color:var(--green)">&#10003;</span>Transparent about its methodology and limitations</li>
-          <li><span style="color:var(--green)">&#10003;</span>Built by investors who use it themselves</li>
+  <section class="tx-section">
+    <span class="tx-eyebrow">Clarity</span>
+    <h2 class="tx-h2">What TimingAX <em>is and is not.</em></h2>
+    <div class="tx-grid tx-grid--2 ab-cards">
+      <div class="tx-card">
+        <span class="tx-badge tx-badge--verified">TimingAX is</span>
+        <ul class="ab-list ab-list--is">
+          <li>A historical data and pattern analysis tool</li>
+          <li>An educational resource on seasonal market tendencies</li>
+          <li>One useful input among many for investment decisions</li>
+          <li>Transparent about its methodology and limitations</li>
+          <li>Built by investors who use it themselves</li>
         </ul>
       </div>
-      <div class="not-card not">
-        <span class="nc-label not">TimingAX is not</span>
-        <ul class="nc-items">
-          <li><span style="color:var(--red)">&#10007;</span>Financial advice or investment recommendations</li>
-          <li><span style="color:var(--red)">&#10007;</span>A guarantee of future returns</li>
-          <li><span style="color:var(--red)">&#10007;</span>A replacement for your own research</li>
-          <li><span style="color:var(--red)">&#10007;</span>A licensed investment advisory service</li>
-          <li><span style="color:var(--red)">&#10007;</span>Suitable as your only decision-making tool</li>
+      <div class="tx-card">
+        <span class="tx-badge tx-badge--head">TimingAX is not</span>
+        <ul class="ab-list ab-list--not">
+          <li>Financial advice or investment recommendations</li>
+          <li>A guarantee of future returns</li>
+          <li>A replacement for your own research</li>
+          <li>A licensed investment advisory service</li>
+          <li>Suitable as your only decision-making tool</li>
         </ul>
       </div>
     </div>
-  </div>
+  </section>
 
-</div>
+  <section class="tx-section ab-cta">
+    <h2 class="tx-h2">Ready to see your <em>assets' calendars?</em></h2>
+    <p class="tx-lead">Free forever tier. No credit card. Five analyses per month, all Event Studies and the full Economic Calendar &mdash; yours immediately.</p>
+    <div class="tx-row">
+      <a class="tx-btn tx-btn--primary tx-btn--lg" href="/auth.html">Create free account &rarr;</a>
+      <a class="tx-btn tx-btn--lg" href="/market-seasonality.html">Open the app</a>
+    </div>
+  </section>
+</main>
 
-<!-- CTA -->
-<div class="about-cta">
-  <div class="ac-in">
-    <div class="ac-h">Ready to see your<br><em>assets' calendars?</em></div>
-    <p class="ac-p">Free forever tier. No credit card. Three analyses per month, all Event Studies and the full Economic Calendar &mdash; yours immediately.</p>
-    <a href="/auth.html"><button class="btn-hero">Create free account &rarr;</button></a>
-    <a href="/market-seasonality.html"><button class="btn-ghost-l">Open the app</button></a>
-  </div>
-</div>
-
-<!-- FOOTER -->
 <!-- tx:footer -->
 <footer class="tx-footer">
   <div class="tx-wrap">
