@@ -135,7 +135,7 @@ body.tx {
 .tx-header__actions { display: flex; align-items: center; gap: var(--tx-space-2); }
 .tx-menu-btn { display: none; width: 44px; height: 44px; margin-left: auto; border: 1px solid var(--tx-border-2); border-radius: var(--tx-radius-sm); background: transparent; color: var(--tx-text-1); cursor: pointer; align-items: center; justify-content: center; }
 .tx-menu-btn svg { width: 20px; height: 20px; }
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .tx-header__bar { gap: var(--tx-space-3); }
   .tx-menu-btn { display: inline-flex; }
   .tx-nav, .tx-header__actions { display: none; }
@@ -167,9 +167,9 @@ body.tx {
 nav.tx-nav { position: static; height: auto; width: auto; padding: 0; margin: 0 auto 0 0; background: none; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; z-index: auto; justify-content: flex-start; }
 header.tx-header { height: auto; padding: 0; margin: 0; display: block; }
 footer.tx-footer { display: block; text-align: start; font: 400 14px/1.6 var(--tx-font-ui); color: var(--tx-text-3); background: var(--tx-bg-1); border: 0; border-top: 1px solid var(--tx-border-1); padding: 64px 0 32px; margin: 0; gap: 0; }
-@media (max-width: 900px) { nav.tx-nav { display: none; } .tx-header.is-open nav.tx-nav { display: flex; margin: 6px 0 0; } }
+@media (max-width: 1000px) { nav.tx-nav { display: none; } .tx-header.is-open nav.tx-nav { display: flex; margin: 6px 0 0; } }
 /* Without JavaScript the menu button can't work: show the nav as a wrapped row instead. */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   html:not(.js) .tx-menu-btn { display: none; }
   html:not(.js) .tx-header__bar { flex-wrap: wrap; height: auto; padding: 10px 0; }
   html:not(.js) nav.tx-nav { display: flex; flex-wrap: wrap; width: 100%; order: 3; margin: 4px 0 0; }
@@ -336,7 +336,14 @@ textarea.tx-input { padding: 12px 14px; min-height: 120px; resize: vertical; lin
 .tx-search li[aria-selected="true"], .tx-search li:hover { background: rgba(232,147,24,.1); }
 .tx-search li.tx-search__all { color: var(--tx-amber-2); font-size: 13px; }
 @media (max-width: 1100px) { .tx-search input { width: 170px; } }
-@media (max-width: 900px) {
+/* 1001-1180px: the full bar (logo, six links, search, two buttons) needs ~1090px at desktop spacing, so tighten it */
+@media (min-width: 1001px) and (max-width: 1180px) {
+  .tx-header__bar { gap: var(--tx-space-4); }
+  .tx-nav a { padding: 8px 8px; }
+  .tx-search { margin: 0 4px 0 0; }
+  .tx-search input { width: 150px; }
+}
+@media (max-width: 1000px) {
   .tx-search { display: none; }
   .tx-header.is-open .tx-search { display: flex; width: 100%; order: 3; margin: 10px 0 0; }
   .tx-header.is-open .tx-search input { width: 100%; height: 44px; font-size: 16px; }
