@@ -5,6 +5,13 @@
       "schedule": "0 8 * * *"
     }
   ],
+  "redirects": [
+    {
+      "source": "/seasonality/",
+      "destination": "/seasonality.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/seasonality/:id/:month",
