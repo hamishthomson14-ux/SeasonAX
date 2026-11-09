@@ -62,96 +62,29 @@
 <script src="/assets/tx.js" defer></script>
 <!-- /tx:head -->
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased}
-:root{
-  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
-  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);--green:var(--tx-up);--red:var(--tx-down);
-  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
-  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
-  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
-}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
-.n-logo{display:flex;align-items:center;gap:9px}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2)}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
-.btn-cta:hover{background:var(--amber2)}
-
-/* LAYOUT */
-.page{max-width:1100px;margin:0 auto;padding:80px 48px 100px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.left-col{}
-.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
-.page-h{font:800 52px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:18px}
-.page-h em{font-style:normal;color:var(--amber2)}
-.page-sub{font-size:16px;color:var(--w3);line-height:1.72;margin-bottom:44px;max-width:380px}
-
-/* Contact options */
-.contact-options{display:flex;flex-direction:column;gap:12px}
-.co{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px 22px;transition:all .2s;display:flex;align-items:flex-start;gap:16px}
-.co:hover{border-color:var(--b3);transform:translateY(-1px)}
-.co-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.co-t{font:600 14px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
-.co-d{font-size:13px;color:var(--w4);line-height:1.55;margin-bottom:8px}
-.co-link{font:500 12px/1 var(--mono);color:var(--amber2);transition:color .15s}
-.co-link:hover{color:var(--amber)}
-
-/* Response times */
-.rt{margin-top:36px;background:var(--s1);border:1px solid var(--b2);border-radius:10px;padding:20px 22px}
-.rt-h{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--w4);margin-bottom:14px}
-.rt-rows{display:flex;flex-direction:column;gap:10px}
-.rt-row{display:flex;justify-content:space-between;align-items:center}
-.rt-label{font-size:13px;color:var(--w3)}
-.rt-time{font:500 11px/1 var(--mono);color:var(--amber2);background:rgba(232,147,24,.08);border:1px solid rgba(232,147,24,.15);padding:3px 9px;border-radius:4px}
-
-/* FORM */
-.right-col{}
-.form-card{background:var(--bg2);border:1px solid var(--b2);border-radius:14px;padding:36px;position:relative;overflow:hidden}
-.form-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber)}
-.fc-h{font:800 22px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:6px}
-.fc-sub{font-size:14px;color:var(--w3);margin-bottom:28px}
-
-.f-label{font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);display:block;margin-bottom:7px}
-.f-group{margin-bottom:18px}
-.f-input{width:100%;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 14px;font:400 14px/1 var(--sans);border-radius:7px;outline:none;transition:all .2s}
-.f-input:focus{border-color:var(--amber2);box-shadow:0 0 0 3px rgba(232,147,24,.08);background:var(--s2)}
-.f-input::placeholder{color:var(--w4)}
-.f-select{width:100%;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 14px;font:400 14px/1 var(--sans);border-radius:7px;outline:none;transition:all .2s;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234D6880' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.f-select:focus{border-color:var(--amber2)}
-.f-textarea{width:100%;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 14px;font:400 14px/1.6 var(--sans);border-radius:7px;outline:none;transition:all .2s;resize:vertical;min-height:120px}
-.f-textarea:focus{border-color:var(--amber2);box-shadow:0 0 0 3px rgba(232,147,24,.08)}
-.f-textarea::placeholder{color:var(--w4)}
-.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.f-submit{width:100%;background:var(--amber);color:var(--bg);border:none;padding:14px;border-radius:8px;font:700 15px/1 var(--sans);cursor:pointer;transition:all .18s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
-.f-submit:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,147,24,.25)}
-.f-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
-.f-note{font:400 11px/1.5 var(--mono);color:var(--w5);text-align:center;margin-top:14px}
-.f-note a{color:var(--w4);transition:color .15s}
-.f-note a:hover{color:var(--amber2)}
-.f-success{text-align:center;padding:20px 0;display:none}
-.f-success-icon{font-size:40px;margin-bottom:14px}
-.f-success-h{font:800 20px/1.2 var(--disp-serif);letter-spacing:-.01em;margin-bottom:10px}
-.f-success-p{font-size:14px;color:var(--w3);line-height:1.65}
-.f-err{font:400 11px/1 var(--mono);color:var(--red);margin-top:8px;min-height:16px;display:block}
-
-footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.ft-links{display:flex;gap:20px}
-.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
-.ft-links a:hover{color:var(--amber2)}
-.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
-
-@media(max-width:900px){
-  .page{grid-template-columns:1fr;gap:48px;padding:48px 24px 80px}
-  .nav{padding:0 24px}
-  footer{padding:24px}
-  .f-row{grid-template-columns:1fr}
-}
+.ct { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: var(--tx-space-7); align-items: start; padding: var(--tx-space-8) var(--tx-space-5); }
+.ct-hero .tx-h1 { margin: var(--tx-space-4) 0; }
+.ct-opts { display: grid; gap: var(--tx-space-3); margin: var(--tx-space-6) 0; }
+.ct-opt .tx-h3 { font-size: 17px; }
+.ct-opt p { margin: 0 0 var(--tx-space-2); font-size: 15px; line-height: 1.6; color: var(--tx-text-2); }
+.ct-link { font: 500 12px var(--tx-font-mono); color: var(--tx-amber-2); }
+.ct-rt .tx-term__row { grid-template-columns: minmax(0, 1fr) auto; }
+.ct-right { position: sticky; top: 96px; }
+.ct-sub { margin: 0 0 var(--tx-space-5); }
+.ct-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tx-space-3); }
+.ct-err { min-height: 18px; font-size: 13px; color: var(--tx-down); }
+.ct-submit { width: 100%; gap: 8px; }
+.ct-fnote { margin-top: var(--tx-space-3); }
+.ct-success { display: none; text-align: center; padding: var(--tx-space-5) 0; }
+.ct-success p { color: var(--tx-text-2); margin: 0 0 var(--tx-space-5); }
+.ct-success strong { color: var(--tx-amber-2); }
+.ct-success-icon { width: 48px; height: 48px; margin: 0 auto var(--tx-space-4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--tx-up); border: 1px solid rgba(0, 201, 126, .35); background: rgba(0, 201, 126, .08); font-size: 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 900px) { .ct { grid-template-columns: 1fr; padding: var(--tx-space-7) var(--tx-space-4); } .ct-right { position: static; } }
+@media (max-width: 480px) { .ct-row { grid-template-columns: 1fr; } }
 </style>
 </head>
-<body>
+<body class="tx">
 
 <!-- tx:header -->
 <div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
@@ -180,81 +113,50 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </header>
 <!-- /tx:header -->
 
-<div class="page">
-
-  <!-- LEFT: OPTIONS + RESPONSE TIMES -->
-  <div class="left-col">
-    <div class="eyebrow">Get in touch</div>
-    <h1 class="page-h">We read<br>every <em>message.</em></h1>
-    <p class="page-sub">TimingAX is a small, focused team. When you write to us, a person reads it and writes back.</p>
-
-    <div class="contact-options">
-      <div class="co">
-        <div class="co-icon" style="background:rgba(0,201,126,.08)">&#128736;</div>
-        <div>
-          <div class="co-t">Product support</div>
-          <div class="co-d">Something not working, a feature question, or a bug report. We take every issue seriously and fix real bugs fast.</div>
-          <div class="co-link">Use the form &rarr;</div>
-        </div>
-      </div>
-      <div class="co">
-        <div class="co-icon" style="background:rgba(232,147,24,.08)">&#128202;</div>
-        <div>
-          <div class="co-t">Data &amp; methodology</div>
-          <div class="co-d">Questions about how the seasonal patterns are calculated, data sources, observation periods, or limitations.</div>
-          <div class="co-link">Use the form &rarr;</div>
-        </div>
-      </div>
-      <div class="co">
-        <div class="co-icon" style="background:rgba(77,163,255,.08)">&#128240;</div>
-        <div>
-          <div class="co-t">Press &amp; media</div>
-          <div class="co-d">Writing about market seasonality, fintech or investment tools? We're happy to provide data, context and quotes.</div>
-          <div class="co-link">Use the form with subject "Press" &rarr;</div>
-        </div>
-      </div>
-      <div class="co">
-        <div class="co-icon" style="background:rgba(155,127,255,.08)">&#129309;</div>
-        <div>
-          <div class="co-t">Partnerships &amp; API</div>
-          <div class="co-d">Integration ideas, data partnerships, API access beyond the Lifetime tier, or embedding TimingAX in your product.</div>
-          <div class="co-link">Use the form &rarr;</div>
-        </div>
-      </div>
+<main class="tx-wrap ct">
+  <div class="ct-left">
+    <section class="ct-hero">
+      <span class="tx-eyebrow">Get in touch</span>
+      <h1 class="tx-h1">We read every <em>message.</em></h1>
+      <p class="tx-lead">TimingAX is a small, focused team. When you write to us, a person reads it and writes back.</p>
+    </section>
+    <div class="ct-opts">
+      <div class="tx-card ct-opt"><h2 class="tx-h3">Product support</h2><p>Something not working, a feature question, or a bug report. We take every issue seriously and fix real bugs fast.</p><span class="ct-link">Use the form &rarr;</span></div>
+      <div class="tx-card ct-opt"><h2 class="tx-h3">Data &amp; methodology</h2><p>Questions about how the seasonal patterns are calculated, data sources, observation periods, or limitations.</p><span class="ct-link">Use the form &rarr;</span></div>
+      <div class="tx-card ct-opt"><h2 class="tx-h3">Press &amp; media</h2><p>Writing about market seasonality, fintech or investment tools? We're happy to provide data, context and quotes.</p><span class="ct-link">Use the form with subject "Press" &rarr;</span></div>
+      <div class="tx-card ct-opt"><h2 class="tx-h3">Partnerships &amp; API</h2><p>Integration ideas, data partnerships, API access beyond the Lifetime tier, or embedding TimingAX in your product.</p><span class="ct-link">Use the form &rarr;</span></div>
     </div>
-
-    <div class="rt">
-      <div class="rt-h">Typical response times</div>
-      <div class="rt-rows">
-        <div class="rt-row"><span class="rt-label">Product support</span><span class="rt-time">under 24h</span></div>
-        <div class="rt-row"><span class="rt-label">Bug reports</span><span class="rt-time">under 12h</span></div>
-        <div class="rt-row"><span class="rt-label">Data questions</span><span class="rt-time">1&ndash;2 business days</span></div>
-        <div class="rt-row"><span class="rt-label">Press &amp; partnerships</span><span class="rt-time">2&ndash;3 business days</span></div>
+    <div class="tx-term ct-rt">
+      <div class="tx-term__head"><span class="tx-term__title">Typical response times</span></div>
+      <div class="tx-term__body">
+        <div class="tx-term__row"><span class="tx-term__name">Product support</span><span>under 24h</span></div>
+        <div class="tx-term__row"><span class="tx-term__name">Bug reports</span><span>under 12h</span></div>
+        <div class="tx-term__row"><span class="tx-term__name">Data questions</span><span>1&ndash;2 business days</span></div>
+        <div class="tx-term__row"><span class="tx-term__name">Press &amp; partnerships</span><span>2&ndash;3 business days</span></div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT: FORM -->
-  <div class="right-col">
-    <div class="form-card">
+  <div class="ct-right">
+    <div class="tx-card ct-form">
       <div id="formView">
-        <div class="fc-h">Send us a message</div>
-        <div class="fc-sub">Fill in the form and we&apos;ll get back to you promptly.</div>
+        <h2 class="tx-h3">Send us a message</h2>
+        <p class="tx-note ct-sub">Fill in the form and we&apos;ll get back to you promptly.</p>
 
-        <div class="f-row">
-          <div class="f-group">
-            <label class="f-label" for="c_name">Your name</label>
-            <input class="f-input" type="text" id="c_name" placeholder="Jane Smith" autocomplete="name">
+        <div class="ct-row">
+          <div class="tx-field">
+            <label for="c_name">Your name</label>
+            <input class="tx-input" type="text" id="c_name" placeholder="Jane Smith" autocomplete="name">
           </div>
-          <div class="f-group">
-            <label class="f-label" for="c_email">Email address</label>
-            <input class="f-input" type="email" id="c_email" placeholder="jane@example.com" autocomplete="email">
+          <div class="tx-field">
+            <label for="c_email">Email address</label>
+            <input class="tx-input" type="email" id="c_email" placeholder="jane@example.com" autocomplete="email">
           </div>
         </div>
 
-        <div class="f-group">
-          <label class="f-label" for="c_subject">Subject</label>
-          <select class="f-select" id="c_subject">
+        <div class="tx-field">
+          <label for="c_subject">Subject</label>
+          <select class="tx-input" id="c_subject">
             <option value="">Select a topic...</option>
             <option>Product support</option>
             <option>Bug report</option>
@@ -267,31 +169,28 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
           </select>
         </div>
 
-        <div class="f-group">
-          <label class="f-label" for="c_msg">Message</label>
-          <textarea class="f-textarea" id="c_msg" placeholder="Tell us what's on your mind. The more detail you include, the faster we can help."></textarea>
-          <span class="f-err" id="c_err"></span>
+        <div class="tx-field">
+          <label for="c_msg">Message</label>
+          <textarea class="tx-input" id="c_msg" placeholder="Tell us what's on your mind. The more detail you include, the faster we can help."></textarea>
+          <span class="ct-err" id="c_err"></span>
         </div>
 
-        <button class="f-submit" id="c_btn" onclick="submitContact()">
+        <button class="tx-btn tx-btn--primary tx-btn--lg ct-submit" id="c_btn" onclick="submitContact()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Send message
         </button>
-        <div class="f-note">By sending a message you agree to our <a href="/privacy-policy.html">Privacy Policy</a>. We never share your details with third parties.</div>
+        <div class="tx-note ct-fnote">By sending a message you agree to our <a href="/privacy-policy.html">Privacy Policy</a>. We never share your details with third parties.</div>
       </div>
 
-      <div class="f-success" id="formSuccess">
-        <div class="f-success-icon">&#10003;</div>
-        <div class="f-success-h">Message sent</div>
-        <p class="f-success-p">Thanks for reaching out. We&apos;ve received your message and will respond to <strong id="successEmail" style="color:var(--amber2)"></strong> within the timeframe shown.</p>
-        <div style="margin-top:24px">
-          <a href="/" style="font:500 13px/1 var(--mono);color:var(--amber2)">Back to TimingAX &rarr;</a>
-        </div>
+      <div class="ct-success" id="formSuccess">
+        <div class="ct-success-icon">&#10003;</div>
+        <h2 class="tx-h3">Message sent</h2>
+        <p>Thanks for reaching out. We&apos;ve received your message and will respond to <strong id="successEmail"></strong> within the timeframe shown.</p>
+        <a class="tx-btn" href="/">Back to TimingAX &rarr;</a>
       </div>
     </div>
   </div>
-
-</div>
+</main>
 
 <!-- tx:footer -->
 <footer class="tx-footer">
@@ -356,7 +255,7 @@ function submitContact() {
 
   var btn = document.getElementById('c_btn');
   btn.disabled = true;
-  btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid rgba(4,7,15,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .7s linear infinite"></div>';
+  btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid rgba(4,7,15,.3);border-top-color:var(--tx-bg-0);border-radius:50%;animation:spin .7s linear infinite"></div>';
 
   // Real submit — stores the message in Supabase (contact_messages table)
   fetch(SB_URL + '/rest/v1/contact_messages', {

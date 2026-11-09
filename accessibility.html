@@ -62,155 +62,12 @@
 <script src="/assets/tx.js" defer></script>
 <!-- /tx:head -->
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-:root{
-  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
-  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
-  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
-  --green:var(--tx-up);--red:var(--tx-down);--blue:var(--tx-info);
-  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
-  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
-  --mono:var(--tx-font-mono);
-  --disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);
-  --sans:var(--tx-font-ui);
-}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:var(--sans)}
-
-/* NAV */
-.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
-.n-logo{display:flex;align-items:center;gap:9px}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2);font-weight:800}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;transition:all .18s}
-.btn-cta:hover{background:var(--amber2)}
-
-/* HERO */
-.about-hero{position:relative;padding:100px 48px 80px;text-align:center;overflow:hidden;border-bottom:1px solid var(--b1)}
-.ah-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black,transparent);pointer-events:none;opacity:.35}
-.ah-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(232,147,24,.06),transparent 65%);pointer-events:none}
-.ah-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
-.ah-eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:10px}
-.ah-eyebrow::before,.ah-eyebrow::after{content:"";width:20px;height:1px;background:var(--amber2);opacity:.4}
-.ah-h{font:800 64px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:24px}
-.ah-h em{font-style:normal;color:var(--amber2)}
-.ah-sub{font-size:20px;color:var(--w2);line-height:1.65;max-width:580px;margin:0 auto}
-
-/* STORY */
-.story{max-width:760px;margin:0 auto;padding:80px 48px}
-.s-section{margin-bottom:72px}
-.s-label{font:500 9px/1 var(--mono);letter-spacing:.2em;color:var(--amber2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.s-label::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
-.s-h{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:20px}
-.s-h em{font-style:normal;color:var(--amber2)}
-.s-body{font-size:16px;color:var(--w3);line-height:1.82}
-.s-body p{margin-bottom:20px}
-.s-body p:last-child{margin-bottom:0}
-.s-body strong{color:var(--w2);font-weight:500}
-
-/* Pull quote */
-.pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:20px 0 20px 28px}
-.pq-text{font:700 22px/1.4 var(--disp-serif);letter-spacing:0em;color:var(--w);margin-bottom:10px}
-.pq-attr{font:400 11px/1 var(--mono);color:var(--w4);letter-spacing:.06em}
-
-/* Stat highlight inline */
-.s-stat{display:inline-flex;align-items:center;gap:8px;background:var(--s1);border:1px solid var(--b2);border-radius:6px;padding:4px 12px 4px 8px;font:600 14px/1 var(--mono);vertical-align:middle;margin:0 4px}
-.s-stat em{font-style:normal;font-size:20px;font-weight:700;margin-right:2px}
-.s-stat.g em{color:var(--green)}
-.s-stat.r em{color:var(--red)}
-.s-stat.a em{color:var(--amber2)}
-
-/* Timeline */
-.timeline{position:relative;margin:0 0 72px;padding-left:28px}
-.timeline::before{content:"";position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(var(--b2),transparent)}
-.tl-item{position:relative;padding-bottom:36px}
-.tl-item:last-child{padding-bottom:0}
-.tl-dot{position:absolute;left:-34px;top:5px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--amber2);background:var(--bg)}
-.tl-dot.filled{background:var(--amber2)}
-.tl-date{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--amber2);text-transform:uppercase;margin-bottom:8px}
-.tl-h{font:600 16px/1.3 var(--sans);color:var(--w2);margin-bottom:6px;letter-spacing:-.01em}
-.tl-p{font-size:14px;color:var(--w4);line-height:1.65}
-
-/* Data sources grid */
-.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
-.src-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;transition:border-color .2s}
-.src-card:hover{border-color:var(--b3)}
-.src-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
-.src-name{font:600 13px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
-.src-desc{font:400 11px/1.5 var(--mono);color:var(--w4)}
-
-/* Principles */
-.principles{display:flex;flex-direction:column;gap:16px;margin-top:24px}
-.principle{display:flex;gap:16px;align-items:flex-start;background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px 22px;transition:border-color .2s}
-.principle:hover{border-color:var(--b3)}
-.pr-n{width:32px;height:32px;border-radius:7px;background:rgba(232,147,24,.1);border:1px solid rgba(232,147,24,.2);color:var(--amber2);font:700 13px/1 var(--mono);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.pr-t{font:600 14px/1 var(--sans);color:var(--w2);margin-bottom:5px;letter-spacing:-.01em}
-.pr-d{font-size:13px;color:var(--w4);line-height:1.6}
-
-/* What we are not */
-.not-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
-.not-card{background:var(--bg2);border:1px solid var(--b2);border-radius:9px;padding:18px;position:relative;overflow:hidden}
-.not-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
-.not-card.is::before{background:var(--green)}
-.not-card.not::before{background:var(--red)}
-.nc-label{font:600 8px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:12px}
-.nc-label.is{background:rgba(0,201,126,.08);color:var(--green);border:1px solid rgba(0,201,126,.2)}
-.nc-label.not{background:rgba(240,64,80,.08);color:var(--red);border:1px solid rgba(240,64,80,.2)}
-.nc-items{list-style:none;display:flex;flex-direction:column;gap:7px}
-.nc-items li{font-size:13px;color:var(--w3);line-height:1.5;display:flex;gap:7px;align-items:flex-start}
-.nc-items li span{flex-shrink:0;margin-top:1px}
-
-/* CTA */
-.about-cta{background:var(--bg2);border-top:1px solid var(--b1);padding:80px 48px;text-align:center}
-.ac-in{max-width:520px;margin:0 auto}
-.ac-h{font:800 40px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
-.ac-h em{font-style:normal;color:var(--amber2)}
-.ac-p{font-size:16px;color:var(--w3);line-height:1.7;margin-bottom:36px}
-.btn-hero{background:var(--amber);color:var(--bg);border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;margin-right:10px}
-.btn-hero:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,147,24,.3)}
-.btn-ghost-l{background:none;border:1px solid var(--s3);color:var(--w2);padding:14px 26px;border-radius:8px;font-size:15px;transition:all .2s;display:inline-flex;align-items:center}
-.btn-ghost-l:hover{border-color:var(--amber2);color:var(--w)}
-
-/* Footer */
-footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.ft-links{display:flex;gap:20px}
-.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
-.ft-links a:hover{color:var(--amber2)}
-.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
-
-@media(max-width:900px){
-  .ah-h{font-size:40px}
-  .about-hero,.story,.about-cta,footer{padding-left:24px;padding-right:24px}
-  .sources-grid{grid-template-columns:1fr}
-  .not-grid{grid-template-columns:1fr}
-  .nav{padding:0 24px}
-}
-
-.acc-hero{padding:64px 24px 32px;border-bottom:1px solid var(--b1)}
-.acc-wrap{max-width:680px;margin:0 auto}
-.acc-hero h1{font:800 38px/1.18 var(--disp-serif);letter-spacing:-.01em;margin-bottom:14px}
-.acc-hero h1 em{font-style:normal;color:var(--amber2)}
-.acc-hero p{color:var(--w3);font-size:14px}
-.acc-body{max-width:680px;margin:0 auto;padding:40px 24px 60px}
-.acc-body p{font-size:15px;color:var(--w2);line-height:1.85;margin-bottom:18px}
-.acc-body h2{font:700 22px/1.3 var(--disp-serif);letter-spacing:0em;margin:36px 0 14px;color:var(--w)}
-.acc-body ul{padding-left:22px;margin-bottom:18px}
-.acc-body li{font-size:14px;color:var(--w2);line-height:1.8;margin-bottom:8px}
-.acc-body strong{color:var(--w);font-weight:600}
-.acc-body a{color:var(--amber2)}
-.status-pill-acc{display:inline-flex;align-items:center;gap:6px;font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:4px;margin-bottom:4px}
-.status-pill-acc.good{background:rgba(0,201,126,.1);color:var(--green);border:1px solid rgba(0,201,126,.3)}
-.status-pill-acc.partial{background:rgba(245,165,47,.1);color:var(--amber2);border:1px solid rgba(245,165,47,.3)}
-.acc-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
-.acc-table th{text-align:left;padding:8px 10px;font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w4);border-bottom:2px solid var(--b1)}
-.acc-table td{padding:10px 10px;border-bottom:1px solid var(--b1);color:var(--w2);vertical-align:top}
-.disc-foot{font-size:11px;color:var(--w4);margin-top:32px;line-height:1.7;padding-top:24px;border-top:1px solid var(--b1)}
+.tx-prose .tx-badge { margin-bottom: var(--tx-space-3); }
+.tx-prose .tx-table td { vertical-align: top; font-size: 15px; }
 </style>
 </head>
 
-<body>
+<body class="tx">
 
 <!-- tx:header -->
 <div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
@@ -239,22 +96,21 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </header>
 <!-- /tx:header -->
 
-<div class="acc-hero">
-  <div class="acc-wrap">
+<main class="tx-wrap">
+<article class="tx-article">
+  <header class="tx-article__head">
+    <span class="tx-eyebrow">Legal</span>
     <h1>Accessibility <em>Statement</em></h1>
-    <p>Last updated: June 2026</p>
-  </div>
-</div>
-
-<div class="acc-body">
-
+    <div class="tx-article__meta">Last updated: June 2026</div>
+  </header>
+  <div class="tx-prose">
 <p>TimingAX is built and maintained by a single independent developer. We want the site and app to be usable by as many people as possible, including people using screen readers, keyboard navigation, browser zoom, or other assistive technology. This page describes where things currently stand, honestly — including what isn’t fully there yet.</p>
 
 <h2>Our standard</h2>
 <p>We aim to meet <strong>WCAG 2.1 Level AA</strong> across the site. This is an ongoing goal we’re actively working toward, not a claim that every page fully conforms today.</p>
 
 <h2>What works well today</h2>
-<div class="status-pill-acc good">GOOD SUPPORT</div>
+<span class="tx-badge tx-badge--verified">GOOD SUPPORT</span>
 <ul>
 <li>All marketing pages (Home, About, Blog, Academy, Methodology, Changelog, Contact) use semantic HTML headings, are navigable by keyboard, and maintain a consistent dark colour scheme designed for strong text contrast.</li>
 <li>The site respects your operating system’s <strong>reduced motion</strong> preference — scroll animations and transitions are minimised if you have this enabled.</li>
@@ -263,14 +119,16 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </ul>
 
 <h2>Where we know we have work to do</h2>
-<div class="status-pill-acc partial">PARTIAL SUPPORT</div>
-<table class="acc-table">
+<span class="tx-badge tx-badge--now">PARTIAL SUPPORT</span>
+<div class="tx-table-wrap">
+<table class="tx-table">
   <tr><th>Area</th><th>Current state</th></tr>
   <tr><td><strong>Interactive charts</strong> (seasonal calendar wheel, bar charts)</td><td>These are visual SVG/HTML elements. Screen readers can access the underlying numbers via the data tables and cards displayed alongside each chart, but the charts themselves don’t yet have full ARIA descriptions.</td></tr>
   <tr><td><strong>Colour as the only signal</strong></td><td>Green/red is used to indicate positive/negative seasonal returns. This is paired with +/&minus; signs and text labels (e.g. "Best Month", "Worst Month") so the information isn’t conveyed by colour alone, but we haven’t formally audited colour contrast ratios against WCAG AA across every chart state.</td></tr>
   <tr><td><strong>Complex tool interfaces</strong> (Backtest, Screener, Portfolio builder)</td><td>These multi-step tools are keyboard-operable but haven’t had a full assistive-technology walkthrough yet.</td></tr>
   <tr><td><strong>AI chat widget</strong></td><td>Operable by keyboard and screen reader, but live-region announcements for new messages are still being refined.</td></tr>
 </table>
+</div>
 
 <h2>How to report an accessibility issue</h2>
 <p>If you encounter a barrier using TimingAX — whether you use a screen reader, keyboard navigation, voice control, or any other assistive technology — please <a href="/contact.html">get in touch via our contact form</a>. We read every message personally, and accessibility issues are treated as a priority. Please let us know:</p>
@@ -282,10 +140,10 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 
 <h2>Technical approach</h2>
 <p>The site is built with semantic HTML, standard form controls, and CSS that respects browser and OS-level preferences (reduced motion, font scaling). As new features are added, accessibility is considered as part of the build — not retrofitted afterward — though as a small independently-run project, some areas (noted above) are still catching up.</p>
-
-<div class="disc-foot">This statement reflects our current understanding and will be updated as improvements are made. It is not a legal certification of conformance.</div>
-
-</div>
+  </div>
+  <div class="tx-note tx-article__foot">This statement reflects our current understanding and will be updated as improvements are made. It is not a legal certification of conformance.</div>
+</article>
+</main>
 
 <!-- tx:footer -->
 <footer class="tx-footer">

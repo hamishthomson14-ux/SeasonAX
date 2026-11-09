@@ -62,129 +62,20 @@
 <script src="/assets/tx.js" defer></script>
 <!-- /tx:head -->
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-:root{
-  --bg:var(--tx-bg-0);--bg2:var(--tx-bg-1);--bg3:var(--tx-bg-2);
-  --s1:var(--tx-surface-1);--s2:var(--tx-surface-2);--s3:var(--tx-surface-3);
-  --amber:var(--tx-amber);--amber2:var(--tx-amber-2);
-  --green:var(--tx-up);--red:var(--tx-down);
-  --w:var(--tx-text-1);--w2:var(--tx-text-2);--w3:var(--tx-text-2);--w4:var(--tx-text-3);--w5:#6B839E;
-  --b1:var(--tx-border-1);--b2:var(--tx-border-2);--b3:#2A3D5E;
-  --mono:var(--tx-font-mono);--disp:var(--tx-font-ui);--disp-serif:var(--tx-font-ui);--sans:var(--tx-font-ui);
-}
-body{background:var(--bg);color:var(--w);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-.nav{height:56px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);background:rgba(4,7,15,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
-.n-logo{display:flex;align-items:center;gap:9px}
-.n-word{font:800 17px/1 var(--disp);letter-spacing:-.02em}
-.n-word b{color:var(--amber2)}
-.nav-links{display:flex;gap:4px}
-.nl{padding:6px 12px;font-size:13px;color:var(--w3);border-radius:5px;transition:all .15s}
-.nl:hover{color:var(--w);background:rgba(255,255,255,.05)}
-.btn-cta{background:var(--amber);color:var(--bg);border:none;padding:7px 17px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
-.btn-cta:hover{background:var(--amber2)}
-
-/* HERO */
-.hero{padding:80px 48px 64px;border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
-.h-dg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 100% 100% at 0% 0%,black,transparent);opacity:.3;pointer-events:none}
-.h-in{position:relative;z-index:1;max-width:1200px;margin:0 auto}
-.eyebrow{font:500 10px/1 var(--mono);letter-spacing:.22em;color:var(--amber2);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:"";width:16px;height:1px;background:var(--amber2);opacity:.5}
-.hero-h{font:800 56px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px}
-.hero-h em{font-style:normal;color:var(--amber2)}
-.hero-sub{font-size:18px;color:var(--w3);max-width:540px;line-height:1.68}
-
-/* ARTICLES GRID */
-.articles{max-width:1200px;margin:0 auto;padding:72px 48px}
-.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:72px}
-.article-card{background:var(--bg);padding:36px 32px;position:relative;overflow:hidden;transition:background .18s;cursor:pointer;display:flex;flex-direction:column}
-a.article-card{color:inherit;text-decoration:none}
-.article-card:hover{background:var(--bg2)}
-.article-card:hover .ac-arr{color:var(--amber2);transform:translate(3px,-3px)}
-.ac-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px;align-self:flex-start}
-.ac-cat.season{background:rgba(232,147,24,.08);color:var(--amber2);border:1px solid rgba(232,147,24,.2)}
-.ac-cat.events{background:rgba(77,163,255,.08);color:#4DA3FF;border:1px solid rgba(77,163,255,.2)}
-.ac-cat.crypto{background:rgba(155,127,255,.08);color:#9B7FFF;border:1px solid rgba(155,127,255,.2)}
-.ac-h{font:800 22px/1.2 var(--disp-serif);letter-spacing:-.01em;margin-bottom:12px;color:var(--w)}
-.ac-sub{font-size:14px;color:var(--w3);line-height:1.68;flex:1;margin-bottom:24px}
-.ac-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
-.ac-date{font:400 10px/1 var(--mono);color:var(--w5)}
-.ac-read{font:500 11px/1 var(--mono);color:var(--amber2)}
-.ac-arr{position:absolute;right:26px;top:26px;color:var(--w5);font-size:16px;transition:all .2s}
-
-/* FULL ARTICLE PAGE */
-.article-wrap{max-width:1200px;margin:0 auto;padding:0 48px}
-.article-page{display:none;padding:64px 0 100px}
-.article-page.active{display:block}
-.ap-back{font:400 12px/1 var(--mono);color:var(--w4);margin-bottom:48px;display:inline-flex;align-items:center;gap:6px;transition:color .18s;cursor:pointer}
-.ap-back:hover{color:var(--amber2)}
-.ap-cat{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:20px}
-.ap-h{font:800 52px/1.0 var(--disp-serif);letter-spacing:-.01em;margin-bottom:16px;max-width:760px}
-.ap-h em{font-style:normal;color:var(--amber2)}
-.ap-meta{font:400 11px/1 var(--mono);color:var(--w4);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--b1)}
-.ap-body{display:grid;grid-template-columns:1fr 340px;gap:72px;align-items:start}
-.ap-text h2{font:800 26px/1.2 var(--disp-serif);letter-spacing:-.01em;margin:48px 0 16px;color:var(--w)}
-.ap-text h2:first-child{margin-top:0}
-.ap-text h3{font:600 18px/1.3 var(--sans);margin:32px 0 12px;color:var(--w2)}
-.ap-text p{font-size:16px;color:var(--w3);line-height:1.82;margin-bottom:18px}
-.ap-text p:last-child{margin-bottom:0}
-.ap-text strong{color:var(--w2);font-weight:500}
-.ap-text em{font-style:italic;color:var(--w2)}
-.ap-text ul{padding-left:20px;margin-bottom:18px}
-.ap-text ul li{font-size:15px;color:var(--w3);line-height:1.7;margin-bottom:8px}
-.ap-pullquote{border-left:3px solid var(--amber2);margin:36px 0;padding:18px 0 18px 24px}
-.ap-pullquote p{font:700 20px/1.4 var(--disp-serif);letter-spacing:0em;color:var(--w);margin:0}
-/* Data callout */
-.ap-stat{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:22px 24px;margin:28px 0}
-.ap-stat-v{font:700 44px/1 var(--mono);letter-spacing:-.03em;margin-bottom:6px}
-.ap-stat-v.g{color:var(--green)}.ap-stat-v.r{color:var(--red)}.ap-stat-v.a{color:var(--amber2)}
-.ap-stat-l{font:400 12px/1.5 var(--mono);color:var(--w4)}
-/* Sidebar */
-.ap-sidebar{position:sticky;top:72px}
-.ap-toc{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:20px;margin-bottom:20px}
-.ap-toc-h{font:600 9px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber2);margin-bottom:14px}
-.ap-toc ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.ap-toc li a{font-size:13px;color:var(--w4);transition:color .15s;line-height:1.4;display:block}
-.ap-toc li a:hover{color:var(--amber2)}
-.ap-cta-box{background:var(--bg2);border:1px solid var(--b2);border-radius:10px;padding:24px;text-align:center}
-.ap-cta-box h4{font:700 18px/1.2 var(--disp-serif);letter-spacing:0em;margin-bottom:10px}
-.ap-cta-box p{font-size:13px;color:var(--w3);line-height:1.6;margin-bottom:18px}
-.btn-amber{background:var(--amber);color:var(--bg);border:none;padding:11px 20px;border-radius:7px;font:700 13px/1 var(--sans);width:100%;cursor:pointer;transition:all .18s}
-.btn-amber:hover{background:var(--amber2)}
-
-/* NEWSLETTER */
-.newsletter{background:var(--bg2);border-top:1px solid var(--b1);padding:72px 48px}
-.nl-in{max-width:560px;margin:0 auto;text-align:center}
-.nl-h{font:800 36px/1.1 var(--disp-serif);letter-spacing:-.01em;margin-bottom:12px}
-.nl-h em{font-style:normal;color:var(--amber2)}
-.nl-p{font-size:16px;color:var(--w3);margin-bottom:28px;line-height:1.65}
-.nl-form{display:flex;gap:10px}
-.nl-input{flex:1;background:var(--s1);border:1px solid var(--b2);color:var(--w);padding:12px 16px;font-size:14px;border-radius:7px;outline:none;transition:border-color .2s;font-family:var(--sans)}
-.nl-input:focus{border-color:var(--amber2)}
-.nl-input::placeholder{color:var(--w4)}
-.nl-btn{background:var(--amber);color:var(--bg);border:none;padding:12px 22px;border-radius:7px;font:700 13px/1 var(--sans);cursor:pointer;transition:all .18s;white-space:nowrap}
-.nl-btn:hover{background:var(--amber2)}
-.nl-note{font:400 11px/1 var(--mono);color:var(--w5);margin-top:12px}
-
-footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.ft-links{display:flex;gap:20px}
-.ft-links a{font-size:13px;color:var(--w4);transition:color .18s}
-.ft-links a:hover{color:var(--amber2)}
-.ft-copy{font:400 11px/1 var(--mono);color:var(--w5)}
-
-@media(max-width:1024px){
-  .nav{padding:0 24px}.nav-links{display:none}
-  .hero,.articles,.article-wrap,.newsletter,footer{padding-left:24px;padding-right:24px}
-  .articles-grid{grid-template-columns:1fr}
-  .ap-body{grid-template-columns:1fr}
-  .ap-sidebar{display:none}
-  .hero-h{font-size:38px}
-  .ap-h{font-size:36px}
-}
+.bl-hero { padding: var(--tx-space-8) 0 var(--tx-space-6); }
+.bl-hero .tx-h1 { margin: var(--tx-space-4) 0; }
+.bl-card { display: flex; flex-direction: column; gap: var(--tx-space-2); color: var(--tx-text-1); }
+.bl-card .tx-h3 { margin: var(--tx-space-1) 0 0; }
+.bl-card p { margin: 0; flex: 1; font-size: 15px; line-height: 1.6; color: var(--tx-text-2); }
+.bl-meta { display: flex; justify-content: space-between; gap: 12px; font: 500 12px var(--tx-font-mono); color: var(--tx-text-3); }
+.bl-read { color: var(--tx-amber-2); }
+.bl-more { margin: var(--tx-space-6) 0 0; text-align: center; }
+.bl-nl { margin-top: var(--tx-space-7); }
+.bl-nl .tx-lead { margin-bottom: var(--tx-space-5); }
+#nlNote { margin-top: var(--tx-space-3); }
 </style>
 </head>
-<body>
+<body class="tx">
 
 <!-- tx:header -->
 <div class="tx-ticker" aria-label="Market prices, daily change"><div class="tx-ticker__track" id="ttrack"></div></div>
@@ -213,71 +104,44 @@ footer{background:var(--bg2);border-top:1px solid var(--b1);padding:32px 48px;di
 </header>
 <!-- /tx:header -->
 
-<!-- INDEX VIEW -->
-<div id="indexView">
-  <div class="hero">
-    <div class="h-dg" aria-hidden="true"></div>
-    <div class="h-in">
-      <div class="eyebrow">Research &amp; Insights</div>
-      <h1 class="hero-h">The data behind<br><em>the patterns.</em></h1>
-      <p class="hero-sub">Deep research on market seasonality &mdash; why the calendar effects exist, what the data actually shows, and how to use it.</p>
-    </div>
+<main class="tx-wrap" id="indexView">
+  <section class="bl-hero">
+    <span class="tx-eyebrow">Research &amp; Insights</span>
+    <h1 class="tx-h1">The data behind <em>the patterns.</em></h1>
+    <p class="tx-lead">Deep research on market seasonality &mdash; why the calendar effects exist, what the data actually shows, and how to use it.</p>
+  </section>
+  <div class="tx-grid tx-grid--3 bl-grid">
+    <a class="tx-card tx-card--hover bl-card" href="/blog/september-weakest-month.html">
+      <span class="tx-eyebrow">Seasonality</span>
+      <h2 class="tx-h3">Why September Is the S&amp;P 500&rsquo;s Weakest Month</h2>
+      <p>The only month with a negative 15-year average for the S&amp;P 500. What the data shows, the possible explanations, and how to read it.</p>
+      <span class="bl-meta"><span>June 2026 &nbsp;&middot;&nbsp; 8 min read</span><span class="bl-read">Read &rarr;</span></span>
+    </a>
+    <a class="tx-card tx-card--hover bl-card" href="/blog/sell-in-may-halloween-indicator.html">
+      <span class="tx-eyebrow">Seasonality</span>
+      <h2 class="tx-h3">The Halloween Indicator: Does "Sell in May" Actually Work?</h2>
+      <p>The most famous phrase in seasonality, checked against an academic study and our own 15 years of data. The answer is more nuanced than the slogan suggests.</p>
+      <span class="bl-meta"><span>May 2026 &nbsp;&middot;&nbsp; 10 min read</span><span class="bl-read">Read &rarr;</span></span>
+    </a>
+    <a class="tx-card tx-card--hover bl-card" href="/blog/uptober-bitcoin-october.html">
+      <span class="tx-eyebrow">Crypto</span>
+      <h2 class="tx-h3">Uptober: What the Data Shows About Bitcoin in October</h2>
+      <p><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg">+15.2%</span> average. Positive in <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years. What the data shows, the theories behind it, and the Octobers it failed.</p>
+      <span class="bl-meta"><span>April 2026 &nbsp;&middot;&nbsp; 7 min read</span><span class="bl-read">Read &rarr;</span></span>
+    </a>
   </div>
+  <p class="tx-note bl-more">More research coming soon &mdash; subscribe below to get notified</p>
 
-  <div class="articles">
-    <div class="articles-grid">
-      <a class="article-card" href="/blog/september-weakest-month.html">
-        <div class="ac-arr">&#8599;</div>
-        <span class="ac-cat season">Seasonality</span>
-        <h2 class="ac-h">Why September Is the S&amp;P 500&rsquo;s Weakest Month</h2>
-        <p class="ac-sub">The only month with a negative 15-year average for the S&amp;P 500. What the data shows, the possible explanations, and how to read it.</p>
-        <div class="ac-meta">
-          <span class="ac-date">June 2026 &nbsp;&middot;&nbsp; 8 min read</span>
-          <span class="ac-read">Read &rarr;</span>
-        </div>
-      </a>
-      <a class="article-card" href="/blog/sell-in-may-halloween-indicator.html">
-        <div class="ac-arr">&#8599;</div>
-        <span class="ac-cat season">Seasonality</span>
-        <h2 class="ac-h">The Halloween Indicator: Does "Sell in May" Actually Work?</h2>
-        <p class="ac-sub">The most famous phrase in seasonality, checked against an academic study and our own 15 years of data. The answer is more nuanced than the slogan suggests.</p>
-        <div class="ac-meta">
-          <span class="ac-date">May 2026 &nbsp;&middot;&nbsp; 10 min read</span>
-          <span class="ac-read">Read &rarr;</span>
-        </div>
-      </a>
-      <a class="article-card" href="/blog/uptober-bitcoin-october.html">
-        <div class="ac-arr">&#8599;</div>
-        <span class="ac-cat crypto">Crypto</span>
-        <h2 class="ac-h">Uptober: What the Data Shows About Bitcoin in October</h2>
-        <p class="ac-sub"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg">+15.2%</span> average. Positive in <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="pos">9</span> of <span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="obs">13</span> years. What the data shows, the theories behind it, and the Octobers it failed.</p>
-        <div class="ac-meta">
-          <span class="ac-date">April 2026 &nbsp;&middot;&nbsp; 7 min read</span>
-          <span class="ac-read">Read &rarr;</span>
-        </div>
-      </a>
+  <section class="tx-section bl-nl" id="nlSection">
+    <h2 class="tx-h2">Research in your <em>inbox.</em></h2>
+    <p class="tx-lead">New articles, seasonal alerts and platform updates. One email when it matters. Never spam.</p>
+    <div class="tx-inline-form">
+      <input class="tx-input" type="email" id="nlEmail" placeholder="your@email.com" aria-label="Email address">
+      <button class="tx-btn tx-btn--primary nl-btn" onclick="nlSubmit()">Subscribe</button>
     </div>
-
-    <div style="text-align:center;padding:40px 0;border-top:1px solid var(--b1)">
-      <div style="font:500 11px/1 var(--mono);color:var(--w4);letter-spacing:.08em">More research coming soon &mdash; subscribe below to get notified</div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- NEWSLETTER -->
-<div class="newsletter" id="nlSection">
-  <div class="nl-in">
-    <h2 class="nl-h">Research in your<br><em>inbox.</em></h2>
-    <p class="nl-p">New articles, seasonal alerts and platform updates. One email when it matters. Never spam.</p>
-    <div class="nl-form">
-      <input class="nl-input" type="email" id="nlEmail" placeholder="your@email.com">
-      <button class="nl-btn" onclick="nlSubmit()">Subscribe</button>
-    </div>
-    <div class="nl-note" id="nlNote">&#10003; Free forever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; No spam</div>
-  </div>
-</div>
+    <div class="tx-note" id="nlNote">&#10003; Free forever &nbsp;&middot;&nbsp; Unsubscribe anytime &nbsp;&middot;&nbsp; No spam</div>
+  </section>
+</main>
 
 <!-- tx:footer -->
 <footer class="tx-footer">
@@ -333,7 +197,7 @@ function nlSubmit() {
   var btn = document.querySelector('.nl-btn');
   if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
     note.textContent = 'Please enter a valid email address.';
-    note.style.color = 'var(--red)';
+    note.style.color = 'var(--tx-down)';
     return;
   }
   btn.disabled = true;
@@ -352,13 +216,13 @@ function nlSubmit() {
     btn.textContent = 'Subscribe';
     if (!r.ok && r.status !== 409) throw new Error('failed');
     note.textContent = '\u2713 You\u2019re subscribed. We\u2019ll be in touch.';
-    note.style.color = 'var(--green)';
+    note.style.color = 'var(--tx-up)';
     document.getElementById('nlEmail').value = '';
   }).catch(function() {
     btn.disabled = false;
     btn.textContent = 'Subscribe';
     note.textContent = 'Something went wrong \u2014 please try again.';
-    note.style.color = 'var(--red)';
+    note.style.color = 'var(--tx-down)';
   });
 }
 </script>

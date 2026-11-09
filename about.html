@@ -64,7 +64,7 @@
 <style>
 .ab-hero { padding: var(--tx-space-8) 0 var(--tx-space-7); }
 .ab-hero .tx-h1 { max-width: 16ch; margin: var(--tx-space-4) 0 var(--tx-space-4); }
-.ab-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--tx-space-5) 0; }
+.ab-stats { margin: var(--tx-space-5) 0; }
 .ab-amber { color: var(--tx-amber-2); }
 .ab-after { margin-top: var(--tx-space-2); }
 .ab-log__list { list-style: none; margin: 0; padding: 0; }
@@ -86,9 +86,6 @@
 .ab-list--not li::before { content: '\2717'; color: var(--tx-down); }
 .ab-cta .tx-lead { margin-bottom: var(--tx-space-5); }
 @media (max-width: 600px) {
-  .ab-stats { grid-template-columns: 1fr; }
-  .ab-stats > * { border-right: 0; border-bottom: 1px solid var(--tx-border-1); }
-  .ab-stats > :last-child { border-bottom: 0; }
   .ab-log__list li { grid-template-columns: 1fr; gap: 6px; }
   .ab-founder { flex-direction: column; }
 }
@@ -146,7 +143,7 @@
     <span class="tx-eyebrow">The data</span>
     <h2 class="tx-h2">What <em>15 years</em> actually shows.</h2>
     <div class="tx-prose"><p>These aren't theories. They're the averages from 15 years of monthly return data across every major asset class:</p></div>
-    <div class="tx-statbar ab-stats">
+    <div class="tx-statbar tx-statbar--3 ab-stats">
       <div class="tx-stat"><span class="tx-stat__value tx-down"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Sep" data-tx-field="avg" data-tx-dp="2">−1.24%</span></span><span class="tx-stat__label">S&amp;P 500 avg &middot; September</span></div>
       <div class="tx-stat"><span class="tx-stat__value tx-up"><span data-tx-fill data-tx-sid="sp500" data-tx-month="Nov" data-tx-field="avg" data-tx-dp="2">+3.11%</span></span><span class="tx-stat__label">S&amp;P 500 avg &middot; November</span></div>
       <div class="tx-stat"><span class="tx-stat__value ab-amber"><span data-tx-fill data-tx-sid="btc" data-tx-month="Oct" data-tx-field="avg" data-tx-dp="2">+15.16%</span></span><span class="tx-stat__label">Bitcoin avg &middot; October</span></div>
