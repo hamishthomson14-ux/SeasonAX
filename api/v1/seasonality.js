@@ -274,7 +274,7 @@ async function handle(req, res) {
     if (!tr || !tr.records.some((x) => x.verdict)) return res.status(404).json({ error: 'unavailable', hint: 'Needs real monthly history (never modelled).' });
     res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400, stale-if-error=86400');
     return res.status(200).json({ id: item.id, ticker: item.ticker, name: item.name, source: 'verified', view: 'track', ...tr,
-      disclaimer: 'Each month\'s signal uses only the 15 years before that month; the outcome is the month\'s actual return. Neutral months are not scored.', generatedAt: new Date().toISOString() });
+      disclaimer: 'Each month\'s signal uses only the years before that month: up to 15, fewer where the price history is shorter (at least 5); the outcome is the month\'s actual return. Neutral months are not scored.', generatedAt: new Date().toISOString() });
   }
   // ── ?view=patterns — best/worst weeks of the year + turn-of-month, from real daily prices ──
   if (view === 'patterns') {
