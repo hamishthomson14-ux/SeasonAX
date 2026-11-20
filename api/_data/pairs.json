@@ -1,158 +1,188 @@
 [
-[
-"aapl",
-"msft"
-],
-[
-"amd",
-"nvda"
-],
-[
-"nasdaq",
-"sp500"
-],
-[
-"btc",
-"eth"
-],
-[
-"gld",
-"slv"
-],
-[
-"rivn",
-"tsla"
-],
-[
-"googl",
-"meta"
-],
-[
-"amzn",
-"wmt"
-],
-[
-"bac",
-"jpm"
-],
-[
-"cvx",
-"xom"
-],
-[
-"ko",
-"pep"
-],
-[
-"qqq",
-"spy"
-],
-[
-"ftse100",
-"sp500"
-],
-[
-"dax",
-"ftse100"
-],
-[
-"nikkei",
-"sp500"
-],
-[
-"nio",
-"tsla"
-],
-[
-"dis",
-"nflx"
-],
-[
-"ma",
-"v"
-],
-[
-"amd",
-"intc"
-],
-[
-"nvda",
-"tsmc"
-],
-[
-"crm",
-"orcl"
-],
-[
-"hd",
-"low"
-],
-[
-"mcd",
-"sbux"
-],
-[
-"mrk",
-"pfe"
-],
-[
-"btc",
-"gld"
-],
-[
-"btc",
-"mstr"
-],
-[
-"btc",
-"coin"
-],
-[
-"lmt",
-"rtx"
-],
-[
-"ba",
-"lmt"
-],
-[
-"iwm",
-"spy"
-],
-[
-"spy",
-"tlt"
-],
-[
-"xle",
-"xlk"
-],
-[
-"bp_uk",
-"shel"
-],
-[
-"azn",
-"gsk"
-],
-[
-"barc",
-"hsba"
-],
-[
-"msft",
-"sap"
-],
-[
-"aapl",
-"samsung"
-],
-[
-"alibaba",
-"jd"
-],
-[
-"toyota",
-"tsla"
-]
+["aapl", "msft", "US tech"],
+["amd", "nvda", "US tech"],
+["googl", "meta", "US tech"],
+["amd", "intc", "US tech"],
+["nvda", "tsmc", "US tech"],
+["crm", "orcl", "US tech"],
+["aapl", "nvda", "US tech"],
+["amzn", "msft", "US tech"],
+["googl", "msft", "US tech"],
+["avgo", "nvda", "US tech"],
+["avgo", "mrvl", "US tech"],
+["intc", "tsmc", "US tech"],
+["mu", "skhynix", "US tech"],
+["amat", "lrcx", "US tech"],
+["meditek", "qcom", "US tech"],
+["arm", "qcom", "US tech"],
+["crm", "now", "US tech"],
+["pltr", "s_ai", "US tech"],
+["crwd", "panw", "US tech"],
+["meta", "snap", "US tech"],
+["amzn", "shop", "US tech"],
+["nvda", "qqq", "US tech"],
+["qqq", "xlk", "US tech"],
+["cdns", "snps", "US tech"],
+["dell", "hpq", "US tech"],
+["anet", "csco", "US tech"],
+["ftnt", "panw", "US tech"],
+["aapl", "googl", "US tech"],
+["msft", "nvda", "US tech"],
+["ionq", "rgti", "US tech"],
+["btc", "eth", "Crypto"],
+["btc", "gld", "Crypto"],
+["btc", "mstr", "Crypto"],
+["btc", "coin", "Crypto"],
+["mara", "riot", "Crypto"],
+["btc", "mara", "Crypto"],
+["coin", "mstr", "Crypto"],
+["btc", "sp500", "Crypto"],
+["btc", "nasdaq", "Crypto"],
+["mara", "mstr", "Crypto"],
+["btc", "tsla", "Crypto"],
+["btc", "nvda", "Crypto"],
+["bac", "jpm", "Financials"],
+["ma", "v", "Financials"],
+["gs", "ms", "Financials"],
+["gs", "jpm", "Financials"],
+["jpm", "wfc", "Financials"],
+["bac", "wfc", "Financials"],
+["c_us", "jpm", "Financials"],
+["pypl", "sq", "Financials"],
+["axp", "v", "Financials"],
+["axp", "ma", "Financials"],
+["pypl", "v", "Financials"],
+["axp", "cof", "Financials"],
+["hood", "schw", "Financials"],
+["coin", "hood", "Financials"],
+["hood", "sofi", "Financials"],
+["ms", "schw", "Financials"],
+["jpm", "xlf", "Financials"],
+["all", "pgr", "Financials"],
+["lloy", "natw", "Financials"],
+["hdfc", "icici", "Financials"],
+["dbs", "ocbc", "Financials"],
+["mco", "spgi", "Financials"],
+["adp", "payx", "Financials"],
+["bx", "kkr", "Financials"],
+["amzn", "wmt", "Consumer, media & telecoms"],
+["ko", "pep", "Consumer, media & telecoms"],
+["dis", "nflx", "Consumer, media & telecoms"],
+["hd", "low", "Consumer, media & telecoms"],
+["mcd", "sbux", "Consumer, media & telecoms"],
+["cost", "wmt", "Consumer, media & telecoms"],
+["tgt", "wmt", "Consumer, media & telecoms"],
+["cost", "tgt", "Consumer, media & telecoms"],
+["kr", "wmt", "Consumer, media & telecoms"],
+["dg", "dltr", "Consumer, media & telecoms"],
+["rost", "tjx", "Consumer, media & telecoms"],
+["mcd", "yum", "Consumer, media & telecoms"],
+["cmg", "mcd", "Consumer, media & telecoms"],
+["ads", "nke", "Consumer, media & telecoms"],
+["ads", "puma", "Consumer, media & telecoms"],
+["lulu", "nke", "Consumer, media & telecoms"],
+["crox", "deck", "Consumer, media & telecoms"],
+["cmcsa", "dis", "Consumer, media & telecoms"],
+["nflx", "spot", "Consumer, media & telecoms"],
+["pg", "uniluk", "Consumer, media & telecoms"],
+["mo", "pm", "Consumer, media & telecoms"],
+["sbry", "tsco", "Consumer, media & telecoms"],
+["t_us", "vz", "Consumer, media & telecoms"],
+["tmus", "vz", "Consumer, media & telecoms"],
+["lyft", "uber", "Consumer, media & telecoms"],
+["abnb", "bkng", "Consumer, media & telecoms"],
+["azo", "orly", "Consumer, media & telecoms"],
+["hlt", "mar", "Consumer, media & telecoms"],
+["czr", "mgm", "Consumer, media & telecoms"],
+["dash", "uber", "Consumer, media & telecoms"],
+["hum", "unh", "Healthcare"],
+["mrk", "pfe", "Healthcare"],
+["lly", "xlv", "Healthcare"],
+["lly", "mrk", "Healthcare"],
+["lly", "pfe", "Healthcare"],
+["abbv", "lly", "Healthcare"],
+["abbv", "jnj", "Healthcare"],
+["jnj", "pfe", "Healthcare"],
+["cvs", "unh", "Healthcare"],
+["elv", "unh", "Healthcare"],
+["bntx", "mrna", "Healthcare"],
+["mrna", "pfe", "Healthcare"],
+["bsx", "mdv", "Healthcare"],
+["abt", "mdv", "Healthcare"],
+["isrg", "mdv", "Healthcare"],
+["dhr", "tmo", "Healthcare"],
+["regn", "vrtx", "Healthcare"],
+["amgn", "gild", "Healthcare"],
+["4523", "biib", "Healthcare"],
+["spy", "xlv", "Healthcare"],
+["azn", "pfe", "Healthcare"],
+["gld", "slv", "Energy, commodities & industrials"],
+["rivn", "tsla", "Energy, commodities & industrials"],
+["cvx", "xom", "Energy, commodities & industrials"],
+["nio", "tsla", "Energy, commodities & industrials"],
+["lmt", "rtx", "Energy, commodities & industrials"],
+["ba", "lmt", "Energy, commodities & industrials"],
+["toyota", "tsla", "Energy, commodities & industrials"],
+["air", "ba", "Energy, commodities & industrials"],
+["byd", "tsla", "Energy, commodities & industrials"],
+["gld", "spy", "Energy, commodities & industrials"],
+["shel", "xom", "Energy, commodities & industrials"],
+["cop", "xom", "Energy, commodities & industrials"],
+["cvx", "oxyx", "Energy, commodities & industrials"],
+["xle", "xom", "Energy, commodities & industrials"],
+["hal", "slb", "Energy, commodities & industrials"],
+["cat", "de", "Energy, commodities & industrials"],
+["cat", "komatsu", "Energy, commodities & industrials"],
+["lmt", "noc", "Energy, commodities & industrials"],
+["bae", "rhm", "Energy, commodities & industrials"],
+["ge", "rr_uk", "Energy, commodities & industrials"],
+["bmw", "mbg", "Energy, commodities & industrials"],
+["lcid", "rivn", "Energy, commodities & industrials"],
+["nio", "xpeng", "Energy, commodities & industrials"],
+["honda", "toyota", "Energy, commodities & industrials"],
+["hyundai", "kia", "Energy, commodities & industrials"],
+["enph", "fslr", "Energy, commodities & industrials"],
+["fdx", "ups", "Energy, commodities & industrials"],
+["f", "gm", "Energy, commodities & industrials"],
+["csx", "unionpac", "Energy, commodities & industrials"],
+["mpc", "vlo", "Energy, commodities & industrials"],
+["f", "tsla", "Energy, commodities & industrials"],
+["achr", "joby", "Energy, commodities & industrials"],
+["nasdaq", "sp500", "Indices & ETFs"],
+["qqq", "spy", "Indices & ETFs"],
+["ftse100", "sp500", "Indices & ETFs"],
+["dax", "ftse100", "Indices & ETFs"],
+["nikkei", "sp500", "Indices & ETFs"],
+["iwm", "spy", "Indices & ETFs"],
+["spy", "tlt", "Indices & ETFs"],
+["xle", "xlk", "Indices & ETFs"],
+["dow", "sp500", "Indices & ETFs"],
+["dow", "nasdaq", "Indices & ETFs"],
+["russell", "sp500", "Indices & ETFs"],
+["dia", "spy", "Indices & ETFs"],
+["qqq", "voo", "Indices & ETFs"],
+["qqq", "vti", "Indices & ETFs"],
+["iwm", "qqq", "Indices & ETFs"],
+["gld", "tlt", "Indices & ETFs"],
+["hyg", "tlt", "Indices & ETFs"],
+["ftse100", "ftse250", "Indices & ETFs"],
+["dax", "sp500", "Indices & ETFs"],
+["hsi", "nikkei", "Indices & ETFs"],
+["kospi", "nikkei", "Indices & ETFs"],
+["sensex", "sp500", "Indices & ETFs"],
+["bp_uk", "shel", "UK, Europe & Asia"],
+["azn", "gsk", "UK, Europe & Asia"],
+["barc", "hsba", "UK, Europe & Asia"],
+["msft", "sap", "UK, Europe & Asia"],
+["aapl", "samsung", "UK, Europe & Asia"],
+["alibaba", "jd", "UK, Europe & Asia"],
+["samsung", "skhynix", "UK, Europe & Asia"],
+["samsung", "tsmc", "UK, Europe & Asia"],
+["nintend", "sony", "UK, Europe & Asia"],
+["alibaba", "tencent", "UK, Europe & Asia"],
+["alibaba", "pinduoduo", "UK, Europe & Asia"],
+["infosys", "tcs", "UK, Europe & Asia"],
+["bhp", "riouk", "UK, Europe & Asia"],
+["bts", "imp", "UK, Europe & Asia"],
+["eon", "rwe", "UK, Europe & Asia"]
 ]
