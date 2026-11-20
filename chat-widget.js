@@ -221,7 +221,17 @@ btn.addEventListener('click', function() {
   if (isOpen) saxClose(); else saxOpen();
 });
 
+// Text from the visitor or the model is untrusted: escape it, then keep only line breaks.
+function saxEsc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
 function saxAddMsg(role, text) {
+  return saxAddHtml(role, saxEsc(text).replace(/\n/g, '<br>'));
+}
+// Only for our own hard-coded messages (they carry a contact link). Never pass user or model text here.
+function saxAddHtml(role, html) {
   var msgsEl = document.getElementById('saxMsgs');
   var isBot = role === 'bot';
   var div = document.createElement('div');
@@ -232,7 +242,7 @@ function saxAddMsg(role, text) {
         ? '<svg width="14" height="14" viewBox="0 0 26 26" fill="none"><rect width="26" height="26" rx="5" fill="#131E30"/><polyline points="3,18 8,12 13,15 19,7" stroke="#E89318" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C97E" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
     </div>
-    <div class="sax-bubble">${text.replace(/\n/g, '<br>')}</div>`;
+    <div class="sax-bubble">${html}</div>`;
   msgsEl.appendChild(div);
   msgsEl.scrollTop = msgsEl.scrollHeight;
   return div;
@@ -305,9 +315,9 @@ window.saxSend = async function() {
 
     if (data.error) {
       if (data.error.type === 'authentication_error') {
-        saxAddMsg('bot', "I'm not quite set up yet — the API key hasn't been configured. In the meantime, you can reach the team at the <a href='/contact.html' style='color:#E89318'>contact page</a>.");
+        saxAddHtml('bot', "I'm not quite set up yet — the API key hasn't been configured. In the meantime, you can reach the team at the <a href='/contact.html' style='color:#E89318'>contact page</a>.");
       } else {
-        saxAddMsg('bot', "Something went wrong on my end. Please try again, or <a href='/contact.html' style='color:#E89318'>contact the team directly</a>.");
+        saxAddHtml('bot', "Something went wrong on my end. Please try again, or <a href='/contact.html' style='color:#E89318'>contact the team directly</a>.");
       }
     } else {
       var reply = data.content && data.content[0] ? data.content[0].text : "I didn't quite catch that — could you rephrase?";
@@ -317,7 +327,7 @@ window.saxSend = async function() {
 
   } catch (e) {
     saxRemoveTyping();
-    saxAddMsg('bot', "I can't connect right now. Please <a href='/contact.html' style='color:#E89318'>contact the team directly</a> and we'll get back to you quickly.");
+    saxAddHtml('bot', "I can't connect right now. Please <a href='/contact.html' style='color:#E89318'>contact the team directly</a> and we'll get back to you quickly.");
     console.error('TimingAX chat error:', e);
   } finally {
     isTyping = false;
