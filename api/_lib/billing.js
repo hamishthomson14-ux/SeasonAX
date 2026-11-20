@@ -40,13 +40,13 @@ export function eventAction(event) {
   }
 }
 
-// Exact, case-insensitive email match. The admin list endpoint ignores ?email= and is paginated, so walk the pages.
+// Exact, case-insensitive email match (null = no such user; throws if Supabase could not be read). The admin list endpoint ignores ?email= and is paginated, so walk the pages.
 export async function findUserByEmail(email, { url, key, fetch = globalThis.fetch }) {
   const want = String(email || '').trim().toLowerCase();
   if (!want) return null;
   for (let page = 1; page <= 50; page++) {
     const r = await fetch(`${url}/auth/v1/admin/users?page=${page}&per_page=1000`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
-    if (!r.ok) return null;
+    if (!r.ok) throw new Error(`Supabase user list failed (${r.status})`); // an outage is not "no such user"
     const users = ((await r.json()) || {}).users || [];
     const hit = users.find((u) => String(u.email || '').toLowerCase() === want);
     if (hit) return hit;

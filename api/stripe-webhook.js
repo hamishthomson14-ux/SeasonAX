@@ -64,7 +64,8 @@ function verifyStripeSignature(rawBody, sigHeader, secret) {
 // they owe on their next invoice by this amount.
 const REFERRAL_CREDIT_PENCE = 1999; // £19.99 = one month of Pro
 
-async function applyStripeCredit(secretKey, customerId, amountPence, description) {
+// idempotencyKey makes Stripe replay the first result instead of crediting again when the same reward is retried.
+async function applyStripeCredit(secretKey, customerId, amountPence, description, idempotencyKey) {
   const params = new URLSearchParams();
   params.append('amount', String(-amountPence)); // negative = credit
   params.append('currency', 'gbp');
@@ -75,6 +76,7 @@ async function applyStripeCredit(secretKey, customerId, amountPence, description
     headers: {
       Authorization: `Bearer ${secretKey}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+      ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
     },
     body: params.toString(),
   });
@@ -119,11 +121,11 @@ async function processReferralReward(supabaseUrl, supabaseServiceKey, secretKey,
   try {
     if (referredCustomerId) {
       await applyStripeCredit(secretKey, referredCustomerId, REFERRAL_CREDIT_PENCE,
-        'Referral reward: thanks for joining via a friend\u2019s link');
+        'Referral reward: thanks for joining via a friend\u2019s link', `referral-${referral.id}-referred`);
     }
     if (referrerCustomerId) {
       await applyStripeCredit(secretKey, referrerCustomerId, REFERRAL_CREDIT_PENCE,
-        'Referral reward: a friend joined TimingAX using your link');
+        'Referral reward: a friend joined TimingAX using your link', `referral-${referral.id}-referrer`);
     }
   } catch (e) {
     console.error('Referral credit error:', e.message);
@@ -131,7 +133,7 @@ async function processReferralReward(supabaseUrl, supabaseServiceKey, secretKey,
   }
 
   // Mark the referral as rewarded so this never runs twice
-  await fetch(`${supabaseUrl}/rest/v1/referrals?id=eq.${referral.id}`, {
+  const mark = await fetch(`${supabaseUrl}/rest/v1/referrals?id=eq.${referral.id}`, {
     method: 'PATCH',
     headers: { ...svcHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
     body: JSON.stringify({
@@ -140,6 +142,7 @@ async function processReferralReward(supabaseUrl, supabaseServiceKey, secretKey,
       rewarded_at: new Date().toISOString(),
     }),
   });
+  if (!mark.ok) { console.error(`Referral ${referral.id} credited but not marked rewarded:`, await mark.text()); return; }
 
   console.log(`Referral reward processed for referral ${referral.id}`);
 }
@@ -193,7 +196,9 @@ export default async function handler(req, res) {
       if (!userId) {
         let email = action.email;
         if (!email && action.customerId && secretKey) {
-          const cust = await (await fetch('https://api.stripe.com/v1/customers/' + action.customerId, { headers: { Authorization: 'Bearer ' + secretKey } })).json();
+          const cr = await fetch('https://api.stripe.com/v1/customers/' + action.customerId, { headers: { Authorization: 'Bearer ' + secretKey } });
+          if (!cr.ok) throw new Error(`Stripe customer lookup failed (${cr.status})`);
+          const cust = await cr.json();
           email = cust && cust.email;
         }
         const found = email ? await findUserByEmail(email, { url: supabaseUrl, key: supabaseServiceKey }) : null;
@@ -202,26 +207,34 @@ export default async function handler(req, res) {
       if (!userId) { console.log(`No TimingAX account for ${event.type} (${action.customerId || 'no customer'})`); }
       else {
         const ur = await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, { headers: svc });
+        if (!ur.ok && ur.status !== 404) throw new Error(`Supabase user read failed (${ur.status})`);
         const user = ur.ok ? await ur.json() : null;
         const current = user && user.app_metadata && user.app_metadata.subscription;
         if (!user) console.log(`Account ${userId} not found`);
         else if (action.status === 'free' && current === 'lifetime') console.log(`Kept lifetime for ${userId}`);
         else {
-          await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
+          const wr = await fetch(`${supabaseUrl}/auth/v1/admin/users/${userId}`, {
             method: 'PUT', headers: { ...svc, 'Content-Type': 'application/json' },
             body: JSON.stringify({ app_metadata: { subscription: action.status, stripe_customer: action.customerId || (user.app_metadata && user.app_metadata.stripe_customer) || null } }),
           });
+          if (!wr.ok) throw new Error(`Supabase update failed (${wr.status})`);
           console.log(`Updated ${userId} -> ${action.status}`);
           // Referral reward: credit both accounts once, when a referred user first becomes paying.
+          // Its failures are logged, not thrown: the account is already updated, and a retry must not re-run credits.
           if (action.status === 'pro' || action.status === 'lifetime') {
-            await processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, userId, action.customerId);
+            try { await processReferralReward(supabaseUrl, supabaseServiceKey, secretKey, userId, action.customerId); }
+            catch (e) { console.error('Referral reward error:', e.message); }
           }
         }
       }
     } catch (e) {
+      // Not acknowledged, so Stripe redelivers with backoff. Every step above is safe to repeat:
+      // the account write sets the same values, and the referral only runs after that write succeeds.
       console.error('Account update error:', e.message);
+      return res.status(500).json({ error: 'Account update failed' });
     }
   }
 
+  // Acknowledged: the change is recorded, or the event needs none (no matching account, lifetime kept, ignored type).
   return res.status(200).json({ received: true });
 }
