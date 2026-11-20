@@ -492,29 +492,27 @@ export function computeEventStudy(rows, dates) {
   return { events, summary };
 }
 
-// "This month in history": every year's return for one calendar month over the same window and rules as
-// computeMonths (last close to last close, years from now-15, moves over 95% excluded), newest first, plus the
-// biggest daily moves inside that month from daily closes. month is 0-11.
+// "This month in history": every year's return for one calendar month over exactly the window and rules behind the
+// published average (selectMonths: the last `span` COMPLETED occurrences, last close to last close, moves over 95%
+// skipped so an older year takes their place), newest first, plus the biggest daily moves inside that month from
+// daily closes. This year's month in progress is listed on top, flagged partial. month is 0-11.
 export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new Date(), years: span = 15 } = {}) {
-  const from = now.getUTCFullYear() - span, r2 = (v) => Math.round(v * 100) / 100;
-  const years = [];
-  for (let i = 1; i < monthlyRows.length; i++) {
-    const prev = monthlyRows[i - 1], cur = monthlyRows[i];
-    const yr = +cur.d.slice(0, 4), mo = +cur.d.slice(5, 7) - 1;
-    if (mo !== month || yr < from || !isFinite(prev.c) || prev.c <= 0) continue;
-    const ret = ((cur.c - prev.c) / prev.c) * 100;
-    if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    years.push({ year: yr, raw: ret, partial: yr === now.getUTCFullYear() && month === now.getUTCMonth() });
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const years = selectMonths(monthlyRows, span, now)[month].map((x) => ({ year: +x.ym.slice(0, 4), raw: x.ret, partial: false }));
+  const curYM = now.toISOString().slice(0, 7), last = monthlyRows.length - 1;
+  if (month === now.getUTCMonth() && last >= 1 && monthlyRows[last].d.slice(0, 7) === curYM) {
+    const prev = monthlyRows[last - 1].c, ret = ((monthlyRows[last].c - prev) / prev) * 100;
+    if (isFinite(prev) && prev > 0 && isFinite(ret) && Math.abs(ret) <= 95) years.unshift({ year: now.getUTCFullYear(), raw: ret, partial: true });
   }
-  years.sort((a, b) => b.year - a.year);
   // The summary counts completed months only: a month in progress is not a rise, a fall or a best/worst year yet
   // (it is still listed in years, flagged partial, and reported apart as soFar).
   const done = years.filter((y) => !y.partial), cur = years.find((y) => y.partial);
   if (!done.length) return null;
+  const from = Math.min(...done.map((y) => y.year));
   // Compared at the shown precision; on a tie the most recent year (years are newest first) is named.
   const best = done.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = done.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
   const summary = { n: done.length, up: done.filter((y) => y.raw > 0).length, avg: +(done.reduce((s, y) => s + y.raw, 0) / done.length).toFixed(2),
-    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from: Math.min(...done.map((y) => y.year)), to: done[0].year,
+    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from, to: done[0].year,
     soFar: cur ? { year: cur.year, ret: r2(cur.raw) } : null };
   const moves = [];
   for (let i = 1; i < (dailyRows || []).length; i++) {
