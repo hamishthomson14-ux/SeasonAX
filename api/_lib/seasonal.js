@@ -55,18 +55,15 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date
 // shorter windows for assets that don't have that much history yet (e.g.
 // a stock that IPO'd 4 years ago can never satisfy a 15yr/5-obs check, but
 // genuinely has real data). minObs scales down with the window. Returns
-// {months, years} where `years` reflects the asset's actual data span
-// (not just the cutoff window), or null if even a 2yr window fails.
+// {months, years, window} where `years` is the most completed years behind any month's average (not the calendar-year
+// span, which would count a partial listing year and the current year), or null if even a 2yr window fails.
 export function computeAdaptiveMonths(rows, yearsWanted = 15, now = new Date()) {
   const base = yearsWanted || 15;
   const candidates = [base, 10, 7, 5, 3, 2].filter((y, i, arr) => y <= base && arr.indexOf(y) === i);
-  const firstYear = rows.length ? new Date(rows[0].d).getFullYear() : null;
-  const lastYear = rows.length ? new Date(rows[rows.length - 1].d).getFullYear() : null;
-  const actualYears = (firstYear && lastYear) ? Math.max(1, lastYear - firstYear + 1) : base;
   for (const y of candidates) {
     const minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
     const months = computeMonths(rows, y, minObs, now);
-    if (months) return { months, years: Math.min(y, actualYears), window: y };
+    if (months) return { months, years: Math.max(...months.map((m) => m.n)), window: y };
   }
   return null;
 }
