@@ -164,6 +164,8 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
 
 /* Links */
 .r-link{font:500 13px/1 var(--sans);color:var(--amber2);cursor:pointer;transition:color .15s}
+button.r-link{background:none;border:0;padding:0;margin:0;-webkit-appearance:none;appearance:none}
+.r-link:focus-visible{outline:2px solid var(--tx-amber-2);outline-offset:2px;border-radius:4px}
 .r-link:hover{color:var(--amber)}
 .r-small{font:400 11px/1 var(--mono);color:var(--w5);text-align:center;margin-top:18px}
 .r-small a{color:var(--w4);transition:color .15s}
@@ -279,7 +281,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
         <div class="r-hint" id="si_pw_hint"></div>
       </div>
       <div class="r-forgot">
-        <span class="r-link" onclick="showForgot()">Forgot password?</span>
+        <button type="button" class="r-link" onclick="showForgot()">Forgot password?</button>
       </div>
       <button class="r-btn" id="si_btn" onclick="signIn()">
         <span id="si_btn_txt">Sign in</span>
@@ -288,7 +290,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       <div class="r-div">or</div>
       <div style="text-align:center">
         <span style="font-size:14px;color:var(--w3)">Don&apos;t have an account? </span>
-        <span class="r-link" onclick="showTab('up')">Create one free</span>
+        <button type="button" class="r-link" onclick="showTab('up')">Create one free</button>
       </div>
     </div>
 
@@ -323,7 +325,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       <div class="r-div">or</div>
       <div style="text-align:center">
         <span style="font-size:14px;color:var(--w3)">Already have an account? </span>
-        <span class="r-link" onclick="showTab('in')">Sign in</span>
+        <button type="button" class="r-link" onclick="showTab('in')">Sign in</button>
       </div>
     </div>
 
@@ -343,7 +345,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
       </button>
       <div class="r-div">or</div>
       <div style="text-align:center">
-        <span class="r-link" onclick="showTab('in')">Back to sign in</span>
+        <button type="button" class="r-link" onclick="showTab('in')">Back to sign in</button>
       </div>
     </div>
 
@@ -387,7 +389,7 @@ body{background:var(--bg);color:var(--w);font-family:var(--sans);min-height:100v
         </div>
         <div class="r-success-h">Reset link sent</div>
         <p class="r-success-p">Check your inbox for a password reset link. It will expire in 1 hour.</p>
-        <div style="margin-top:20px"><span class="r-link" onclick="showTab('in')">Back to sign in</span></div>
+        <div style="margin-top:20px"><button type="button" class="r-link" onclick="showTab('in')">Back to sign in</button></div>
       </div>
     </div>
 
