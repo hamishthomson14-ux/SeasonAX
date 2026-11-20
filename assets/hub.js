@@ -93,8 +93,8 @@
         box.dataset.key = String(m);
         var out = $('hubMonthBody');
         if (!d) { $('hubMonthSummary').textContent = 'No real price history for this month.'; out.innerHTML = ''; box.dataset.state = 'error'; return; }
-        var s = d.summary, last = d.years[0];
-        $('hubMonthSummary').textContent = name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + MO[m] + 's (' + s.from + '–' + last.year + (last.partial ? ', counting this ' + MO[m] + ' so far' : '') + '), averaging ' + pct(s.avg) + '. Best: ' + s.best.year + ' ' + pct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + pct(s.worst.ret) + '.';
+        var s = d.summary;
+        $('hubMonthSummary').textContent = name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + MO[m] + 's (' + s.from + '–' + s.to + '), averaging ' + pct(s.avg) + '. Best: ' + s.best.year + ' ' + pct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + pct(s.worst.ret) + '.' + (s.soFar ? ' ' + MO[m] + ' ' + s.soFar.year + ' so far: ' + pct(s.soFar.ret) + '.' : '');
         var mx = Math.max.apply(null, d.years.map(function (y) { return Math.abs(y.ret); }).concat([0.01]));
         var days = d.days.up.concat(d.days.down), mxd = Math.max.apply(null, days.map(function (x) { return Math.abs(x.ret); }).concat([0.01]));
         out.innerHTML = '<div class="hub-col"><h3 class="tx-label">Every ' + MO[m] + '</h3>' +

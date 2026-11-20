@@ -945,11 +945,11 @@ async function monthHandler(req, res) {
   if (!real || !h) return notAvailable(res, { title: `${item.name}: no verified price history`, eyebrow: 'Seasonality',
     msg: `There is no verified price history for ${item.name} (${dispTicker(item)}), and we only show figures computed from real prices.`, cta: ['/seasonality.html', 'Browse assets with real data'] });
 
-  const M = MONTH_NAMES[mi], m = M.toLowerCase(), dt = dispTicker(item), s = h.summary, last = h.years[0];
+  const M = MONTH_NAMES[mi], m = M.toLowerCase(), dt = dispTicker(item), s = h.summary;
   const label = item.name + (dt !== item.name ? ` (${dt})` : '');
   const url = `https://www.timingax.co.uk/seasonality/${id}/${m}`;
   const title = `${label} in ${M}: every year since ${s.from} | TimingAX`;
-  const summary = `${item.name} rose in ${s.up} of the last ${s.n} ${M}s (${s.from}–${last.year}${last.partial ? `, counting this ${M} so far` : ''}), averaging ${dpct(s.avg)}. Best: ${s.best.year} ${dpct(s.best.ret)}. Worst: ${s.worst.year} ${dpct(s.worst.ret)}.`;
+  const summary = `${item.name} rose in ${s.up} of the last ${s.n} ${M}s (${s.from}–${s.to}), averaging ${dpct(s.avg)}. Best: ${s.best.year} ${dpct(s.best.ret)}. Worst: ${s.worst.year} ${dpct(s.worst.ret)}.${s.soFar ? ` ${M} ${s.soFar.year} so far: ${dpct(s.soFar.ret)}.` : ''}`;
   const desc = `${summary} From real closing prices.`;
   const order = real.months.map((x, i) => ({ i, a: x.avg })).sort((x, y) => y.a - x.a).map((x) => x.i);
   const rank = order.indexOf(mi) + 1, ord = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
