@@ -4022,7 +4022,8 @@
     "sector": "Streaming Devices",
     "region": "US",
     "pattern": "speculative",
-    "catSection": "US Technology"
+    "catSection": "US Technology",
+    "noHistory": true
   },
   {
     "id": "cmcsa",

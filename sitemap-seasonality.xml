@@ -2605,12 +2605,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.timingax.co.uk/seasonality/roku</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.timingax.co.uk/seasonality/cmcsa</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
