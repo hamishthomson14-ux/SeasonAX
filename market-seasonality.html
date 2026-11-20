@@ -126,6 +126,8 @@ button{cursor:pointer;font-family:var(--sans)}
 .browser{margin-bottom:8px}
 .section-block{margin-bottom:6px}
 .sec-header{display:flex;align-items:center;gap:10px;padding:10px 0 8px;cursor:pointer;user-select:none;border-bottom:1px solid var(--b1);margin-bottom:0}
+button.sec-header{width:100%;margin:0;background:none;border-width:0 0 1px;border-radius:0;color:inherit;font:inherit;text-align:left;-webkit-appearance:none;appearance:none}
+.sec-header>span{display:block}
 .sec-header:hover .sec-title{color:var(--amber2)}
 .sec-title{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--amber2);text-transform:uppercase;flex:1;transition:color .15s}
 .sec-count{font:400 10px/1 var(--mono);color:var(--w5)}
@@ -137,6 +139,11 @@ button{cursor:pointer;font-family:var(--sans)}
 /* Asset grid */
 .asset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;padding:10px 0}
 .asset-card{background:var(--bg2);border:1px solid var(--b2);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+button.asset-card{display:flex;flex-direction:column;justify-content:flex-start;width:100%;margin:0;color:inherit;font:inherit;text-align:left;-webkit-appearance:none;appearance:none}
+.asset-card>span{display:block}
+/* Keyboard focus: inset so the section's overflow clip never hides it */
+.asset-card:focus-visible,.sec-header:focus-visible{outline:2px solid var(--tx-amber-2);outline-offset:-2px;border-radius:8px}
+.sec-header:focus-visible{border-radius:4px}
 .asset-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .2s}
 .asset-card:hover{background:var(--s1);border-color:var(--b3);transform:translateY(-1px)}
 .asset-card:hover::before{background:var(--amber2)}
@@ -310,6 +317,10 @@ button{cursor:pointer;font-family:var(--sans)}
 .wc-box .wc-sub{font:400 14px/1.6 var(--sans);color:var(--w3,#8F887A);margin:0 0 28px}
 .wc-starters{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
 .wc-start{flex:1 1 140px;min-width:140px;background:var(--bg3,#0A0908);border:1px solid var(--b2,rgba(232,147,24,.32));border-radius:12px;padding:18px 14px;cursor:pointer;transition:all .16s;text-align:center}
+button.wc-start{display:flex;flex-direction:column;justify-content:flex-start;align-items:center;margin:0;color:inherit;font:inherit;-webkit-appearance:none;appearance:none}
+.wc-start>span{display:block}
+.wc-start:focus-visible,.wc-skip:focus-visible{outline:2px solid var(--tx-amber-2);outline-offset:2px}
+.wc-skip:focus-visible{border-radius:4px}
 .wc-start:hover{border-color:var(--amber,#E89318);background:rgba(232,147,24,.06);transform:translateY(-2px)}
 .wc-start .wcs-tk{font:700 18px/1 var(--disp-serif);color:var(--w,#F4EFE6);margin-bottom:5px}
 .wc-start .wcs-nm{font:400 11px/1.3 var(--mono,monospace);color:var(--w4,#8F887A)}
@@ -1031,17 +1042,17 @@ body.is-pro .mt-lock{display:none}
 </div>
 
 <!-- PAYWALL -->
-<div class="wc-overlay" id="wcOverlay">
+<div class="wc-overlay" id="wcOverlay" role="dialog" aria-modal="true" aria-labelledby="wcTitle">
   <div class="wc-box">
     <div class="wc-eyebrow">Welcome to TimingAX</div>
-    <h2>Every market has a calendar.<br><em>Here&rsquo;s how to read yours.</em></h2>
+    <h2 id="wcTitle">Every market has a calendar.<br><em>Here&rsquo;s how to read yours.</em></h2>
     <div class="wc-sub">Pick one to see its full 15-year seasonal pattern &mdash; the months that have historically been strong, the months that have been weak, and how often.</div>
     <div class="wc-starters">
-      <div class="wc-start" onclick="wcStart('sp500')"><div class="wcs-tk">S&amp;P 500</div><div class="wcs-nm">The US market</div></div>
-      <div class="wc-start" onclick="wcStart('gld')"><div class="wcs-tk">Gold</div><div class="wcs-nm">The classic haven</div></div>
-      <div class="wc-start" onclick="wcStart('tsla')"><div class="wcs-tk">Tesla</div><div class="wcs-nm">A retail favourite</div></div>
+      <button type="button" class="wc-start" onclick="wcStart('sp500')"><span class="wcs-tk">S&amp;P 500</span><span class="wcs-nm">The US market</span></button>
+      <button type="button" class="wc-start" onclick="wcStart('gld')"><span class="wcs-tk">Gold</span><span class="wcs-nm">The classic haven</span></button>
+      <button type="button" class="wc-start" onclick="wcStart('tsla')"><span class="wcs-tk">Tesla</span><span class="wcs-nm">A retail favourite</span></button>
     </div>
-    <button class="wc-skip" onclick="wcDismiss()">or explore on my own</button>
+    <button type="button" class="wc-skip" onclick="wcDismiss()">or explore on my own</button>
   </div>
 </div>
 <div class="usage-nudge" id="usageNudge">
@@ -2023,19 +2034,19 @@ function buildBrowser(q, regionFilter, sectorFilter) {
     var cards = '';
     group.items.forEach(function(item) {
       var locked = (!isPro() && !isFreeAsset(item.id)) ? ' locked' : '';
-      cards += '<div class="asset-card' + (item.id === selectedId ? ' selected' : '') + locked +
+      cards += '<button type="button" class="asset-card' + (item.id === selectedId ? ' selected' : '') + locked +
         '" onclick="selectAsset(\'' + item.id + '\')" id="ac_' + item.id + '">' +
-        '<div class="ac-ticker">' + (item.ticker || '') + '</div>' +
-        '<div class="ac-name">' + (item.name || '') + '</div>' +
-        '<div class="ac-sector">' + (item.sector || '') + '</div>' +
-        '</div>';
+        '<span class="ac-ticker">' + (item.ticker || '') + '</span>' +
+        '<span class="ac-name">' + (item.name || '') + '</span>' +
+        '<span class="ac-sector">' + (item.sector || '') + '</span>' +
+        '</button>';
     });
     html += '<div class="section-block">' +
-      '<div class="sec-header" onclick="toggleSec(\'' + key + '\')">' +
-        '<div class="sec-title">' + badge + group.section + '</div>' +
-        '<div class="sec-count">' + group.items.length + '</div>' +
-        '<div class="sec-chevron">&#9660;</div>' +
-      '</div>' +
+      '<button type="button" class="sec-header" aria-expanded="true" aria-controls="sb_' + key + '" onclick="toggleSec(\'' + key + '\')">' +
+        '<span class="sec-title">' + badge + group.section + '</span>' +
+        '<span class="sec-count">' + group.items.length + '</span>' +
+        '<span class="sec-chevron" aria-hidden="true">&#9660;</span>' +
+      '</button>' +
       '<div class="sec-body" id="sb_' + key + '" style="max-height:2000px">' +
         '<div class="asset-grid">' + cards + '</div>' +
       '</div>' +
@@ -2050,12 +2061,14 @@ function toggleSec(key) {
   var hdr = body.previousElementSibling;
   if (body.classList.contains('collapsed')) {
     body.classList.remove('collapsed');
+    body.inert = false;
     body.style.maxHeight = '2000px';
-    if (hdr) hdr.classList.remove('collapsed');
+    if (hdr) { hdr.classList.remove('collapsed'); hdr.setAttribute('aria-expanded', 'true'); }
   } else {
     body.classList.add('collapsed');
+    body.inert = true; // hidden cards leave the Tab order and the accessibility tree
     body.style.maxHeight = '0';
-    if (hdr) hdr.classList.add('collapsed');
+    if (hdr) { hdr.classList.add('collapsed'); hdr.setAttribute('aria-expanded', 'false'); }
   }
 }
 
@@ -3180,13 +3193,33 @@ var WC_KEY = 'sx_seen_welcome_v1';
 function maybeShowWelcome(){
   try { if(localStorage.getItem(WC_KEY)) return; } catch(e){ return; }
   var ov = document.getElementById('wcOverlay');
-  if(ov) ov.classList.add('show');
+  if(!ov) return;
+  wcReturnFocus = document.activeElement;
+  ov.classList.add('show');
+  var first = ov.querySelector('.wc-start');
+  if(first) first.focus();
 }
+var wcReturnFocus = null;
 function wcDismiss(){
   var ov = document.getElementById('wcOverlay');
+  var wasOpen = ov && ov.classList.contains('show');
   if(ov) ov.classList.remove('show');
   try { localStorage.setItem(WC_KEY, '1'); } catch(e){}
+  if(wasOpen && wcReturnFocus && wcReturnFocus !== document.body && document.contains(wcReturnFocus)) wcReturnFocus.focus();
+  wcReturnFocus = null;
 }
+// Keyboard: Escape closes the welcome dialog; Tab and Shift+Tab stay inside it while it is open.
+document.addEventListener('keydown', function(e){
+  var ov = document.getElementById('wcOverlay');
+  if(!ov || !ov.classList.contains('show')) return;
+  if(e.key === 'Escape'){ e.preventDefault(); wcDismiss(); return; }
+  if(e.key !== 'Tab') return;
+  var f = ov.querySelectorAll('button');
+  if(!f.length) return;
+  var first = f[0], last = f[f.length - 1], inside = ov.contains(document.activeElement);
+  if(e.shiftKey && (!inside || document.activeElement === first)){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && (!inside || document.activeElement === last)){ e.preventDefault(); first.focus(); }
+});
 function wcStart(id){
   wcDismiss();
   switchMode('analyzer');
