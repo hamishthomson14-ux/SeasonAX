@@ -229,13 +229,13 @@ export function computeProjection(rows, { today = new Date(), days = 90, years =
   const paths = [];
   for (let y = y1 - years; y < y1; y++) {
     const start = Date.UTC(y, m, d), end = start + days * DAY;
-    if (end > last.t) continue;                                   // window not complete in the data
+    if (last.t < end) continue;                                   // window not complete: no bar on or after day d+days
     let i = rows.findIndex((r) => r.t >= start);
     if (i < 0 || rows[i].t - start > MAX_GAP || i === 0 && rows[0].t > start) continue; // before history / gap
     const p0 = rows[i].c, path = [];
     for (let k = 0; k <= days; k++) {
-      const t = start + k * DAY;
-      while (i + 1 < rows.length && rows[i + 1].t <= t) i++;
+      const dayEnd = start + (k + 1) * DAY;                       // path[k]: the last close ON or before calendar day d+k,
+      while (i + 1 < rows.length && rows[i + 1].t < dayEnd) i++;  // whatever time of day the bars are stamped
       path.push((rows[i].c / p0 - 1) * 100);
     }
     paths.push({ year: y, path });
