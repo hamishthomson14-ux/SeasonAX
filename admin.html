@@ -647,15 +647,23 @@ function renderUsers(users) {
     var e = esc(u.email);
     var acts = '<div class="uact">' +
       (isPro
-        ? '<button class="revoke" onclick="askRevoke(\'' + e + '\')">Revoke</button>'
-        : '<button class="grant" onclick="askGrant(\'' + e + '\')">Grant Pro</button>') +
-      '<button class="reset" onclick="askReset(\'' + e + '\')">Reset PW</button>' +
-      '<button class="del" onclick="askDelete(\'' + e + '\')">Delete</button>' +
+        ? '<button class="revoke" data-act="revoke" data-email="' + e + '">Revoke</button>'
+        : '<button class="grant" data-act="grant" data-email="' + e + '">Grant Pro</button>') +
+      '<button class="reset" data-act="reset" data-email="' + e + '">Reset PW</button>' +
+      '<button class="del" data-act="delete" data-email="' + e + '">Delete</button>' +
       '</div>';
     return '<tr><td>' + e + '</td><td>' + planTag(u.subscription) + '</td><td>' +
       fmtDate(u.created_at) + '</td><td>' + fmtDate(u.last_sign_in_at) + '</td><td>' + acts + '</td></tr>';
   }).join('');
 }
+
+// One delegated listener: the email travels in a data attribute (HTML-escaped), never inside a JS string.
+var USER_ACTIONS = { grant: askGrant, revoke: askRevoke, reset: askReset, 'delete': askDelete };
+document.getElementById('usersBody').addEventListener('click', function(ev) {
+  var b = ev.target.closest('button[data-act]');
+  if (!b || !USER_ACTIONS[b.dataset.act]) return;
+  USER_ACTIONS[b.dataset.act](b.dataset.email);
+});
 
 // ── Action-password modal ───────────────────────────────────
 var pendingAction = null;
