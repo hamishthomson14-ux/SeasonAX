@@ -283,8 +283,8 @@ export function isoWeek(t) {
 }
 function isoYear(t) { const d = new Date(t), day = (d.getUTCDay() + 6) % 7; return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3)).getUTCFullYear(); }
 
-// Over the last `years` years of daily closes: average return + win rate for each ISO week of the year
-// (week 53 folded into 52), and the turn-of-month window (last trading day + first 3 of the next month)
+// Over the last `years` years of daily closes: average return + win rate for each completed ISO week 1-52 of the year
+// (week 53 left out), and the turn-of-month window (last trading day + first 3 of the next month)
 // against the typical 4-day stretch on other days. null when under 5 years of data.
 export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
   if (!rows || rows.length < 2) return null;
@@ -300,8 +300,14 @@ export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
   // Weekly: last close of each ISO week vs the previous week's last close.
   const weekLast = [];
   for (const r of R) { const k = isoYear(r.t) * 100 + isoWeek(r.t); if (weekLast.length && weekLast[weekLast.length - 1].k === k) weekLast[weekLast.length - 1].c = r.c; else weekLast.push({ k, w: isoWeek(r.t), c: r.c, t: r.t }); }
+  // Completed weeks only (the ISO week containing `today` is still in progress, like the month in progress), and week 53
+  // (53-week ISO years only) is left out rather than merged into week 52, so each week holds one return per year.
+  const thisWeek = isoYear(today.getTime()) * 100 + isoWeek(today.getTime());
   const byWeek = Array.from({ length: 52 }, () => []);
-  for (let i = 1; i < weekLast.length; i++) if (weekLast[i].t >= cutoff) byWeek[Math.min(weekLast[i].w, 52) - 1].push((weekLast[i].c / weekLast[i - 1].c - 1) * 100);
+  for (let i = 1; i < weekLast.length; i++) {
+    const wl = weekLast[i];
+    if (wl.t >= cutoff && wl.k < thisWeek && wl.w <= 52) byWeek[wl.w - 1].push((wl.c / weekLast[i - 1].c - 1) * 100);
+  }
   const weeks = byWeek.map((a, i) => ({ week: i + 1, ...stat(a) }));
   const ranked = weeks.filter((w) => w.obs >= 5).sort((a, b) => b.avg - a.avg);
 
