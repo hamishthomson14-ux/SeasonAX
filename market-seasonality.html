@@ -3358,7 +3358,7 @@ var MODE_HERO = {
   analyzer: ['Pick any market. <em>See its calendar.</em>', 'Seasonal patterns across 700+ stocks, ETFs, indices and crypto \u2014 US, UK, Germany and Asia. Click any asset to reveal its monthly data.'],
   backtest: ['Test any window. <em>On real prices.</em>', 'Build a seasonal entry and exit strategy, then see how it would have performed \u2014 total return, win rate and equity curve versus buy and hold.'],
   events:   ['When history repeats, <em>know the record.</em>', 'Fed rate cuts and hikes, US elections and Bitcoin halvings \u2014 official dates, real prices, and how markets actually moved before and after each one.'],
-  screener: ['Right now. <em>Ranked.</em>', 'Every asset scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
+  screener: ['Right now. <em>Ranked.</em>', '24 major markets scored for the current month \u2014 who history says is entering strength, and who is walking into weakness.'],
   watchlist: ['Your assets. <em>One seasonal dashboard.</em>', 'Track up to 10 holdings and see exactly when each one enters its historically strong \u2014 and weak \u2014 windows.'],
   month: ['This month, <em>in market history.</em>', 'Every year\u2019s result for this calendar month, its biggest days and the Fed decisions that landed in it \u2014 from real prices and the Federal Reserve\u2019s own record.'],
   pairs: ['Seasonal correlations. <em>Decoded.</em>', 'Compare any two assets\u2019 yearly rhythms \u2014 find pairs that move together, and pairs that hedge each other\u2019s weak months.'],
@@ -3713,7 +3713,7 @@ function applyScreenerPreviewGate(){
     cta.className = 'sc-preview-cta';
     cta.innerHTML =
       '<h4>' + blurred + ' more ranked below</h4>' +
-      '<p>You can see the top 3. Pro reveals the full ranking across 700+ assets \u2014 plus Backtest, Watchlist and every tool.</p>' +
+      '<p>You can see the top 3. Pro reveals the full ranking of all ' + SC_UNIVERSE.length + ' markets \u2014 plus Backtest, Watchlist and every tool.</p>' +
       '<button class="scp-btn" onclick="pwScreenerUpgrade(this)">Reveal full ranking \u2014 free 7-day trial</button>' +
       '<div class="scp-sub">\u00a319.99/mo after trial \u00b7 cancel anytime</div>';
     col.parentNode.appendChild(cta);
