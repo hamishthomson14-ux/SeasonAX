@@ -136,3 +136,11 @@ export async function GET(req) {
     IMG_OPTS
   );
 }
+
+// HEAD: same status and headers as GET, no body. Link-preview fetchers check og:image this way; exporting only GET
+// made Vercel answer HEAD with 405, so the share image looked broken to them.
+export async function HEAD(req) {
+  const r = await GET(req);
+  if (r.body) await r.body.cancel().catch(() => {});
+  return new Response(null, { status: r.status, headers: r.headers });
+}

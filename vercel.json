@@ -10,6 +10,41 @@
       "source": "/seasonality/",
       "destination": "/seasonality.html",
       "permanent": true
+    },
+    {
+      "source": "/seasonality/:id/",
+      "destination": "/seasonality/:id",
+      "permanent": true
+    },
+    {
+      "source": "/seasonality/:id/:month/",
+      "destination": "/seasonality/:id/:month",
+      "permanent": true
+    },
+    {
+      "source": "/compare/:pair/",
+      "destination": "/compare/:pair",
+      "permanent": true
+    },
+    {
+      "source": "/:section(blog|academy)/:slug([a-z0-9-]+)",
+      "destination": "/:section/:slug.html",
+      "permanent": true
+    },
+    {
+      "source": "/:section(blog|academy)/:slug([a-z0-9-]+)/",
+      "destination": "/:section/:slug.html",
+      "permanent": true
+    },
+    {
+      "source": "/:page([a-z0-9-]+)",
+      "destination": "/:page.html",
+      "permanent": true
+    },
+    {
+      "source": "/:page([a-z0-9-]+)/",
+      "destination": "/:page.html",
+      "permanent": true
     }
   ],
   "rewrites": [
