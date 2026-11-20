@@ -208,8 +208,11 @@ export default async function handler(req, res) {
   const cur = months[cm];
   const years = source === 'real' ? realYears : null;
 
-  const title = `${dispTicker(item)} Seasonality: ${MONTH_NAMES[best.i]} vs ${MONTH_NAMES[worst.i]} | TimingAX`;
   const tickerSuffix = dispTicker(item) !== item.name ? ` (${dispTicker(item)})` : '';
+  // Name and ticker, as on the month pages (people search for "SoftBank", not "9984.T"); drop the months past ~60 chars.
+  const assetLabel = item.name + tickerSuffix;
+  const fullTitle = `${assetLabel} Seasonality: ${MONTH_NAMES[best.i]} vs ${MONTH_NAMES[worst.i]} | TimingAX`;
+  const title = fullTitle.length <= 60 ? fullTitle : `${assetLabel} Seasonality | TimingAX`;
   const desc = `${item.name}${tickerSuffix} seasonal performance${years ? ' over ' + years + ' years' : ''}: averages ${pct(best.avg)} in ${MONTH_NAMES[best.i]} (${best.win}% win rate) and ${pct(worst.avg)} in ${MONTH_NAMES[worst.i]}. Free seasonal chart on TimingAX.`;
   const url = `https://www.timingax.co.uk/seasonality/${id}`;
   const badge = source === 'real'
@@ -248,7 +251,7 @@ export default async function handler(req, res) {
     {
       '@context': 'https://schema.org',
       '@type': 'Dataset',
-      'name': `${dt} Monthly Seasonality Data`,
+      'name': `${assetLabel} Monthly Seasonality Data`,
       'description': desc,
       'url': url,
       'keywords': [`${item.name} seasonality`, `${dt} seasonal pattern`, `${item.name} best month`, `${item.name} monthly returns`],
@@ -278,7 +281,7 @@ export default async function handler(req, res) {
       '@type': 'BreadcrumbList',
       'itemListElement': [
         { '@type': 'ListItem', 'position': 1, 'name': 'Seasonality', 'item': 'https://www.timingax.co.uk/market-seasonality.html' },
-        { '@type': 'ListItem', 'position': 2, 'name': `${dt} Seasonality`, 'item': url }
+        { '@type': 'ListItem', 'position': 2, 'name': `${assetLabel} Seasonality`, 'item': url }
       ]
     }
   ];
