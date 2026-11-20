@@ -2061,10 +2061,12 @@ function toggleSec(key) {
   var hdr = body.previousElementSibling;
   if (body.classList.contains('collapsed')) {
     body.classList.remove('collapsed');
+    body.inert = false;
     body.style.maxHeight = '2000px';
     if (hdr) { hdr.classList.remove('collapsed'); hdr.setAttribute('aria-expanded', 'true'); }
   } else {
     body.classList.add('collapsed');
+    body.inert = true; // hidden cards leave the Tab order and the accessibility tree
     body.style.maxHeight = '0';
     if (hdr) { hdr.classList.add('collapsed'); hdr.setAttribute('aria-expanded', 'false'); }
   }
