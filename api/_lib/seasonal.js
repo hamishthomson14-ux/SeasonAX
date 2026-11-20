@@ -171,6 +171,22 @@ async function yahooChart(sym, query) {
   throw new UpstreamError('price provider unavailable for ' + sym + ' (' + why + ')');
 }
 
+// Each bar's trading date ON THE EXCHANGE's calendar ('YYYY-MM-DD'). Yahoo stamps a daily bar at the session open in
+// UTC: the ASX opens at 10:00 Sydney, which is 23:00 UTC the day before from October to April, so the UTC date files a
+// session under the previous day (and the 1st of a month under the previous month). Uses meta.exchangeTimezoneName
+// (daylight saving included), then meta.gmtoffset, then UTC (crypto, and payloads without meta). Same rule for every asset.
+function localDater(meta) {
+  const tz = meta && meta.exchangeTimezoneName;
+  if (tz) {
+    try {
+      const f = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' });
+      return (sec) => f.format(sec * 1000);
+    } catch (e) { /* unknown zone: fall through to the offset */ }
+  }
+  const off = meta && isFinite(meta.gmtoffset) ? +meta.gmtoffset : 0;
+  return (sec) => new Date((sec + off) * 1000).toISOString().slice(0, 10);
+}
+
 // range: Yahoo accepts '<N>y' with daily bars (range=max silently drops to quarterly bars, so it is never used).
 // null: the provider answered and has no usable series for this symbol. UpstreamError: it did not answer.
 export async function fetchMonthly(sym, range = '20y') {
@@ -178,13 +194,13 @@ export async function fetchMonthly(sym, range = '20y') {
   if (!result) return null;
   const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
   const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-  // Roll daily closes up to one observation per calendar month (last close in each UTC month). Avoids Yahoo's 1mo
-  // boundary drift that skips/dups months for non-US exchanges (e.g. .L listings missing October).
-  const byYM = new Map();
+  // Roll daily closes up to one observation per calendar month (last close in each month of the exchange's local
+  // calendar). Avoids Yahoo's 1mo boundary drift that skips/dups months for non-US exchanges (e.g. .L listings missing October).
+  const byYM = new Map(), dateOf = localDater(result.meta);
   for (let i = 0; i < result.timestamp.length; i++) {
     const c = closes[i];
     if (c == null || !isFinite(c)) continue;
-    byYM.set(new Date(result.timestamp[i] * 1000).toISOString().slice(0, 7), c);
+    byYM.set(dateOf(result.timestamp[i]).slice(0, 7), c);
   }
   const rows = Array.from(byYM.entries()).map(([ym, c]) => ({ d: ym + '-01', c })).sort((a, b) => a.d < b.d ? -1 : 1);
   return rows.length < 24 ? null : rows;
@@ -204,16 +220,20 @@ export function bestWorst(months) {
 }
 
 // ── Seasonal projection ─────────────────────────────────────────────────────
-// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t: msUTC, c }].
+// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t, c }], where t is the exchange-local
+// trading date at 00:00 UTC, so every getUTC*/toISOString() on it reads the exchange's own calendar date. One row per
+// date: Yahoo repeats today's bar at the live quote time, and the later one wins.
 export async function fetchDaily(sym) {
   const result = await yahooChart(sym, 'range=20y&interval=1d');
   if (!result) return null;
   const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
   const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-  const rows = [];
+  const rows = [], dateOf = localDater(result.meta);
   for (let i = 0; i < result.timestamp.length; i++) {
     const c = closes[i];
-    if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
+    if (c == null || !isFinite(c) || c <= 0) continue;
+    const t = Date.parse(dateOf(result.timestamp[i]) + 'T00:00:00Z');
+    if (rows.length && rows[rows.length - 1].t === t) rows[rows.length - 1].c = c; else rows.push({ t, c });
   }
   return rows.length ? rows : null;
 }
