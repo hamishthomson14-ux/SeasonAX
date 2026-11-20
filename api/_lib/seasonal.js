@@ -489,12 +489,16 @@ export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new D
     if (!isFinite(ret) || Math.abs(ret) > 95) continue;
     years.push({ year: yr, raw: ret, partial: yr === now.getUTCFullYear() && month === now.getUTCMonth() });
   }
-  if (!years.length) return null;
   years.sort((a, b) => b.year - a.year);
+  // The summary counts completed months only: a month in progress is not a rise, a fall or a best/worst year yet
+  // (it is still listed in years, flagged partial, and reported apart as soFar).
+  const done = years.filter((y) => !y.partial), cur = years.find((y) => y.partial);
+  if (!done.length) return null;
   // Compared at the shown precision; on a tie the most recent year (years are newest first) is named.
-  const best = years.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = years.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
-  const summary = { n: years.length, up: years.filter((y) => y.raw > 0).length, avg: +(years.reduce((s, y) => s + y.raw, 0) / years.length).toFixed(2),
-    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from: Math.min(...years.map((y) => y.year)) };
+  const best = done.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = done.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
+  const summary = { n: done.length, up: done.filter((y) => y.raw > 0).length, avg: +(done.reduce((s, y) => s + y.raw, 0) / done.length).toFixed(2),
+    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from: Math.min(...done.map((y) => y.year)), to: done[0].year,
+    soFar: cur ? { year: cur.year, ret: r2(cur.raw) } : null };
   const moves = [];
   for (let i = 1; i < (dailyRows || []).length; i++) {
     const d = new Date(dailyRows[i].t);
