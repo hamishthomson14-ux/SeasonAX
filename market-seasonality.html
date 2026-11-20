@@ -3995,9 +3995,10 @@ function mhBuild() {
     if (my !== mhToken) return;
     box.dataset.mhKey = mi + ':' + id;
     if (!d) { document.getElementById('mhSummary').textContent = 'Real price history for ' + name + ' is unavailable right now, so nothing is shown.'; box.dataset.mhState = 'error'; return; }
-    var s = d.summary, last = d.years[0], partial = last.partial;
-    document.getElementById('mhSummary').textContent = 'The ' + name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + M + 's (' + s.from + '–' + last.year +
-      (partial ? ', counting this ' + M + ' so far' : '') + '), averaging ' + mhPct(s.avg) + '. Best: ' + s.best.year + ' ' + mhPct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + mhPct(s.worst.ret) + '.';
+    var s = d.summary;
+    document.getElementById('mhSummary').textContent = 'The ' + name + ' rose in ' + s.up + ' of the last ' + s.n + ' ' + M + 's (' + s.from + '–' + s.to +
+      '), averaging ' + mhPct(s.avg) + '. Best: ' + s.best.year + ' ' + mhPct(s.best.ret) + '. Worst: ' + s.worst.year + ' ' + mhPct(s.worst.ret) + '.' +
+      (s.soFar ? ' ' + M + ' ' + s.soFar.year + ' so far: ' + mhPct(s.soFar.ret) + '.' : '');
     var maxY = Math.max.apply(null, d.years.map(function (y) { return Math.abs(y.ret); }).concat([0.01]));
     document.getElementById('mhYears').innerHTML = d.years.map(function (y) {
       return mhBar('data-year="' + y.year + '"', M + ' ' + y.year + (y.partial ? ' (so far)' : ''), y.ret, maxY);

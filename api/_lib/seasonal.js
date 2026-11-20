@@ -55,18 +55,15 @@ export function computeMonths(rows, yearsWanted = 15, minObs = 5, now = new Date
 // shorter windows for assets that don't have that much history yet (e.g.
 // a stock that IPO'd 4 years ago can never satisfy a 15yr/5-obs check, but
 // genuinely has real data). minObs scales down with the window. Returns
-// {months, years} where `years` reflects the asset's actual data span
-// (not just the cutoff window), or null if even a 2yr window fails.
+// {months, years, window} where `years` is the most completed years behind any month's average (not the calendar-year
+// span, which would count a partial listing year and the current year), or null if even a 2yr window fails.
 export function computeAdaptiveMonths(rows, yearsWanted = 15, now = new Date()) {
   const base = yearsWanted || 15;
   const candidates = [base, 10, 7, 5, 3, 2].filter((y, i, arr) => y <= base && arr.indexOf(y) === i);
-  const firstYear = rows.length ? new Date(rows[0].d).getFullYear() : null;
-  const lastYear = rows.length ? new Date(rows[rows.length - 1].d).getFullYear() : null;
-  const actualYears = (firstYear && lastYear) ? Math.max(1, lastYear - firstYear + 1) : base;
   for (const y of candidates) {
     const minObs = Math.max(1, Math.min(5, Math.floor(y / 2)));
     const months = computeMonths(rows, y, minObs, now);
-    if (months) return { months, years: Math.min(y, actualYears), window: y };
+    if (months) return { months, years: Math.max(...months.map((m) => m.n)), window: y };
   }
   return null;
 }
@@ -171,6 +168,22 @@ async function yahooChart(sym, query) {
   throw new UpstreamError('price provider unavailable for ' + sym + ' (' + why + ')');
 }
 
+// Each bar's trading date ON THE EXCHANGE's calendar ('YYYY-MM-DD'). Yahoo stamps a daily bar at the session open in
+// UTC: the ASX opens at 10:00 Sydney, which is 23:00 UTC the day before from October to April, so the UTC date files a
+// session under the previous day (and the 1st of a month under the previous month). Uses meta.exchangeTimezoneName
+// (daylight saving included), then meta.gmtoffset, then UTC (crypto, and payloads without meta). Same rule for every asset.
+function localDater(meta) {
+  const tz = meta && meta.exchangeTimezoneName;
+  if (tz) {
+    try {
+      const f = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' });
+      return (sec) => f.format(sec * 1000);
+    } catch (e) { /* unknown zone: fall through to the offset */ }
+  }
+  const off = meta && isFinite(meta.gmtoffset) ? +meta.gmtoffset : 0;
+  return (sec) => new Date((sec + off) * 1000).toISOString().slice(0, 10);
+}
+
 // range: Yahoo accepts '<N>y' with daily bars (range=max silently drops to quarterly bars, so it is never used).
 // null: the provider answered and has no usable series for this symbol. UpstreamError: it did not answer.
 export async function fetchMonthly(sym, range = '20y') {
@@ -178,13 +191,13 @@ export async function fetchMonthly(sym, range = '20y') {
   if (!result) return null;
   const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
   const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-  // Roll daily closes up to one observation per calendar month (last close in each UTC month). Avoids Yahoo's 1mo
-  // boundary drift that skips/dups months for non-US exchanges (e.g. .L listings missing October).
-  const byYM = new Map();
+  // Roll daily closes up to one observation per calendar month (last close in each month of the exchange's local
+  // calendar). Avoids Yahoo's 1mo boundary drift that skips/dups months for non-US exchanges (e.g. .L listings missing October).
+  const byYM = new Map(), dateOf = localDater(result.meta);
   for (let i = 0; i < result.timestamp.length; i++) {
     const c = closes[i];
     if (c == null || !isFinite(c)) continue;
-    byYM.set(new Date(result.timestamp[i] * 1000).toISOString().slice(0, 7), c);
+    byYM.set(dateOf(result.timestamp[i]).slice(0, 7), c);
   }
   const rows = Array.from(byYM.entries()).map(([ym, c]) => ({ d: ym + '-01', c })).sort((a, b) => a.d < b.d ? -1 : 1);
   return rows.length < 24 ? null : rows;
@@ -204,16 +217,20 @@ export function bestWorst(months) {
 }
 
 // ── Seasonal projection ─────────────────────────────────────────────────────
-// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t: msUTC, c }].
+// Daily closes (dividend-adjusted where Yahoo provides it), oldest first: [{ t, c }], where t is the exchange-local
+// trading date at 00:00 UTC, so every getUTC*/toISOString() on it reads the exchange's own calendar date. One row per
+// date: Yahoo repeats today's bar at the live quote time, and the later one wins.
 export async function fetchDaily(sym) {
   const result = await yahooChart(sym, 'range=20y&interval=1d');
   if (!result) return null;
   const quote = result.indicators.quote[0], adj = result.indicators.adjclose && result.indicators.adjclose[0];
   const closes = (adj && adj.adjclose) ? adj.adjclose : quote.close;
-  const rows = [];
+  const rows = [], dateOf = localDater(result.meta);
   for (let i = 0; i < result.timestamp.length; i++) {
     const c = closes[i];
-    if (c != null && isFinite(c) && c > 0) rows.push({ t: result.timestamp[i] * 1000, c });
+    if (c == null || !isFinite(c) || c <= 0) continue;
+    const t = Date.parse(dateOf(result.timestamp[i]) + 'T00:00:00Z');
+    if (rows.length && rows[rows.length - 1].t === t) rows[rows.length - 1].c = c; else rows.push({ t, c });
   }
   return rows.length ? rows : null;
 }
@@ -229,13 +246,13 @@ export function computeProjection(rows, { today = new Date(), days = 90, years =
   const paths = [];
   for (let y = y1 - years; y < y1; y++) {
     const start = Date.UTC(y, m, d), end = start + days * DAY;
-    if (end > last.t) continue;                                   // window not complete in the data
+    if (last.t < end) continue;                                   // window not complete: no bar on or after day d+days
     let i = rows.findIndex((r) => r.t >= start);
     if (i < 0 || rows[i].t - start > MAX_GAP || i === 0 && rows[0].t > start) continue; // before history / gap
     const p0 = rows[i].c, path = [];
     for (let k = 0; k <= days; k++) {
-      const t = start + k * DAY;
-      while (i + 1 < rows.length && rows[i + 1].t <= t) i++;
+      const dayEnd = start + (k + 1) * DAY;                       // path[k]: the last close ON or before calendar day d+k,
+      while (i + 1 < rows.length && rows[i + 1].t < dayEnd) i++;  // whatever time of day the bars are stamped
       path.push((rows[i].c / p0 - 1) * 100);
     }
     paths.push({ year: y, path });
@@ -266,8 +283,8 @@ export function isoWeek(t) {
 }
 function isoYear(t) { const d = new Date(t), day = (d.getUTCDay() + 6) % 7; return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day + 3)).getUTCFullYear(); }
 
-// Over the last `years` years of daily closes: average return + win rate for each ISO week of the year
-// (week 53 folded into 52), and the turn-of-month window (last trading day + first 3 of the next month)
+// Over the last `years` years of daily closes: average return + win rate for each completed ISO week 1-52 of the year
+// (week 53 left out), and the turn-of-month window (last trading day + first 3 of the next month)
 // against the typical 4-day stretch on other days. null when under 5 years of data.
 export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
   if (!rows || rows.length < 2) return null;
@@ -283,8 +300,14 @@ export function computePatterns(rows, { today = new Date(), years = 15 } = {}) {
   // Weekly: last close of each ISO week vs the previous week's last close.
   const weekLast = [];
   for (const r of R) { const k = isoYear(r.t) * 100 + isoWeek(r.t); if (weekLast.length && weekLast[weekLast.length - 1].k === k) weekLast[weekLast.length - 1].c = r.c; else weekLast.push({ k, w: isoWeek(r.t), c: r.c, t: r.t }); }
+  // Completed weeks only (the ISO week containing `today` is still in progress, like the month in progress), and week 53
+  // (53-week ISO years only) is left out rather than merged into week 52, so each week holds one return per year.
+  const thisWeek = isoYear(today.getTime()) * 100 + isoWeek(today.getTime());
   const byWeek = Array.from({ length: 52 }, () => []);
-  for (let i = 1; i < weekLast.length; i++) if (weekLast[i].t >= cutoff) byWeek[Math.min(weekLast[i].w, 52) - 1].push((weekLast[i].c / weekLast[i - 1].c - 1) * 100);
+  for (let i = 1; i < weekLast.length; i++) {
+    const wl = weekLast[i];
+    if (wl.t >= cutoff && wl.k < thisWeek && wl.w <= 52) byWeek[wl.w - 1].push((wl.c / weekLast[i - 1].c - 1) * 100);
+  }
   const weeks = byWeek.map((a, i) => ({ week: i + 1, ...stat(a) }));
   const ranked = weeks.filter((w) => w.obs >= 5).sort((a, b) => b.avg - a.avg);
 
@@ -475,26 +498,28 @@ export function computeEventStudy(rows, dates) {
   return { events, summary };
 }
 
-// "This month in history": every year's return for one calendar month over the same window and rules as
-// computeMonths (last close to last close, years from now-15, moves over 95% excluded), newest first, plus the
-// biggest daily moves inside that month from daily closes. month is 0-11.
+// "This month in history": every year's return for one calendar month over exactly the window and rules behind the
+// published average (selectMonths: the last `span` COMPLETED occurrences, last close to last close, moves over 95%
+// skipped so an older year takes their place), newest first, plus the biggest daily moves inside that month from
+// daily closes. This year's month in progress is listed on top, flagged partial. month is 0-11.
 export function computeMonthHistory(monthlyRows, dailyRows, { month, now = new Date(), years: span = 15 } = {}) {
-  const from = now.getUTCFullYear() - span, r2 = (v) => Math.round(v * 100) / 100;
-  const years = [];
-  for (let i = 1; i < monthlyRows.length; i++) {
-    const prev = monthlyRows[i - 1], cur = monthlyRows[i];
-    const yr = +cur.d.slice(0, 4), mo = +cur.d.slice(5, 7) - 1;
-    if (mo !== month || yr < from || !isFinite(prev.c) || prev.c <= 0) continue;
-    const ret = ((cur.c - prev.c) / prev.c) * 100;
-    if (!isFinite(ret) || Math.abs(ret) > 95) continue;
-    years.push({ year: yr, raw: ret, partial: yr === now.getUTCFullYear() && month === now.getUTCMonth() });
+  const r2 = (v) => Math.round(v * 100) / 100;
+  const years = selectMonths(monthlyRows, span, now)[month].map((x) => ({ year: +x.ym.slice(0, 4), raw: x.ret, partial: false }));
+  const curYM = now.toISOString().slice(0, 7), last = monthlyRows.length - 1;
+  if (month === now.getUTCMonth() && last >= 1 && monthlyRows[last].d.slice(0, 7) === curYM) {
+    const prev = monthlyRows[last - 1].c, ret = ((monthlyRows[last].c - prev) / prev) * 100;
+    if (isFinite(prev) && prev > 0 && isFinite(ret) && Math.abs(ret) <= 95) years.unshift({ year: now.getUTCFullYear(), raw: ret, partial: true });
   }
-  if (!years.length) return null;
-  years.sort((a, b) => b.year - a.year);
+  // The summary counts completed months only: a month in progress is not a rise, a fall or a best/worst year yet
+  // (it is still listed in years, flagged partial, and reported apart as soFar).
+  const done = years.filter((y) => !y.partial), cur = years.find((y) => y.partial);
+  if (!done.length) return null;
+  const from = Math.min(...done.map((y) => y.year));
   // Compared at the shown precision; on a tie the most recent year (years are newest first) is named.
-  const best = years.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = years.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
-  const summary = { n: years.length, up: years.filter((y) => y.raw > 0).length, avg: +(years.reduce((s, y) => s + y.raw, 0) / years.length).toFixed(2),
-    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from: Math.min(...years.map((y) => y.year)) };
+  const best = done.reduce((a, b) => (r2(b.raw) > r2(a.raw) ? b : a)), worst = done.reduce((a, b) => (r2(b.raw) < r2(a.raw) ? b : a));
+  const summary = { n: done.length, up: done.filter((y) => y.raw > 0).length, avg: +(done.reduce((s, y) => s + y.raw, 0) / done.length).toFixed(2),
+    best: { year: best.year, ret: r2(best.raw) }, worst: { year: worst.year, ret: r2(worst.raw) }, from, to: done[0].year,
+    soFar: cur ? { year: cur.year, ret: r2(cur.raw) } : null };
   const moves = [];
   for (let i = 1; i < (dailyRows || []).length; i++) {
     const d = new Date(dailyRows[i].t);
